@@ -1,0 +1,45 @@
+{
+  "group_title": "KHÔ",
+  "target_words": {
+    "dry": {
+      "meaning": "không ướt hoặc dính; không có nước hoặc chất ẩm: khô, khô cạn, ráo\nrất ít mưa",
+      "key_distinction": "Khô ráo, không ẩm ướt hoặc thời tiết khô hạn ít mưa.",
+      "examples": [
+        "Some plants grow better in dry soil.",
+        "dry weather"
+      ]
+    },
+    "barren": {
+      "meaning": "(miêu tả đất đai) không đủ tốt để cây cối có thể phát triển ở đó: cằn cỗi\n(miêu tả cây cối) không có quả/hạt; (miêu tả động vật cái) không sinh được con\n~ infertile",
+      "key_distinction": "Đất đai cằn cỗi không thể trồng trọt, hoặc cây cối/động vật không thể đơm hoa kết trái/sinh sản.",
+      "examples": [
+        "The landscape was barren, with not a tree or shrub in sight.",
+        "a barren fig tree"
+      ]
+    },
+    "infertile": {
+      "meaning": "(miêu tả con người, động vật, và cây cối) không thể có con hoặc sinh con\n(miêu tả đất đai) không thể tạo ra được mùa màng bội thu: không màu mỡ",
+      "key_distinction": "Vô sinh (ở con người/động vật) hoặc đất đai kém màu mỡ, không phì nhiêu.",
+      "examples": [
+        "an infertile cat",
+        "infertile soil"
+      ]
+    },
+    "deserted": {
+      "meaning": "(miêu tả một nơi) không có người\nbị bỏ rơi bởi một người hoặc những người mà họ không có ý định quay trở lại\n~ abandoned (adj)",
+      "key_distinction": "Hoang vắng, không một bóng người hoặc bị bỏ rơi.",
+      "examples": [
+        "deserted streets",
+        "a deserted village"
+      ]
+    },
+    "arid": {
+      "meaning": "(miêu tả đất đai hoặc thời tiết) có rất ít hoặc không có mưa; rất khô\nKhô khan, vô vị",
+      "key_distinction": "Khô hạn, hoang mạc hóa (thời tiết/khí hậu) hoặc tẻ nhạt, khô khan (cuộc trò chuyện).",
+      "examples": [
+        "The desert is so arid that nothing can grow there.",
+        "an arid discussion"
+      ]
+    }
+  }
+}

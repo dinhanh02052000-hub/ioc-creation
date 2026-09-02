@@ -1,0 +1,55 @@
+{
+  "group_title": "LOẠI BỎ",
+  "target_words": {
+    "remove": {
+      "meaning": "- [ngoại động từ] tháo, bỏ dọn, lấy ra, loại bỏ\n- [ngoại động từ] xua đuổi sạch (sự sợ hãi, mối nghi ngờ...)\n- [ngoại động từ] đuổi, cách chức",
+      "key_distinction": "Lấy/dời vật gì ra khỏi vị trí, xua tan hoài nghi/sợ hãi hoặc cách chức ai đó.",
+      "examples": [
+        "The men came to remove the rubbish from the backyard.",
+        "Hearing your opinion has removed my last doubts/suspicions about her.",
+        "She has been removed from her post/position as director."
+      ]
+    },
+    "get rid of": {
+      "meaning": "loại bỏ ai, cái gì phiền toái, khó chịu, vứt bỏ những gì không mong muốn",
+      "key_distinction": "Tống khứ, vứt bỏ những thứ hoặc những người gây phiền thoái/không mong muốn.",
+      "examples": [
+        "Try and get rid of your visitors before I get there.",
+        "We got rid of all the old furniture."
+      ]
+    },
+    "eradicate": {
+      "meaning": "[ngoại động từ] trừ diệt, loại bỏ hoàn toàn cái gì đó xấu, tồi tệ",
+      "key_distinction": "Trừ diệt, nhổ tận gốc những tệ nạn, dịch bệnh hoặc vấn đề tiêu cực.",
+      "examples": [
+        "We are determined to eradicate racism from our sport.",
+        "The government claims to be doing all it can to eradicate corruption."
+      ]
+    },
+    "eliminate": {
+      "meaning": "- [ngoại động từ] loại ra, loại bỏ ai, cái gì (vì họ/cái đó không có liên quan đến, không có trách nhiệm đến hoặc không cần đến)\n- [ngoại động từ] loại bỏ, đánh bại ai khỏi cuộc thi\n- [ngoại động từ] trừ khử, sát hại ai đó",
+      "key_distinction": "Loại trừ khả năng/đối tượng không cần thiết, loại đối thủ khỏi cuộc thi hoặc trừ khử/sát hại.",
+      "examples": [
+        "We eliminated the possibility that it could have been an accident.",
+        "He was eliminated in the third round of the competition.",
+        "A police officer was accused of helping a drug gang eliminate rivals."
+      ]
+    },
+    "delete": {
+      "meaning": "[ngoại động từ] gạch bỏ, xóa bỏ (chữ đã viết, đã gõ, dữ liệu...)",
+      "key_distinction": "Xóa dữ liệu, thông tin, văn bản hay từ ngữ đã được lưu trữ/viết ra.",
+      "examples": [
+        "I deleted the entire paragraph.",
+        "Your name has been deleted from the list."
+      ]
+    },
+    "erase": {
+      "meaning": "- [ngoại động từ] gôm, tẩy, xóa (thường là vết bút chì)\n- [ngoại động từ] xóa mờ đi cảm xúc, ký ức, một khoảng thời gian (đã trôi qua)",
+      "key_distinction": "Tẩy xóa vết mực/bút chì hoặc xóa mờ ký ức/cảm xúc trong tâm trí.",
+      "examples": [
+        "It's in pencil so you can just erase anything that's wrong.",
+        "He is determined to erase the memory of a disappointing debut two years ago."
+      ]
+    }
+  }
+}

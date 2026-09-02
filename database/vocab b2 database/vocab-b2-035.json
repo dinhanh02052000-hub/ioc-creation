@@ -1,0 +1,41 @@
+{
+  "group_title": "Đất",
+  "target_words": {
+    "earth": {
+      "meaning": "(thường là the earth) đất, bề mặt trên đó mà chúng ta sinh sống (được dùng khi bạn muốn nhấn mạnh đá, đất, cát, v.v. cấu tạo nên nó)",
+      "key_distinction": "Chỉ lớp mặt đất/mặt trái đất tự nhiên, cấu tạo vật lý từ đất đá cát.",
+      "examples": [
+        "After a week at sea, it was good to feel the earth beneath our feet again.",
+        "fifty feet above the earth",
+        "under/below/beneath the earth"
+      ]
+    },
+    "soil": {
+      "meaning": "đất trồng trọt (cây cối phát triển), đất canh tác",
+      "key_distinction": "Lớp đất mịn trên cùng có dinh dưỡng dùng để trồng trọt, canh tác nông nghiệp.",
+      "examples": [
+        "sandy/fertile soil",
+        "rich/poor/dry/wet soil",
+        "The flowers do well in sandy soil.",
+        "soil erosion"
+      ]
+    },
+    "land": {
+      "meaning": "đất liền (được sử dụng khi bạn muốn tương phản nó với biển); đất đai, phần diện tích đất, đặc biệt là được sử dụng cho một mục đích cụ thể như xây dựng",
+      "key_distinction": "Chỉ đất liền (đối lập với biển/sông) hoặc bất động sản, diện tích đất đai có chủ sở hữu/mục đích sử dụng.",
+      "examples": [
+        "It was good to be back on land.",
+        "We travelled by land (đường bộ), though flying would have been cheaper."
+      ]
+    },
+    "ground": {
+      "meaning": "bề mặt rắn chắc của trái đất mà mọi người đi trên đó (khi bạn không ở trong một tòa nhà hoặc xe cộ)",
+      "key_distinction": "Bề mặt đất rắn chắc dưới chân khi ở ngoài trời (mặt đất để đi lại, rơi ngã xuống).",
+      "examples": [
+        "I found her lying on the ground.",
+        "He fell to the ground, crying out in pain.",
+        "above/below ground"
+      ]
+    }
+  }
+}

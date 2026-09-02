@@ -1,0 +1,37 @@
+{
+  "group_title": "GIỚI HẠN",
+  "target_words": {
+    "limit": {
+      "meaning": "[ngoại động từ] ngăn không cho cái gì tăng vượt quá một mức độ/hạn mức nhất định\nlimit somebody/yourself to something: ngăn không cho bản thân bạn/ai đó có/sử dụng/làm việc gì mà vượt quá một số lượng/mức độ cụ thể",
+      "key_distinction": "Giới hạn mức độ, số lượng tối đa không vượt quá hạn mức.",
+      "examples": [
+        "It's really important to limit the amount of fat in your diet.",
+        "I've limited myself to 1000 calories a day to try and lose weight.",
+        "You can use any material available - why limit yourself?"
+      ]
+    },
+    "confine": {
+      "meaning": "[thường dùng ở dạng bị động] giữ cho bản thân/điều gì ở trong một giới hạn nhất định về hoạt động/chủ đề/khu vực/...\n~ restrict",
+      "key_distinction": "Gói gọn, giới hạn trong phạm vi hẹp (khu vực, chủ đề, không gian).",
+      "examples": [
+        "Let's confine our attention to the problem of illegal drugs.",
+        "The work will be confined to the Glasgow area."
+      ]
+    },
+    "restrain": {
+      "meaning": "[ngoại động từ] ngăn không cho điều gì tăng trưởng/tăng quá nhiều; hạn chế sự tăng trưởng/phát triển của điều gì\n~ bring/get/keep something under control",
+      "key_distinction": "Kìm hãm, kiềm chế sự tăng trưởng, phát triển hoặc sự bộc phát.",
+      "examples": [
+        "The government is taking steps to restrain inflation."
+      ]
+    },
+    "control": {
+      "meaning": "hạn chế/giới hạn điều gì hoặc làm cho nó xảy ra theo một cách cụ thể nào đó",
+      "key_distinction": "Kiểm soát, điều khiển quy định mọi thứ diễn ra theo đúng ý muốn/luật lệ.",
+      "examples": [
+        "Expenditure within the company is tightly controlled.",
+        "Parents should control what their kids watch on television."
+      ]
+    }
+  }
+}

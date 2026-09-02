@@ -1,0 +1,42 @@
+{
+  "group_title": "KHÍCH LỆ",
+  "target_words": {
+    "encourage": {
+      "meaning": "khuyến khích/cổ vũ/động viên/ủng hộ/giúp đỡ ai đó",
+      "key_distinction": "Khuyến khích, động viên hoặc tiếp thêm sự tự tin để ai đó làm điều gì.",
+      "examples": [
+        "The new measures are designed to encourage more people to cycle."
+      ]
+    },
+    "inspire": {
+      "meaning": "khiến cho ai đó cảm thấy sự khao khát, sự tự tin hoặc sự nhiệt tình để làm điều gì đó: truyền cảm hứng; làm cho ai đó có một cảm giác hoặc cảm xúc nào đó đặc biệt mãnh liệt",
+      "key_distinction": "Truyền cảm hứng, tạo động lực tinh thần mãnh liệt và khơi gợi khao khát sáng tạo/hành động.",
+      "examples": [
+        "As a teacher, she has inspired generations of students.",
+        "She inspires great loyalty among her followers."
+      ]
+    },
+    "motivate": {
+      "meaning": "khiến ai đó muốn làm điều gì (đặc biệt là điều khó khăn đòi hỏi sự nỗ lực hoặc sự chăm chỉ): thúc đẩy",
+      "key_distinction": "Thúc đẩy, tạo động lực mục tiêu để ai đó cố gắng thực hiện một việc khó khăn.",
+      "examples": [
+        "Teaching is all about motivating people to learn."
+      ]
+    },
+    "stimulate": {
+      "meaning": "khiến ai đó quan tâm đến và hào hứng với điều gì đó: khơi dậy sự quan tâm, sự hào hứng\nkhuyến khích cái gì đó phát triển hoặc trở nên thiết thực hoặc tích cực",
+      "key_distinction": "Kích thích, khơi dậy sự hứng thú hoặc thúc đẩy sự phát triển, hoạt động của cơ quan/kinh tế.",
+      "examples": [
+        "activities designed to stimulate the children intellectually",
+        "The government plans to cut taxes to stimulate the economy."
+      ]
+    },
+    "galvanize": {
+      "meaning": "khiến cho ai đó hành động bằng cách gây sốc cho họ hoặc khiến họ trở nên hào hứng: kích động, khích động",
+      "key_distinction": "Thúc động, làm ai đó đột ngột bừng tỉnh hoặc quyết tâm hành động ngay lập tức.",
+      "examples": [
+        "The win galvanized the whole team."
+      ]
+    }
+  }
+}

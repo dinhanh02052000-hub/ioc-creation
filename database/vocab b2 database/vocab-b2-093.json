@@ -1,0 +1,54 @@
+{
+  "group_title": "Làm ướt",
+  "target_words": {
+    "drip": {
+      "meaning": "[nội động từ] (chất lỏng) chảy xuống thành từng giọt nhỏ;\n[nội động từ, ngoại động từ] để chảy nhỏ giọt; làm chảy nhỏ giọt",
+      "key_distinction": "Chảy, rơi hoặc làm chảy xuống thành từng giọt nhỏ liên tục.",
+      "examples": [
+        "Water was dripping down the walls.",
+        "The tap was dripping.",
+        "Be careful, you're dripping paint everywhere!"
+      ]
+    },
+    "water": {
+      "meaning": "[ngoại động từ] tưới nước cho cây/vườn/...;\n[nội động từ] (mắt) chảy nước mắt;\n[nội động từ] (miệng) chảy nước miếng",
+      "key_distinction": "Tưới nước cho cây cối hoặc hiện tượng mắt/miệng tiết ra nước mắt, nước bọt.",
+      "examples": [
+        "to water the plants",
+        "The smoke made my eyes water.",
+        "The smell of the meat made her mouth water."
+      ]
+    },
+    "moisten": {
+      "meaning": "[nội động từ, ngoại động từ] trở nên/khiến cho thứ gì hơi ẩm ướt",
+      "key_distinction": "Làm cho thứ gì đó hơi ẩm ướt, có thêm một chút độ ẩm nhẹ.",
+      "examples": [
+        "He moistened his lips before he spoke."
+      ]
+    },
+    "wet": {
+      "meaning": "làm cho cái gì ẩm ướt;\nwet your/the bed: đái dầm, tèm dầm;\nwet yourself/your pants/your knickers: đái ra quần",
+      "key_distinction": "Làm ướt nói chung (đổ nước/chất lỏng lên) hoặc hành vi làm ướt do tiểu tiện.",
+      "examples": [
+        "Wet the brush before putting it in the paint.",
+        "It is quite common for small children to wet their beds.",
+        "He was so frightened that he wet his pants."
+      ]
+    },
+    "dampen": {
+      "meaning": "làm cho cái gì hơi ẩm ướt ~ moisten",
+      "key_distinction": "Làm ẩm nhẹ bề mặt (tương tự moisten).",
+      "examples": [
+        "Perspiration dampened her face and neck."
+      ]
+    },
+    "splash": {
+      "meaning": "[nội động từ] (chất lỏng) chảy/rơi xuống một bề mặt nào đó một cách ồn ào;\n[ngoại động từ] làm cho ai đó/thứ gì bị ướt bằng cách té/vẫy/bắn nước/bùn/... lên người họ",
+      "key_distinction": "Bắn, té, văng nước/chất lỏng lên bề mặt hoặc người khác gây ra tiếng động.",
+      "examples": [
+        "Water splashed onto the floor.",
+        "He splashed cold water on his face."
+      ]
+    }
+  }
+}

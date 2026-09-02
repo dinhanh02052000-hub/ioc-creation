@@ -1,0 +1,53 @@
+{
+  "group_title": "TRẢI QUA",
+  "target_words": {
+    "experience": {
+      "meaning": "trải qua, trải nghiệm, cảm thấy",
+      "key_distinction": "[ngoại động từ] có một tình huống cụ thể nào đó tác động hoặc xảy ra đến đối với bạn: trải qua, trải nghiệm OR [ngoại động từ] có hoặc nhận thức được một cảm giác nào đó (thuộc về cảm xúc hoặc thể chất): cảm thấy",
+      "examples": [
+        "British business is now experiencing a severe recession.",
+        "They had the opportunity to experience life at sea.",
+        "I experienced feelings of sadness and loss.",
+        "I have never experienced such pain before."
+      ]
+    },
+    "undergo": {
+      "meaning": "trải qua (sự thay đổi / điều khó chịu)",
+      "key_distinction": "[ngoại động từ] trải qua điều gì, đặc biệt là một sự thay đổi hoặc điều gì đó không dễ chịu",
+      "examples": [
+        "The country has undergone massive changes recently.",
+        "Teachers should be expected to undergo mid-career training and development."
+      ]
+    },
+    "suffer": {
+      "meaning": "chịu đựng, đau khổ, bị (bệnh/thương)",
+      "key_distinction": "[nội động từ] bị ảnh hưởng nặng nề bởi bệnh tật/sự đau đớn/nỗi đau/những cảm giác buồn/thiếu điều gì/...: đau, đau khổ,... OR [ngoại động từ] trải qua một điều gì không dễ chịu, ví dụ như bị thương, mất mát, thất bại,...",
+      "examples": [
+        "patients suffering from depression",
+        "He suffered a massive heart attack."
+      ]
+    },
+    "go through": {
+      "meaning": "trải qua (giai đoạn/tình huống khó khăn)",
+      "key_distinction": "go through something trải qua một tình huống khó khăn/tình huống không dễ chịu/cảm xúc nào đó/...",
+      "examples": [
+        "He's going through a divorce at the moment."
+      ]
+    },
+    "endure": {
+      "meaning": "chịu đựng, cam chịu",
+      "key_distinction": "[ngoại động từ] trải qua hoặc đương đầu với một tình huống không dễ chịu hoặc gây đau đớn mà không bỏ cuộc: chịu đựng, cam chịu ~ bear /beə(r)/ (v) ~ meet /miːt/ (v)",
+      "examples": [
+        "We had to endure a nine-hour delay at the airport.",
+        "He endured years of hip pain before seeing a surgeon."
+      ]
+    },
+    "encounter": {
+      "meaning": "gặp phải, trải qua bất ngờ",
+      "key_distinction": "[ngoại động từ] trải qua điều gì một cách bất ngờ (đặc biệt là điều gì đó khó khăn hoặc không dễ chịu) trong khi bạn đang làm một điều gì đó khác",
+      "examples": [
+        "We encountered a problem with the fuel pump during the safety tests."
+      ]
+    }
+  }
+}

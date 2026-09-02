@@ -1,0 +1,58 @@
+{
+  "group_title": "KHÓ, KHÓ KHĂN",
+  "target_words": {
+    "hard": {
+      "meaning": "khó để làm/hiểu/trả lời\n>< easy /ˈiːzi/ (adj)\nnhiều vấn đề và sự khó khăn, đặc biệt là do thiếu tiền: khó khăn\n~ tough /tʌf/ (adj)\n>< easy",
+      "key_distinction": "Khó làm, khó hiểu hoặc tình cảnh khó khăn, gian khổ (thường dùng trong văn nói hàng ngày).",
+      "examples": [
+        "a hard decision",
+        "It's hard to believe that she's only nine.",
+        "Times were hard at the end of the war.",
+        "Life got very hard."
+      ]
+    },
+    "difficult": {
+      "meaning": "khó; cần sự nỗ lực hoặc kỹ năng để làm hoặc để hiểu\nđầy những vấn đề; gây ra rất nhiều rắc rối: khó khăn, gay go",
+      "key_distinction": "Khó khăn đòi hỏi phải nỗ lực, có kỹ năng để giải quyết hoặc tình huống đầy rắc rối, phức tạp.",
+      "examples": [
+        "a difficult decision",
+        "It's really difficult to read your writing.",
+        "The design of the building posed some difficult challenges.",
+        "difficult circumstances",
+        "13 is a difficult age.",
+        "Her childhood was incredibly difficult."
+      ]
+    },
+    "challenging": {
+      "meaning": "khó theo một cách thú vị vì nó thử thách năng lực của ai",
+      "key_distinction": "Mang tính thử thách, mang lại sự kích thích, thú vị khi vượt qua.",
+      "examples": [
+        "It will be a challenging target to meet.",
+        "challenging work"
+      ]
+    },
+    "demanding": {
+      "meaning": "(công việc) khó để làm hoặc giải quyết và cần rất nhiều kỹ năng/nỗ lực/...: đòi hỏi khắt khe",
+      "key_distinction": "Đòi hỏi cao về thời gian, sức lực, trí tuệ hoặc sự kiên nhẫn.",
+      "examples": [
+        "The work is physically demanding.",
+        "a technically demanding piece of music to play"
+      ]
+    },
+    "problematic": {
+      "meaning": "khó để giải quyết hoặc để hiểu; nhiều vấn đề; gây ra khó khăn; không chắc thành công",
+      "key_distinction": "Gây ra nhiều rắc rối, phức tạp, khó giải quyết hoặc tiềm ẩn rủi ro.",
+      "examples": [
+        "Getting everyone there on time might prove problematic."
+      ]
+    },
+    "troublesome": {
+      "meaning": "gây ra sự đau đớn/rắc rối/... trong một khoảng thời gian dài\n~ annoying, irritating",
+      "key_distinction": "Gây phiền hà, khó chịu hoặc rắc rối kéo dài dai dẳng.",
+      "examples": [
+        "a troublesome problem",
+        "His back has been troublesome for quite a while."
+      ]
+    }
+  }
+}

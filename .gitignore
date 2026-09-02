@@ -1,0 +1,14 @@
+# Secrets
+server/.env
+.env
+
+# Python
+__pycache__/
+*.pyc
+
+# Logs
+server/uvicorn_log.txt
+
+# OS / editor
+.DS_Store
+Thumbs.db

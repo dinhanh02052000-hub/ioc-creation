@@ -1,0 +1,40 @@
+{
+  "group_title": "GIÀU CÓ",
+  "target_words": {
+    "rich": {
+      "meaning": "(miêu tả một người) có rất nhiều tiền, của cải hoặc tài sản có giá trị\n(miêu tả một quốc gia hoặc một thành phố) cung cấp rất nhiều của cải vật chất nên nhiều người dân ở đó có mức sống cao\n~ wealthy /ˈwelθi/ (adj)\n~ well-off /ˌwel ˈɒf/ (adj)",
+      "key_distinction": "Giàu có, sở hữu nhiều tiền bạc, tài sản hoặc tài nguyên vật chất.",
+      "examples": [
+        "He was born in a rich and powerful family."
+      ]
+    },
+    "affluent": {
+      "meaning": "[mang sắc thái trang trọng] có rất nhiều tiền và có mức sống tốt\n~ wealthy\n~ prosperous",
+      "key_distinction": "Phồn thịnh, giàu có với mức sống cao và nhiều của cải (sắc thái trang trọng).",
+      "examples": [
+        "affluent Western countries"
+      ]
+    },
+    "prosperous": {
+      "meaning": "[mang sắc thái trang trọng] giàu và thành công\n~ affluent",
+      "key_distinction": "Thịnh vượng, phát đạt, vừa giàu có vừa thành công (về mặt kinh tế/xã hội).",
+      "examples": [
+        "prosperous countries"
+      ]
+    },
+    "comfortable": {
+      "meaning": "có đủ tiền để mua thứ mà bạn muốn mà không cần phải lo lắng về giá",
+      "key_distinction": "Thoải mái về tài chính, đủ ăn đủ tiêu không phải lo nghĩ về tiền bạc.",
+      "examples": [
+        "They're not millionaires, but they're certainly very comfortable."
+      ]
+    },
+    "flourishing": {
+      "meaning": "tăng trưởng hoặc phát triển một cách thành công",
+      "key_distinction": "Đang trên đà hưng thịnh, phát triển mạnh mẽ và gặt hái nhiều thành công.",
+      "examples": [
+        "There is a flourishing trade in these kinds of items."
+      ]
+    }
+  }
+}

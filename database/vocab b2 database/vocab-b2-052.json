@@ -1,0 +1,38 @@
+{
+  "group_title": "Khách",
+  "target_words": {
+    "customer": {
+      "meaning": "khách hàng, người mua hàng hóa, dịch vụ, sản phẩm từ cửa hàng hoặc doanh nghiệp",
+      "key_distinction": "Người mua hàng hóa, sản phẩm hoặc dịch vụ trực tiếp từ cửa hàng, siêu thị, doanh nghiệp.",
+      "examples": [
+        "Shops were lowering prices to attract more customers.",
+        "The company rewards loyal customers with discounts."
+      ]
+    },
+    "client": {
+      "meaning": "khách hàng, một người sử dụng các dịch vụ hoặc lời khuyên, tư vấn đến từ một cá nhân (thường là luật sư) hoặc tổ chức chuyên nghiệp",
+      "key_distinction": "Khách hàng sử dụng dịch vụ chuyên môn cao (luật sư, kiến trúc sư, tư vấn tài chính) mang tính hợp tác dài hạn.",
+      "examples": [
+        "She's a well-known lawyer with many famous clients.",
+        "We will advise the client on the best way to solve the problem."
+      ]
+    },
+    "guest": {
+      "meaning": "khách hàng, người thuê khách sạn hoặc ở một nơi tạm thời; khách mời đến nhà hay một sự kiện mà bạn là người tổ chức, trả tiền, ngoài ra còn là khách mời ở các sự kiện nghệ thuật",
+      "key_distinction": "Khách trọ tại khách sạn, khách được mời tới nhà/sự kiện hoặc khách mời đặc biệt trên chương trình/sự kiện nghệ thuật.",
+      "examples": [
+        "Guests should vacate their rooms by 10.30 a.m.",
+        "She had invited six guests to dinner.",
+        "Movie star Matt Damon is one of the special guests on tonight's show."
+      ]
+    },
+    "passenger": {
+      "meaning": "hành khách, một người đang di chuyển trên một phương tiện nhưng không lái nó, hoặc làm việc trên đó",
+      "key_distinction": "Hành khách di chuyển trên các phương tiện giao thông (máy bay, tàu hỏa, xe buýt, thuyền...) nhưng không phải người điều khiển.",
+      "examples": [
+        "airline/rail/train/car passengers",
+        "The boat was carrying more than 100 passengers."
+      ]
+    }
+  }
+}

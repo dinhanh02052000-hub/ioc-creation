@@ -1,0 +1,35 @@
+{
+  "group_title": "KHIÊM TỐN",
+  "target_words": {
+    "modest": {
+      "meaning": "(khen ngợi) không nói nhiều về những khả năng hoặc tài sản của bản thân: khiêm tốn\n*miêu tả những con người bình tĩnh, điềm đạm và có cái nhìn chính xác về chính bản thân họ\n>< immodest",
+      "key_distinction": "Khiêm tốn, không phô trương khả năng hay thành tựu của bản thân.",
+      "examples": [
+        "Don't be so modest! You're a very talented player."
+      ]
+    },
+    "humble": {
+      "meaning": "thể hiện rằng bạn không nghĩ là bạn quan trọng như những người khác: khiêm tốn, nhún nhường\n*thường dùng cho những người tự đánh giá thấp về bản thân và nhìn nhận bản thân yếu về một lĩnh vực nào đó cho dù thực sự là họ không yếu như thế\ncó vị trí hoặc địa vị xã hội thấp\n(châm biếm hoặc hài hước) dùng để ám chỉ bạn không quan trọng như những người khác nhưng theo một cách không thành thực hoặc không thực sự nghiêm túc",
+      "key_distinction": "Nhún nhường, coi mình bình thường/thấp kém hơn người khác hoặc có xuất thân, địa vị thấp.",
+      "examples": [
+        "Be humble enough to learn from your mistakes.",
+        "the daughter of a humble shopkeeper",
+        "In my humble opinion, you were in the wrong."
+      ]
+    },
+    "lowly": {
+      "meaning": "(thường mang nghĩa hài hước) thấp về địa vị hoặc tầm quan trọng\n~ humble",
+      "key_distinction": "Địa vị, vị trí hoặc tầm quan trọng thấp kém (thường dùng vui/hài hước).",
+      "examples": [
+        "How should I know? I'm just a lowly employee."
+      ]
+    },
+    "unassuming": {
+      "meaning": "(khen ngợi) không muốn thu hút sự chú ý đến bản thân hoặc đến những khả năng của bạn hoặc địa vị của bạn: khiêm tốn, không tự phụ\n~ modest",
+      "key_distinction": "Khiêm tốn, kín tiếng, không thích gây sự chú ý hay phô trương vị thế.",
+      "examples": [
+        "He did some wonderful work in a quiet and unassuming way."
+      ]
+    }
+  }
+}

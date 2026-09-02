@@ -1,0 +1,40 @@
+{
+  "group_title": "ĐOÁN, DỰ ĐOÁN",
+  "target_words": {
+    "guess": {
+      "meaning": "sự cố gắng để đưa ra một câu trả lời hoặc ý kiến khi mà bạn không chắc chắn là bạn đúng hay không: sự đoán",
+      "key_distinction": "Dự đoán dựa trên phỏng đoán cá nhân, cảm tính khi không chắc chắn.",
+      "examples": [
+        "If you don't know the answer, have a guess."
+      ]
+    },
+    "prediction": {
+      "meaning": "lời dự đoán về việc mà bạn nghĩ sẽ xảy ra trong tương lai; hành động dự đoán về tương lai\n*prediction mang nghĩa rộng hơn forecast",
+      "key_distinction": "Lời dự đoán chung về tương lai (mang nghĩa rộng hơn forecast).",
+      "examples": [
+        "Having lived in the UK for more than one year, I've learned not to make any predictions about the weather here."
+      ]
+    },
+    "diagnosis": {
+      "meaning": "hành động phát hiện ra hoặc xác định được nguyên nhân chính xác của một căn bệnh hoặc một vấn đề: sự chẩn đoán",
+      "key_distinction": "Chẩn đoán nguyên nhân bệnh tật (y khoa) hoặc lỗi máy móc, kỹ thuật.",
+      "examples": [
+        "The engineer examined the washing machine for some time before giving me his diagnosis."
+      ]
+    },
+    "forecast": {
+      "meaning": "dự đoán về việc sẽ xảy ra trong tương lai (dựa trên các thông tin hiện có) về sự phát triển của một điều gì đó: sự dự đoán trước, sự dự báo trước",
+      "key_distinction": "Dự báo khoa học dựa trên dữ liệu/thông tin có sẵn (thời tiết, kinh tế, xu hướng).",
+      "examples": [
+        "It is too early to make firm forecasts about the UK economy after the pandemic."
+      ]
+    },
+    "estimation": {
+      "meaning": "[C] một lời phán đoán về giá cả, kích cỡ, giá trị, mức độ, ... của một thứ gì/điều gì đó: sự ước lượng",
+      "key_distinction": "Sự ước lượng, tính toán sơ bộ về chi phí, số lượng, kích thước hoặc quy mô.",
+      "examples": [
+        "Estimations of our total world sales are around 50 million."
+      ]
+    }
+  }
+}

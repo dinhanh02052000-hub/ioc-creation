@@ -1,0 +1,28 @@
+{
+  "group_title": "Bệnh tật",
+  "target_words": {
+    "illness": {
+      "meaning": "Một thời gian bị bệnh [U]; trạng thái bị bệnh về mặt thể chất hoặc tinh thần [U]; một loại bệnh [C].",
+      "key_distinction": "Nói về cảm giác đau ốm chung hoặc trạng thái bị bệnh (cả thể chất lẫn tinh thần).",
+      "examples": [
+        "He's just returned to work after illness.",
+        "Patients with severe mental illness",
+        "Childhood illnesses"
+      ]
+    },
+    "ailment": {
+      "meaning": "Một loại bệnh không quá nghiêm trọng.",
+      "key_distinction": "Chỉ các bệnh vặt, bệnh nhẹ không gây nguy hiểm lớn đến tính mạng.",
+      "examples": [
+        "Childhood ailments"
+      ]
+    },
+    "disease": {
+      "meaning": "[U, C] Một loại bệnh ảnh hưởng đến con người, động vật hoặc thực vật, thường có nguyên nhân gây ra là do nhiễm trùng.",
+      "key_distinction": "Căn bệnh y khoa cụ thể, có nguyên nhân/mầm bệnh rõ ràng (như nhiễm trùng) và thường mang tính chất nghiêm trọng hơn.",
+      "examples": [
+        "Heart disease"
+      ]
+    }
+  }
+}

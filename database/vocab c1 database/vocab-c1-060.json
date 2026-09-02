@@ -1,0 +1,53 @@
+{
+  "group_title": "LỪA GẠT",
+  "target_words": {
+    "trick": {
+      "meaning": "lừa ai (bằng cách dùng kỹ xảo hoặc mưu kế) để lấy được cái gì từ họ hoặc khiến họ làm điều gì",
+      "key_distinction": "Dùng kỹ xảo, mưu kế để lấy đồ/tiền hoặc ép người khác làm theo ý mình.",
+      "examples": [
+        "She tricked her way into their house by pretending to be a police officer.",
+        "He tricked me into lending him £100."
+      ]
+    },
+    "deceive": {
+      "meaning": "- lừa một người mà họ tin tưởng bạn (bằng cách thay đổi/bóp méo sự thật hoặc thực tế)\n- lừa dối chồng/vợ/bạn trai/bạn gái... ~ cheat (on somebody)",
+      "key_distinction": "Lợi dụng sự tin tưởng để bóp méo sự thật hoặc ngoại tình/lừa dối bạn đời.",
+      "examples": [
+        "That company deceived customers by selling old phones as new ones.",
+        "She deceived him into handing over all his savings.",
+        "Her husband has been deceiving her with at least two other women for years. One of them became pregnant."
+      ]
+    },
+    "fool": {
+      "meaning": "- lừa ai để khiến họ tin vào điều gì đó bằng cách dùng mưu kế đơn giản nhưng thông minh\n- nói hoặc làm những điều ngu ngốc hoặc ngớ ngẩn (thường để khiến người khác cười)",
+      "key_distinction": "Dùng trò đùa/mưu đơn giản để làm người khác tin theo, hoặc làm trò ngớ ngẩn.",
+      "examples": [
+        "He fooled her into thinking he's going to change.",
+        "He's always getting into trouble for fooling around in class."
+      ]
+    },
+    "mislead": {
+      "meaning": "lừa ai bằng cách cung cấp cho họ thông tin sai hoặc không đầy đủ",
+      "key_distinction": "Dẫn dắt sai hướng bằng cách cung cấp thông tin sai lệch hoặc thiếu sót.",
+      "examples": [
+        "The agents were accused of misleading untalented, gullible people into thinking they can become successful musicians."
+      ]
+    },
+    "dupe": {
+      "meaning": "lừa ai, thường là bằng cách khiến họ tham gia hoặc làm những việc mà họ không ý định làm trước đó (động từ này thường hay được dùng ở dạng bị động)",
+      "key_distinction": "Biến ai đó thành nạn nhân bị gạt làm điều họ không định trước (thường dùng dạng bị động).",
+      "examples": [
+        "Many elderly people have been duped into buying worthless insurance."
+      ]
+    },
+    "cheat": {
+      "meaning": "- lừa ai để họ không thể nhận/giữ những thứ mà họ có quyền được nhận/giữ\n- gian lận (hành động một cách không trung thực để thắng hoặc dành được lợi thế trong một cuộc thi/kỳ thi/trận đấu...)\n- lừa dối chồng/vợ/bạn trai/bạn gái... ~ deceive",
+      "key_distinction": "Tước đoạt quyền lợi của người khác, gian lận trong thi đấu/thi cử hoặc ngoại tình.",
+      "examples": [
+        "Illegal workers are often cheated by employers.",
+        "She cheated in the test by copying from the boy in front.",
+        "Jack is cheating on his wife."
+      ]
+    }
+  }
+}

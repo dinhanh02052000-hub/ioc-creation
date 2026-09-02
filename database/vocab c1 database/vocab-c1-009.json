@@ -1,0 +1,55 @@
+{
+  "group_title": "BỰC TỨC",
+  "target_words": {
+    "annoyed": {
+      "meaning": "[thường không đứng trước danh từ] khá là giận dữ ~ irritated /ˈɪrɪteɪtɪd/ (adj)",
+      "key_distinction": "Cảm giác khó chịu, bực mình nhẹ do điều gì đó làm phiền.",
+      "examples": [
+        "I was a bit annoyed about the whole thing."
+      ]
+    },
+    "frustrated": {
+      "meaning": "cảm thấy giận dữ và mất kiên nhẫn bởi vì bạn không thể làm hoặc đạt được điều bạn muốn",
+      "key_distinction": "Bực bội, nản lòng vì công việc hoặc mục tiêu bị cản trở, không như ý.",
+      "examples": [
+        "It's very easy to get frustrated in this job."
+      ]
+    },
+    "fretful": {
+      "meaning": "[miêu tả người] không vui, lo lắng, không thoải mái, khó chịu, không thể thư giãn",
+      "key_distinction": "Cằn nhằn, quấy khóc, bực bội do mệt mỏi hoặc lo âu (thường dùng cho trẻ em).",
+      "examples": [
+        "Babies often become fretful when they are tired or hungry."
+      ]
+    },
+    "indignant": {
+      "meaning": "cảm thấy hoặc thể hiện sự giận dữ và ngạc nhiên bởi vì bạn nghĩ rằng bạn đã bị đối xử một cách không công bằng: căm phẫn, phẫn nộ",
+      "key_distinction": "Tức giận, phẫn nộ vì cảm thấy bản thân hoặc ai đó bị đối xử bất công.",
+      "examples": [
+        "They were indignant that they hadn't been invited."
+      ]
+    },
+    "querulous": {
+      "meaning": "thường xuyên phàn nàn; thể hiện rằng bạn đang bực bội: hay càu nhàu, hay than phiền, dễ cáu kính",
+      "key_distinction": "Tính cách hoặc giọng điệu hay than phiền, ghen tị, càu nhàu.",
+      "examples": [
+        "A querulous male voice said, \"Look, are you going to order, or what?\""
+      ]
+    },
+    "peevish": {
+      "meaning": "dễ giận dữ, thường bởi những thứ không quan trọng ~ irritable /ˈɪrɪtəbl/ (adj)",
+      "key_distinction": "Hay cáu gắt, gắt gỏng vì những chuyện vặt vãnh, nhỏ nhặt.",
+      "examples": [
+        "He was a sickly, peevish child."
+      ]
+    },
+    "bad-tempered": {
+      "meaning": "thường giận dữ; đang trong tâm trạng giận dữ",
+      "key_distinction": "Nóng tính, Dễ nổi giận hoặc đang ở trong tâm trạng cộc lốc, bực bội.",
+      "examples": [
+        "Her husband was a bad-tempered man.",
+        "He sat in bad-tempered silence."
+      ]
+    }
+  }
+}

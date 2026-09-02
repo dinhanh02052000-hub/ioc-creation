@@ -1,0 +1,74 @@
+{
+  "group_title": "MÙI",
+  "target_words": {
+    "scent": {
+      "meaning": "[U, C] mùi tự nhiên và dễ chịu mà thứ gì có: mùi hương, mùi thơm, hương thơm / [U, C, usually singular] mùi mà ai đó hoặc một con vật nào đó để lại và nhờ vào mùi đó mà các loại động vật khác (ví dụ: chó) có thể lằn theo / [U] (British English) nước hoa / [singular] scent of something cảm giác điều gì đó đang hiện hữu hoặc sắp sửa xảy ra",
+      "key_distinction": "~ perfume (1), fragrance (2) / ~ trail /treɪl/ (n)",
+      "examples": [
+        "the scent of roses",
+        "the scent of freshly cut hay",
+        "From the vine outside came the scent of honey.",
+        "The hounds were now on the scent of (= following the smell of) the fox.",
+        "a bottle of scent",
+        "She dabbed some scent on her neck.",
+        "The scent of victory was in the air."
+      ]
+    },
+    "perfume": {
+      "meaning": "nước hoa / một mùi dễ chịu, thường là mùi ngọt",
+      "key_distinction": "~ fragrance (2), scent (3) / ~ scent (1)",
+      "examples": [
+        "a bottle of expensive perfume",
+        "He caught a faint whiff of her expensive perfume.",
+        "The perfume of the roses filled the room."
+      ]
+    },
+    "fragrance": {
+      "meaning": "[C, U] một mùi dễ chịu, ngọt / nước hoa",
+      "key_distinction": "~ perfume, scent (3)",
+      "examples": [
+        "This perfume has a light, fresh fragrance.",
+        "fruits full of exquisite fragrance and flavour",
+        "The bath oil comes in various fragrances.",
+        "Santal 33 by Le Labo is a woody aromatic fragrance for women and men. The nose behind this fragrance is Frank Voelkl."
+      ]
+    },
+    "smell": {
+      "meaning": "[C, U] đặc tính của thứ gì mà con người/động vật cảm nhận bằng mũi: mùi / [singular] một mùi không dễ chịu / [U] khả năng để cảm nhận mọi thứ bằng mũi: khứu giác",
+      "key_distinction": "Từ trung tính, chung nhất để chỉ mùi (dễ chịu hay khó chịu đều dùng được), khác các từ còn lại vốn thiên về 1 sắc thái.",
+      "examples": [
+        "a strong/faint smell of garlic",
+        "an acrid smell of smoke",
+        "The smells from the kitchen filled the room.",
+        "Yuk! What a smell!",
+        "What's that smell?",
+        "Dogs have a very good sense of smell."
+      ]
+    },
+    "aroma": {
+      "meaning": "một mùi dễ chịu mà có thể dễ dàng nhận thấy (đậm và thường từ đồ ăn hoặc đồ uống): mùi thơm",
+      "key_distinction": "Mùi dễ chịu, đậm, thường gắn với đồ ăn/thức uống (VD cà phê, bánh mì).",
+      "examples": [
+        "the aroma of fresh coffee",
+        "the aroma of freshly baked bread",
+        "the mouth-watering aroma of prawns cooked in garlic"
+      ]
+    },
+    "odour": {
+      "meaning": "[C, U] [formal] một mùi đặc trưng, đặc biệt là mùi không dễ chịu",
+      "key_distinction": "*body odour (n) một mùi không dễ chịu từ cơ thể của một ai đó, đặc biệt là mùi mồ hôi",
+      "examples": [
+        "the stale odour of cigarette smoke",
+        "a musty odour",
+        "Nobody told him he had body odour problem."
+      ]
+    },
+    "stink": {
+      "meaning": "[C, usually singular] (informal) một mùi rất mạnh và cực kì khó chịu",
+      "key_distinction": "~ reek /riːk/ (n)",
+      "examples": [
+        "What a stink! Open the window!"
+      ]
+    }
+  }
+}

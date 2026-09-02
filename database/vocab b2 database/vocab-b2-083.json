@@ -1,0 +1,23 @@
+{
+  "group_title": "Tính cách",
+  "target_words": {
+    "character": {
+      "meaning": "tất cả những phẩm chất và đặc điểm khiến một người khác biệt với những người khác, những đặc điểm tạo nên tính cách của một ai đó (thường là tính cách \"bên trong\" cần thời gian dài để tìm hiểu được)",
+      "key_distinction": "Tính cách bên trong, bản chất cốt lõi, đạo đức hoặc phẩm chất cá nhân cần thời gian tiếp xúc lâu mới nhận biết được.",
+      "examples": [
+        "The book gives a fascinating insight into Mrs Obama's character.",
+        "His scruffy appearance does not reflect his character.",
+        "in/out of character (typical/not typical of someone's usual behaviour)"
+      ]
+    },
+    "personality": {
+      "meaning": "tính cách, phần của một người khiến họ cư xử theo một cách nào đó trong các tình huống xã hội, chẳng hạn theo cách thân thiện hoặc không thân thiện, hoặc theo cách tự tin hoặc nhút nhát. (thường là tính cách \"bên ngoài\" có thể dễ dàng nhìn được, đoán được, khi tiếp xúc với một người và nhận biết được)",
+      "key_distinction": "Tính cách thể hiện ra bên ngoài qua cách giao tiếp, thái độ xã hội, dễ quan sát ngay khi tiếp xúc.",
+      "examples": [
+        "My outgoing personality has definitely helped me succeed.",
+        "The characters' names reflect their personalities.",
+        "personality traits (=features of personality)"
+      ]
+    }
+  }
+}

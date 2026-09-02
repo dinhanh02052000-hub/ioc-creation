@@ -1,0 +1,42 @@
+{
+  "group_title": "TRUYỀN, CHUYỂN",
+  "target_words": {
+    "transfer": {
+      "meaning": "chuyển, dời, truyền",
+      "key_distinction": "[nội động từ, ngoại động từ] chuyển từ một nơi này đến nơi khác; chuyển ai đó/cái gì đó từ một nơi này đến nơi khác: dời, chuyển, dọn OR truyền một cảm giác/bệnh/quyền lực... từ người này sang người khác (thường là người thứ hai có thứ đó thay vì người thứ nhất) ~ transmit",
+      "examples": [
+        "We were transferred from one bus into another.",
+        "I decided to transfer my loyalty to my local team."
+      ]
+    },
+    "transmit": {
+      "meaning": "truyền, phát, lây truyền",
+      "key_distinction": "gửi một tín hiệu điện tử/phát sóng đài/phát sóng tivi,...: truyền, phát OR truyền một thứ gì đó từ người này sang người khác ~ transfer",
+      "examples": [
+        "signals transmitted from a satellite",
+        "Some diseases are transmitted/transferred from one generation to the next."
+      ]
+    },
+    "transit": {
+      "meaning": "đi qua, quá cảnh",
+      "key_distinction": "đi qua một vùng/nơi nào đó",
+      "examples": [
+        "29 000 vessels transit in and out of the harbour every year."
+      ]
+    },
+    "transform": {
+      "meaning": "thay đổi hoàn toàn, biến đổi",
+      "key_distinction": "[nội động từ, ngoại động từ] thay đổi hoàn toàn về bề ngoài hoặc tính cách/đặc tính của thứ gì đó/ai đó (đặc biệt là sau đó trở nên tốt hơn): thay đổi, biến đổi",
+      "examples": [
+        "Whenever a camera was pointed at her, Marilyn would instantly transform herself into a radiant star."
+      ]
+    },
+    "convert": {
+      "meaning": "đổi, biến đổi",
+      "key_distinction": "[nội động từ, ngoại động từ] đổi hoặc khiến thứ gì đó chuyển từ dạng/mục đích/hệ thống... này sang dạng/mục đích/hệ thống... khác: đổi, biến đổi",
+      "examples": [
+        "The pub is a converted warehouse."
+      ]
+    }
+  }
+}

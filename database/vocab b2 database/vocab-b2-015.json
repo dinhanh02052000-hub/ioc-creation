@@ -1,0 +1,46 @@
+{
+  "group_title": "Cách thức",
+  "target_words": {
+    "way": {
+      "meaning": "Cách/phương pháp/phương kế/biện pháp/phong cách/kiểu để làm việc gì đó; hoặc cách/kiểu mà ai đó hành xử/suy nghĩ hay việc gì xảy ra (dạng số nhiều 'ways' chỉ lối sống/hành xử đặc trưng).",
+      "key_distinction": "Mang nghĩa chung chung và suồng sã hơn 'method'. Có thể là một kỹ thuật đơn lẻ hoặc hợp thành bởi nhiều kỹ thuật.",
+      "examples": [
+        "I love him and I think he feels the same way.",
+        "There are many ways of solving the problem.",
+        "He was showing off, as is the way with adolescent boys.",
+        "After ten years I'm used to the strange British ways."
+      ]
+    },
+    "method": {
+      "meaning": "Một cách cụ thể để làm việc gì đó: phương pháp, cách thức.",
+      "key_distinction": "Mang ý nghĩa gồm một nhóm các kỹ thuật (được thực hiện theo từng bước) và nhấn mạnh vào mục đích đạt được sự hiệu quả, độ chính xác.",
+      "examples": [
+        "The pill is the most efficient method of birth control.",
+        "A reliable method of measuring blood pressure."
+      ]
+    },
+    "approach": {
+      "meaning": "Cách để giải quyết việc gì hoặc tiếp cận/tiếp xúp/hành xử với ai đó (được suy nghĩ và lên kế hoạch cẩn thận); cách để thực hiện hoặc suy nghĩ về một việc gì: phương pháp, cách tiếp cận.",
+      "key_distinction": "Nhấn mạnh vào tư duy, thái độ và kế hoạch tổng thể khi bắt đầu tiếp cận một vấn đề hoặc nhiệm vụ.",
+      "examples": [
+        "The school has decided to adopt a different approach to discipline.",
+        "He is always very logical in his approach."
+      ]
+    },
+    "technique": {
+      "meaning": "Cách cụ thể để làm việc gì, đặc biệt là cách mà bạn phải học các kỹ năng đặc biệt thì mới thực hiện được: kỹ thuật.",
+      "key_distinction": "Đòi hỏi kỹ năng chuyên môn, sự huấn luyện hoặc luyện tập kỹ càng để thực hành.",
+      "examples": [
+        "Doctors are developing a painless technique to give shots."
+      ]
+    },
+    "means": {
+      "meaning": "Một hành động/một vật/một hệ thống được sử dụng để đạt được một kết quả nào đó; một cách để đạt được hoặc làm việc gì: phương tiện, biện pháp.",
+      "key_distinction": "Thường dùng dưới dạng cấu trúc 'means of...' để chỉ công cụ, cách thức hoặc phương tiện giúp đạt mục đích.",
+      "examples": [
+        "We needed to get to London, but we had no means of transport.",
+        "Fishing is their only means of livelihood."
+      ]
+    }
+  }
+}

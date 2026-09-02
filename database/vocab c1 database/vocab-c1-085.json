@@ -1,0 +1,49 @@
+{
+  "group_title": "PHỤC HỒI, KHÔI PHỤC",
+  "target_words": {
+    "renew": {
+      "meaning": "bắt đầu thực hiện lại việc gì sau khi nó dừng lại hoặc bị gián đoạn: làm lại, phục hồi lại",
+      "key_distinction": "~ resume /rɪˈzjuːm/ (v)",
+      "examples": [
+        "She renewed her efforts to contact her sister."
+      ]
+    },
+    "revive": {
+      "meaning": "[nội động từ, ngoại động từ] trở nên hoặc làm cho ai/cái gì trở nên tỉnh lại/khỏe mạnh/mạnh mẽ/được sử dụng trở lại: sống lại, tỉnh lại, hồi sinh",
+      "key_distinction": "Làm cho tỉnh lại/khoẻ lại/hoạt động trở lại (người, hy vọng, phong tục), nhấn mạnh 'sống lại' sau khi suy yếu.",
+      "examples": [
+        "to revive someone's hopes/confidence/fortunes",
+        "She tried to revive the unconscious woman.",
+        "They are trying to revive some of the old customs."
+      ]
+    },
+    "revitalize": {
+      "meaning": "làm cho cái gì đó mạnh mẽ hơn/tích cực hơn/khỏe mạnh hơn/thành công hơn: đem lại sức sống mới; tái sinh",
+      "key_distinction": "Tiếp thêm sức sống mới để trở nên mạnh mẽ/thành công hơn, thường dùng cho khu vực/nền kinh tế.",
+      "examples": [
+        "measures to revitalize the inner cities",
+        "a revitalizing massage"
+      ]
+    },
+    "restore": {
+      "meaning": "lập lại một hoàn cảnh hoặc một cảm giác đã từng tồn tại trước đây / restore somebody/something to something đưa ai/cái gì trở lại tình trạng/vị trí trước đây: phục hồi; phục chức; hồi phục / mang luật/truyền thống/cách làm việc/... trở lại thực hiện: phục hồi, khôi phục lại",
+      "key_distinction": "~ reintroduce /ˌriːɪntrəˈdjuːs/ (v)",
+      "examples": [
+        "Peace has now been restored to the area.",
+        "He is now fully restored to health.",
+        "The army restored him to the throne.",
+        "This cream claims to restore your skin to its youthful condition.",
+        "to restore ancient traditions",
+        "Some people argue that the death penalty should be restored."
+      ]
+    },
+    "resurrect": {
+      "meaning": "mang một niềm tin/tập tục/phong tục/thói quen ... đã từng biến mất hoặc bị quên lãng thực hiện trở lại: làm sống lại, phục hồi lại / làm người chết sống lại",
+      "key_distinction": "~ revive / ~ raise somebody (from something)",
+      "examples": [
+        "He has succeeded in resurrecting his career in television.",
+        "It is believed that Jesus was resurrected from the dead."
+      ]
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "group_title": "Tìm kiếm",
+  "target_words": {
+    "find": {
+      "meaning": "[ngoại động từ] khám phá, tìm thấy đặc biệt là vị trí của một vật hoặc một người, tình cờ hoặc bằng cách tìm kiếm, hoặc khám phá nơi lấy hoặc cách đạt được điều gì đó",
+      "key_distinction": "Tập trung vào kết quả của việc tìm kiếm — đã phát hiện, phát giác hoặc tìm thấy thứ gì đó.",
+      "examples": [
+        "A man out walking his dog found the body in a ditch.",
+        "I thought I'd lost my wallet but I found it under my desk.",
+        "I managed to find a solution to the problem."
+      ]
+    },
+    "look for": {
+      "meaning": "- cố gắng tìm ai, cái gì (thường nhấn mạnh vẫn đang ở trong quá trình tìm kiếm)\n- mong đợi, hy vọng nhận được thứ gì đó bạn muốn hoặc cần",
+      "key_distinction": "Nhấn mạnh vào quá trình đang chủ động hành động để tìm kiếm ai đó hoặc cái gì đó.",
+      "examples": [
+        "Where have you been? We've been looking for you.",
+        "We are looking for a partner in a new business venture."
+      ]
+    },
+    "search": {
+      "meaning": "- [ngoại động từ] + [nội động từ] tìm kiếm một cái gì đó một cách cẩn thận, kỹ lưỡng\n- [ngoại động từ] + [nội động từ] tìm kiếm thông tin trên máy tính, mạng internet",
+      "key_distinction": "Tìm kiếm kỹ lưỡng, lùng xới (khắp một không gian, địa điểm) hoặc tra cứu dữ liệu/thông tin trên internet.",
+      "examples": [
+        "She searched in vain for her passport.",
+        "Firefighters searched the buildings for survivors.",
+        "I searched online today for more information on sonic booms."
+      ]
+    },
+    "seek": {
+      "meaning": "- [ngoại động từ] + [nội động từ] cố gắng tìm hoặc lấy thứ gì đó (đặc biệt là thứ không phải là vật thể chạm vào được)\n- [ngoại động từ] cố gắng để đạt được điều gì đó (thường là yêu cầu, đòi hỏi ai đó)",
+      "key_distinction": "Tìm kiếm các giá trị trừu tượng, phi vật thể (như lời khuyên, sự trợ giúp, cơ hội) hoặc theo đuổi một mục tiêu.",
+      "examples": [
+        "\"Are you actively seeking Jobs?\" she asked.",
+        "They sought in vain for somewhere to shelter.",
+        "seek advice/help/permission."
+      ]
+    }
+  }
+}

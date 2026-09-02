@@ -1,0 +1,48 @@
+{
+  "group_title": "SẮP NHẬP, HỢP NHẤT",
+  "target_words": {
+    "unite": {
+      "meaning": "[nội động từ] kết hợp/liên hợp với những người khác để cùng làm một việc gì như là một nhóm: cùng nhau hành động/làm việc / [nội động từ, ngoại động từ] khiến cho con người/vật hợp nhất lại thành một thể thống nhất; hợp nhất, hợp lại (nhấn mạnh vào sự trọn vẹn của quá trình và sự duy nhất của kết quả)",
+      "key_distinction": "[nội động từ] kết hợp/liên hợp với những người khác để cùng làm một việc gì như là một nhóm: cùng nhau hành động/làm việc | [nội động từ, ngoại động từ] khiến cho con người/vật hợp nhất lại thành một thể thống nhất; hợp nhất, hợp lại (nhấn mạnh vào sự trọn vẹn của quá trình và sự duy nhất của kết quả)",
+      "examples": [
+        "We will unite in fighting crime.",
+        "The two countries have united against their common enemy.",
+        "The vast majority of nations have agreed to unite their efforts to bring peace.",
+        "His aim was to unite Italy.",
+        "The two countries united in 1887."
+      ]
+    },
+    "merge": {
+      "meaning": "[nội động từ, ngoại động từ] kết hợp hoặc khiến 2 hoặc nhiều hơn hai thứ kết hợp lại với nhau thành một thứ; sáp nhập (con người/vật phần nào bị mất đi bản sắc riêng biệt của chúng khi hợp nhất lại; một số nhân tố/thành phần của con người/vật được hợp nhất lại sẽ bị mất đi) / merge (into something) [nội động từ] nếu 2 thứ merge hoặc một thứ này merge into một thứ khác thì sự khác biệt giữa chúng sẽ dần dần biến mất, vì vậy không thể nào mà tách biệt được chúng nữa: hoà vào, kết hợp",
+      "key_distinction": "[nội động từ, ngoại động từ] kết hợp hoặc khiến 2 hoặc nhiều hơn hai thứ kết hợp lại với nhau thành một thứ; sáp nhập (con người/vật phần nào bị mất đi bản sắc riêng biệt của chúng khi hợp nhất lại; một số nhân tố/thành phần của con người/vật được hợp nhất lại sẽ bị mất đi) | merge (into something) [nội động từ] nếu 2 thứ merge hoặc một thứ này merge into một thứ khác thì sự khác biệt giữa chúng sẽ dần dần biến mất, vì vậy không thể nào mà tách biệt được chúng nữa: hoà vào, kết hợp",
+      "examples": [
+        "His department will merge with mine.",
+        "The two countries merged into one.",
+        "Night and day began to merge.",
+        "She avoided reporters at the airport by merging into the crowd."
+      ]
+    },
+    "combine": {
+      "meaning": "[nội động từ, ngoại động từ] kết hợp lại với nhau để trở thành một thể/nhóm thống nhất; kết hợp hai hoặc nhiều hơn hai thứ/nhóm lại với nhau để làm thành một thứ/nhóm duy nhất",
+      "key_distinction": "[nội động từ, ngoại động từ] kết hợp lại với nhau để trở thành một thể/nhóm thống nhất; kết hợp hai hoặc nhiều hơn hai thứ/nhóm lại với nhau để làm thành một thứ/nhóm duy nhất",
+      "examples": [
+        "Hydrogen and oxygen combine to form water.",
+        "Combine the eggs and the flour in a bowl."
+      ]
+    },
+    "incorporate": {
+      "meaning": "thêm điều gì để điều đó trở thành một phần của một thứ lớn hơn đã có sẵn: kết hợp",
+      "key_distinction": "thêm điều gì để điều đó trở thành một phần của một thứ lớn hơn đã có sẵn: kết hợp",
+      "examples": [
+        "Suggestions from the survey have been incorporated into/in the final design."
+      ]
+    },
+    "integrate": {
+      "meaning": "[nội động từ, ngoại động từ] kết hợp hai hoặc nhiều hơn hai thứ để chúng cùng hoạt động với nhau (có thể là để sao cho có hiệu quả hơn)",
+      "key_distinction": "[nội động từ, ngoại động từ] kết hợp hai hoặc nhiều hơn hai thứ để chúng cùng hoạt động với nhau (có thể là để sao cho có hiệu quả hơn)",
+      "examples": [
+        "Colourful illustrations are integrated into the text to make it easily comprehensible to the average reader."
+      ]
+    }
+  }
+}

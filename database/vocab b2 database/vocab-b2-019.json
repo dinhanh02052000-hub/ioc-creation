@@ -1,0 +1,29 @@
+{
+  "group_title": "Ghép, cấy, chèn",
+  "target_words": {
+    "transplant": {
+      "meaning": "[Ngoại động từ] Cấy ghép một bộ phận từ cơ thể người này sang người khác.",
+      "key_distinction": "Liên quan đến việc ghép tạng, tế bào hoặc mô sống từ cơ thể này sang cơ thể khác.",
+      "examples": [
+        "Patients often reject transplanted organs.",
+        "Transplant something (from somebody/something) (into somebody/something)"
+      ]
+    },
+    "implant": {
+      "meaning": "[Ngoại động từ] Ghép một thứ gì đó (thường là thứ gì đó nhân tạo) vào một bộ phận của cơ thể, thường là trong một cuộc phẫu thuật y tế.",
+      "key_distinction": "Cấy ghép thiết bị, vật thể nhân tạo vào cơ thể con người/động vật.",
+      "examples": [
+        "An electrode implanted into the brain",
+        "An operation to implant an artificial heart"
+      ]
+    },
+    "insert": {
+      "meaning": "[Ngoại động từ] Chèn cái gì vào bên trong cái gì, hoặc chèn cái gì vào giữa hai cái gì đó.",
+      "key_distinction": "Đút, chèn, nhét một vật vào khe, ổ khóa hoặc khoảng trống giữa các vật khác.",
+      "examples": [
+        "Insert the key in/into the lock.",
+        "She picked up a knife and inserted it between the top of the drawer and the desk."
+      ]
+    }
+  }
+}

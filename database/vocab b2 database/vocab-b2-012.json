@@ -1,0 +1,39 @@
+{
+  "group_title": "Bỏ qua, phớt lờ",
+  "target_words": {
+    "neglect": {
+      "meaning": "Bỏ bê, không dành đủ sự quan tâm hoặc chăm sóc cho những người hoặc những việc thuộc trách nhiệm của bạn.",
+      "key_distinction": "Ngoại động từ. Nhấn mạnh vào việc xao nhãng, thiếu trách nhiệm hoặc bỏ mặc bổn phận.",
+      "examples": [
+        "She denies neglecting her baby.",
+        "To neglect your appearance/the house"
+      ]
+    },
+    "ignore": {
+      "meaning": "Lờ đi, phớt lờ, cố tình không lắng nghe hoặc không chú ý đến.",
+      "key_distinction": "Ngoại động từ. Chủ động và cố ý phớt lờ thông tin, lời khuyên, cảnh báo hoặc sự vật/sự việc.",
+      "examples": [
+        "He ignored all the 'No Smoking' signs and lit up a cigarette.",
+        "We cannot afford to ignore their advice.",
+        "To ignore a warning/a problem/an issue"
+      ]
+    },
+    "overlook": {
+      "meaning": "Bỏ qua, không chú ý tới, không nhận thấy hoặc xem xét đến ai, cái gì (không cố tình); hoặc phớt lờ đi cái gì đó dù biết nó sai trái, xấu xa (giả vờ như không chú ý đến).",
+      "key_distinction": "Ngoại động từ. Mang nghĩa vô tình bỏ sót/sơ suất không thấy, hoặc cố ý tha thứ/bỏ qua cho lỗi sai.",
+      "examples": [
+        "He seems to have overlooked one important fact.",
+        "I was prepared to overlook her mistakes this time."
+      ]
+    },
+    "omit": {
+      "meaning": "Bỏ qua, không bao gồm ai, cái gì hoặc không làm điều gì đó (vì bạn cố tình hoặc có thể bạn quên).",
+      "key_distinction": "Ngoại động từ. Chỉ việc loại trừ, bỏ sót khỏi một danh sách, tập hợp hoặc không thực hiện một hành động.",
+      "examples": [
+        "If you are a student, you can omit questions 16-18.",
+        "People were surprised that Smith was omitted from the team.",
+        "She omitted to mention that they were staying the night."
+      ]
+    }
+  }
+}

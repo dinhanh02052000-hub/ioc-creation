@@ -1,0 +1,44 @@
+{
+  "group_title": "ĐẶC BIỆT",
+  "target_words": {
+    "special": {
+      "meaning": "[thường chỉ đứng trước danh từ] không thông thường hoặc không bình thường; khác xa so với những gì bình thường ~ exceptional /ɪkˈsepʃənl/ (adj)\nquan trọng hơn những thứ khác/người khác; xứng đáng hoặc nhận được nhiều sự chú ý hơn bình thường\n[chỉ đứng trước danh từ] tốt hơn hoặc nhiều hơn bình thường ~ especial /ɪˈspeʃl/ (adj)",
+      "key_distinction": "Đặc biệt, khác biệt với mức thông thường hoặc mang ý nghĩa quan trọng riêng.",
+      "examples": [
+        "Are you doing anything special for Christmas?",
+        "She's a very special friend.",
+        "As an only child, she got special attention."
+      ]
+    },
+    "outstanding": {
+      "meaning": "cực kỳ tốt; xuất sắc: nổi bật, đáng chú ý ~ exceptional",
+      "key_distinction": "Nổi bật, xuất sắc vượt trội hơn hẳn so với tiêu chuẩn thông thường.",
+      "examples": [
+        "an outstanding achievement"
+      ]
+    },
+    "extraordinary": {
+      "meaning": "không như bình thường hoặc thông thường; tuyệt vời hoặc tốt đẹp hơn bình thường: lạ thường, khác thường, phi thường\n[chỉ đứng trước danh từ] (về một cuộc họp/thảo luận/...) được sắp xếp/tổ chức (bên cạnh các thời điểm thường xuyên) cho một mục đích đặc biệt: đặc biệt, bất thường",
+      "key_distinction": "Phi thường, lạ thường vượt xa mức bình thường hoặc bất thường (dùng cho cuộc họp/sự kiện đột xuất).",
+      "examples": [
+        "an extraordinary achievement",
+        "an extraordinary talent",
+        "The ruling Socialist Party held an extraordinary congress in July, two months before the annual congress."
+      ]
+    },
+    "deluxe": {
+      "meaning": "[thường chỉ đứng trước danh từ] (hàng hoá/dịch vụ/...) có chất lượng cao hơn hoặc đắt hơn thông thường",
+      "key_distinction": "Sang trọng, cao cấp (dùng cho hàng hóa, dịch vụ, phòng ở).",
+      "examples": [
+        "a deluxe hotel"
+      ]
+    },
+    "notable": {
+      "meaning": "đáng được lưu ý tới/nhắc tới hoặc nhận được sự chú ý; quan trọng",
+      "key_distinction": "Đáng chú ý, có đặc điểm nổi bật gây chú ý.",
+      "examples": [
+        "A notable feature of the church is its unusual bell tower."
+      ]
+    }
+  }
+}

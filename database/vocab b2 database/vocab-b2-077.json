@@ -1,0 +1,39 @@
+{
+  "group_title": "Sửa chữa",
+  "target_words": {
+    "repair": {
+      "meaning": "- [ngoại động từ] sửa cái gì đó bị hư hỏng, hư hại..., (cơ sở hạ tầng, vật chất, chấn thương...)\n- [ngoại động từ] sửa chữa, uốn nắn (lỗi, sai lầm...), hàn gắn, cải thiện tình huống xấu....",
+      "key_distinction": "Sửa chữa công trình, thiết bị phức tạp, chấn thương thể chất hoặc hàn gắn mối quan hệ mang tính trang trọng.",
+      "examples": [
+        "repair a road/wall/building/bridge",
+        "to repair an injury/a hernia/a tear/a defect",
+        "It was too late to repair the damage done to their relationship.",
+        "repair relations/a relationship"
+      ]
+    },
+    "fix": {
+      "meaning": "[ngoại động từ] sửa chữa, sửa sai cái gì đó (các vật dụng, đồ dùng, vấn đề...., thường dùng trong văn nói hằng ngày hơn, ít trang trọng hơn repair)",
+      "key_distinction": "Dùng phổ biến trong giao tiếp hàng ngày để chỉ việc sửa đồ dùng gia đình hoặc khắc phục vấn đề/lỗi.",
+      "examples": [
+        "We need to get the TV fixed.",
+        "I've fixed the problem."
+      ]
+    },
+    "mend": {
+      "meaning": "- [ngoại động từ] sửa chữa cái gì đó đã bị hư hỏng, hỏng hóc để có thể sử dụng lại\n- [ngoại động từ] vá quần, áo, giày..., bị rách\n- [ngoại động từ] bào chữa, tìm ra giải pháp cho sự bất đồng, tranh cãi...",
+      "key_distinction": "Sửa chữa đồ vật nhỏ, may vá quần áo/giày dép bị rách, hoặc hàn gắn bất đồng/quan hệ ngoại giao.",
+      "examples": [
+        "Could you mend my bike for me?",
+        "He mended shoes for a living",
+        "The country's president is seeking to mend relations with the United States."
+      ]
+    },
+    "amend": {
+      "meaning": "[ngoại động từ] sửa đổi, thay đổi (văn kiện pháp lý), bổ sung (chỗ thiếu sót, sai lầm trong một văn kiện...)",
+      "key_distinction": "Sửa đổi, bổ sung văn bản chính thức, luật lệ hoặc tài liệu pháp lý.",
+      "examples": [
+        "MPs were urged to amend the law to prevent another oil tanker disaster."
+      ]
+    }
+  }
+}

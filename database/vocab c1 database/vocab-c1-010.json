@@ -1,0 +1,54 @@
+{
+  "group_title": "CẢI CÁCH, CẢI TẠO",
+  "target_words": {
+    "reform": {
+      "meaning": "[ngoại động từ] cải thiện một hệ thống/một tổ chức/luật pháp/... bằng cách tạo ra những thay đổi (thường là mạnh mẽ và quyết liệt) cho nó; cải cách",
+      "key_distinction": "Thay đổi lớn, mang tính hệ thống, tổ chức hoặc luật pháp.",
+      "examples": [
+        "There are proposals to reform the welfare system."
+      ]
+    },
+    "improve": {
+      "meaning": "trở nên tốt hơn trước; làm cho ai/cái gì tốt hơn trước: cải thiện, cải tạo, cải tiến",
+      "key_distinction": "Nâng cao chất lượng chung, áp dụng rộng rãi cho mọi trường hợp.",
+      "examples": [
+        "Working conditions have greatly improved."
+      ]
+    },
+    "refine": {
+      "meaning": "refine something cải thiện điều gì (một ý tưởng/phương pháp/hệ thống/kế hoạch ...) bằng cách dần dần tạo ra những thay đổi nhỏ cho nó: cải tiến; trau chuốt; làm cho tinh tế hơn ...",
+      "key_distinction": "Cải tiến từng chi tiết nhỏ để làm cho tinh tế, hoàn thiện hơn.",
+      "examples": [
+        "She has refined her playing technique over the years."
+      ]
+    },
+    "rehabilitate": {
+      "meaning": "rehabilitate something làm cho một toà nhà hoặc một khu vực trở lại trạng thái tốt như nó trước đây (khôi phục lại)",
+      "key_distinction": "Cải tạo, khôi phục lại công trình, nhà cửa hoặc khu vực về trạng thái tốt như ban đầu.",
+      "examples": [
+        "Billions of pounds are being spent on rehabilitating inner-city areas."
+      ]
+    },
+    "ameliorate": {
+      "meaning": "ameliorate something làm cho một điều gì đó đã từng xấu hoặc không đủ tốt trở nên tốt hơn hoặc ít có hại hơn: làm tốt hơn, cải thiện",
+      "key_distinction": "Làm dịu bớt, giảm bớt tác động tiêu cực của một tình trạng xấu.",
+      "examples": [
+        "The side-effects of the treatment can be ameliorated to some extent."
+      ]
+    },
+    "revamp": {
+      "meaning": "revamp something tạo ra những thay đổi về hình thái/dạng của một điều gì/thứ gì để cải thiện về bề ngoài của nó và làm cho nó có vẻ hiện đại và hiệu quả hơn",
+      "key_distinction": "Sửa đổi, tân trang diện mạo bên ngoài để trông hiện đại và thu hút hơn.",
+      "examples": [
+        "The company is attempting to revamp its image."
+      ]
+    },
+    "reclaim": {
+      "meaning": "reclaim something (from something) làm cho đất quá ướt hoặc quá khô trở nên phù hợp để có thể xây dựng trên đó hoặc để cho nông nghiệp: cải tạo đất",
+      "key_distinction": "Cải tạo đất đai đầm lầy, hoang hóa để đưa vào sử dụng.",
+      "examples": [
+        "This land will be reclaimed for a new airport."
+      ]
+    }
+  }
+}

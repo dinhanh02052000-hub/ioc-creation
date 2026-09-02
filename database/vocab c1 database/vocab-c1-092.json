@@ -1,0 +1,34 @@
+{
+  "group_title": "SƯƠNG MÙ",
+  "target_words": {
+    "smog": {
+      "meaning": "một dạng ô nhiễm không khí giống như hỗn hợp khói và sương mù, đặc biệt là ở các thành phố",
+      "key_distinction": "một dạng ô nhiễm không khí giống như hỗn hợp khói và sương mù, đặc biệt là ở các thành phố",
+      "examples": [
+        "The government is trying to reduce smog caused by traffic fumes."
+      ]
+    },
+    "fog": {
+      "meaning": "sương mù dày đặc gây khó khăn cho việc quan sát",
+      "key_distinction": "sương mù dày đặc gây khó khăn cho việc quan sát",
+      "examples": [
+        "Thick fog is affecting roads in the north and visibility is poor."
+      ]
+    },
+    "mist": {
+      "meaning": "sương mù nhưng độ dày đặc của nó thấp hơn \"fog\". Tầm nhìn của dưới \"mist\" sẽ trong và rõ hơn \"fog\".",
+      "key_distinction": "sương mù nhưng độ dày đặc của nó thấp hơn \"fog\". Tầm nhìn của dưới \"mist\" sẽ trong và rõ hơn \"fog\".",
+      "examples": [
+        "Gradually the mist cleared and the sun began to shine."
+      ]
+    },
+    "haze": {
+      "meaning": "không khí khó nhìn qua vì nó chứa những giọt nước rất nhỏ, đặc biệt là do thời tiết nóng, hoặc không khí chứa thứ gì đó (bụi, khói,...) khiến người ta khó nhìn",
+      "key_distinction": "không khí khó nhìn qua vì nó chứa những giọt nước rất nhỏ, đặc biệt là do thời tiết nóng, hoặc không khí chứa thứ gì đó (bụi, khói,...) khiến người ta khó nhìn",
+      "examples": [
+        "There was an early-morning haze across the valley.",
+        "Meetings are always conducted in a haze of cigarette smoke."
+      ]
+    }
+  }
+}

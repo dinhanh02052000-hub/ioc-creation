@@ -1,0 +1,43 @@
+{
+  "group_title": "THA THỨ",
+  "target_words": {
+    "forgive": {
+      "meaning": "[nội động từ, ngoại động từ] ngừng cảm thấy giận dữ với ai (người mà đã làm việc gì để hại, làm khó chịu, hoặc làm bạn giận); ngừng cảm thấy giận dữ với chính bản thân bạn: tha thứ",
+      "key_distinction": "[nội động từ, ngoại động từ] ngừng cảm thấy giận dữ với ai (người mà đã làm việc gì để hại, làm khó chịu, hoặc làm bạn giận); ngừng cảm thấy giận dữ với chính bản thân bạn: tha thứ",
+      "examples": [
+        "He's my only brother, and I tend to forgive him anything."
+      ]
+    },
+    "excuse": {
+      "meaning": "thứ lỗi / tha thứ cho ai về một điều mà họ đã làm / đưa ra lý do để bào chữa cho một hành vi nào đó",
+      "key_distinction": "[ngoại động từ] được dùng khi muốn nói xin lỗi một cách lịch sự nếu điều bạn đang làm hoặc nói có thể mất lịch sự hoặc ngắt lời: thứ lỗi | tha thứ cho ai về một điều mà họ đã làm (không nghiêm trọng) ví dụ như mất lịch sự hoặc mắc một lỗi nhỏ | đưa ra lý do để bào chữa cho một hành vi xấu/xúc phạm/bất cẩn/... nào đó = justify /'dʒʌstɪfaɪ/ (v)",
+      "examples": [
+        "Forgive me for interrupting, but I really don't agree with that.",
+        "Please excuse my bad handwriting.",
+        "Nothing can excuse that kind of rudeness."
+      ]
+    },
+    "pardon": {
+      "meaning": "tha bổng / thứ lỗi cho ai về điều họ đã nói hoặc làm",
+      "key_distinction": "pardon somebody chính thức cho phép một phạm nhân rời khỏi nhà tù và/hoặc không bị trừng phạt: tha bổng | (được dùng khi bạn muốn thể hiện sự lịch sự) thứ lỗi cho ai về điều họ đã nói hoặc làm = excuse = forgive",
+      "examples": [
+        "The two spies were pardoned yesterday by the president.",
+        "Pardon my asking, but is that your husband?"
+      ]
+    },
+    "acquit": {
+      "meaning": "tuyên bố trắng án",
+      "key_distinction": "acquit somebody (of something) quyết định và tuyên bố một cách chính thức trên tòa là ai đó vô tội: tuyên bố trắng án",
+      "examples": [
+        "The jury acquitted him of murder."
+      ]
+    },
+    "condone": {
+      "meaning": "chấp nhận/tha thứ một hành vi sai trái về mặt đạo đức hoặc coi như là hành vi đó không nghiêm trọng",
+      "key_distinction": "condone something / condone (somebody) doing something chấp nhận/tha thứ một hành vi sai trái về mặt đạo đức hoặc coi như là hành vi đó không nghiêm trọng",
+      "examples": [
+        "Terrorism can never be condoned."
+      ]
+    }
+  }
+}

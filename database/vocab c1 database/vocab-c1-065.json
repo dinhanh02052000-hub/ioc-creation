@@ -1,0 +1,51 @@
+{
+  "group_title": "Một cách rõ ràng",
+  "target_words": {
+    "evidently": {
+      "meaning": "một cách rõ ràng; có thể được nhìn thấy hoặc hiểu một cách rõ ràng",
+      "key_distinction": "~ obviously",
+      "examples": [
+        "\"I'm afraid I couldn't finish the work last night.\" – \"Evidently not.\"",
+        "Evidently, the local authority is planning to close the school."
+      ]
+    },
+    "obviously": {
+      "meaning": "được sử dụng để đưa ra thông tin mà bạn mong là những người khác đã biết hoặc đồng tình với chúng / được sử dụng để nói rằng một tình huống cụ thể/thực tế dễ dàng nhìn thấy hoặc hiểu",
+      "key_distinction": "~ clearly",
+      "examples": [
+        "Obviously, we don't want to spend too much money.",
+        "Diet and exercise are obviously important.",
+        "He was obviously drunk."
+      ]
+    },
+    "apparently": {
+      "meaning": "theo như những gì bạn đã nghe thấy/đọc/được nói cho biết mặc dù bạn không chắc chắn là điều đó có đúng sự thật hay không; theo như cách mà điều gì đó thể hiện bên ngoài hoặc thể hiện bên ngoài của ai đó mặc dù bạn không chắc chắn",
+      "key_distinction": "~ apparently (theo như những gì mọi người nói)",
+      "examples": [
+        "Apparently, they are getting divorced soon.",
+        "He paused, apparently lost in thought."
+      ]
+    },
+    "unequivocally": {
+      "meaning": "một cách rất là rõ ràng và không có gì để nghi ngờ",
+      "key_distinction": "~ unambiguously (formal)",
+      "examples": [
+        "We are unequivocally in favour of the changes."
+      ]
+    },
+    "unambiguously": {
+      "meaning": "một cách rất rõ ràng về ý nghĩa và chỉ có thể hiểu theo một cách duy nhất",
+      "key_distinction": "ý nghĩa duy nhất, không đa nghĩa",
+      "examples": [
+        "She answered all their questions clearly and unambiguously."
+      ]
+    },
+    "indisputably": {
+      "meaning": "theo một cách mà không thể không đồng tình hoặc chối",
+      "key_distinction": "~ undeniably",
+      "examples": [
+        "This painting is indisputably one of his finest works."
+      ]
+    }
+  }
+}

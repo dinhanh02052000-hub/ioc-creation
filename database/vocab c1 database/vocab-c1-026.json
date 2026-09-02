@@ -1,0 +1,36 @@
+{
+  "group_title": "DOANH THU, LỢI NHUẬN",
+  "target_words": {
+    "earnings": {
+      "meaning": "- số tiền bạn kiếm được cho công việc bạn làm, thu nhập (danh từ số nhiều)\n- lợi nhuận của một công ty trong một thời kỳ cụ thể (danh từ số nhiều)",
+      "key_distinction": "Thu nhập từ công sức lao động của cá nhân hoặc lợi nhuận của doanh nghiệp trong một khoảng thời gian.",
+      "examples": [
+        "Average earnings for skilled workers are rising.",
+        "Sun Microsystems reported earnings that were slightly better than the market had been expecting."
+      ]
+    },
+    "revenue": {
+      "meaning": "số tiền mà chính phủ nhận được thường là từ thuế hoặc tổ chức nhận được từ hoạt động kinh doanh của mình (nhận một cách đều đặn, ổn định) (đếm được hoặc không đếm được)",
+      "key_distinction": "Tổng doanh thu/nguồn thu ổn định, đều đặn của tổ chức hoặc nguồn thu từ thuế của chính phủ (chưa trừ chi phí).",
+      "examples": [
+        "Taxes provide most of the government's revenue.",
+        "Arco has reacted to the loss in revenue by pruning back its expansion plans."
+      ]
+    },
+    "profit": {
+      "meaning": "tiền kiếm được trong thương mại hoặc kinh doanh sau khi thanh toán các chi phí sản xuất và bán hàng hóa và dịch vụ (đếm được hoặc không đếm được)",
+      "key_distinction": "Tiền lời, lợi nhuận ròng thu được sau khi đã trừ đi mọi chi phí kinh doanh/sản xuất.",
+      "examples": [
+        "She makes a big profit from selling waste material to textile companies."
+      ]
+    },
+    "proceeds": {
+      "meaning": "tiền mà một người hoặc tổ chức kiếm được từ việc bán, đấu giá cái gì, giành được thứ gì đó hoặc từ việc tổ chức một sự kiện hoặc hoạt động (danh từ số nhiều)",
+      "key_distinction": "Toàn bộ số tiền thu được từ một sự kiện, buổi đấu giá, hoạt động gây quỹ hoặc bán một món tài sản.",
+      "examples": [
+        "She sold her car and bought a piano with the proceeds.",
+        "The proceeds of the concert will go to charity."
+      ]
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "group_title": "HỖN ĐỘN, LỘN XỘN",
+  "target_words": {
+    "chaos": {
+      "meaning": "một trạng thái/tình huống mà mọi thứ đang xảy ra theo một cách khó hiểu và không có gì được tổ chức/sắp xếp theo trật tự: sự hỗn độn, sự hỗn loạn, sự lộn xộn",
+      "key_distinction": "Tình trạng hoàn toàn mất trật tự, lộn xộn và không có sự sắp xếp.",
+      "examples": [
+        "The house was in chaos after the party."
+      ]
+    },
+    "turbulence": {
+      "meaning": "một tình huống mà có rất nhiều sự thay đổi bất ngờ, rắc rối, tranh cãi và thỉnh thoảng là cả bạo lực: sự hỗn loạn\n~ upheaval",
+      "key_distinction": "Sự biến động, hỗn loạn đầy rắc rối, tranh cãi hoặc xung đột.",
+      "examples": [
+        "A period of political turbulence followed the civil war."
+      ]
+    },
+    "upheaval": {
+      "meaning": "một sự thay đổi lớn gây ra rất nhiều sự lo lắng và các vấn đề\n~ disruption",
+      "key_distinction": "Sự chuyển biến, xáo trộn lớn gây xáo trộn cuộc sống hoặc tình hình chung.",
+      "examples": [
+        "I can't face the upheaval of moving house again."
+      ]
+    },
+    "disruption": {
+      "meaning": "disruption (to somebody/something) một tình huống mà việc gì khó có thể tiếp tục diễn ra như bình thường; hành động ngăn việc gì khỏi diễn ra như cách bình thường: sự phá vỡ",
+      "key_distinction": "Sự gián đoạn, cản trở làm gián đoạn tiến trình hoạt động bình thường.",
+      "examples": [
+        "The strike caused serious disruptions to rail services."
+      ]
+    }
+  }
+}

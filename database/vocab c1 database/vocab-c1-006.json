@@ -1,0 +1,55 @@
+{
+  "group_title": "Bắt chước",
+  "target_words": {
+    "copy": {
+      "meaning": "[Ngoại động từ] copy somebody/something: Cư xử hoặc làm việc gì giống như cách mà ai đó khác làm (~ imitate). Hoặc làm ra cái gì y hệt như bản gốc: sao chép; chép lại/ghi lại thứ gì; sao chép lại thứ gì để lúc khác dùng.",
+      "key_distinction": "Sao chép nguyên bản, chép lại dữ liệu/văn bản hoặc làm theo hành động của người khác.",
+      "examples": [
+        "She copies everything her sister does.",
+        "He taught himself by copying paintings in the Louvre.",
+        "The students copied the sentences from the whiteboard.",
+        "You can copy the data to your new laptop in the usual way."
+      ]
+    },
+    "imitate": {
+      "meaning": "imitate somebody/something: Bắt chước/làm theo ai đó/thứ gì; bắt chước cách ai đó nói hoặc hành xử để khiến người khác cười (~ mimic).",
+      "key_distinction": "Mô phỏng, học theo hành động/tiếng kêu hoặc nhại lại người khác để gây cười.",
+      "examples": [
+        "She can imitate the calls of many different birds.",
+        "vegetarian products which imitate meat",
+        "As I returned to the table, he stood up and imitated me, pretending to smooth a skirt and fix his hair."
+      ]
+    },
+    "mimic": {
+      "meaning": "Bắt chước cách ai đó nói/di chuyển/hành xử/..., đặc biệt là để làm cho người khác cười (~ imitate). Hoặc trông/vận hành giống như một thứ khác (~ imitate).",
+      "key_distinction": "Nhại lại (giọng điệu, dáng đi) đặc biệt để gây cười hoặc mô phỏng sự vận hành, hình dáng của thứ khác.",
+      "examples": [
+        "He could mimic all the teachers' accents.",
+        "The computer model is able to mimic very closely the actions of a golfer."
+      ]
+    },
+    "forge": {
+      "meaning": "[Ngoại động từ] forge something: Làm giả cái gì để lừa người khác (~ counterfeit).",
+      "key_distinction": "Làm giả (giấy tờ, chữ ký, tiền...) với mục đích gian lận, lừa đảo.",
+      "examples": [
+        "to forge a passport/banknote"
+      ]
+    },
+    "emulate": {
+      "meaning": "(Trang trọng) Cố gắng làm việc gì tốt như người nào khác làm bởi vì bạn ngưỡng mộ họ.",
+      "key_distinction": "Nỗ lực học tập, noi theo và làm tốt như người mình ngưỡng mộ.",
+      "examples": [
+        "He hoped to emulate the success of his sister."
+      ]
+    },
+    "replicate": {
+      "meaning": "[Ngoại động từ] (trang trọng) (nghiên cứu khoa học/thí nghiệm/...) Thực hiện lại hoặc làm lại chính xác như cách làm trước đó; tạo ra bản sao y hệt như bản gốc/lặp lại điều gì đó. Hoặc [nội động từ, ngoại động từ] replicate (itself): (vì rút/tế bào/phân tử) tạo ra các bản sao chính xác như bản gốc: tái tạo, nhân bản.",
+      "key_distinction": "Tái tạo, nhân bản chính xác một nghiên cứu/thí nghiệm hoặc sự tự nhân bản của virus/tế bào.",
+      "examples": [
+        "Researchers tried many times to replicate the original experiment.",
+        "This can be confusing for a host trying to replicate the look on a budget.",
+        "The drug prevents the virus from replicating itself"
+      ]
+    }
+  }
+}

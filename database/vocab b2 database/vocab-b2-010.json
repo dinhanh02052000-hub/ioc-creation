@@ -1,0 +1,27 @@
+{
+  "group_title": "Biết ơn",
+  "target_words": {
+    "grateful": {
+      "meaning": "Cảm thấy hoặc thể hiện sự biết ơn/cảm ơn/trân trọng bởi vì ai đó đã làm một điều tốt đẹp cho bạn hoặc đã làm việc gì như bạn yêu cầu.",
+      "key_distinction": "Đi với cấu trúc: grateful to somebody, grateful for something, grateful to do something, grateful (that)... Ngoài ra còn dùng để đưa ra một lời yêu cầu một cách lịch sự.",
+      "examples": [
+        "Thank you for doing this. I really am so grateful.",
+        "I would be grateful if you could send the completed form back as soon as possible."
+      ]
+    },
+    "thankful": {
+      "meaning": "Cảm thấy vui, hài lòng và nhẹ nhõm vì điều gì đó đã xảy ra (nếu không có điều đó thì tình huống đã trở nên xấu đi) hoặc một tình huống nguy hiểm hoặc khó chịu đã không xảy ra.",
+      "key_distinction": "Đi với cấu trúc: thankful (to do something), thankful for something, thankful (that)... Nhấn mạnh cảm giác may mắn, nhẹ nhõm vì thoát khỏi một tình huống xấu.",
+      "examples": [
+        "I was thankful to see they had all arrived safely."
+      ]
+    },
+    "appreciative": {
+      "meaning": "Cảm thấy hoặc thể hiện rằng bạn biết ơn về điều gì.",
+      "key_distinction": "Đi với cấu trúc: appreciative (of something). Thường dùng để thể hiện sự trân trọng, đánh giá cao sự giúp đỡ, nỗ lực hoặc giá trị của ai/cái gì.",
+      "examples": [
+        "The company was very appreciative of my efforts."
+      ]
+    }
+  }
+}

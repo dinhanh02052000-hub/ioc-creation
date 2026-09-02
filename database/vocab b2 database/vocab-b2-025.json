@@ -1,0 +1,29 @@
+{
+  "group_title": "Chữa",
+  "target_words": {
+    "cure": {
+      "meaning": "[Ngoại động từ] Làm cho ai, con gì khỏe mạnh lại sau bệnh tật, ốm đau, chữa khỏi bệnh.",
+      "key_distinction": "Nhấn mạnh kết quả dứt điểm: bệnh nhân hoàn toàn khỏi bệnh.",
+      "examples": [
+        "The doctor managed to cure her of her illness.",
+        "He was now completely cured of his illness."
+      ]
+    },
+    "treat": {
+      "meaning": "[Ngoại động từ] Điều trị, cung cấp sự chăm sóc y tế đến người bệnh, chữa trị căn bệnh, vết thương,... của người bệnh, nhưng chưa biết đã khỏi bệnh, đã bình phục hay chưa.",
+      "key_distinction": "Nhấn mạnh quá trình điều trị, chưa khẳng định kết quả khỏi bệnh hoàn toàn.",
+      "examples": [
+        "He is being treated for a rare skin disease.",
+        "Antibiotics are used to treat bacterial infections."
+      ]
+    },
+    "heal": {
+      "meaning": "[Ngoại động từ] + [Nội động từ] Lành, chữa lành, làm cho ai đó, cái gì đó khỏe mạnh trở lại, đặc biệt dùng cho trường hợp bị đứt, cắt hoặc chấn thương.",
+      "key_distinction": "Vừa là ngoại động từ vừa là nội động từ. Thường dùng cho vết thương cơ thể (vết cắt, vết đứt, chấn thương) hoặc chữa lành vết thương tâm hồn.",
+      "examples": [
+        "The wound took a long time to heal.",
+        "Vitamin K is needed by the body for healing cuts and bruises."
+      ]
+    }
+  }
+}

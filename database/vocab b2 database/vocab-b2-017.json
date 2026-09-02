@@ -1,0 +1,37 @@
+{
+  "group_title": "Cảnh",
+  "target_words": {
+    "scenery": {
+      "meaning": "Phong cảnh, cảnh vật thiên nhiên, tự nhiên chẳng hạn như núi, thung lũng, sông, đảo và rừng,... khi bạn nghĩ nó đẹp, hấp dẫn.",
+      "key_distinction": "Danh từ không đếm được. Nhấn mạnh vào vẻ đẹp tự nhiên, hấp dẫn của cảnh quan thiên nhiên.",
+      "examples": [
+        "The river passes through a rich variety of scenery.",
+        "We stopped on the mountain pass to admire the scenery."
+      ]
+    },
+    "landscape": {
+      "meaning": "Phong cảnh, khung cảnh, mọi thứ bạn có thể thấy khi nhìn trên một vùng đất rộng lớn, đặc biệt là ở vùng quê.",
+      "key_distinction": "Danh từ không đếm được, thường ở dạng số ít. Chỉ toàn bộ quang cảnh địa hình của một diện tích đất rộng lớn.",
+      "examples": [
+        "As we journeyed south, the landscape became drier and rockier.",
+        "The impact of farming on the natural landscape has increased greatly."
+      ]
+    },
+    "scene": {
+      "meaning": "Cảnh vật, quang cảnh, nơi mà bạn thấy, hoặc nơi xuất hiện trong một bức hình, bức tranh. Ngoài ra còn dùng với nghĩa hiện trường (nơi diễn ra vụ việc nào đó).",
+      "key_distinction": "Danh từ đếm được. Thường chỉ một góc cảnh cụ thể, thu hẹp hoặc hiện trường vụ việc.",
+      "examples": [
+        "He photographed a wide range of street scenes.",
+        "The scene from the mountaintop was breathtaking."
+      ]
+    },
+    "sight": {
+      "meaning": "Cảnh tượng, cái gì đó nằm trong tầm nhìn của ai; hoặc cảnh đẹp, điểm tham quan, những địa điểm thú vị (ở dạng số nhiều 'sights').",
+      "key_distinction": "Không đếm được khi chỉ tầm nhìn/cảnh tượng; dạng số nhiều 'sights' dùng chỉ danh lam thắng cảnh, điểm tham quan du lịch ở đô thị/thị trấn.",
+      "examples": [
+        "The house was hidden from sight behind some trees.",
+        "We spent a week in Rome looking at all the sights."
+      ]
+    }
+  }
+}

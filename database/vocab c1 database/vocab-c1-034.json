@@ -1,0 +1,66 @@
+{
+  "group_title": "GIẢM XUỐNG",
+  "target_words": {
+    "decrease": {
+      "meaning": "[nội động từ] trở nên nhỏ hơn về kích cỡ, số lượng,...\n[ngoại động từ] làm cho cái gì đó trở nên nhỏ hơn về kích cỡ, số lượng,...",
+      "key_distinction": "Giảm xuống về kích thước, số lượng hoặc tần suất (dùng cả nội động từ và ngoại động từ).",
+      "examples": [
+        "Fertility decreases with age.",
+        "People should decrease the amount of fat they eat."
+      ]
+    },
+    "decline": {
+      "meaning": "[nội động từ] trở nên nhỏ hơn, ít hơn, yếu hơn,... (dùng với lượng hoặc các con số hoặc nói về mức độ hoặc tiêu chuẩn của cái gì)",
+      "key_distinction": "Giảm dần về số lượng, giá trị, chất lượng, tiêu chuẩn hoặc sức mạnh theo thời gian.",
+      "examples": [
+        "Support for the party continues to decline."
+      ]
+    },
+    "reduce": {
+      "meaning": "[nội động từ, ngoại động từ] làm cho cái gì/trở nên ít đi hoặc nhỏ hơn về kích cỡ, số lượng, giá cả,...",
+      "key_distinction": "Cắt giảm, hạ thấp kích thước, số lượng, giá cả hoặc mức độ do tác động chủ quan.",
+      "examples": [
+        "The number of employees was reduced from 40 to 25."
+      ]
+    },
+    "diminish": {
+      "meaning": "[nội động từ] trở nên nhỏ hơn, yếu hơn,...: giảm, giảm bớt\n[ngoại động từ] làm cho cái gì đó trở nên nhỏ hơn, yếu hơn,...\n~ decrease",
+      "key_distinction": "Làm suy giảm, bớt đi về quy mô, tầm quan trọng, uy tín hoặc giá trị.",
+      "examples": [
+        "His influence has diminished with time.",
+        "A single-payer system would diminish the bureaucratic cost of health care."
+      ]
+    },
+    "lower": {
+      "meaning": "[ngoại động từ] giảm cái gì/điều gì; [nội động từ] trở nên thấp hơn về giá trị, chất lượng,...",
+      "key_distinction": "Hạ thấp vị trí, âm lượng, mức độ, giá cả hoặc tiêu chuẩn.",
+      "examples": [
+        "Please lower your voice.",
+        "Interest rates have been lowered again."
+      ]
+    },
+    "lessen": {
+      "meaning": "[nội động từ, ngoại động từ] trở nên hoặc làm cho cái gì đó/điều gì đó nhỏ hơn, yếu hơn, kém quan trọng hơn,...\n~ diminish",
+      "key_distinction": "Làm giảm bớt, nhẹ bớt mức độ (rủi ro, nỗi đau, ảnh hưởng).",
+      "examples": [
+        "The noise began to lessen.",
+        "A healthy diet can lessen the risk of heart disease."
+      ]
+    },
+    "drop": {
+      "meaning": "[nội động từ, ngoại động từ] trở nên hoặc làm cho cái gì/điều gì yếu hơn, thấp hơn (giá cả/nhiệt độ ...), ít đi,...: sụt, giảm, hạ",
+      "key_distinction": "Sụt giảm nhanh chóng, đột ngột (về nhiệt độ, giá cả, tốc độ, mức độ).",
+      "examples": [
+        "The temperature has dropped considerably.",
+        "You must drop your speed in built-up areas."
+      ]
+    },
+    "deplete": {
+      "meaning": "[ngoại động từ, ngoại động từ, thường dùng ở dạng bị động] giảm cái gì đó với số lượng lớn nên không còn nhiều; bị giảm với số lượng lớn (thường nói về nguồn cung cấp năng lượng, tiền bạc, thực phẩm,...)",
+      "key_distinction": "Làm cạn kiệt, sụt giảm nghiêm trọng nguồn tài nguyên, năng lượng hay tiền bạc.",
+      "examples": [
+        "Food supplies were severely depleted."
+      ]
+    }
+  }
+}

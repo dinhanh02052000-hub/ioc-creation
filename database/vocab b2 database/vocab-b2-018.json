@@ -1,0 +1,21 @@
+{
+  "group_title": "Cặp",
+  "target_words": {
+    "pair": {
+      "meaning": "Hai người đang làm gì đó cùng nhau (ví dụ làm việc theo cặp) để cùng nhau đạt được điều gì đó; hoặc chỉ hai vật hợp thành một bộ, không thể thiếu một trong hai hoặc một đồ vật có hai bộ phận.",
+      "key_distinction": "Nhấn mạnh vào tính kết hợp chặt chẽ, tạo thành một bộ/đôi hoàn chỉnh hoặc hai người phối hợp làm việc.",
+      "examples": [
+        "Get the students to do the exercise as pair work.",
+        "I bought a pair of shoes yesterday."
+      ]
+    },
+    "couple": {
+      "meaning": "Thường dùng chỉ một cặp vợ chồng hoặc một đôi nam nữ đang trong mối quan hệ yêu đương; hoặc hai hoặc nhiều thứ cùng loại hoặc những người cùng giới tính, cùng ngành nghề,..., (có liên quan đến nhau).",
+      "key_distinction": "Thường chỉ đôi lứa/vợ chồng hoặc một vài cá thể/vật đứng cạnh nhau, có mối liên hệ nhất định.",
+      "examples": [
+        "We met a couple from Chicago, who were travelling with their three children.",
+        "A couple of police officers were standing at the door."
+      ]
+    }
+  }
+}

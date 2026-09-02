@@ -1,0 +1,55 @@
+{
+  "group_title": "GẦY, MẢNH MAI",
+  "target_words": {
+    "slim": {
+      "meaning": "[mang tính khen ngợi] (miêu tả một con người hoặc cơ thể của họ) mảnh dẻ, mảnh khảnh, thon nhưng mà hấp dẫn\n~ slender /ˈslendə(r)/ (adj) gầy và yếu một cách hấp dẫn hoặc duyên dáng (thường dùng trong văn học)",
+      "key_distinction": "Gầy thon gọn, mảnh mai một cách hấp dẫn, đẹp mắt.",
+      "examples": [
+        "dieters who get slim using these methods",
+        "long, slender fingers"
+      ]
+    },
+    "slight": {
+      "meaning": "nhỏ, thấp, gầy, yếu, mảnh khảnh",
+      "key_distinction": "Dáng người nhỏ nhắn, mảnh khảnh, có vẻ mỏng manh.",
+      "examples": [
+        "She looked very slight, almost fragile."
+      ]
+    },
+    "thin": {
+      "meaning": "[thỉnh thoảng mang nghĩa tiêu cực hoặc xúc phạm] (miêu tả người/một bộ phận của cơ thể/động vật) không có nhiều mỡ hoặc cơ bắp: gầy",
+      "key_distinction": "Gầy (miêu tả chung về cơ thể không có nhiều mỡ hay cơ bắp).",
+      "examples": [
+        "The old horse was painfully thin."
+      ]
+    },
+    "lean": {
+      "meaning": "[mang nghĩa khen ngợi] (miêu tả người, đặc biệt là đàn ông hoặc động vật) không có mỡ thừa; gầy và cân đối, khỏe mạnh",
+      "key_distinction": "Gầy săn chắc, không mỡ thừa, khỏe mạnh (thường dùng cho nam giới hoặc động vật).",
+      "examples": [
+        "He has a lean, muscular body."
+      ]
+    },
+    "skinny": {
+      "meaning": "[thường mang nghĩa chê/tiêu cực] rất gầy, đặc biệt là bạn thấy xấu/không hấp dẫn/gây khó chịu",
+      "key_distinction": "Gầy trơ xương, gầy gò đến mức nhìn không hấp dẫn hoặc thiếu sức sống.",
+      "examples": [
+        "Some supermodels are far too skinny."
+      ]
+    },
+    "frail": {
+      "meaning": "gầy và yếu về mặt thể chất (đặc biệt là người già)",
+      "key_distinction": "Gầy yếu, mỏng mảnh, sức khỏe kém (đặc biệt dùng cho người lớn tuổi).",
+      "examples": [
+        "His frail hands were shaking."
+      ]
+    },
+    "delicate": {
+      "meaning": "không khoẻ mạnh và dễ bị ốm",
+      "key_distinction": "Yếu ớt, mỏng manh, có thể trạng yếu đuối dễ bị bệnh.",
+      "examples": [
+        "She was physically delicate and psychologically unstable."
+      ]
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "group_title": "Biến mất",
+  "target_words": {
+    "disappear / vanish": {
+      "meaning": "Trở nên không thể nhìn thấy; ngừng tồn tại; bị mất hoặc không thể tìm thấy.",
+      "key_distinction": "Nội động từ. Thường đi kèm các thành ngữ: disappear/vanish off the face of the earth (biến mất hoàn toàn), disappear/vanish into thin air (bất ngờ biến mất một cách bí ẩn).",
+      "examples": [
+        "The plane disappeared behind a cloud.",
+        "The smile disappeared to be replaced by a doleful frown.",
+        "The plane mysteriously disappeared over the Indian Ocean.",
+        "Keep looking - they can't just have vanished/disappeared off the face of the earth.",
+        "She can't just have vanished/disappeared into thin air."
+      ]
+    },
+    "evaporate": {
+      "meaning": "(Một cảm giác/vấn đề/kế hoạch/hoạt động...) biến mất.",
+      "key_distinction": "Nội động từ. Nhấn mạnh sự biến mất bằng cách dần dần trở nên ít đi/yếu đi và cuối cùng là biến mất hoàn toàn.",
+      "examples": [
+        "The issue of global warming is not just going to evaporate."
+      ]
+    },
+    "recede": {
+      "meaning": "Trở nên dần dần yếu hơn hoặc nhỏ hơn.",
+      "key_distinction": "Nội động từ. Đặc biệt dùng cho một vấn đề, cảm giác, khả năng việc gì xảy ra, kỷ niệm hoặc phẩm chất.",
+      "examples": [
+        "The prospect of bankruptcy has now receded (= it is less likely)."
+      ]
+    },
+    "fade / fade away": {
+      "meaning": "Biến mất dần.",
+      "key_distinction": "Nội động từ. Trở nên không nhìn thấy rõ ràng rồi dần dần biến mất hoàn toàn.",
+      "examples": [
+        "The smile faded from her face.",
+        "The laughter faded away."
+      ]
+    },
+    "dissolve": {
+      "meaning": "Biến mất; làm cho cái gì biến mất.",
+      "key_distinction": "Vừa là nội động từ vừa là ngoại động từ. Dùng khi đám đông giải tán/biến mất hoặc khi một cảm xúc/thái độ làm tan biến một cảm xúc khác.",
+      "examples": [
+        "When the ambulance had gone, the crowd dissolved.",
+        "Her enthusiasm dissolved his shyness."
+      ]
+    }
+  }
+}

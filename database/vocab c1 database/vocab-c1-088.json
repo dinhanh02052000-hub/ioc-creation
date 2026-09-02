@@ -1,0 +1,28 @@
+{
+  "group_title": "Săn, đuổi",
+  "target_words": {
+    "hunt": {
+      "meaning": "[ngoại động từ] + [nội động từ] săn bắt động vật hoang dã để bắt hoặc giết chúng cho nhu cầu như để làm thức ăn, thể thao, thương mại hoặc để kiếm tiền (có thể dùng cho người và cả động vật ăn thịt)",
+      "key_distinction": "Săn bắt động vật hoang dã để làm thức ăn, thể thao hoặc thương mại (dùng cho cả người lẫn động vật săn mồi).",
+      "examples": [
+        "Whales are still being hunted and killed in the Arctic.",
+        "Lions sometimes hunt alone."
+      ]
+    },
+    "poach": {
+      "meaning": "[ngoại động từ] + [nội động từ] bắt hoặc giết động vật bất hợp pháp, hoặc đặc biệt là khi không có sự cho phép của người sở hữu",
+      "key_distinction": "Săn bắt hoặc giết động vật trái phép (săn bắt trộm).",
+      "examples": [
+        "The elephants are poached for their tusks."
+      ]
+    },
+    "chase": {
+      "meaning": "[ngoại động từ] + [nội động từ] rượt đuổi, chạy, lái theo sau để bắt được ai, cái gì",
+      "key_distinction": "Đuổi theo nhanh đằng sau ai đó hoặc cái gì đó để bắt/đuổi kịp.",
+      "examples": [
+        "My dog likes chasing rabbits.",
+        "The kids chased each other around the kitchen table."
+      ]
+    }
+  }
+}

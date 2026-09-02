@@ -1,0 +1,21 @@
+{
+  "group_title": "Đi",
+  "target_words": {
+    "go": {
+      "meaning": "để chỉ một chuyển động từ nơi người nói, người nghe đến một nơi khác",
+      "key_distinction": "Chuyển động rời xa vị trí hiện tại của người nói/người nghe đến một địa điểm khác.",
+      "examples": [
+        "I went to Paris last summer. Have you ever been there?",
+        "Does this train go to Newcastle?"
+      ]
+    },
+    "come": {
+      "meaning": "một chuyển động đến nơi mà người nói hoặc người nghe ở đó",
+      "key_distinction": "Chuyển động tiến lại gần hoặc hướng tới vị trí của người nói/người nghe.",
+      "examples": [
+        "Can you come to my party?",
+        "Your father will come for (= to collect) you at four o'clock."
+      ]
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "group_title": "TRỘN LẠI, KẾT HỢP LẠI",
+  "target_words": {
+    "mix": {
+      "meaning": "trộn lẫn, kết hợp",
+      "key_distinction": "trộn lẫn, kết hợp hai hoặc nhiều chất để chúng trở thành một hợp chất và khó thể tách rời ra",
+      "examples": [
+        "Mix the flour with the eggs and butter.",
+        "Add the eggs and mix thoroughly."
+      ]
+    },
+    "combine": {
+      "meaning": "kết hợp, phối hợp",
+      "key_distinction": "kết hợp với nhau để tạo thành một thể, nhóm thống nhất",
+      "examples": [
+        "The two countries combined against their common enemy.",
+        "High tides combined with strong winds caused severe flooding."
+      ]
+    },
+    "mingle": {
+      "meaning": "trộn lẫn, hòa quyện",
+      "key_distinction": "(mùi, cảm giác, hương vị, âm thanh v.v.) trộn lẫn hoặc bạn trộn chúng, chúng trở nên trộn lẫn với nhau mà không làm mất hoàn toàn các tính cách riêng lẻ của chúng",
+      "examples": [
+        "Leave the dessert overnight for the flavours to mingle.",
+        "He felt a kind of happiness mingled with regret."
+      ]
+    },
+    "blend": {
+      "meaning": "pha trộn, trộn lẫn",
+      "key_distinction": "trộn lẫn, pha trộn hai hoặc nhiều hương vị với nhau ~ mix",
+      "examples": [
+        "Blend the flour with the milk to make a smooth paste."
+      ]
+    },
+    "associate": {
+      "meaning": "kết giao, liên kết, liên tưởng",
+      "key_distinction": "kết giao, liên hợp, hình thành sự kết nối, liên hệ giữa nhiều người, nhiều thứ",
+      "examples": [
+        "Most people associate this brand with good quality.",
+        "I am happy, indeed proud, to be associated with this project."
+      ]
+    }
+  }
+}

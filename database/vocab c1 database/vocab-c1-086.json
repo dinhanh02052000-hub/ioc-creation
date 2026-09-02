@@ -1,0 +1,47 @@
+{
+  "group_title": "Rác",
+  "target_words": {
+    "waste": {
+      "meaning": "[U] những chất/nguyên liệu/vật liệu không còn cần đến nữa và bị vứt bỏ (chẳng cần được xử lý)",
+      "key_distinction": "Chỉ chung vật liệu/chất thải bỏ đi (thường dùng trong bối cảnh công nghiệp, hạt nhân, sinh hoạt nói chung).",
+      "examples": [
+        "household/nuclear waste"
+      ]
+    },
+    "sewage": {
+      "meaning": "[U] hỗn hợp chất thải từ cơ thể con người (nước tiểu, phân) và nước đã qua sử dụng từ các ngôi nhà hoặc chất thải lỏng từ các nhà máy được thải ra qua các đường ống",
+      "key_distinction": "Chỉ chất thải lỏng, nước thải sinh hoạt/công nghiệp chứa chất thải con người qua hệ thống ống dẫn.",
+      "examples": [
+        "The factory secretly dumped millions of gallons of raw sewage into the Ohio river."
+      ]
+    },
+    "effluent": {
+      "meaning": "[C, U] chất thải lỏng được thải ra từ các nhà máy hoặc từ những nơi mà nước thải (sewage) được xử lý",
+      "key_distinction": "Chỉ dòng nước thải/chất lỏng thải ra từ nhà máy hoặc cơ sở xử lý nước thải.",
+      "examples": [
+        "Industrial effluents and sewage remain problems."
+      ]
+    },
+    "rubbish": {
+      "meaning": "[U] những thứ (đồ ăn hỏng/giấy bẩn/...) mà bạn vứt đi bởi vì bạn không còn cần hoặc muốn chúng nữa (= garbage / trash)",
+      "key_distinction": "Chỉ rác thải sinh hoạt thông thường hằng ngày (đồ hỏng, giấy bẩn,...).",
+      "examples": [
+        "Put the empty box in the rubbish bin."
+      ]
+    },
+    "litter": {
+      "meaning": "[U] những mẩu rác nhỏ như là giấy/chai/lọ/lon/... mà người ta vứt ra ở một nơi công cộng",
+      "key_distinction": "Chỉ rác vương vãi bừa bãi ở nơi công cộng (như công viên, bãi biển, đường phố).",
+      "examples": [
+        "There was a lot of litter on the beach."
+      ]
+    },
+    "leavings": {
+      "meaning": "những thứ mà ai đó hoặc một con vật nào đó bỏ lại khi họ làm xong việc gì",
+      "key_distinction": "Chỉ phần thừa, thứ sót lại (thức ăn thừa, mảnh vụn...) sau khi ăn hoặc làm xong việc gì đó.",
+      "examples": [
+        "The main leavings from the meal were bones."
+      ]
+    }
+  }
+}

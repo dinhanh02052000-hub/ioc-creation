@@ -1,0 +1,58 @@
+{
+  "group_title": "Nghề nghiệp, công việc",
+  "target_words": {
+    "work": {
+      "meaning": "Một hoạt động, chẳng hạn như một công việc, mà một người sử dụng nỗ lực (thể chất hoặc tinh thần) để thực hiện, thường là vì tiền (danh từ không đếm được, nếu nó đếm được thì nó có nghĩa là tác phẩm).",
+      "key_distinction": "Danh từ không đếm được [U]. Nhắc đến hoạt động/công việc chung chung.",
+      "examples": [
+        "Carrying heavy loads around all day is hard work.",
+        "It's very difficult to find work at the moment.",
+        "She's been off work (= not going to work) with a bad back since July."
+      ]
+    },
+    "job": {
+      "meaning": "Công việc mà chúng ta làm và nhận được tiền thường xuyên (thường chỉ một nghề nghiệp, một công việc cụ thể hay một vị trí nào đó. Ví dụ: cook - đầu bếp, teacher - giáo viên. Nếu như job ám chỉ một nghề nghiệp, công việc nhất định, cụ thể thì work nhắc đến công việc chung chung.) (danh từ đếm được).",
+      "key_distinction": "Danh từ đếm được [C]. Chỉ một vị trí công việc hoặc nghề nghiệp cụ thể.",
+      "examples": [
+        "A temporary/permanent job",
+        "When she left college, she got a job as an editor in a publishing company.",
+        "Both my parents have full-time jobs.",
+        "Many women are in part-time jobs."
+      ]
+    },
+    "career": {
+      "meaning": "Sự nghiệp (công việc hoặc một loạt công việc bạn làm trong suốt cuộc đời làm việc của mình, đặc biệt nếu bạn tiếp tục hoàn thành công việc tốt hơn và kiếm được nhiều tiền hơn) (danh từ đếm được).",
+      "key_distinction": "Danh từ đếm được [C]. Chỉ toàn bộ quá trình xây dựng sự nghiệp qua nhiều giai đoạn.",
+      "examples": [
+        "He had a very distinguished career in the Foreign Office.",
+        "She plans to pursue a career in medicine."
+      ]
+    },
+    "profession": {
+      "meaning": "Nghề nghiệp, một loại công việc cần đào tạo hoặc kỹ năng đặc biệt, đặc biệt là công việc cần trình độ học vấn cao (danh từ đếm được).",
+      "key_distinction": "Danh từ đếm được [C]. Nhấn mạnh công việc đòi hỏi trình độ chuyên môn hoặc bằng cấp cao (y khoa, luật, giáo dục,...).",
+      "examples": [
+        "He left the teaching profession in 1965 to start his own business.",
+        "The medical/legal/teaching profession",
+        "To enter/go into/join a profession"
+      ]
+    },
+    "occupation": {
+      "meaning": "Nghề nghiệp, thường ám chỉ đến nghề nghiệp gắn liền với cuộc đời một người. Từ này được sử dụng đặc biệt trên các biểu mẫu và văn bản chính thức (danh từ đếm được).",
+      "key_distinction": "Danh từ đếm được [C]. Thường xuất hiện trong khai báo hồ sơ, giấy tờ hành chính.",
+      "examples": [
+        "He listed his occupation on the form as \"teacher.\"",
+        "Current/previous occupation"
+      ]
+    },
+    "employment": {
+      "meaning": "Việc làm (khá trang trọng), đặc biệt là khi làm để kiếm tiền (danh từ đếm được); tình trạng được tuyển dụng hoặc tình hình mọi người có việc làm (danh từ không đếm được).",
+      "key_distinction": "Mang sắc thái trang trọng, chỉ mối quan hệ lao động/tình trạng có việc làm.",
+      "examples": [
+        "Only half the people here are in paid employment.",
+        "After leaving Pearson, it took Friedman months to find new employment.",
+        "The steelworks provided employment for thousands of people."
+      ]
+    }
+  }
+}

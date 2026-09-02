@@ -1,0 +1,33 @@
+{
+  "group_title": "CÔNG BẰNG",
+  "target_words": {
+    "impartial": {
+      "meaning": "không ủng hộ một người/nhóm này hơn người/nhóm khác: công bằng, vô tư, không thiên vị ~ neutral /ˈnjuːtrəl/ (adj) ~ unbiased /ʌnˈbaɪəst/ (adj)",
+      "key_distinction": "Công bằng, vô tư, không đứng về bên nào trong một cuộc tranh chấp hay lựa chọn.",
+      "examples": [
+        "an impartial observer"
+      ]
+    },
+    "objective": {
+      "meaning": "không bị ảnh hưởng bởi cảm xúc hoặc quan điểm cá nhân; chỉ cân nhắc thực tế/sự kiện: khách quan ~ unbiased >< subjective /səbˈdʒektɪv/ (adj)",
+      "key_distinction": "Khách quan, dựa trên thực tế và số liệu chứ không để cảm xúc hay ý kiến cá nhân chi phối.",
+      "examples": [
+        "an objective assessment of the situation"
+      ]
+    },
+    "disinterested": {
+      "meaning": "không bị ảnh hưởng bởi cảm xúc cá nhân hoặc bởi cơ hội nhận được điều gì (tiền bạc, quyền lực,...) cho bản thân: vô tư, không vụ lợi, không cầu lợi ~ impartial ~ objective ~ unbiased",
+      "key_distinction": "Vô tư, không vụ lợi, không bị ràng buộc bởi lợi ích cá nhân.",
+      "examples": [
+        "a disinterested spectator"
+      ]
+    },
+    "fair-minded": {
+      "meaning": "(miêu tả người) nhìn nhận và đánh giá sự việc một cách công bằng và cởi mở: công bằng, vô tư, không thiên vị, không thành kiến",
+      "key_distinction": "Tính cách công bằng, cởi mở, đánh giá mọi việc không có thành kiến.",
+      "examples": [
+        "He was fair-minded and scrupulously honest."
+      ]
+    }
+  }
+}

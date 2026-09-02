@@ -1,0 +1,49 @@
+{
+  "group_title": "NGĂN CẢN, CẢN TRỞ",
+  "target_words": {
+    "prevent": {
+      "meaning": "ngăn không cho ai đó làm điều gì; ngăn chặn điều gì đó để nó không thể xảy ra",
+      "key_distinction": "~ stop /stɒp/ (v)",
+      "examples": [
+        "You can't stop/prevent people from saying what they think."
+      ]
+    },
+    "deter": {
+      "meaning": "khiến ai đó quyết định không làm điều gì hoặc tiếp tục làm điều gì, đặc biệt là bằng cách khiến họ hiểu về những khó khăn và những kết quả không mong muốn của những hành vi/hành động của họ",
+      "key_distinction": "Khiến ai đó từ bỏ ý định bằng cách cho thấy hậu quả/khó khăn, tác động tâm lý hơn là ngăn vật lý.",
+      "examples": [
+        "The company's financial difficulties have deterred potential investors."
+      ]
+    },
+    "hinder": {
+      "meaning": "khiến cho việc thực hiện điều gì đó hoặc điều gì đó xảy ra trở nên khó khăn",
+      "key_distinction": "~ impede /ɪm'pi:d/ (v)",
+      "examples": [
+        "a political situation that hinders economic growth"
+      ]
+    },
+    "bar": {
+      "meaning": "cấm hoặc ngăn không cho ai đó làm điều gì",
+      "key_distinction": "Cấm/không cho phép ai đó làm gì một cách chính thức, mang tính cấm đoán rõ ràng.",
+      "examples": [
+        "They seized James's passport and barred him from leaving the country."
+      ]
+    },
+    "block": {
+      "meaning": "ngăn cho thứ gì đó di chuyển hoặc chảy qua một đường ống/con đường/hành lang/lối đi/... bằng cách đặt một thứ gì bên trong hoặc cắt ngang / ngăn không cho ai đó đi đâu hoặc nhìn thứ gì bằng cách đứng trước mặt họ hoặc chặn đường họ / ngăn không cho điều gì xảy ra, phát triển, tiến triển hoặc thành công",
+      "key_distinction": "Ngăn không cho di chuyển/xảy ra bằng vật cản cụ thể (vật lý hoặc ẩn dụ như tường lửa).",
+      "examples": [
+        "He found that the pipe was partially blocked with leaves.",
+        "She had her back to the door, blocking his exit.",
+        "Firewalls can block unauthorized access to a computer."
+      ]
+    },
+    "thwart": {
+      "meaning": "[thường ở dạng bị động] ngăn không cho ai đó làm điều gì mà họ muốn hoặc đang cố gắng thực hiện",
+      "key_distinction": "Ngăn không cho ai đạt được điều họ đang cố gắng thực hiện, thường mang tính chủ đích phá hoại kế hoạch.",
+      "examples": [
+        "Our holiday plans were thwarted by the airline pilots' strike."
+      ]
+    }
+  }
+}

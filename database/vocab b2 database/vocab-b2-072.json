@@ -1,0 +1,35 @@
+{
+  "group_title": "Sai trái",
+  "target_words": {
+    "false": {
+      "meaning": "sai, không đúng, bởi vì nó dựa trên một cái gì đó không đúng thực tế (trái nghĩa với true)",
+      "key_distinction": "Sai sự thật, trái ngược với thực tế hoặc mang tính giả tạo, không đúng sự thật.",
+      "examples": [
+        "A whale is a fish. True or false?",
+        "She gave false information to the insurance company."
+      ]
+    },
+    "wrong": {
+      "meaning": "không đúng, không chính xác (trái nghĩa với right, correct); (hiểu, nghĩ, biết...,) không đúng về ai/ chuyện gì đó",
+      "key_distinction": "Sai lầm, không chính xác trong hành động, lựa chọn, suy nghĩ hoặc con số.",
+      "examples": [
+        "Sorry, I must have dialed the wrong number.",
+        "You were wrong about Tom; he's not married after all."
+      ]
+    },
+    "untrue": {
+      "meaning": "không có thật, không dựa vào thực mà thiên về bịa ra hoặc suy đoán",
+      "key_distinction": "Không có thật, bịa đặt hoặc suy đoán sai sự thật.",
+      "examples": [
+        "It would be untrue to say that she left him."
+      ]
+    },
+    "mistaken": {
+      "meaning": "sai trong quan điểm hoặc nhận định của bạn; dựa trên một quan điểm sai lầm hoặc đánh giá xấu (~ wrong)",
+      "key_distinction": "Hiểu lầm, nhầm lẫn trong nhận định, đánh giá về một người hoặc sự việc.",
+      "examples": [
+        "You're completely mistaken about Jane."
+      ]
+    }
+  }
+}

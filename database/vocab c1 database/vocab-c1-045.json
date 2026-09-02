@@ -1,0 +1,34 @@
+{
+  "group_title": "KHÁC BIỆT",
+  "target_words": {
+    "distinct": {
+      "meaning": "khác rõ hoặc thuộc về một loại khác (thường nói về 2 hoặc hơn 2 nhóm người/vật/việc)",
+      "key_distinction": "Khác biệt rõ rệt, tách biệt hoàn toàn về bản chất hoặc loại hình.",
+      "examples": [
+        "Baking cakes and learning English might be separate aims with distinct requirements.",
+        "The learning needs of the two groups were quite distinct from each other. One group wanted to improve productive skills. The other wanted to improve receptive skills."
+      ]
+    },
+    "distinctive": {
+      "meaning": "có phẩm chất/đặc điểm khiến cho trở nên khác biệt/dễ nhận thấy so với những người khác hoặc thứ khác",
+      "key_distinction": "Mang nét đặc trưng, nét riêng biệt dễ dàng nhận biết.",
+      "examples": [
+        "Mary let out her distinctive laugh. Her laugh was like glass bottles shattering. He could identify it with his eyes closed."
+      ]
+    },
+    "distinguishable": {
+      "meaning": "có thể được nhận ra một cách dễ dàng bởi vì khác biệt so with người khác/thứ khác",
+      "key_distinction": "Có thể phân biệt được, nhận biết được sự khác nhau giữa các đối tượng.",
+      "examples": [
+        "The male bird is distinguishable from the female."
+      ]
+    },
+    "distinguished": {
+      "meaning": "rất thành công và được người khác ngưỡng mộ",
+      "key_distinction": "Xuất sắc, ưu tú, có danh tiếng lẫy lừng và được kính trọng.",
+      "examples": [
+        "He quit his job at University of Oxford, ending a distinguished academic career."
+      ]
+    }
+  }
+}

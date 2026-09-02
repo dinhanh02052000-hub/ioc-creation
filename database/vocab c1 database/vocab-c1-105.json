@@ -1,0 +1,44 @@
+{
+  "group_title": "TRÁCH NHIỆM",
+  "target_words": {
+    "responsibility": {
+      "meaning": "trách nhiệm, bổn phận",
+      "key_distinction": "trách nhiệm mà bạn phải gặp/hoặc nói chuyện với ai hoặc chăm sóc ai hoặc giải quyết việc gì vì vậy bạn sẽ có thể phải chịu trách nhiệm nếu điều gì đó xảy ra OR trách nhiệm cho một điều gì đó xấu/tồi tệ đã xảy ra OR bổn phận về mặt đạo đức khiến bạn làm điều gì hoặc giúp đỡ/chăm sóc ai do công việc của bạn/vị trí của bạn...",
+      "examples": [
+        "She has responsibility for public spending.",
+        "Nobody has claimed responsibility for the bombing.",
+        "He seems unwilling to face up to his responsibilities as a father."
+      ]
+    },
+    "liability": {
+      "meaning": "trách nhiệm/nghĩa vụ pháp lý",
+      "key_distinction": "[U] trạng thái phải chịu trách nhiệm về mặt pháp luật cho một việc gì đó: trách nhiệm/nghĩa vụ pháp lý",
+      "examples": [
+        "Jack denied any liability for the damage caused."
+      ]
+    },
+    "accountability": {
+      "meaning": "trách nhiệm giải trình",
+      "key_distinction": "[U] việc chịu trách nhiệm cho các quyết định và hành động của mình và phải giải thích chúng khi được yêu cầu: trách nhiệm giải trình",
+      "examples": [
+        "The public has been demanding greater accountability from lawmakers."
+      ]
+    },
+    "duty": {
+      "meaning": "bổn phận/trách nhiệm/nhiệm vụ",
+      "key_distinction": "[U, C] điều gì đó mà bạn cảm thấy bạn phải làm vì điều đó đúng về mặt đạo đức hoặc đúng luật: bổn phận/trách nhiệm/nhiệm vụ OR điều gì đó mà bạn làm như là một phần công việc của bạn: phận sự/chức vụ/công việc",
+      "examples": [
+        "It was my duty to report it to the police.",
+        "Your duties will include greeting visitors and answering the phone."
+      ]
+    },
+    "obligation": {
+      "meaning": "nghĩa vụ/bổn phận",
+      "key_distinction": "[U] trạng thái mà bạn bắt buộc phải làm điều gì đó vì đó là bổn phận của bạn hoặc bởi vì theo luật...: nghĩa vụ/bổn phận OR [C] điều gì đó mà bạn phải làm vì bạn đã hứa hoặc theo luật pháp quy định",
+      "examples": [
+        "Sophia didn't feel under any obligation to tell him the truth.",
+        "I can't travel next month because of family obligations."
+      ]
+    }
+  }
+}

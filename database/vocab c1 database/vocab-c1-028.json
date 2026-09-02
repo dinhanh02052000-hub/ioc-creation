@@ -1,0 +1,50 @@
+{
+  "group_title": "ĐUỔI, THẢ",
+  "target_words": {
+    "expel": {
+      "meaning": "chính thức đuổi ai đó ra khỏi trường hoặc một tổ chức\ntrục xuất ai đó ra khỏi một đất nước",
+      "key_distinction": "Đuổi học, khai trừ khỏi tổ chức hoặc trục xuất khỏi một quốc gia.",
+      "examples": [
+        "Sophia was expelled from school at 15.",
+        "The regime decided to expel UK, US, and Canadian diplomats."
+      ]
+    },
+    "eject": {
+      "meaning": "[ngoại động từ, sắc thái trang trọng] buộc ai đó phải rời khỏi một nơi hoặc một vị trí",
+      "key_distinction": "Tống khống, buộc ai đó ra khỏi địa điểm/sự kiện (thường vì gây rối).",
+      "examples": [
+        "Several fans were ejected from the bar for causing trouble."
+      ]
+    },
+    "evict": {
+      "meaning": "buộc ai đó rời khỏi một ngôi nhà hoặc đất đai, đặc biệt là khi bạn có quyền làm như vậy",
+      "key_distinction": "Thao tác pháp lý để đuổi người thuê nhà hoặc thu hồi đất đai/nhà cửa.",
+      "examples": [
+        "A number of tenants have been evicted for not paying the rent."
+      ]
+    },
+    "dismiss": {
+      "meaning": "sa thải ai đó",
+      "key_distinction": "Sa thải, đuổi việc ai đó khỏi công ty/cơ quan.",
+      "examples": [
+        "He has been dismissed from his job for incompetence."
+      ]
+    },
+    "discharge": {
+      "meaning": "cho phép ai đó được chính thức rời khỏi hoặc khiến ai đó rời khỏi lực lượng vũ trang hoặc công an\ncho phép ai đó xuất viện bởi vì họ đã đủ khoẻ để rời khỏi bệnh viện\ncho phép ai đó được ra khỏi tù hoặc rời khỏi toà án",
+      "key_distinction": "Xuất ngũ, xuất viện, hoặc cho phóng thích/mối tha chính thức khỏi tù/tòa án.",
+      "examples": [
+        "He was discharged from the army following his injury.",
+        "Josh has a broken nose but may be discharged today.",
+        "Jack was conditionally discharged after admitting the theft."
+      ]
+    },
+    "release": {
+      "meaning": "cho phép ai đó ra khỏi một nơi mà họ bị giám giữ hoặc bị mắc kẹt: thả, giải phóng, phóng thích...",
+      "key_distinction": "Thả tự do cho ai đó khỏi nơi bị giam giữ, mắc kẹt hoặc tù tù.",
+      "examples": [
+        "He was released from prison after serving two years of a five-year sentence."
+      ]
+    }
+  }
+}

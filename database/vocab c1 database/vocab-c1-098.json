@@ -1,0 +1,52 @@
+{
+  "group_title": "THAY THẾ",
+  "target_words": {
+    "replace": {
+      "meaning": "replace somebody/something được sử dụng thay cho ai/cái gì đó khác; làm việc gì thay cho ai/cái gì đó khác (~ take over (from something)); loại hoặc bỏ ai/cái gì ra và thay vào chỗ đó bằng một người khác/thứ khác; replace something thay thứ gì đã cũ/hỏng/... bằng một thứ tương tự nhưng mới hơn và tốt hơn",
+      "key_distinction": "thay thế ai/cái gì bằng người/vật khác; thay mới những thứ đã cũ, hỏng hoặc thế chỗ vị trí công việc",
+      "examples": [
+        "The new design will eventually replace all existing models.",
+        "She replaced Dr Hales as head teacher.",
+        "Machines can't replace people in this work.",
+        "In your teens, peer-group friendship may take over from parents as the major influence on you.",
+        "He will be difficult to replace when he leaves.",
+        "proposed changes to the constitution to replace the current system of government",
+        "to replace a roof",
+        "to replace a light bulb",
+        "We replaced the old television set with a newer one."
+      ]
+    },
+    "substitute": {
+      "meaning": "[nội động từ, ngoại động từ] thế chỗ của ai/cái gì khác thường được dùng; dùng ai/cái gì để thay thế thế chỗ cho ai/cái gì khác thường được dùng (- substitute for somebody/something; - substitute A for B; - substitute B with/by A; - substitute somebody/something)",
+      "key_distinction": "thay thế tạm thời hoặc dùng một thứ khác thế chỗ cho thứ vốn/thường hay được sử dụng (ví dụ: nguyên liệu nấu ăn, cầu thủ dự bị)",
+      "examples": [
+        "Can you find someone to substitute for you at the meeting?",
+        "Low-fat soft cheese can be substituted for butter in this recipe.",
+        "Butter can be substituted with/by low-fat soft cheese in this recipe.",
+        "He was substituted in the second half after a knee injury (= somebody else played instead of him in the second half)."
+      ]
+    },
+    "supplant": {
+      "meaning": "supplant somebody/something thế chỗ của ai/cái gì (đặc biệt là chỗ của người/vật mà đã cũ hoặc ít hiện đại hơn) ~ replace",
+      "key_distinction": "mang sắc thái trang trọng (formal), chỉ việc thay thế/hất cẳng/thế chỗ cái cũ hơn, ít hiện đại hơn",
+      "examples": [
+        "He may be supplanted by a younger man."
+      ]
+    },
+    "exchange": {
+      "meaning": "[ngoại động từ] đưa hoặc trả lại hàng hoá mà bạn đã mua và nhận lại từ cửa hàng cái gì đó khác hoặc thứ tốt hơn (- exchange something; - exchange A for B)",
+      "key_distinction": "dùng trong ngữ cảnh mua bán, đổi trả hàng hóa đã mua để lấy thứ khác hoặc kích cỡ khác",
+      "examples": [
+        "If it doesn't fit, take it back and the store will exchange it.",
+        "I need to exchange this for a larger size."
+      ]
+    },
+    "succeed": {
+      "meaning": "[ngoại động từ] succeed somebody/something là người tiếp theo thế chỗ hoặc tiếp tục vị trí/công việc của ai/cái gì: kế tục, nối tiếp",
+      "key_distinction": "kế nhiệm, nối ngôi, tiếp quản vị trí/chức vụ chính thức từ người tiền nhiệm",
+      "examples": [
+        "Who succeeded Kennedy as President?"
+      ]
+    }
+  }
+}

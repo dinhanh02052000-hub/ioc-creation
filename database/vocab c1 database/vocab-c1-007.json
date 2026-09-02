@@ -1,0 +1,29 @@
+{
+  "group_title": "Bí mật, Bí ẩn",
+  "target_words": {
+    "secret": {
+      "meaning": "bí mật, một thông tin chỉ được biết bởi một người hoặc một vài người và không được nói cho người khác biết",
+      "key_distinction": "Thông tin cá nhân hoặc điều gì đó cố tình được giữ kín, không cho người ngoài biết.",
+      "examples": [
+        "She will not reveal his secret.",
+        "Your secret is safe with me (= I will not tell anyone)."
+      ]
+    },
+    "mystery": {
+      "meaning": "bí ẩn, một điều, cái gì đó lạ, không biết đến vì chưa được giải thích hoặc làm sáng tỏ",
+      "key_distinction": "Điều khó hiểu, kỳ lạ chưa có lời giải thích khoa học hay bằng chứng rõ ràng.",
+      "examples": [
+        "How the disease started is one of medicine's great mysteries.",
+        "It remains a mystery as to where he was buried."
+      ]
+    },
+    "obscurity": {
+      "meaning": "trạng thái mà ai đó / điều gì đó không được biết đến hoặc đã bị lãng quên",
+      "key_distinction": "Sự vô danh, không ai biết đến hoặc tình trạng bị lãng quên theo thời gian.",
+      "examples": [
+        "The actress was only 17 when she was plucked from obscurity and made a star.",
+        "He spent most of his life working in obscurity."
+      ]
+    }
+  }
+}

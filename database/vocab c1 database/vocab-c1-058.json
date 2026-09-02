@@ -1,0 +1,47 @@
+{
+  "group_title": "LIÊN TIẾP",
+  "target_words": {
+    "successive": {
+      "meaning": "[chỉ đứng trước danh từ] lần lượt theo ngay sau nhau: liên tiếp\n~ consecutive /kənˈsekjətɪv/ (adj)",
+      "key_distinction": "Diễn ra nối tiếp nhau theo thứ tự thời gian hoặc dãy sự kiện liên tiếp.",
+      "examples": [
+        "This was their fifth successive/consecutive win.",
+        "There has been low rainfall for two successive/consecutive years.",
+        "Successive/Consecutive governments have tried to tackle the problem."
+      ]
+    },
+    "straight": {
+      "meaning": "[chỉ đứng trước danh từ] cái sau xảy ra theo ngay sau cái trước mà không bị gián đoạn: liên tiếp\n~ consecutive",
+      "key_distinction": "Liên tiếp không ngừng nghỉ hay ngắt quãng (thường dùng trong văn nói informal).",
+      "examples": [
+        "The team has had five straight wins."
+      ]
+    },
+    "sequential": {
+      "meaning": "theo thứ tự cụ thể cố định về thời gian hoặc địa điểm",
+      "key_distinction": "Theo trình tự, thứ tự logic cố định (thường dùng trong bối cảnh kĩ thuật, học thuật).",
+      "examples": [
+        "sequential data processing",
+        "In this way the children are introduced to sequential learning.",
+        "The organization of the chapters is sequential."
+      ]
+    },
+    "succeeding": {
+      "meaning": "[chỉ đứng trước danh từ] theo sau thứ khác: tiếp theo\n>< preceding /prɪˈsiːdɪŋ/ (adj)",
+      "key_distinction": "Đến sau, tiếp nối ngay sau một cái khác.",
+      "examples": [
+        "succeeding generations",
+        "She became more well-known with each succeeding novel."
+      ]
+    },
+    "continuous": {
+      "meaning": "xảy ra hoặc tồn tại trong một khoảng thời gian mà không bị làm gián đoạn: liên tục, không dừng",
+      "key_distinction": "Liên tục, không hề bị gián đoạn hay ngắt quãng dù chỉ một khoảnh khắc.",
+      "examples": [
+        "The rain has been almost continuous for weeks.",
+        "I could hear a faint continuous noise.",
+        "It was the longest period of continuous growth in the company's history."
+      ]
+    }
+  }
+}

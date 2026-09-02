@@ -1,0 +1,38 @@
+{
+  "group_title": "Nói",
+  "target_words": {
+    "speak": {
+      "meaning": "thường được dùng trong bối cảnh trang trọng và lịch sự (ví dụ trong công việc, bài giảng, thuyết trình), dùng khi nói chuyện với người bạn không biết rõ về họ, thường là nói vì một mục đích nào đó hoặc nói họ làm gì (tập trung vào người nói). Ngoài ra khi nhắc về khả năng nói được ngôn ngữ nào đó",
+      "key_distinction": "Dùng trong bối cảnh trang trọng, phát biểu/thuyết trình, nói một chiều hoặc chỉ khả năng sử dụng ngôn ngữ.",
+      "examples": [
+        "I've spoken to Ed about it and he's promised not to let it happen again.",
+        "Dr Graham Foster will speak about the history of the region."
+      ]
+    },
+    "talk": {
+      "meaning": "được dùng trong tình huống không trang trọng/ thân mật, thường là bạn bè, cha mẹ để thể hiện sự thân thiện hoặc xin lời khuyên, trao đổi thông tin, cảm xúc..., (tập trung vào người nói và có ít nhất một người nghe)",
+      "key_distinction": "Dùng trong bối cảnh thân mật, trò chuyện trao đổi qua lại hai chiều giữa hai hoặc nhiều người.",
+      "examples": [
+        "Have you talked to your parents about the problems you're having?",
+        "I was talking to Richard Moss the other day about the golf club."
+      ]
+    },
+    "say": {
+      "meaning": "không bao giờ đứng trước tân ngữ chỉ người, hay dùng để tường thuật lại lời nói của ai đó, tập trung vào từ ngữ cụ thể người nói hơn",
+      "key_distinction": "Tập trung vào nội dung/từ ngữ cụ thể được thốt ra; không đứng trực tiếp trước tân ngữ chỉ người.",
+      "examples": [
+        "Anne said, 'I'm tired.'",
+        "They asked if I was looking for work and I said yes."
+      ]
+    },
+    "tell": {
+      "meaning": "thường có tân ngữ là người đi sau, tập trung vào nội dung và thông điệp người nói muốn truyền tải hơn là tập trung vào cụ thể từng từ như \"say\". Ngoài ra còn dùng với nghĩa kể (câu chuyện, sự thật, lời nói dối, nói đùa) với tân ngữ là cái gì đó đi sau, và đặc biệt còn dùng để thuật lại lời chỉ dẫn, mệnh lệnh từ ai đó",
+      "key_distinction": "Bắt buộc/thường có tân ngữ chỉ người đi ngay sau; dùng để kể chuyện, truyền tải thông điệp hoặc ra lệnh/chỉ dẫn.",
+      "examples": [
+        "Have you told him the news yet?",
+        "You should never tell a lie.",
+        "They told her to wait till the doctor arrived."
+      ]
+    }
+  }
+}

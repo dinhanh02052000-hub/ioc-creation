@@ -1,0 +1,68 @@
+{
+  "group_title": "TRÁCH CỨ, CHỈ TRÍCH",
+  "target_words": {
+    "censure": {
+      "meaning": "khiển trách, phê bình công khai",
+      "key_distinction": "[sắc thái trang trọng; thường dùng ở dạng bị động] công khai chỉ trích/phê bình/khiển trách ai đó vì điều gì đó mà họ đã làm ~ rebuke",
+      "examples": [
+        "The Prime Minister was censured for his lack of decisiveness during the crisis."
+      ]
+    },
+    "reprimand": {
+      "meaning": "khiển trách chính thức",
+      "key_distinction": "[sắc thái trang trọng] nói với ai đó một cách chính thức rằng điều mà họ đã làm là sai trái hoặc trái pháp luật và bạn không tán thành với hành động/việc làm đó ~ rebuke",
+      "examples": [
+        "She was reprimanded by her teacher for biting another girl."
+      ]
+    },
+    "scold": {
+      "meaning": "rầy la, mắng chửi",
+      "key_distinction": "rầy la/la mắng/quát mắng ai đó (thường là trẻ con) vì đã làm sai điều gì scold somebody = tell somebody off",
+      "examples": [
+        "Our parents are very strict, and we are frequently scolded for our bad behaviors."
+      ]
+    },
+    "reproach": {
+      "meaning": "trách mắng, chỉ trích vì thất vọng",
+      "key_distinction": "[sắc thái trang trọng] khiển trách/chỉ trích/phê bình ai đó vì một việc mà họ đã làm hoặc không làm và bởi vì bạn thất vọng về họ",
+      "examples": [
+        "His mother reproached him for not eating all his dinner."
+      ]
+    },
+    "rebuke": {
+      "meaning": "khiển trách, quở trách gay gắt",
+      "key_distinction": "[sắc thái trang trọng; thường dùng ở dạng bị động] nói với ai đó một cách hay gắt bởi vì họ đã làm một điều gì đó sai trái: khiển trách, quở trách ~ reprimand",
+      "examples": [
+        "She was rebuked by her manager for being late."
+      ]
+    },
+    "berate": {
+      "meaning": "mắng mỏ, nhiếc móc giận dữ",
+      "key_distinction": "[sắc thái trang trọng] chỉ trích hoặc nói với ai một cách giận dữ bởi vì bạn không tán thành với việc mà họ đã làm: mắng mỏ, nhiếc móc",
+      "examples": [
+        "Sophia berated herself for being a bad mother."
+      ]
+    },
+    "chide": {
+      "meaning": "chỉ trích, mắng chửi nhẹ nhàng/nhắc nhở",
+      "key_distinction": "chỉ trích hoặc khiển trách ai đó bởi vì họ đã làm điều gì sai; mắng chửi ai vì họ đã cư xử tệ",
+      "examples": [
+        "She chided him for his bad manners."
+      ]
+    },
+    "criticize": {
+      "meaning": "phê bình, chỉ trích",
+      "key_distinction": "[nội động từ, ngoại động từ] nói rằng bạn nghĩ ai đó/điều gì đó là xấu; nói thứ gì đó về ai/điều gì mà bạn không thích hoặc nghĩ là sai: phê bình, chỉ trích",
+      "examples": [
+        "The government is being widely criticized in the media for failing to limit air pollution."
+      ]
+    },
+    "condemn": {
+      "meaning": "lên án, quy tội",
+      "key_distinction": "Chỉ trích, chê trách, lên án, quy tội (về mặt đạo đức)",
+      "examples": [
+        "The terrorist action has been condemned as an act of barbarism and cowardice."
+      ]
+    }
+  }
+}

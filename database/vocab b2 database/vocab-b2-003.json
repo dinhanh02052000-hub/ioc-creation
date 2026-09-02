@@ -1,0 +1,37 @@
+{
+  "group_title": "Bao gồm, gồm có",
+  "target_words": {
+    "include": {
+      "meaning": "Bao gồm.",
+      "key_distinction": "Đứng sau include chúng ta không cần liệt kê đầy đủ các thành phần của cái toàn thể.",
+      "examples": [
+        "The tour included a visit to the Science Museum.",
+        "The guide includes general information for instructors as well as answers to specific questions."
+      ]
+    },
+    "contain": {
+      "meaning": "Chứa đựng cái gì đó bên trong.",
+      "key_distinction": "Nhấn mạnh vào việc có chứa đựng vật chất hoặc thông tin bên trong một vật chứa/tài liệu.",
+      "examples": [
+        "Whisky contains a large percentage of alcohol.",
+        "The documents contain sensitive information."
+      ]
+    },
+    "consist of": {
+      "meaning": "Gồm có, được cấu tạo nên từ.",
+      "key_distinction": "Sau đó liệt kê các thành phần tạo nên nó (không chia bị động).",
+      "examples": [
+        "The team consists of four European and two Americans.",
+        "My role seemed to consist of standing and smiling at people."
+      ]
+    },
+    "comprise": {
+      "meaning": "(= be comprised of) Bao gồm, được cấu thành từ.",
+      "key_distinction": "Được sử dụng với nghĩa giống như \"consist of\" nhưng trong văn cảnh trang trọng.",
+      "examples": [
+        "Water is composed of hydrogen and oxygen.",
+        "The collection comprises 327 paintings."
+      ]
+    }
+  }
+}

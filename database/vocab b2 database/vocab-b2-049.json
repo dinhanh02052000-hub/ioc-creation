@@ -1,0 +1,35 @@
+{
+  "group_title": "Hợp",
+  "target_words": {
+    "suit": {
+      "meaning": "phù hợp với (tốt cho) một người, tình huống hoặc dịp cụ thể; (màu sắc, quần áo...,) hợp phong cách, kiểu dáng của người mặc, khiến họ trông hấp dẫn hơn",
+      "key_distinction": "Hợp với hoàn cảnh, điều kiện hoặc hợp phong cách/ngoại hình của người mặc.",
+      "examples": [
+        "A lot of corn is grown in this area - the soil seems to suit it very well.",
+        "You should wear more red - it suits you."
+      ]
+    },
+    "match": {
+      "meaning": "hợp trong sự kết hợp với cái gì, sóng đôi được với cái gì (trong sự kết hợp hay trang trí vì chúng có cùng màu sắc, hoa văn hoặc kiểu dáng và do đó trông hấp dẫn với nhau)",
+      "key_distinction": "Hai hay nhiều vật hợp nhau về màu sắc, kiểu dáng, hoa văn khi đi cùng nhau.",
+      "examples": [
+        "Her dark hair matched the colour of her eyes."
+      ]
+    },
+    "fit": {
+      "meaning": "vừa vặn về kích cỡ và hình dáng; thích hợp, thích đáng cho cái gì",
+      "key_distinction": "Vừa vặn về kích thước, cỡ (quần áo, giày dép) hoặc phù hợp về phẩm chất/năng lực.",
+      "examples": [
+        "I tried the dress on but it didn't fit.",
+        "With her qualifications, she should fit the job perfectly."
+      ]
+    },
+    "go with": {
+      "meaning": "hợp khi kết hợp với cái gì đó song song với nhau, (đồng nghĩa với 'match')",
+      "key_distinction": "Đồng nghĩa với match; dùng để nói hai vật đi kèm và ăn ý với nhau về mặt thẩm mỹ.",
+      "examples": [
+        "That tie goes well with that shirt."
+      ]
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "group_title": "SỰ SUY THOÁI, KHỦNG HOÀNG",
+  "target_words": {
+    "downturn": {
+      "meaning": "nếu một nền kinh tế/công ty/ngành công nghiệp đang trải qua downturn thì điều đó có nghĩa là nó trở nên yếu hơn hoặc kém thành công hơn trước đây: sự suy sụp (trong hoạt động kinh tế); sự sụt giảm về hoạt động kinh doanh: sự đi xuống\n>< upturn /ˈʌptɜːn/ (n)",
+      "key_distinction": "Sự đi xuống, suy giảm trong hoạt động kinh doanh, thương mại hoặc nền kinh tế.",
+      "examples": [
+        "They have predicted a severe economic downturn.",
+        "a downturn in sales/trade/business"
+      ]
+    },
+    "recession": {
+      "meaning": "một thời kỳ khó khăn cho nền kinh tế của một đất nước khi mà có ít hoạt động giao thương và hoạt động công nghiệp hơn bình thường và có nhiều người thất nghiệp hơn\n* depression nghiêm trọng hơn recession",
+      "key_distinction": "Sự suy thoái kinh tế tạm thời của một quốc gia, kéo theo giảm thương mại và tăng thất nghiệp.",
+      "examples": [
+        "The recession caused sales to drop off.",
+        "When your neighbour loses their job, that's a recession. When you lose your job, that's a depression!"
+      ]
+    },
+    "depression": {
+      "meaning": "thời kỳ mà có rất ít hoạt động kinh tế và hậu quả là có rất nhiều người nghèo hoặc không có việc làm: tình trạng đình trệ, sự suy thoái",
+      "key_distinction": "Cuộc đại suy thoái kinh tế nghiêm trọng và kéo dài hơn nhiều so với recession.",
+      "examples": [
+        "He never forgot the hardships he witnessed during the Great Depression of the 1930s."
+      ]
+    },
+    "crisis": {
+      "meaning": "thời gian của sự nguy hiểm, khó khăn hoặc sự nghi ngại khi mà các vấn đề cần được giải quyết một cách nhanh chóng hoặc các quyết định quan trọng cần được đưa ra để tình huống không trở nên xấu đi hoặc nguy hiểm hơn: sự khủng hoảng\nthời gian khi mà một vấn đề/một tình huống tồi tệ/bệnh tật ở thời điểm xấu nhất",
+      "key_distinction": "Cơn khủng hoảng, giai đoạn cực kỳ nguy hiểm, khó khăn hoặc bước ngoặt quyết định.",
+      "examples": [
+        "The car industry is now in crisis.",
+        "an expert in crisis management",
+        "There seems to be a crisis of confidence in the economy.",
+        "The fever has passed its crisis."
+      ]
+    },
+    "stagnation": {
+      "meaning": "một tình huống mà mọi thứ vẫn giữ nguyên, không có sự tăng trưởng, phát triển hay tiến bộ: sự đình trệ",
+      "key_distinction": "Tình trạng đình trệ, giậm chân tại chỗ, không phát triển hay tăng trưởng.",
+      "examples": [
+        "a period of economic stagnation"
+      ]
+    },
+    "calamity": {
+      "meaning": "một sự kiện tồi tệ và không mong đợi gây ra rất nhiều tổn thất và sự đau khổ cho cuộc sống của con người hoặc tài sản\n~ disaster /dɪˈzɑːstə(r)/ (n)",
+      "key_distinction": "Thảm họa, tai họa bất ngờ gây thiệt hại lớn và đau khổ nặng nề.",
+      "examples": [
+        "It will be a calamity for farmers if the crops fail again."
+      ]
+    }
+  }
+}

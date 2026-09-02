@@ -1,0 +1,37 @@
+{
+  "group_title": "ĐỐI THỦ",
+  "target_words": {
+    "opponent": {
+      "meaning": "một người mà bạn đang cố đánh bại trong một cuộc thi/sự kiện thể thao/trò chơi/đánh nhau/tranh luận/...\n~ adversary /ˈædvəsəri/ (n)",
+      "key_distinction": "Đối thủ trực tiếp trong một cuộc thi đấu, trận tranh luận, trò chơi hoặc cuộc đối đầu cụ thể.",
+      "examples": [
+        "He is admired even by his political opponents/adversaries."
+      ]
+    },
+    "rival": {
+      "meaning": "một người/nhóm người/tổ chức/công ty/... cạnh tranh lẫn nhau trong thể thao/kinh doanh/...\n~ competitor /kəmˈpetɪtə(r)/ (n)",
+      "key_distinction": "Đối thủ cạnh tranh lâu dài, ngang tài ngang sức trong cùng lĩnh vực (kinh doanh, thể thao, thương hiệu).",
+      "examples": [
+        "He finished 39 seconds ahead of his main rival.",
+        "This latest design has no rivals/is without rival (= it is easily the best design available)."
+      ]
+    },
+    "enemy": {
+      "meaning": "một người phản đối hoặc chống lại ai/điều gì\nmột quốc gia hoặc một nhóm đang có chiến tranh với một quốc gia/nhóm khác",
+      "key_distinction": "Kẻ thù, thù địch có tư tưởng chống đối gay gắt hoặc lực lượng đối phương trong chiến tranh.",
+      "examples": [
+        "It is rare to find a prominent politician with few political enemies.",
+        "The lion is the zebra's chief enemy.",
+        "an attack by enemy aircraft"
+      ]
+    },
+    "contender": {
+      "meaning": "một người/đội đang có cơ hội dành chiến thắng trong một cuộc thi hoặc đạt được một vị trí lãnh đạo",
+      "key_distinction": "Ứng cử viên sáng giá, đối thủ có tiềm năng tranh chấp chức vô địch hoặc vị trí cao.",
+      "examples": [
+        "a strong contender for the gold medal",
+        "He is a top contender for Senate majority leader."
+      ]
+    }
+  }
+}

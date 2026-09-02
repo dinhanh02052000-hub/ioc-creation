@@ -1,0 +1,41 @@
+{
+  "group_title": "Chia tách",
+  "target_words": {
+    "divide": {
+      "meaning": "Chia ra thành từng phần nhỏ hơn hoặc làm cho cái gì chia ra thành các phần nhỏ hơn (= split up); phân cắt cái gì ra thành nhiều phần và chia cho mỗi người (= share); chia và sử dụng thời gian/năng lượng/... cho các hoạt động khác nhau (= split); [nội động từ] (thường thuộc sông) tách ra thành hai hoặc nhiều hơn hai phần và đi theo các hướng khác nhau (= fork); [trang trọng] divide A from B: chia cách hai người/vật; ranh giới hoặc chướng ngại tách/phân cách hai con người hoặc hai thứ (= separate).",
+      "key_distinction": "Vừa là nội động từ vừa là ngoại động từ. Dùng phổ biến để chỉ việc chia nhỏ, phân chia tài sản/thời gian, hoặc các ranh giới tự nhiên/vật lý chia cách các đối tượng.",
+      "examples": [
+        "The cells began to divide rapidly.",
+        "I divided the class into four groups.",
+        "The money was divided equally among his sons.",
+        "He divides his energies between politics and business.",
+        "The river divides into several channels.",
+        "Can it ever be right to divide a mother from her child?",
+        "The English Channel divides England from France."
+      ]
+    },
+    "split": {
+      "meaning": "[Nội động từ] tách ra thành hai hoặc nhiều phần, [ngoại động từ] tách cái gì ra thành hai hoặc nhiều phần; [ngoại động từ] chia cái gì ra thành hai hoặc nhiều phần và chia sẻ giữa những người khác nhau hoặc dùng các phần đó cho các hoạt động khác nhau; [nội động từ, ngoại động từ] chia rẽ hoặc làm chia rẽ một nhóm người thành các nhóm nhỏ hơn vì họ có những quan điểm khác nhau (= divide).",
+      "key_distinction": "Nhấn mạnh việc chẻ, tách đôi/tách nhỏ một vật (thường dùng lực hoặc vết nứt), chia sẻ chi phí/thu nhập, hoặc sự bất đồng gây chia rẽ phe phái.",
+      "examples": [
+        "Split the coconut in half.",
+        "Each chapter is split into two parts.",
+        "She split the money she won with her brother.",
+        "We share a house and split all the bills.",
+        "His time is split between the London and Paris offices.",
+        "The party is deeply split/divided over this issue."
+      ]
+    },
+    "separate": {
+      "meaning": "[Nội động từ] chia ra thành các phần/nhóm khác nhau: tách rời ra, [ngoại động từ] chia các thứ ra thành các phần/nhóm khác nhau: làm tách rời ra; [nội động từ] tách ra, [ngoại động từ] tách ai/thứ gì; [ngoại động từ] ở giữa hai người/khu vực/đất nước/... nên họ/chúng không thể chạm vào nhau hoặc kết nối với nhau (= divide).",
+      "key_distinction": "Vừa là nội động từ vừa là ngoại động từ. Nhấn mạnh việc phân chia thành các nhóm riêng biệt, can ngăn/ngăn cách địa lý hoặc làm cho hai đối tượng rời nhau ra.",
+      "examples": [
+        "Stir the sauce constantly so that it does not separate.",
+        "Separate the eggs (= separate the yolk from the white).",
+        "South America and Africa separated 100 million years ago.",
+        "Police tried to separate the two men who were fighting.",
+        "A thousand kilometres separate the two cities."
+      ]
+    }
+  }
+}

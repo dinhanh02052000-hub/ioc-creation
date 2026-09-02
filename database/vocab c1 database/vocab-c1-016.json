@@ -1,0 +1,31 @@
+{
+  "group_title": "CƠ BẢN",
+  "target_words": {
+    "elemental": {
+      "meaning": "[thường đứng trước danh từ] [trang trọng] đơn giản, cơ bản, và quan trọng: căn bản, cơ bản",
+      "key_distinction": "Cơ bản, tự nhiên và quan trọng cốt lõi (văn phong trang trọng).",
+      "examples": [
+        "Love and fear are two of the most elemental human emotions."
+      ]
+    },
+    "fundamental": {
+      "meaning": "rất quan trọng; ảnh hưởng những phần trọng tâm nhất và quan trọng nhất của thứ gì: cơ bản ~ basic\ntrung tâm; rất cần thiết và quan trọng; hình thành nền tảng cần thiết của thứ gì: cơ sở, chủ yếu ~ essential /ɪˈsenʃl/ (adj)",
+      "key_distinction": "Mang tính nền tảng, gốc rễ, ảnh hưởng trực tiếp đến toàn bộ hệ thống hoặc sự việc.",
+      "examples": [
+        "the fundamental principles of scientific method",
+        "Hard work is fundamental to success."
+      ]
+    },
+    "basic": {
+      "meaning": "hình thành phần thiết yếu nhất và những thứ khác phát triển từ đó: cơ bản, cơ sở ~ fundamental\nthuộc loại đơn giản nhất hoặc ở mức độ đơn giản nhất: cơ bản\n[chỉ đứng trước danh từ] cần thiết và quan trọng đối với tất cả mọi người: cơ bản",
+      "key_distinction": "Đơn giản nhất, sơ cấp nhất hoặc là nhu cầu thiết yếu tối thiểu làm cơ sở cho mọi thứ khác.",
+      "examples": [
+        "basic life skills",
+        "Drums are basic to African music.",
+        "My knowledge of French is pretty basic.",
+        "basic needs like food, shelter, and security",
+        "basic human rights"
+      ]
+    }
+  }
+}

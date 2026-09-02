@@ -1,0 +1,44 @@
+{
+  "group_title": "Già, cũ",
+  "target_words": {
+    "old": {
+      "meaning": "sống hoặc tồn tại rất nhiều năm; cũ (dùng trước danh từ); bao nhiêu tuổi",
+      "key_distinction": "Từ phổ thông dùng để chỉ người già, đồ vật cũ hoặc hỏi/nói về số tuổi.",
+      "examples": [
+        "They have a beautiful old farm house in the country. Their great grandfather built it.",
+        "He bought me a new car to replace my old one.",
+        "Pippa is five years old now."
+      ]
+    },
+    "elderly": {
+      "meaning": "sống rất nhiều năm (thay thế cho từ old với sắc thái trang trọng và lịch sự hơn)",
+      "key_distinction": "Dùng để chỉ người cao tuổi với thái độ lịch sự, trang trọng hơn 'old'.",
+      "examples": [
+        "The local council provides services to care for elderly people living alone."
+      ]
+    },
+    "aged": {
+      "meaning": "bao nhiêu tuổi (không dùng trước danh từ); rất già/cũ (đứng trước danh từ, mang sắc thái trang trọng)",
+      "key_distinction": "Dùng sau danh từ để nói tuổi cụ thể, hoặc dùng trước danh từ để chỉ sự rất già/cũ mang nét trang trọng.",
+      "examples": [
+        "We're actively recruiting full-time volunteers aged between 25 and 40.",
+        "My wife and I have a place up in the Lake District where we go walking with our aged dog."
+      ]
+    },
+    "ancient": {
+      "meaning": "thuộc về một thời kỳ lịch sử đã tồn tại hàng nghìn năm trong quá quá khứ; đã tồn tại trong một khoảng thời gian dài",
+      "key_distinction": "Chỉ những thứ cổ xưa, thuộc về lịch sử từ hàng ngàn năm trước hoặc cực kỳ lâu đời.",
+      "examples": [
+        "According to the newspaper, the coin belonged to an ancient civilization that flourished in Al-Jouf.",
+        "The area is still covered by huge ancient forests."
+      ]
+    },
+    "antique": {
+      "meaning": "(dùng để miêu tả đồ đạc, trang sức,...) cổ và thường có giá trị",
+      "key_distinction": "Chỉ các món đồ vật, nội thất, trang sức thuộc về thời kỳ trước và có giá trị cao.",
+      "examples": [
+        "He has a superb collection of antique clocks. It must be worth ten million pounds."
+      ]
+    }
+  }
+}

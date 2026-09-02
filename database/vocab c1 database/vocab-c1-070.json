@@ -1,0 +1,42 @@
+{
+  "group_title": "NGƯỜI LÍNH",
+  "target_words": {
+    "combatant": {
+      "meaning": "một người/một nhóm người/một quốc gia tham gia chiến đấu trong một cuộc chiến tranh hoặc một trận chiến",
+      "key_distinction": "Người/phe tham gia chiến đấu trong 1 cuộc chiến, nhấn mạnh vai trò tham chiến hơn là nghề nghiệp.",
+      "examples": [
+        "He was involved in the war, but not as a combatant."
+      ]
+    },
+    "soldier": {
+      "meaning": "một thành viên của quân đội, đặc biệt là một người không phải là sĩ quan: người lính",
+      "key_distinction": "Từ trung tính nhất, chỉ 1 thành viên quân đội (thường không phải sĩ quan).",
+      "examples": [
+        "They visited the graves of US soldiers killed in the First World War."
+      ]
+    },
+    "fighter": {
+      "meaning": "người chiến đấu / một người không từ bỏ hy vọng hay thừa nhận rằng họ đã bị đánh bại",
+      "key_distinction": "Người chiến đấu nói chung (không nhất thiết trong quân đội chính quy), hoặc nghĩa bóng chỉ người kiên cường.",
+      "examples": [
+        "Rebel fighters still control most of the city.",
+        "We're brought up to think of boxing as a fair contest because the fighters weigh the same.",
+        "Jane is a true fighter and she's resolved to beat this disease."
+      ]
+    },
+    "warrior": {
+      "meaning": "một người chiến đấu trong một trận chiến hoặc một cuộc chiến tranh (đặc biệt là trong quá khứ): chiến binh",
+      "key_distinction": "Chiến binh, thường mang sắc thái lịch sử/trang trọng, gợi hình ảnh chiến binh thời xưa.",
+      "examples": [
+        "the last of the ancient warriors"
+      ]
+    },
+    "trooper": {
+      "meaning": "một người lính thuộc cấp bậc thấp trong quân đội, người mà sử dụng xe bọc thép hoặc ngựa: lính thiết giáp hoặc kỵ binh",
+      "key_distinction": "Lính cấp thấp dùng ngựa/xe bọc thép (kỵ binh, thiết giáp), phạm vi hẹp và cụ thể hơn 'soldier'.",
+      "examples": [
+        "He was a cavalry trooper before being injured at the battle of Corunna."
+      ]
+    }
+  }
+}

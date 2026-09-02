@@ -1,0 +1,28 @@
+{
+  "group_title": "Lịch sự",
+  "target_words": {
+    "politely": {
+      "meaning": "thể hiện cách cư xử tốt và sự tôn trọng đối với cảm giác của những người khác: một cách lịch sự; đúng về quy tắc xã hội nhưng không phải luôn luôn chân thành",
+      "key_distinction": "Cư xử đúng mực, có văn hóa theo chuẩn mực xã hội, đôi khi mang tính hình thức/sáo rỗng.",
+      "examples": [
+        "The receptionist smiled politely.",
+        "The boring speech finished, and everyone clapped politely."
+      ]
+    },
+    "gracefully": {
+      "meaning": "một cách lịch sự và tử tế, đặc biệt là trong một tình huống khó khăn",
+      "key_distinction": "Cư xử lịch thiệp, duyên dáng và đẹp đẽ, đặc biệt là biết ứng xử tử tế khi đối mặt với thất bại hay tình huống khó khăn.",
+      "examples": [
+        "I think we should just give in gracefully."
+      ]
+    },
+    "decently": {
+      "meaning": "theo cách mà được chấp nhận trong một tình huống cụ thể; theo cái cách mà không gây sốc hoặc gây ngượng ngùng",
+      "key_distinction": "Ăn mặc hoặc hành xử đứng đắn, kín đáo, phù hợp chuẩn mực chấp nhận được.",
+      "examples": [
+        "Candidates need to be decently dressed to try and get a job.",
+        "She must dress decently and not flash too much flesh."
+      ]
+    }
+  }
+}

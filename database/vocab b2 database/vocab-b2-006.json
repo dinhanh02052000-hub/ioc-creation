@@ -1,0 +1,56 @@
+{
+  "group_title": "Bị thương, bị đau",
+  "target_words": {
+    "injure": {
+      "meaning": "Làm bị thương chính bản thân hoặc ai đó.",
+      "key_distinction": "Đặc biệt dùng trong trường hợp gặp tai nạn.",
+      "examples": [
+        "He injured his knee playing badminton."
+      ]
+    },
+    "wound": {
+      "meaning": "Làm bị thương một bộ phận nào đó của cơ thể, đặc biệt là do vũ khí.",
+      "key_distinction": "Thường dùng ở dạng bị động; nói về những người bị thương trong chiến tranh hoặc những vụ tấn công ảnh hưởng đến rất nhiều người.",
+      "examples": [
+        "About 50 people were seriously wounded in the attack."
+      ]
+    },
+    "hurt": {
+      "meaning": "Gây ra sự đau đớn về thể xác hoặc làm ai đó bị thương; cảm thấy đau; gây ra nỗi đau về tinh thần.",
+      "key_distinction": "Dùng linh hoạt cả nội động từ và ngoại động từ; bao hàm cả đau đớn thể xác lẫn tổn thương tinh thần.",
+      "examples": [
+        "Stop it! You're hurting me.",
+        "Ouch! That hurt!",
+        "Christine criticized my writing quite severely and that hurt."
+      ]
+    },
+    "pain": {
+      "meaning": "Làm cho ai đó cảm thấy buồn/không vui/lo lắng/giận dữ.",
+      "key_distinction": "Không dùng trong các thì tiếp diễn; mang sắc thái trang trọng, tập trung vào nỗi đau tinh thần/sự trăn trở.",
+      "examples": [
+        "It pains me to see animals being mistreated."
+      ]
+    },
+    "sprain": {
+      "meaning": "Trật khớp, bong gân.",
+      "key_distinction": "Làm bị thương một khớp xương (đặc biệt là cổ tay, mắt cá chân, hoặc đầu gối) bằng cách vặn nó một cách bất ngờ, gây ra đau đớn và sưng phù.",
+      "examples": [
+        "Jack sprained his knee while he was playing basketball."
+      ]
+    },
+    "scar": {
+      "meaning": "Để lại sẹo.",
+      "key_distinction": "Thường dùng ở dạng bị động; chỉ một vết thương để lại sẹo sau khi nó đã lành.",
+      "examples": [
+        "His face was badly scarred."
+      ]
+    },
+    "ache": {
+      "meaning": "Cảm thấy một cơn đau dai dẳng nhưng không nghiêm trọng.",
+      "key_distinction": "Là nội động từ; chỉ cảm giác đau âm ỉ, kéo dài.",
+      "examples": [
+        "I'm aching all over."
+      ]
+    }
+  }
+}

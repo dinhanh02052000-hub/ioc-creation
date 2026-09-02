@@ -1,0 +1,20 @@
+{
+  "group_title": "Bóng",
+  "target_words": {
+    "shade": {
+      "meaning": "Một vùng tối và mát dưới một cái gì đó (ví dụ: một cái cây hoặc một toà nhà) vì ánh sáng mặt trời không thể chiếu tới được: bóng râm.",
+      "key_distinction": "Danh từ không đếm được [U]. Nhấn mạnh vào khoảng không gian che chắn ánh nắng, mang lại sự mát mẻ.",
+      "examples": [
+        "They were sitting under the shade of an umbrella."
+      ]
+    },
+    "shadow": {
+      "meaning": "Hình dạng của một con người/cái gì đó trên một bề mặt khi họ đứng/ở giữa ánh sáng và bề mặt: cái bóng; hoặc một vùng bóng tối mà ở đó khó có thể nhìn ra hoặc phân biệt được mọi thứ.",
+      "key_distinction": "Có thể là danh từ đếm được [C] (cái bóng có hình thù rõ rệt) hoặc không đếm được [U] (cũng có thể dùng dạng số nhiều 'shadows' để chỉ khu vực tối tăm, che khuất tầm nhìn).",
+      "examples": [
+        "The children were having fun, chasing each other's shadows.",
+        "She turned back, but she couldn't see him in the shadows."
+      ]
+    }
+  }
+}

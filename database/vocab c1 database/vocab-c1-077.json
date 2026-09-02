@@ -1,0 +1,49 @@
+{
+  "group_title": "NGUY HIỂM, MẠO HIỂM",
+  "target_words": {
+    "hazardous": {
+      "meaning": "nguy hiểm, đặc biệt là cho sức khỏe hoặc sự an toàn của con người",
+      "key_distinction": "~ perilous /'perələs/ (adj)",
+      "examples": [
+        "environmentally hazardous substances"
+      ]
+    },
+    "dangerous": {
+      "meaning": "có thể sẽ làm bị thương hoặc gây hại cho ai, hoặc làm hư hại hoặc phá huỷ cái gì / có thể sẽ gây ra vấn đề hoặc kết quả xấu",
+      "key_distinction": "~ risky /'riski/ (adj)",
+      "examples": [
+        "potentially dangerous levels of pesticides",
+        "Raising income tax is considered politically dangerous."
+      ]
+    },
+    "life-threatening": {
+      "meaning": "có thể sẽ giết chết ai đó",
+      "key_distinction": "Nguy hiểm ở mức có thể gây tử vong, cụ thể hơn 'dangerous' chung chung.",
+      "examples": [
+        "His heart condition is not life-threatening."
+      ]
+    },
+    "high-risk": {
+      "meaning": "[thường đứng trước danh từ] bao gồm rất nhiều sự nguy hiểm và khả năng bị thương/chết/hư hại/...",
+      "key_distinction": "Có xác suất cao gặp nguy hiểm/tổn hại, thường đứng trước danh từ mô tả đối tượng/tình huống.",
+      "examples": [
+        "high-risk patients = who are very likely to get a particular illness"
+      ]
+    },
+    "treacherous": {
+      "meaning": "nếu đất/đường/biển/sông... mà treacherous thì chúng đặc biệt nguy hiểm nhất là bởi vì điều kiện thời tiết xấu, tiềm ẩn nhiều rủi ro",
+      "key_distinction": "Nguy hiểm tiềm ẩn (thường do điều kiện tự nhiên như đường/biển/thời tiết) khiến người ta dễ mất cảnh giác.",
+      "examples": [
+        "Strong winds and loose rocks made climbing treacherous."
+      ]
+    },
+    "threatening": {
+      "meaning": "thể hiện mối đe dọa có thể gây hại hoặc mang tính bạo lực",
+      "key_distinction": "Mang tính đe doạ, thể hiện ý định gây hại hoặc bạo lực, khác với nguy hiểm khách quan của các từ trên.",
+      "examples": [
+        "threatening letters",
+        "threatening behaviour"
+      ]
+    }
+  }
+}

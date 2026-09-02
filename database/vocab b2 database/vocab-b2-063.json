@@ -1,0 +1,21 @@
+{
+  "group_title": "Nghe",
+  "target_words": {
+    "hear": {
+      "meaning": "[nội động từ] + [ngoại động từ] nghe, chỉ một quá trình tự nhiên của mỗi người, đón nhận những âm thanh nhờ thính giác một cách thụ động, không biết trước, không mong đợi hay không chú ý",
+      "key_distinction": "Lắng nghe một cách thụ động, âm thanh tự lọt vào tai nhờ khả năng thính giác mà không cần tập trung hay chuẩn bị trước.",
+      "examples": [
+        "Suddenly I heard a noise.",
+        "Did you hear the thunder last night?"
+      ]
+    },
+    "listen": {
+      "meaning": "[nội động từ] nghe một cách thể hiện tính chủ động, nghĩa là bạn muốn nghe cái gì đó, bạn lắng nghe nó với sự chú ý, tập trung",
+      "key_distinction": "Lắng nghe một cách chủ động, cố ý tập trung sự chú ý để tiếp nhận và hiểu âm thanh/lời nói.",
+      "examples": [
+        "I listened very carefully to what she said and wrote it all down.",
+        "George! Listen to me! I have something important to tell you."
+      ]
+    }
+  }
+}

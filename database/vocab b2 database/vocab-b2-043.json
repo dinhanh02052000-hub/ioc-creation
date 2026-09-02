@@ -1,0 +1,59 @@
+{
+  "group_title": "Giải trí",
+  "target_words": {
+    "leisure": {
+      "meaning": "thời gian mà bạn không làm việc hoặc học tập; thời gian rảnh; các hoạt động mà bạn thích làm trong thời gian rảnh",
+      "key_distinction": "Chỉ thời gian rảnh rỗi hoặc các hoạt động/ngành công nghiệp phục vụ cho thời gian rảnh.",
+      "examples": [
+        "Make the most of your leisure time!",
+        "leisure activities",
+        "leisure pursuits",
+        "public parks and leisure facilities",
+        "the leisure industry (= the business of providing leisure activities)"
+      ]
+    },
+    "recreation": {
+      "meaning": "[U] việc mà mọi người làm gì đó để giải trí/tiêu khiển khi họ không làm việc: sự giải trí, sự tiêu khiển; [C] một hoạt động cụ thể nào đó mà ai đó làm khi họ không làm việc: trò tiêu khiển, trò giải trí (~ hobby / ~ pastime)",
+      "key_distinction": "Chỉ hoạt động giải trí, trò tiêu khiển làm trong lúc rảnh rỗi để làm mới tinh thần/thể chất.",
+      "examples": [
+        "the increasing use of land for recreation",
+        "the need to improve facilities for leisure and recreation",
+        "His recreations include golf, football, and shooting."
+      ]
+    },
+    "entertainment": {
+      "meaning": "[U, C] phim/âm nhạc/kịch/chương trình tivi/các hoạt động biểu diễn ... được dùng để cho con người giải trí; một ví dụ của loại này; [U] hành động cung cấp cái gì cho ai để làm họ hứng thú hoặc làm họ cười",
+      "key_distinction": "Chỉ ngành/hình thức giải trí mang tính biểu diễn, nghệ thuật hoặc trình diễn phục vụ khán giả.",
+      "examples": [
+        "the entertainment industry/business",
+        "This film is good family entertainment.",
+        "Ladies and gentlemen, for your entertainment, we present Magic Man."
+      ]
+    },
+    "amusement": {
+      "meaning": "[C, U] trò chơi/hoạt động/... mang lại sự giải trí/tiêu khiển và niềm vui: trò giải trí, trò tiêu khiển; [U] việc được giải trí/tiêu khiển bởi điều gì/cái gì: sự giải trí",
+      "key_distinction": "Nhấn mạnh niềm vui, sự vui vẻ hoặc các trò chơi, công viên giải trí (amusements).",
+      "examples": [
+        "traditional seaside amusements including boats, go-karts and a funfair",
+        "She disapproved of popular amusements such as fairs.",
+        "What do you do for amusement around here?"
+      ]
+    },
+    "relaxation": {
+      "meaning": "[U, C] (rather formal) một cách để nghỉ ngơi hoặc tận hưởng, thời gian để dành cho việc nghỉ ngơi và tận hưởng (*cả recreation và relaxation đều dùng cho các hoạt động tiêu khiển/giải trí, cả thể chất và tinh thần. Nhưng relaxation thỉnh thoảng được sử dụng cho các hoạt động nhẹ nhàng hơn recreation)",
+      "key_distinction": "Nhấn mạnh sự thư giãn, nghỉ ngơi xua tan căng thẳng (thường nhẹ nhàng hơn recreation).",
+      "examples": [
+        "a chance for relaxation from work",
+        "I listen to music for relaxation."
+      ]
+    },
+    "diversion": {
+      "meaning": "[C] (rather formal) một hoạt động được thực hiện để giải trí, đặc biệt là bởi vì nó khiến bạn chuyển sự tập trung chú ý từ một thứ khác đến nó (~ distraction)",
+      "key_distinction": "Hoạt động giải trí giúp làm xao nhãng, đánh lạc hướng khỏi sự mệt mỏi, căng thẳng hoặc lo âu.",
+      "examples": [
+        "The city is full of diversions.",
+        "The party will make a pleasant diversion."
+      ]
+    }
+  }
+}

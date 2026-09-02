@@ -1,0 +1,37 @@
+{
+  "group_title": "NGƯỜI XEM",
+  "target_words": {
+    "spectator": {
+      "meaning": "người xem, khán giả, xem một hoạt động, đặc biệt là một sự kiện thể thao (trực tiếp), mà không tham gia vào",
+      "key_distinction": "Người xem trực tiếp 1 sự kiện, đặc biệt là thể thao, không tham gia vào.",
+      "examples": [
+        "They won 4-0 in front of over 40,000 cheering spectators.",
+        "This year's festival attracted 87 000 spectators."
+      ]
+    },
+    "audience": {
+      "meaning": "khán giả, nhóm người cùng nhau ở một nơi để xem hoặc nghe một vở kịch, bộ phim, ai đó đang nói, biểu diễn v.v.",
+      "key_distinction": "Nhóm người xem/nghe 1 buổi biểu diễn/bài nói cùng lúc, mang tính tập thể.",
+      "examples": [
+        "She lectures to audiences all over the world.",
+        "The secret to public speaking is to get the audience on your side."
+      ]
+    },
+    "viewer": {
+      "meaning": "người xem cái gì đó, đặc biệt dùng cho người xem truyền hình (tivi), hoặc video trên mạng",
+      "key_distinction": "Người xem qua màn hình (TV, video), khác với xem trực tiếp như spectator.",
+      "examples": [
+        "British television viewers saw him this week in a BBC documentary.",
+        "Millions of viewers will be glued to their sets for this match."
+      ]
+    },
+    "onlooker": {
+      "meaning": "người xem, nhân chứng, một người xem điều gì đó đang xảy ra nhưng không tham gia, liên quan vào nó",
+      "key_distinction": "Người tình cờ chứng kiến sự việc đang xảy ra (VD tai nạn), không chủ đích đến xem như spectator/audience.",
+      "examples": [
+        "A crowd of onlookers gathered at the scene of the crash.",
+        "By the time the ambulance arrived, a crowd of onlooker had gathered."
+      ]
+    }
+  }
+}

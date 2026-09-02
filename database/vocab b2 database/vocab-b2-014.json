@@ -1,0 +1,44 @@
+{
+  "group_title": "Cá nhân",
+  "target_words": {
+    "personal": {
+      "meaning": "Của ai đó chứ không thuộc về hay liên quan đến bất kỳ người nào khác; hoặc thuộc về cuộc sống cá nhân chứ không phải công việc (= private).",
+      "key_distinction": "Thường đứng trước danh từ. Nhấn mạnh tính riêng tư, trải nghiệm hoặc đời sống riêng của một cá nhân.",
+      "examples": [
+        "The novel was written from personal experience.",
+        "I try not to let work interfere with my personal life."
+      ]
+    },
+    "individual": {
+      "meaning": "Được coi là một cá thể/một cá nhân riêng biệt trong một nhóm vật/người; hoặc liên quan đến một con người, được thiết kế chỉ cho một người.",
+      "key_distinction": "Chỉ đứng trước danh từ. Nhấn mạnh sự riêng biệt của từng cá thể đơn lẻ trong tập thể.",
+      "examples": [
+        "They interviewed each individual member of the community.",
+        "Children get more individual attention in small classes."
+      ]
+    },
+    "private": {
+      "meaning": "Thuộc về hoặc chỉ dành cho một ai đó/một nhóm người chứ không dành cho công chúng/tập thể; nhằm mục đích hoặc chỉ bao gồm một cá nhân/nhóm cụ thể; hoặc không liên quan đến công việc, địa vị (= personal).",
+      "key_distinction": "Thường đứng trước danh từ. Nhấn mạnh quyền sở hữu riêng, sự riêng tư kín đáo, tránh xa công chúng.",
+      "examples": [
+        "The sign said, 'Private property. Keep out.'",
+        "We agreed to keep our arrangement private.",
+        "He is on a private trip to England now."
+      ]
+    },
+    "single": {
+      "meaning": "Dành cho một người dùng.",
+      "key_distinction": "Chỉ đứng trước danh từ. Nhằm mục đích được sử dụng bởi một người duy nhất (ví dụ: giường đơn).",
+      "examples": [
+        "A single bed"
+      ]
+    },
+    "separate": {
+      "meaning": "Riêng biệt, rời nhau.",
+      "key_distinction": "Độc lập, tồn tại riêng rẽ, không dính liền hay chung đụng với cái khác.",
+      "examples": [
+        "Jack and Sophia have begun to sleep in separate rooms."
+      ]
+    }
+  }
+}

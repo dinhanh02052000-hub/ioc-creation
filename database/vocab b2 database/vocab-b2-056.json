@@ -1,0 +1,29 @@
+{
+  "group_title": "Lão luyện, có tay nghề",
+  "target_words": {
+    "skillful": {
+      "meaning": "lành nghề, lão luyện trong các lĩnh vực nghề nghiệp, nhất là về những việc làm thủ công, đặc biệt nói về sự khéo léo, khéo tay, chân",
+      "key_distinction": "Nhấn mạnh sự khéo léo, khéo tay chân hoặc sự nhuần nhuyễn khi thực hiện các công việc thủ công, nghệ thuật.",
+      "examples": [
+        "He is a skillful and effortless mechanic.",
+        "After a few years, he became very skillful at drawing."
+      ]
+    },
+    "skilled": {
+      "meaning": "ngụ ý đến sự lành nghề, có kỹ xảo nhờ vào kinh nghiệm làm việc trong thời gian dài hoặc được đào tạo bài bản về một công việc nhất định, đặc biệt dùng cho kỹ sư, công nhân, người lao động",
+      "key_distinction": "Chỉ người có tay nghề, kỹ năng chuyên môn nhờ đào tạo bài bản hoặc có kinh nghiệm thực hành lâu năm (đặc biệt trong lao động, kỹ thuật).",
+      "examples": [
+        "The best performing companies had a higher proportion of skilled workers.",
+        "She is skilled in designing web sites."
+      ]
+    },
+    "expert": {
+      "meaning": "lão luyện, tinh thông chuyên môn, của nhà chuyên môn, của chuyên gia, đòi hỏi trình độ chuyên môn cao nhất",
+      "key_distinction": "Thể hiện mức độ tinh thông, uyên bác ở trình độ chuyên gia cao nhất trong một lĩnh vực.",
+      "examples": [
+        "Only a fully qualified doctor can give an expert opinion.",
+        "He has become expert on European politics."
+      ]
+    }
+  }
+}

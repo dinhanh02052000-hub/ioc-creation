@@ -1,0 +1,48 @@
+{
+  "group_title": "LUẬT, QUY TẮC",
+  "target_words": {
+    "rule": {
+      "meaning": "[C] (về một hoạt động/trò chơi) luật lệ hoặc nguyên tắc để hướng dẫn những điều được làm/không được làm trong một tình huống cụ thể hoặc khi chơi một trò chơi",
+      "key_distinction": "Luật lệ áp dụng cho 1 hoạt động/trò chơi cụ thể, hẹp hơn 'law' của cả xã hội.",
+      "examples": [
+        "According to the rules of the game, you have to miss a turn."
+      ]
+    },
+    "law": {
+      "meaning": "luật/hệ thống luật được đề ra để vận hành một xã hội/đất nước",
+      "key_distinction": "Hệ thống luật chính thức, mang tính cưỡng chế, do nhà nước ban hành cho cả xã hội/đất nước.",
+      "examples": [
+        "There are laws against drinking in the street."
+      ]
+    },
+    "norm": {
+      "meaning": "những tiêu chuẩn/quy phạm về hành vi mang tính đặc trưng hoặc được chấp nhận trong một nhóm hoặc một xã hội cụ thể",
+      "key_distinction": "Chuẩn mực hành vi được xã hội/nhóm ngầm hiểu và chấp nhận, không mang tính cưỡng chế pháp lý.",
+      "examples": [
+        "She considers people to be products of the values and norms of the society they live in."
+      ]
+    },
+    "regulation": {
+      "meaning": "[C, thường ở dạng số nhiều] một quy định/điều lệ/quy tắc được đưa ra bởi chính phủ hoặc một cơ quan chức năng nào đó",
+      "key_distinction": "Quy định cụ thể do 1 cơ quan/chính phủ ban hành để quản lý 1 lĩnh vực, thường ở số nhiều.",
+      "examples": [
+        "The government is under pressure to relax censorship regulations."
+      ]
+    },
+    "etiquette": {
+      "meaning": "[U] những nguyên tắc về những hành vi đúng đắn hoặc lịch sự giữa các thành viên của một ngành nghề cụ thể hoặc một khía cạnh của một hành vi: phép xã giao, quy ước, nghi lễ, nghi thức",
+      "key_distinction": "Phép xã giao, quy tắc ứng xử lịch sự trong 1 ngành nghề hoặc bối cảnh xã hội cụ thể.",
+      "examples": [
+        "legal etiquette",
+        "How good is your email etiquette?"
+      ]
+    },
+    "principle": {
+      "meaning": "nguyên tắc đạo đức/phép tắc/phương châm xử thế/niềm tin chi phối các hành động của một ai đó",
+      "key_distinction": "Nguyên tắc đạo đức cá nhân chi phối hành động, gắn với niềm tin hơn là quy định bên ngoài.",
+      "examples": [
+        "I refuse to lie about it; it's against my principles."
+      ]
+    }
+  }
+}

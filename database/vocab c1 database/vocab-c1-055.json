@@ -1,0 +1,26 @@
+{
+  "group_title": "LÂY NHIỄM, TRUYỀN NHIỄM",
+  "target_words": {
+    "contagious": {
+      "meaning": "là những bệnh truyền nhiễm lây lan từ người này sang người khác do tiếp xúc (trực tiếp hoặc gián tiếp) với người hay vật bị bệnh",
+      "key_distinction": "Lây nhiễm qua tiếp xúc trực tiếp hoặc gián tiếp giữa người/vật với nhau.",
+      "examples": [
+        "The infection is highly contagious, so don't let anyone else use your towel."
+      ]
+    },
+    "infectious": {
+      "meaning": "bệnh truyền nhiễm những tác nhân gây bệnh là do các vi sinh vật, ngoài ra còn dùng với nghĩa bóng ý chỉ đến cảm xúc, tâm trạng có tác động lên người khác có mặt ở đó và khiến họ làm theo",
+      "key_distinction": "Lây nhiễm do vi sinh vật (mầm bệnh) hoặc lây lan cảm xúc/nụ cười (nghĩa bóng).",
+      "examples": [
+        "The animals were still infectious when they arrived."
+      ]
+    },
+    "catching": {
+      "meaning": "truyền nhiễm, lây lan\n~ infectious (giống cả nghĩa đen và nghĩa bóng nhưng không đứng trước danh từ)",
+      "key_distinction": "Dễ lây, dễ truyền sang người khác (dùng trong văn nói, không đứng trước danh từ).",
+      "examples": [
+        "There are those who think eczema is catching."
+      ]
+    }
+  }
+}

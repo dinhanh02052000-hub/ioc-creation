@@ -1,0 +1,45 @@
+{
+  "group_title": "Giống nhau",
+  "target_words": {
+    "same": {
+      "meaning": "giống nhau hoàn toàn, không khác một tí nào (khi so sánh người hay vật với nhau ta dùng \"the same\")",
+      "key_distinction": "Cùng một đối tượng duy nhất hoặc y hệt nhau hoàn toàn về thuộc tính, đi kèm với \"the\".",
+      "examples": [
+        "Our children go to the same school as theirs.",
+        "My twin sister and I have the same nose."
+      ]
+    },
+    "like": {
+      "meaning": "giống như (dùng để so sánh), có thể xem giới từ \"like\" đồng nghĩa với \"similar to\"",
+      "key_distinction": "Giới từ dùng để so sánh sự tương đồng giữa hai đối tượng.",
+      "examples": [
+        "She's wearing a dress like mine.",
+        "She looks nothing like (= not at all like) her mother."
+      ]
+    },
+    "alike": {
+      "meaning": "(không đứng trước danh từ) theo một cách rất giống nhau, rất giống nhau",
+      "key_distinction": "Không đứng trước danh từ. Thường làm tính từ đứng sau động từ (to be/look...) hoặc phó từ.",
+      "examples": [
+        "They tried to treat all their children alike.",
+        "Airports are all alike to me"
+      ]
+    },
+    "similar": {
+      "meaning": "giống ai đó / cái gì đó nhưng không hoàn toàn giống nhau, tương tự",
+      "key_distinction": "Tương tự về ngoại hình hay đặc tính nhưng không giống hoàn toàn 100%.",
+      "examples": [
+        "The two houses are similar in size.",
+        "My teaching style is similar to that of most other teachers."
+      ]
+    },
+    "identical": {
+      "meaning": "giống nhau đến từng chi tiết, giống nhau hoàn toàn",
+      "key_distinction": "Y hệt nhau đến từng chi tiết nhỏ nhất, đúc cùng một khuôn (thường đi với to/with).",
+      "examples": [
+        "The two pictures are similar, although not identical.",
+        "This house is almost identical to/with the one where I lived as a child."
+      ]
+    }
+  }
+}

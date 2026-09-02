@@ -1,0 +1,29 @@
+{
+  "group_title": "Đăng ký",
+  "target_words": {
+    "book": {
+      "meaning": "Đặt vé trước, thu xếp để có một chỗ ngồi, phòng, v.v. vào một thời điểm cụ thể trong tương lai.",
+      "key_distinction": "Dùng trong ngữ cảnh giữ chỗ trước đối với dịch vụ như vé xe, vé máy bay, bàn ăn, phòng khách sạn.",
+      "examples": [
+        "She booked a flight to Chicago.",
+        "I'll book a table for 8 o'clock."
+      ]
+    },
+    "enroll": {
+      "meaning": "Đăng ký, thu xếp cho chính bạn hoặc cho người khác tham gia chính thức một khóa học, trường học, đại học, cao đẳng, chương trình, nhóm v.v.",
+      "key_distinction": "Đăng ký tham gia vào môi trường giáo dục, đào tạo hoặc khóa học chính thức.",
+      "examples": [
+        "Is it too late to enroll at the college?",
+        "They want to enroll their children in their local school."
+      ]
+    },
+    "register": {
+      "meaning": "Đăng ký, ghi tên của bạn và các thông tin khác vào danh sách chính thức để được dự thi, bầu cử, hoặc được cấp phép làm gì đó v.v.",
+      "key_distinction": "Ghi danh, ghi tên vào danh sách chính thức cho kỳ thi, cuộc thi, sự kiện hoặc thủ tục hành chính.",
+      "examples": [
+        "More than 5 000 people registered to take part in the contest.",
+        "Have you registered for the English exam yet?"
+      ]
+    }
+  }
+}

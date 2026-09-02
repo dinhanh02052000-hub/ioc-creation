@@ -1,0 +1,29 @@
+{
+  "group_title": "Đặc điểm",
+  "target_words": {
+    "feature": {
+      "meaning": "đặc điểm quan trọng, hấp dẫn, thú vị của một nơi, một thứ gì đó",
+      "key_distinction": "Chỉ tính năng, nét nổi bật hoặc đặc điểm thu hút của sản phẩm, địa danh, vật thể.",
+      "examples": [
+        "An interesting feature of the city is the old market.",
+        "Which features do you look for when choosing a car?"
+      ]
+    },
+    "trait": {
+      "meaning": "một đặc điểm, phẩm chất cụ thể trong tính cách của bạn, cái mà tạo ra một hành vi cụ thể",
+      "key_distinction": "Chỉ nét tính cách, phẩm chất cá nhân (personality/character trait) dẫn đến hành vi cụ thể.",
+      "examples": [
+        "His sense of humour is one of his better traits.",
+        "Arrogance is a very unattractive personality/character trait."
+      ]
+    },
+    "characteristic": {
+      "meaning": "đặc điểm nổi bật, đặc trưng mà ai, cái gì đó sở hữu phân biệt họ, chúng với những loại khác",
+      "key_distinction": "Chỉ đặc tính, nét đặc trưng giúp nhận diện hoặc phân biệt một người, vật hoặc nhóm đối tượng với loài/nhóm khác.",
+      "examples": [
+        "Patience is not a characteristic we associate with Bryan.",
+        "Being tall is a typical characteristic of Montenegrans."
+      ]
+    }
+  }
+}

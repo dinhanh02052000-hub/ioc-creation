@@ -1,0 +1,36 @@
+{
+  "group_title": "Cung cấp",
+  "target_words": {
+    "provide": {
+      "meaning": "[Ngoại động từ] Cung cấp ai những gì họ cần, làm cho nó có sẵn để họ sử dụng, dùng đến.",
+      "key_distinction": "Ngoại động từ. Nhấn mạnh việc cung cấp những thứ cần thiết hoặc hữu ích để đối tượng sử dụng.",
+      "examples": [
+        "provide something for somebody",
+        "provide somebody with something",
+        "He provided us with a lot of useful information.",
+        "She did not provide any evidence to substantiate the claims.",
+        "We are here to provide a service for the public."
+      ]
+    },
+    "supply": {
+      "meaning": "[Ngoại động từ] Cung cấp thứ gì đó được mong muốn hoặc cần thiết, thường với số lượng lớn và trong một khoảng thời gian dài.",
+      "key_distinction": "Ngoại động từ. Nhấn mạnh nguồn cung ứng thường xuyên, liên tục hoặc với quy mô, số lượng lớn.",
+      "examples": [
+        "supply something to somebody/something",
+        "supply somebody/something with something",
+        "The company supplied sports equipment to schools.",
+        "Electrical power is supplied by underground cables."
+      ]
+    },
+    "offer": {
+      "meaning": "[Ngoại động từ] + [Nội động từ] Sẵn lòng làm gì, cung cấp thứ gì hoặc trao cơ hội, điều gì đó cho ai nếu họ muốn.",
+      "key_distinction": "Vừa là ngoại động từ vừa là nội động từ. Nhấn mạnh yếu tố 'sẵn lòng làm hay cung cấp' một cách tự nguyện, không bị ép buộc hay bắt buộc.",
+      "examples": [
+        "He offered some useful advice.",
+        "offer something for something",
+        "offer something to somebody",
+        "offer somebody something"
+      ]
+    }
+  }
+}

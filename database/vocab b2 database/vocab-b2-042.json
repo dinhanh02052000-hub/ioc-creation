@@ -1,0 +1,43 @@
+{
+  "group_title": "Giá, giá trị",
+  "target_words": {
+    "price": {
+      "meaning": "giá bán, số tiền bạn phải trả để mua một thứ gì đó; cái giá (cái phải làm, cái phải trải qua để giữ được, có được cái gì) (nghĩa bóng)",
+      "key_distinction": "Số tiền niêm yết để bán/mua hàng hóa, hoặc cái giá phải trả theo nghĩa bóng.",
+      "examples": [
+        "House prices have been falling.",
+        "We thought they were asking a very high/low price.",
+        "His success came at a high price."
+      ]
+    },
+    "cost": {
+      "meaning": "chi phí để làm ra sản phẩm, dịch vụ hoặc giá phải trả cho sản phẩm dịch vụ; nỗ lực, mất mát hoặc thiệt hại liên quan để làm hoặc đạt được điều gì đó, sự phụng phí (thời giờ, sức lực,...) (nghĩa bóng)",
+      "key_distinction": "Tổng chi phí sản xuất, vận hành, duy trì dịch vụ hoặc sự tổn thất/đánh đổi (sức lực, thời gian, tính mạng).",
+      "examples": [
+        "A new computer system has been installed at a cost of £80 000.",
+        "The total cost to you is £3 000.",
+        "We did not even make enough money to cover the cost of the food.",
+        "She saved him from the fire at the cost of her own life (= she died).",
+        "at (a) cost to something"
+      ]
+    },
+    "value": {
+      "meaning": "giá trị, số tiền có thể nhận được cho một thứ gì đó; giá trị về mặt tinh thần, tầm quan trọng của cái gì (nghĩa bóng)",
+      "key_distinction": "Giá trị ước tính bằng tiền hoặc tầm quan trọng, lợi ích tinh thần/ý nghĩa của một thứ.",
+      "examples": [
+        "What is the value of the prize?",
+        "The value of the shares has continued to fall.",
+        "They are known to place/put/set a high value on good presentation."
+      ]
+    },
+    "worth": {
+      "meaning": "giá trị định giá của sản phẩm, dịch vụ (thường là sẽ nêu luôn giá cụ thể hoặc chung chung của nó); giá trị tài chính, thực tiền hoặc phẩm chất của ai đó/cái gì đó (nghĩa bóng)",
+      "key_distinction": "Giá trị đáng giá bao nhiêu tiền (thường đi kèm số tiền cụ thể) hoặc giá trị tự bản thân (sense of worth).",
+      "examples": [
+        "£20, $100, etc. worth of something",
+        "The winner will receive fifty pounds' worth of books.",
+        "The activities help children to develop a sense of their own worth."
+      ]
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "group_title": "Bình thường",
+  "target_words": {
+    "usual": {
+      "meaning": "Thường xuyên diễn ra, những gì mọi người làm trong hầu hết các tình huống.",
+      "key_distinction": "Diễn tả thói quen, sự việc hay xảy ra theo thông lệ sẵn có.",
+      "examples": [
+        "He came home later than usual.",
+        "This weather is not usual for this time of year.",
+        "It is usual to start a speech by thanking everybody for coming."
+      ]
+    },
+    "ordinary": {
+      "meaning": "Bình thường, không khác biệt hay đặc biệt theo bất kỳ cách nào.",
+      "key_distinction": "Nhấn mạnh sự bình dị, tầm thường, không có tính chất nổi bật.",
+      "examples": [
+        "Ordinary people like you and me",
+        "She was a perfectly ordinary little girl.",
+        "No ordinary... (= a special or unusual example of something)"
+      ]
+    },
+    "normal": {
+      "meaning": "Thông thường, diễn ra giống như bạn mong đợi chứ không bất thường.",
+      "key_distinction": "Chỉ tính chất chuẩn mực, tự nhiên, đúng như trạng thái quy chuẩn vốn có.",
+      "examples": [
+        "It's normal to feel tired after such a long trip.",
+        "Under/In normal circumstances, I would say 'yes'.",
+        "The temperature was above/below normal for the time of year.",
+        "Back/return to normal"
+      ]
+    },
+    "customary": {
+      "meaning": "Theo lệ thường, thói quen của ai đó, theo phong tục, thông lệ, truyền thống.",
+      "key_distinction": "Liên quan đến tập quán, phong tục hoặc thói quen đặc trưng mang tính truyền thống.",
+      "examples": [
+        "She worked with her customary thoroughness.",
+        "It has been customary for the chair to be re-elected for a second year."
+      ]
+    }
+  }
+}

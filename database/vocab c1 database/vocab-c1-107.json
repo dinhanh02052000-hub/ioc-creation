@@ -1,0 +1,57 @@
+{
+  "group_title": "TRANH CÃI",
+  "target_words": {
+    "argument": {
+      "meaning": "cuộc tranh cãi, thảo luận gay gắt",
+      "key_distinction": "một cuộc nói chuyện hoặc thảo luận mà hai hoặc nhiều người bất đồng về quan điểm (thường thể hiện một cách giận dữ hoặc ồn ào)",
+      "examples": [
+        "After some heated argument, a decision was finally taken."
+      ]
+    },
+    "quarrel": {
+      "meaning": "cuộc cãi lộn, sự bất đồng",
+      "key_distinction": "[C] một cuộc tranh luận đầy giận dữ hoặc sự bất đồng giữa hai/nhiều người (thường là về một vấn đề cá nhân) ~ row /raʊ/(n) * quarrel mang sắc thái trang trọng và nghiêm trọng hơn argument và row. * pick a quarrel (with somebody): to deliberately start an argument with somebody (cố tình khiêu khích ai đó để cãi nhau)",
+      "examples": [
+        "He had a quarrel/row with his brother about money.",
+        "She tried to pick a quarrel with me."
+      ]
+    },
+    "dispute": {
+      "meaning": "cuộc tranh chấp, bất đồng (công khai/pháp lý)",
+      "key_distinction": "một cuộc tranh cãi hoặc sự bất đồng (đặc biệt là thường kéo dài) mang tính công khai và pháp lý giữa hai người/nhóm/quốc gia (có chung đường biên giới)...",
+      "examples": [
+        "a dispute between the two countries about the border"
+      ]
+    },
+    "conflict": {
+      "meaning": "sự mâu thuẫn, xung đột, chiến tranh",
+      "key_distinction": "một tình huống mà người/nhóm người/quốc gia bất đồng quan điểm lớn và tham gia vào một cuộc tranh cãi nguy hiểm (thường kéo dài): sự mâu thuẫn, sự xung đột OR một tình huống/khoảng thời gian giao chiến mang tính bạo lực giữa hai quốc gia: sự chiến đấu, sự đấu tranh, sự giao chiến",
+      "examples": [
+        "a conflict between two cultures",
+        "We wish to avoid conflict between our countries if at all possible."
+      ]
+    },
+    "feud": {
+      "meaning": "mối hận thù, hiềm thù kéo dài",
+      "key_distinction": "một cuộc cãi nhau đầy giận dữ và cay đắng (có thể mang cả tính bạo lực) kéo dài giữa hai người hoặc nhóm người: mối hận thù",
+      "examples": [
+        "a long-running feud between the two artists"
+      ]
+    },
+    "disagreement": {
+      "meaning": "sự bất đồng, sự không đồng ý",
+      "key_distinction": "một tình huống mà có những người có những ý kiến khác nhau về một vấn đề nào đó: sự bất đồng, sự không đồng ý kiến",
+      "examples": [
+        "We had a disagreement about the fee for the work.",
+        "He shook his head in disagreement."
+      ]
+    },
+    "squabble": {
+      "meaning": "cuộc cãi vặt, tranh cãi vớ vẩn",
+      "key_distinction": "một cuộc cãi nhau ồn ào về một điều gì đó không quan trọng (cãi vặt)",
+      "examples": [
+        "There were endless squabbles over who should sit where."
+      ]
+    }
+  }
+}

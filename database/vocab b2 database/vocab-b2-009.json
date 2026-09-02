@@ -1,0 +1,42 @@
+{
+  "group_title": "Biểu tượng, biểu ngữ",
+  "target_words": {
+    "emblem": {
+      "meaning": "Biểu tượng (emblem of something).",
+      "key_distinction": "Một thiết kế hoặc một bức tranh tượng trưng cho một đất nước hoặc một tổ chức.",
+      "examples": [
+        "America's national emblem, the bald eagle",
+        "The club emblem"
+      ]
+    },
+    "logo": {
+      "meaning": "Biểu trưng.",
+      "key_distinction": "Một thiết kế hoặc biểu tượng được một công ty hoặc tổ chức dùng như là dấu hiệu đặc trưng hoặc để quảng cáo các sản phẩm.",
+      "examples": [
+        "The logo of the World Cup"
+      ]
+    },
+    "banner": {
+      "meaning": "Băng rôn, biểu ngữ.",
+      "key_distinction": "Một mảnh vải dài với một thông điệp ở trên đó, được treo ở nơi công cộng/giữa hai cái cột hoặc sào, để ủng hộ cho điều gì.",
+      "examples": [
+        "A huge banner over the street said, 'Welcome home'."
+      ]
+    },
+    "motto": {
+      "meaning": "Phương châm.",
+      "key_distinction": "Một câu/mệnh đề ngắn thể hiện những mục đích hay niềm tin, lý tưởng của một con người, nhóm, tổ chức, ... và được dùng để chi phối/điều khiển cách hành xử của họ.",
+      "examples": [
+        "The school's motto is: 'Duty, Honour, Country'."
+      ]
+    },
+    "slogan": {
+      "meaning": "Khẩu hiệu (còn gọi là tag line).",
+      "key_distinction": "Một từ/cụm từ dễ nhớ được dùng làm khẩu hiệu bởi một đảng chính trị hoặc trong quảng cáo để thu hút sự chú ý của mọi người.",
+      "examples": [
+        "An advertising slogan",
+        "A campaign slogan"
+      ]
+    }
+  }
+}

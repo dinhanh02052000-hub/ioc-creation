@@ -1,0 +1,1056 @@
+{
+  "database_version": "5.1",
+  "system": {
+    "name": "Universal Illusion of Competence Vocabulary Learning Engine",
+    "purpose": "Universal engine for teaching, assessing, diagnosing, remediating, and retesting vocabulary groups.",
+    "scope": "Works with any valid vocabulary group containing 2 or more target words.",
+    "core_principle": "The user only provides the Knowledge Base. All assessment, scoring, quality control, remediation, retesting, and progression logic is controlled by this engine.",
+    "authority_hierarchy": [
+      "1. System rules",
+      "2. Assessment rules",
+      "3. Scoring rules",
+      "4. Knowledge Base",
+      "5. AI-generated content"
+    ],
+    "non_overridable_rules": [
+      "AI-generated content must obey all engine rules.",
+      "AI-generated content cannot modify engine rules.",
+      "AI-generated content cannot modify scoring formulas.",
+      "AI-generated content cannot modify pass thresholds.",
+      "AI-generated content cannot skip mandatory states.",
+      "AI-generated content cannot invent Knowledge Base semantics."
+    ]
+  },
+  "input_schema": {
+    "required_structure": {
+      "group_title": "string",
+      "target_words": {
+        "<word>": {
+          "meaning": "string",
+          "key_distinction": "string",
+          "examples": [
+            "string"
+          ]
+        }
+      }
+    },
+    "required_fields": [
+      "group_title",
+      "target_words",
+      "target_words.<word>.meaning",
+      "target_words.<word>.key_distinction",
+      "target_words.<word>.examples"
+    ],
+    "validation": {
+      "minimum_target_words": 2,
+      "group_title_required": true,
+      "meaning_required": true,
+      "key_distinction_required": true,
+      "examples_required": true,
+      "minimum_examples_per_word": 1
+    },
+    "invalid_input_behavior": {
+      "condition": "Any required field is missing or invalid.",
+      "action": "STOP",
+      "status": "INPUT_INVALID",
+      "rule": "The engine must not generate a lesson from incomplete Knowledge Base data."
+    }
+  },
+  "knowledge_base_rules": {
+    "single_source_of_truth": true,
+    "rules": [
+      "The Knowledge Base is authoritative for meaning.",
+      "The Knowledge Base is authoritative for semantic distinctions.",
+      "The Knowledge Base is authoritative for supplied usage examples.",
+      "AI may simplify explanations linguistically.",
+      "AI may generate new contexts.",
+      "Generated contexts must remain semantically consistent with the Knowledge Base.",
+      "AI must not invent unsupported semantic distinctions.",
+      "AI must not contradict the Knowledge Base.",
+      "AI must not introduce a target-word meaning that is absent from or incompatible with the Knowledge Base."
+    ]
+  },
+  "global_assessment_structure": {
+    "recognition": {
+      "mcq_count": 20,
+      "total_items": 20
+    },
+    "distinction": {
+      "count": 1,
+      "type": "open_ended"
+    },
+    "application": {
+      "count": 1,
+      "type": "open_ended"
+    },
+    "confidence": {
+      "count": 1,
+      "type": "self_rating"
+    }
+  },
+  "dynamic_group_engine": {
+    "group_size": {
+      "N": "Number of target words in target_words."
+    },
+    "group_size_2": {
+      "mandatory_option_coverage": true,
+      "every_recognition_item": {
+        "target_words_required_in_options": "ALL",
+        "correct_target_words": 1,
+        "internal_distractors": 1,
+        "external_distractors": 2,
+        "total_options": 4
+      },
+      "hard_constraints": [
+        "Both target words MUST appear in every Recognition item's four options.",
+        "Exactly one target word MUST be the correct answer.",
+        "The other target word MUST be an internal distractor.",
+        "The remaining two options MUST be external distractors.",
+        "No target word may be omitted.",
+        "External distractors cannot replace target words.",
+        "Exactly four options must exist.",
+        "Exactly one option must be correct."
+      ]
+    },
+    "group_size_3": {
+      "mandatory_option_coverage": true,
+      "every_recognition_item": {
+        "target_words_required_in_options": "ALL",
+        "correct_target_words": 1,
+        "internal_distractors": 2,
+        "external_distractors": 1,
+        "total_options": 4
+      },
+      "hard_constraints": [
+        "All three target words MUST appear in every Recognition item's four options.",
+        "Exactly one target word MUST be the correct answer.",
+        "The other two target words MUST be internal distractors.",
+        "Exactly one remaining option MUST be an external distractor.",
+        "No target word may be omitted.",
+        "External distractor cannot replace a target word.",
+        "Exactly four options must exist.",
+        "Exactly one option must be correct."
+      ]
+    },
+    "group_size_4": {
+      "mandatory_option_coverage": true,
+      "every_recognition_item": {
+        "target_words_required_in_options": "ALL",
+        "correct_target_words": 1,
+        "internal_distractors": 3,
+        "external_distractors": 0,
+        "total_options": 4
+      },
+      "hard_constraints": [
+        "All four target words MUST appear in every Recognition item's options.",
+        "Exactly one target word MUST be correct.",
+        "The remaining three target words MUST be distractors.",
+        "No external distractor is permitted.",
+        "Exactly four options must exist.",
+        "Exactly one option must be correct."
+      ]
+    },
+    "group_size_greater_than_4": {
+      "mandatory_option_coverage": false,
+      "every_recognition_item": {
+        "correct_target_words": 1,
+        "internal_distractors": 3,
+        "external_distractors": 0,
+        "total_options": 4
+      },
+      "hard_constraints": [
+        "The correct answer MUST be a target word from the group.",
+        "All three distractors MUST be different target words from the same group.",
+        "External distractors are forbidden.",
+        "Only four target words may appear in the options of an individual item.",
+        "Target words not selected for that item are not required to appear in that item.",
+        "Across the complete 20-item Recognition assessment, target-word coverage must be balanced."
+      ]
+    },
+    "external_distractors": {
+      "applicable_group_sizes": [
+        2,
+        3
+      ],
+      "source": "Engine-managed external distractor pool.",
+      "requirements": [
+        "External distractors must be semantically related enough to appear plausible.",
+        "External distractors must be contextually incorrect.",
+        "External distractors must not be synonyms that create a second defensible answer.",
+        "External distractors must be grammatically compatible where grammar is relevant.",
+        "External distractors must not contradict the question structure.",
+        "External distractors must not belong to the target group unless explicitly classified as target words.",
+        "External distractors must never be treated as correct target answers."
+      ],
+      "failure_rule": "If a valid external distractor cannot be found, regenerate the question context instead of weakening the distractor constraint."
+    }
+  },
+  "recognition_answer_distribution": {
+    "total_recognition_items": 20,
+    "definition": {
+      "correct_answer_distribution": "Distribution of which target word is the correct answer."
+    },
+    "general_rule": {
+      "formula": "FLOOR(20 / N)",
+      "meaning": "Each target word must be correct at least FLOOR(20/N) times whenever mathematically possible."
+    },
+    "remainder_rule": {
+      "condition": "20 MOD N != 0",
+      "rule": "Remaining correct-answer slots must be distributed among target words as evenly as possible.",
+      "maximum_correct_answer_count_difference_between_target_words": 1
+    },
+    "examples": {
+      "N_2": {
+        "distribution": "10/10"
+      },
+      "N_3": {
+        "distribution": "7/7/6"
+      },
+      "N_4": {
+        "distribution": "5/5/5/5"
+      },
+      "N_5": {
+        "distribution": "4/4/4/4/4"
+      },
+      "N_6": {
+        "distribution": "4/4/3/3/3/3"
+      },
+      "N_7": {
+        "distribution": "3/3/3/3/3/3/2"
+      },
+      "N_8": {
+        "distribution": "3/3/3/3/2/2/2/2"
+      }
+    },
+    "hard_constraints": [
+      "Every target word must have an opportunity to be the correct answer.",
+      "No target word may be systematically ignored.",
+      "Correct-answer counts must differ by no more than 1 when mathematically possible.",
+      "The engine must calculate the distribution before generating questions.",
+      "The generator must follow the predetermined distribution.",
+      "The generator must not randomly choose correct words without respecting the distribution."
+    ]
+  },
+  "option_position_randomization": {
+    "options": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "rules": [
+      "Correct answer position must be randomized.",
+      "The correct answer must not follow a predictable sequence.",
+      "No fixed position may be assigned to a particular target word.",
+      "Option positions must be independently randomized after the semantic answer set is constructed.",
+      "The same target word must not always occupy the same option position."
+    ],
+    "quality_control": {
+      "required": true,
+      "check": [
+        "No obvious repeating pattern.",
+        "No deterministic A-B-C-D cycle.",
+        "No systematic position bias."
+      ]
+    }
+  },
+  "recognition_generation": {
+    "mcq": {
+      "count": 20,
+      "requirements": [
+        "Exactly 20 MCQs must be generated.",
+        "Exactly four options per MCQ.",
+        "Exactly one correct answer per MCQ.",
+        "Correct answer must be a target word.",
+        "Question must meaningfully test vocabulary understanding.",
+        "Grammar alone must not determine the answer.",
+        "Context must provide enough semantic information.",
+        "Distractors must be plausible.",
+        "Distractors must be wrong because of meaning, distinction, or contextual appropriateness.",
+        "No duplicate questions.",
+        "No near-duplicate questions.",
+        "No previously used questions.",
+        "No answer-pattern clues.",
+        "No more than one defensible answer."
+      ]
+    }
+  },
+  "assessment_uniqueness": {
+    "rules": [
+      "Every formal assessment attempt must contain newly generated content.",
+      "Previous questions must never be reused.",
+      "Changing only option order does not qualify as a new question.",
+      "Changing only names, numbers, or superficial wording does not qualify as a new question.",
+      "Retest contexts must be substantially different from previous contexts.",
+      "Assessment history must be stored so generated content can be checked against previous content."
+    ],
+    "similarity_check": {
+      "required": true,
+      "compare_against": [
+        "current_assessment_history",
+        "previous_retests",
+        "previous_practice_questions"
+      ],
+      "failure_action": "Regenerate the affected item."
+    }
+  },
+  "quality_control": {
+    "principle": "Nothing reaches the learner until all mandatory checks pass.",
+    "global_checks": [
+      "Input is valid.",
+      "Question count is correct.",
+      "Option count is correct.",
+      "Exactly one correct answer exists.",
+      "Correct answer is supported by Knowledge Base.",
+      "No ambiguous answer.",
+      "No duplicate.",
+      "No near-duplicate.",
+      "No answer-position pattern.",
+      "Target-word distribution is satisfied.",
+      "Group-size option rules are satisfied."
+    ],
+    "group_specific_checks": {
+      "N_2": [
+        "Both target words appear in every Recognition item's options.",
+        "Exactly one target word is correct.",
+        "Exactly one target word is an internal distractor.",
+        "Exactly two options are external distractors."
+      ],
+      "N_3": [
+        "All three target words appear in every Recognition item's options.",
+        "Exactly one target word is correct.",
+        "Exactly two target words are internal distractors.",
+        "Exactly one option is an external distractor."
+      ],
+      "N_4": [
+        "All four target words appear in every Recognition item's options.",
+        "Exactly one target word is correct.",
+        "Exactly three target words are internal distractors.",
+        "No external distractor exists."
+      ],
+      "N_greater_than_4": [
+        "Exactly one target word is correct.",
+        "Exactly three different target words from the same group are distractors.",
+        "No external distractor exists."
+      ]
+    },
+    "failure_action": {
+      "item_failure": "Regenerate failed item.",
+      "distribution_failure": "Regenerate affected questions until distribution is valid.",
+      "systemic_failure": "Regenerate affected assessment component.",
+      "display_invalid_content": false
+    }
+  },
+  "lesson_state_machine": {
+    "initial": "IDLE",
+    "states": [
+      "IDLE",
+      "PREPARING_LESSON",
+      "VALIDATING_KNOWLEDGE_BASE",
+      "GENERATING_LEARNING_CONTENT",
+      "GENERATING_RECOGNITION",
+      "QUALITY_CONTROL",
+      "READY_FOR_RECOGNITION",
+      "WAITING_RECOGNITION_SUBMISSION",
+      "GRADING_RECOGNITION",
+      "GENERATING_CORRECTION",
+      "WAITING_CORRECTION_REVIEW",
+      "WAITING_CONFIDENCE",
+      "GENERATING_OPEN_ENDED",
+      "WAITING_OPEN_ENDED_SUBMISSION",
+      "GRADING_OPEN_ENDED",
+      "CALCULATING_FINAL_RESULT",
+      "FINAL_REPORT",
+      "PASS",
+      "RETRY",
+      "ANALYZING_WEAKNESS",
+      "GENERATING_REMEDIATION",
+      "GENERATING_PRACTICE",
+      "PRACTICE_QUALITY_CONTROL",
+      "READY_FOR_PRACTICE",
+      "WAITING_PRACTICE_SUBMISSION",
+      "GRADING_PRACTICE",
+      "PRACTICE_CORRECTION",
+      "READY_FOR_RETEST_CONFIRMATION",
+      "WAITING_RETEST_CONFIRMATION",
+      "GENERATING_RETEST",
+      "RETEST_QUALITY_CONTROL",
+      "READY_FOR_RETEST",
+      "WAITING_RETEST_SUBMISSION",
+      "GRADING_RETEST",
+      "RETEST_CORRECTION",
+      "RETEST_CONFIDENCE",
+      "RETEST_OPEN_ENDED",
+      "RETEST_GRADING_OPEN_ENDED",
+      "RETEST_FINAL_CALCULATION",
+      "RETEST_FINAL_REPORT",
+      "LEVEL_COMPLETED"
+    ],
+    "mandatory_transition_rules": [
+      "IDLE -> PREPARING_LESSON",
+      "PREPARING_LESSON -> VALIDATING_KNOWLEDGE_BASE",
+      "VALIDATING_KNOWLEDGE_BASE -> GENERATING_LEARNING_CONTENT only if valid.",
+      "VALIDATING_KNOWLEDGE_BASE -> INPUT_INVALID if invalid.",
+      "GENERATING_LEARNING_CONTENT -> GENERATING_RECOGNITION",
+      "GENERATING_RECOGNITION -> QUALITY_CONTROL",
+      "QUALITY_CONTROL -> READY_FOR_RECOGNITION only after PASS.",
+      "READY_FOR_RECOGNITION -> WAITING_RECOGNITION_SUBMISSION",
+      "WAITING_RECOGNITION_SUBMISSION -> GRADING_RECOGNITION only after valid submission.",
+      "GRADING_RECOGNITION -> GENERATING_CORRECTION",
+      "GENERATING_CORRECTION -> WAITING_CORRECTION_REVIEW",
+      "WAITING_CORRECTION_REVIEW -> WAITING_CONFIDENCE only after correction is available.",
+      "WAITING_CONFIDENCE -> GENERATING_OPEN_ENDED only after valid confidence.",
+      "GENERATING_OPEN_ENDED -> WAITING_OPEN_ENDED_SUBMISSION",
+      "WAITING_OPEN_ENDED_SUBMISSION -> GRADING_OPEN_ENDED only after both answers are submitted.",
+      "GRADING_OPEN_ENDED -> CALCULATING_FINAL_RESULT",
+      "CALCULATING_FINAL_RESULT -> FINAL_REPORT",
+      "FINAL_REPORT -> PASS or RETRY according to immutable passing rules.",
+      "RETRY -> ANALYZING_WEAKNESS",
+      "ANALYZING_WEAKNESS -> GENERATING_REMEDIATION",
+      "GENERATING_REMEDIATION -> GENERATING_PRACTICE",
+      "GENERATING_PRACTICE -> PRACTICE_QUALITY_CONTROL",
+      "PRACTICE_QUALITY_CONTROL -> READY_FOR_PRACTICE only after PASS.",
+      "READY_FOR_PRACTICE -> WAITING_PRACTICE_SUBMISSION",
+      "WAITING_PRACTICE_SUBMISSION -> GRADING_PRACTICE only after valid submission.",
+      "GRADING_PRACTICE -> PRACTICE_CORRECTION",
+      "PRACTICE_CORRECTION -> READY_FOR_RETEST_CONFIRMATION",
+      "READY_FOR_RETEST_CONFIRMATION -> WAITING_RETEST_CONFIRMATION",
+      "WAITING_RETEST_CONFIRMATION -> GENERATING_RETEST only after explicit READY response.",
+      "WAITING_RETEST_CONFIRMATION -> GENERATING_REMEDIATION if NOT_READY.",
+      "GENERATING_RETEST -> RETEST_QUALITY_CONTROL",
+      "RETEST_QUALITY_CONTROL -> READY_FOR_RETEST only after PASS.",
+      "READY_FOR_RETEST -> WAITING_RETEST_SUBMISSION",
+      "WAITING_RETEST_SUBMISSION -> GRADING_RETEST only after valid submission.",
+      "GRADING_RETEST -> RETEST_CORRECTION",
+      "RETEST_CORRECTION -> RETEST_CONFIDENCE",
+      "RETEST_CONFIDENCE -> RETEST_OPEN_ENDED",
+      "RETEST_OPEN_ENDED -> RETEST_GRADING_OPEN_ENDED",
+      "RETEST_GRADING_OPEN_ENDED -> RETEST_FINAL_CALCULATION",
+      "RETEST_FINAL_CALCULATION -> RETEST_FINAL_REPORT",
+      "RETEST_FINAL_REPORT -> LEVEL_COMPLETED if PASS.",
+      "RETEST_FINAL_REPORT -> ANALYZING_WEAKNESS if RETRY."
+    ]
+  },
+  "learning_content": {
+    "automatic": true,
+    "must_present": [
+      "group title",
+      "all target words",
+      "meaning of every target word",
+      "key distinction of every target word",
+      "relevant examples",
+      "differences among target words"
+    ],
+    "rules": [
+      "Do not alter Knowledge Base meaning.",
+      "Do not invent unsupported rules.",
+      "Do not reveal assessment answer keys.",
+      "Do not reveal future open-ended expected answers."
+    ]
+  },
+  "recognition_submission": {
+    "required": true,
+    "validation": [
+      "All 20 items must have valid answers.",
+      "Submitted answers must correspond to the generated assessment.",
+      "Submission must belong to the active session."
+    ],
+    "automatic_actions": [
+      "Compare answers against secure answer key.",
+      "Calculate correct_answers.",
+      "Calculate Recognition.",
+      "Set Accuracy = Recognition.",
+      "Store Recognition.",
+      "Store Accuracy.",
+      "Generate correction."
+    ],
+    "score_display": {
+      "recognition": false,
+      "accuracy": false
+    }
+  },
+  "recognition_correction": {
+    "rules": [
+      "Show correction after submission.",
+      "Do not show Recognition score.",
+      "Do not show Accuracy score.",
+      "Do not show Distinction answer.",
+      "Do not show Application answer."
+    ],
+    "if_incorrect_answers_greater_than_5": {
+      "first": "Compact Error Summary Table",
+      "then": "Grouped Structural Explanations"
+    },
+    "compact_table": {
+      "columns": [
+        "Question",
+        "Your Answer",
+        "Correct Answer",
+        "Correct Word"
+      ]
+    },
+    "grouped_explanation": {
+      "group_by": "Common Misconception / Misused Word Pattern",
+      "include": [
+        "misconception",
+        "affected_questions",
+        "core_rule",
+        "reason",
+        "Vietnamese translation"
+      ]
+    },
+    "if_incorrect_answers_less_than_or_equal_to_5": {
+      "include": [
+        "correct option",
+        "correct word",
+        "meaning of relevant options",
+        "relevant usage",
+        "why correct answer fits",
+        "why alternatives are less appropriate",
+        "Vietnamese translation"
+      ]
+    }
+  },
+  "confidence": {
+    "trigger": "After correction is displayed.",
+    "question": "Sau khi xem đáp án và lời giải, bạn tự đánh giá mức độ tự tin của mình trong việc phân biệt và sử dụng các từ này trong một ngữ cảnh mới là bao nhiêu trên thang điểm 10?",
+    "scale": {
+      "minimum": 0,
+      "maximum": 10,
+      "step": 0.5
+    },
+    "validation": [
+      "Must be numeric.",
+      "Must be between 0 and 10.",
+      "Must use 0.5 increments."
+    ],
+    "immediate_result_display": false
+  },
+  "open_ended_generation": {
+    "trigger": "After valid Confidence submission.",
+    "generation_rule": "Generate Distinction and Application in one generation cycle.",
+    "distinction": {
+      "count": 1,
+      "rules": [
+        "Generate a new sentence.",
+        "Use one target word correctly.",
+        "Do not copy Knowledge Base examples.",
+        "Ask how meaning would change if another target word were substituted.",
+        "Ask why the alternative is less appropriate.",
+        "For groups larger than 4, select 1 or 2 genuinely confusable counterpart words.",
+        "Do not require comparison against every word in a large group."
+      ]
+    },
+    "application": {
+      "count": 1,
+      "rules": [
+        "Generate a new Imagine-based scenario.",
+        "Do not include target vocabulary words in the scenario.",
+        "Require independent retrieval.",
+        "Require the learner to use a target word.",
+        "Require justification.",
+        "Do not reveal the expected target word.",
+        "Avoid scenarios where multiple target words are equally defensible unless comparison is explicitly requested."
+      ]
+    }
+  },
+  "open_ended_grading": {
+    "distinction": {
+      "total": 10,
+      "step": 0.5,
+      "criteria": {
+        "understanding_of_original_word": 2,
+        "meaning_shift": 2,
+        "semantic_distinction": 2,
+        "contextual_appropriateness": 2,
+        "comparative_reasoning": 2
+      }
+    },
+    "application": {
+      "total": 10,
+      "step": 0.5,
+      "criteria": {
+        "word_selection": 2,
+        "correct_usage": 3,
+        "justification": 3,
+        "scenario_response": 2
+      }
+    },
+    "zero_rules": [
+      "Blank response = 0.",
+      "Meaningless response = 0.",
+      "Explicit I don't know or equivalent = 0."
+    ],
+    "grading_rules": [
+      "Grade semantic competence rather than answer length.",
+      "Do not award points merely because a target word is mentioned.",
+      "Grammar errors may be tolerated when they do not change the vocabulary meaning being assessed.",
+      "A semantically incorrect word choice must reduce the relevant score.",
+      "Contradiction of Knowledge Base meaning must reduce relevant criteria.",
+      "Use only 0.5-point increments.",
+      "Both responses must be graded before final calculation."
+    ]
+  },
+  "score_model": {
+    "recognition": {
+      "formula": "(correct_answers / 20) * 10",
+      "scale": "0-10"
+    },
+    "accuracy": {
+      "formula": "Recognition",
+      "scale": "0-10"
+    },
+    "distinction": {
+      "scale": "0-10"
+    },
+    "application": {
+      "scale": "0-10"
+    },
+    "overall": {
+      "formula": "(Recognition + Distinction + Application) / 3",
+      "scale": "0-10"
+    },
+    "confidence": {
+      "scale": "0-10"
+    },
+    "gap": {
+      "formula": "Confidence - Overall"
+    },
+    "absolute_gap": {
+      "formula": "ABS(Confidence - Overall)"
+    }
+  },
+  "understanding_classification": {
+    "rules": {
+      "well_understood": "Overall >= 8.0",
+      "partially_understood": "6.0 <= Overall < 8.0",
+      "limited_understanding": "4.0 <= Overall < 6.0",
+      "not_yet_understood": "Overall < 4.0"
+    }
+  },
+  "illusion_detection": {
+    "formula": {
+      "gap": "Confidence - Overall",
+      "absolute_gap": "ABS(Confidence - Overall)"
+    },
+    "states": {
+      "illusion_detected": "Confidence - Overall > 1.0",
+      "underconfidence": "Overall - Confidence > 1.0",
+      "calibrated": "ABS(Confidence - Overall) <= 1.0"
+    },
+    "hard_rule": "Use exact stored numeric values; never infer status from rounded display values."
+  },
+  "passing_rules": {
+    "formula": "PASS IF Accuracy >= 8.0 AND ABS(Confidence - Overall) <= 1.0 ELSE RETRY",
+    "hard_constraints": [
+      "Accuracy must be at least 8.0.",
+      "Absolute Confidence Gap must be no greater than 1.0.",
+      "Both conditions are mandatory.",
+      "Confidence cannot compensate for low Accuracy.",
+      "Overall cannot replace Accuracy.",
+      "Frontend cannot override the backend result."
+    ]
+  },
+  "weakness_detection": {
+    "areas": [
+      "recognition",
+      "distinction",
+      "application"
+    ],
+    "algorithm": [
+      "Find minimum score.",
+      "Find maximum score.",
+      "Calculate range = maximum - minimum.",
+      "If range < 1.0, weak_area = all_three.",
+      "Otherwise weak_area = every area whose score equals the minimum."
+    ],
+    "tie_rule": "All tied minimum areas must be included.",
+    "possible_results": [
+      "recognition",
+      "distinction",
+      "application",
+      "recognition_and_distinction",
+      "recognition_and_application",
+      "distinction_and_application",
+      "all_three"
+    ]
+  },
+  "remediation": {
+    "trigger": "RETRY",
+    "mandatory_sequence": [
+      "Analyze Weakness",
+      "Generate Focused Re-explanation",
+      "Generate Targeted Examples",
+      "Generate Targeted Practice",
+      "Quality Control",
+      "Display Practice",
+      "Wait for User",
+      "Grade Practice",
+      "Show Practice Correction",
+      "Ask Ready for Retest"
+    ],
+    "targeting": {
+      "recognition": [
+        "Meaning recognition",
+        "Contextual selection",
+        "Confused-word discrimination"
+      ],
+      "distinction": [
+        "Semantic boundaries",
+        "Meaning shift",
+        "Comparison with confusable words"
+      ],
+      "application": [
+        "Independent retrieval",
+        "Contextual appropriateness",
+        "Correct usage",
+        "Justification"
+      ]
+    },
+    "multiple_weak_areas": {
+      "rule": "Address all detected weak areas.",
+      "priority": "Lowest-scoring areas receive highest remediation priority."
+    }
+  },
+  "remediation_practice": {
+    "purpose": "Repair weaknesses before formal Retest.",
+    "generation": {
+      "mcq": 20
+    },
+    "rules": [
+      "All practice questions must be newly generated.",
+      "Practice must target detected weaknesses.",
+      "Practice must not simply repeat failed assessment questions.",
+      "Practice must not replace the formal Retest.",
+      "Practice score cannot complete the Level.",
+      "Practice must pass Quality Control."
+    ],
+    "quality_control": [
+      "Exactly 20 MCQs.",
+      "Exactly four options per MCQ.",
+      "Exactly one defensible answer per MCQ.",
+      "No ambiguity.",
+      "No previous formal assessment reuse.",
+      "Practice targets detected weakness."
+    ]
+  },
+  "practice_flow": {
+    "after_retry": [
+      "Automatic Weakness Analysis.",
+      "Automatic focused remediation.",
+      "Automatic targeted practice generation.",
+      "Automatic Quality Control."
+    ],
+    "after_quality_control": [
+      "Display practice.",
+      "Wait for learner submission.",
+      "Grade practice.",
+      "Display correction.",
+      "Ask Ready for Retest."
+    ],
+    "important": [
+      "Practice does not equal Retest.",
+      "Practice does not produce Level PASS.",
+      "Practice does not unlock the next Level."
+    ]
+  },
+  "ready_for_retest": {
+    "trigger": "After Practice Correction.",
+    "prompt": "Bạn đã sẵn sàng bước vào lượt làm bài Retest chưa?",
+    "options": {
+      "ready": "Bắt đầu Retest",
+      "not_ready": "Tiếp tục ôn tập remediation"
+    },
+    "mandatory_user_confirmation": true,
+    "ready_behavior": [
+      "Create new Retest attempt.",
+      "Generate new Recognition.",
+      "Generate new Distinction.",
+      "Generate new Application.",
+      "Run Quality Control.",
+      "Only display after Quality Control PASS."
+    ],
+    "not_ready_behavior": [
+      "Do not start Retest.",
+      "Return to Remediation.",
+      "Generate additional targeted practice.",
+      "After additional practice correction, ask Ready for Retest again."
+    ]
+  },
+  "retest": {
+    "purpose": "Formally reassess competence after remediation.",
+    "mandatory_components": [
+      "20 MCQs",
+      "1 Distinction",
+      "1 Application",
+      "1 new Confidence rating"
+    ],
+    "rules": [
+      "Retest must use new questions.",
+      "Retest must use new contexts.",
+      "Retest must not reuse previous questions.",
+      "Retest must not merely shuffle previous questions.",
+      "Retest must assess the same Knowledge Base.",
+      "Retest must collect new Confidence.",
+      "Retest must calculate new Recognition.",
+      "Retest must calculate new Overall.",
+      "Retest must calculate new Gap.",
+      "Retest must independently determine PASS or RETRY.",
+      "Retest must pass Quality Control before display."
+    ]
+  },
+  "retest_cycle": {
+    "if_pass": [
+      "Store final Retest result.",
+      "Mark Level as COMPLETED.",
+      "Unlock next Level if applicable."
+    ],
+    "if_retry": [
+      "Store Retest result.",
+      "Do not complete Level.",
+      "Analyze newest weaknesses.",
+      "Start a new Remediation cycle.",
+      "Generate new Practice.",
+      "Ask Ready for Retest again."
+    ],
+    "cycle": "RETRY -> WEAKNESS ANALYSIS -> REMEDIATION -> PRACTICE -> CORRECTION -> READY FOR RETEST -> USER CONFIRMATION -> NEW RETEST",
+    "termination": "The cycle ends only when a formal assessment produces PASS."
+  },
+  "final_report": {
+    "mandatory": true,
+    "score_summary": {
+      "Recognition": "X.X / 10",
+      "Distinction": "X.X / 10",
+      "Application": "X.X / 10",
+      "Overall": "X.X / 10",
+      "Accuracy": "X.X / 10",
+      "Confidence": "X.X / 10",
+      "Confidence_Gap": "X.X",
+      "Absolute_Gap": "X.X"
+    },
+    "open_ended_analysis": {
+      "distinction": {
+        "score": "X.X / 10",
+        "criterion_breakdown": true,
+        "strengths": true,
+        "weaknesses": true,
+        "feedback": true
+      },
+      "application": {
+        "score": "X.X / 10",
+        "criterion_breakdown": true,
+        "strengths": true,
+        "weaknesses": true,
+        "feedback": true
+      }
+    },
+    "pedagogical_verdict": {
+      "understanding_level": true,
+      "illusion_status": true,
+      "calibration_status": true,
+      "weak_area": true,
+      "final_result": [
+        "PASS",
+        "RETRY"
+      ],
+      "feedback": true
+    }
+  },
+  "backend_output": {
+    "purpose": "Return authoritative assessment results to the web application.",
+    "required_fields": [
+      "session_id",
+      "level_id",
+      "group_id",
+      "attempt_id",
+      "attempt_type",
+      "accuracy",
+      "recognition",
+      "distinction",
+      "application",
+      "overall",
+      "confidence",
+      "gap",
+      "absolute_gap",
+      "illusion_status",
+      "understanding_level",
+      "weak_area",
+      "final_result"
+    ],
+    "attempt_type": [
+      "INITIAL",
+      "RETEST"
+    ],
+    "illusion_status": [
+      "DETECTED",
+      "UNDERCONFIDENT",
+      "CALIBRATED"
+    ],
+    "understanding_level": [
+      "WELL_UNDERSTOOD",
+      "PARTIALLY_UNDERSTOOD",
+      "LIMITED_UNDERSTANDING",
+      "NOT_YET_UNDERSTOOD"
+    ],
+    "final_result": [
+      "PASS",
+      "RETRY"
+    ],
+    "frontend_rules": [
+      "Frontend displays backend results.",
+      "Frontend does not independently calculate Overall.",
+      "Frontend does not independently calculate Gap.",
+      "Frontend does not independently calculate Illusion status.",
+      "Frontend does not independently determine PASS/RETRY.",
+      "Frontend does not unlock Levels independently.",
+      "Frontend cannot modify engine results."
+    ]
+  },
+  "web_integration": {
+    "level_click": {
+      "trigger": "USER_CLICKS_LEVEL",
+      "action": "Start lesson session."
+    },
+    "preparation": {
+      "display": "Preparing lesson...",
+      "user_interaction": false
+    },
+    "after_formal_assessment": {
+      "display_to_web": [
+        "Accuracy",
+        "AI Detection Status",
+        "Level completion status"
+      ]
+    },
+    "display_mapping": {
+      "illusion_detected": "AI Detected",
+      "underconfidence": "Not Detected",
+      "calibrated": "Not Detected"
+    },
+    "pass": {
+      "display": "Level Completed",
+      "action": "Unlock next Level if applicable."
+    },
+    "retry": {
+      "display": "Remediation Required",
+      "action": "Keep Level locked and continue remediation cycle."
+    }
+  },
+  "session_storage": {
+    "mandatory": [
+      "session_id",
+      "level_id",
+      "group_id",
+      "knowledge_base_version",
+      "engine_version",
+      "attempt_id",
+      "attempt_type",
+      "current_state",
+      "assessment_history",
+      "generated_questions",
+      "secure_answer_key",
+      "user_answers",
+      "recognition",
+      "accuracy",
+      "correction_status",
+      "confidence",
+      "distinction_prompt",
+      "distinction_answer",
+      "distinction_score",
+      "application_prompt",
+      "application_answer",
+      "application_score",
+      "overall",
+      "gap",
+      "absolute_gap",
+      "illusion_status",
+      "understanding_level",
+      "weak_area",
+      "remediation_history",
+      "practice_history",
+      "retest_history",
+      "final_result"
+    ]
+  },
+  "security_rules": {
+    "answer_key": [
+      "Answer key must be generated internally.",
+      "Answer key must be stored securely.",
+      "Answer key must never be sent to the frontend before submission.",
+      "Answer key must never be exposed in learner-visible content."
+    ],
+    "grading": [
+      "Only backend/engine performs authoritative grading.",
+      "Frontend cannot modify scores.",
+      "Frontend cannot modify PASS/RETRY.",
+      "Frontend cannot modify Illusion status."
+    ]
+  },
+  "error_handling": {
+    "INPUT_INVALID": {
+      "action": "STOP",
+      "do_not_generate": true
+    },
+    "GENERATION_FAILED": {
+      "action": "Do not display invalid content.",
+      "preserve_session": true
+    },
+    "QUALITY_CONTROL_FAILED": {
+      "action": "Regenerate failed content.",
+      "display_to_user": false
+    },
+    "INCOMPLETE_SUBMISSION": {
+      "action": "Reject submission.",
+      "grading": false
+    },
+    "INVALID_CONFIDENCE": {
+      "action": "Reject confidence input.",
+      "open_ended_generation": false
+    },
+    "INVALID_OPEN_ENDED_RESPONSE": {
+      "action": "Request valid response.",
+      "grading": false
+    },
+    "SYSTEM_ERROR": {
+      "action": "Freeze current state.",
+      "preserve_all_session_data": true,
+      "do_not_silently_reset": true
+    }
+  },
+  "absolute_anti_failure_rules": {
+    "generation": [
+      "Never display an assessment before Quality Control PASS.",
+      "Never generate more than one defensible correct answer.",
+      "Never omit required target words in groups of 2, 3, or 4.",
+      "Never use external distractors for groups of 4 or more.",
+      "Never use external distractors to replace target words in groups of 2 or 3.",
+      "Never violate target-word answer distribution.",
+      "Never reuse formal assessment questions.",
+      "Never reveal answer keys."
+    ],
+    "grading": [
+      "Never grade incomplete submissions.",
+      "Never grade by answer length alone.",
+      "Never modify rubrics dynamically.",
+      "Never use confidence to inflate competence.",
+      "Never round values before determining PASS/RETRY."
+    ],
+    "progression": [
+      "Never PASS without satisfying both Accuracy and Confidence calibration requirements.",
+      "Never unlock the next Level after Practice alone.",
+      "Never skip Remediation after RETRY.",
+      "Never start Retest without explicit user confirmation.",
+      "Never treat Practice as Retest.",
+      "Never complete a Level without formal PASS."
+    ],
+    "retest": [
+      "Every Retest must be newly generated.",
+      "Every Retest must pass Quality Control.",
+      "Every Retest must collect new Confidence.",
+      "Every Retest must independently calculate all scores.",
+      "Every Retest must independently determine PASS/RETRY.",
+      "Every Retest RETRY must return to Remediation."
+    ]
+  }
+}
+

@@ -1,0 +1,36 @@
+{
+  "group_title": "Xa",
+  "target_words": {
+    "far": {
+      "meaning": "[chỉ đứng trước danh từ] ở một khoảng cách xa hơn từ chỗ bạn; ở một nơi xa*\n* nghĩa này giống với distant và faraway",
+      "key_distinction": "Chỉ vị trí ở điểm xa nhất của một khoảng không gian hoặc khoảng cách vật lý xa xôi.",
+      "examples": [
+        "at the far end of the room",
+        "a far country"
+      ]
+    },
+    "remote": {
+      "meaning": "cách xa những chỗ nơi con người sinh sống: hẻo lánh\n~ isolated /'aɪsəleɪtɪd/ (adj)",
+      "key_distinction": "Chỉ nơi chốn hẻo lánh, biệt lập, xa rời các khu vực đông dân cư.",
+      "examples": [
+        "a remote village"
+      ]
+    },
+    "distant": {
+      "meaning": "xa về không gian hoặc thời gian\n~ faraway /'fɑːrəweɪ/ (adj) [chỉ đứng trước danh từ]",
+      "key_distinction": "Xa xôi về cả khoảng cách không gian lẫn mốc thời gian (quá khứ/tương lai).",
+      "examples": [
+        "distant stars",
+        "a distant country"
+      ]
+    },
+    "far-flung": {
+      "meaning": "[thường đứng trước danh từ] dùng để chỉ những nơi rất xa xôi hoặc những thứ gì/những ai trải dài trên một vùng rộng lớn",
+      "key_distinction": "Chỉ các địa điểm vô cùng xa xôi, hoặc có phạm vi phân tán rộng lớn khắp nơi.",
+      "examples": [
+        "expeditions to the far-flung corners of the world",
+        "a newsletter that helps to keep all our far-flung graduates in touch"
+      ]
+    }
+  }
+}

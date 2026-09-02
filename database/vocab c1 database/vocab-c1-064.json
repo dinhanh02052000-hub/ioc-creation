@@ -1,0 +1,56 @@
+{
+  "group_title": "Trạng thái mệt mỏi",
+  "target_words": {
+    "tired": {
+      "meaning": "cảm thấy bạn muốn ngủ hoặc nghỉ ngơi, cần nghỉ ngơi",
+      "key_distinction": "~ weary",
+      "examples": [
+        "He still felt really tired and wanted to stay in bed."
+      ]
+    },
+    "weary": {
+      "meaning": "rất mệt, đặc biệt là sau khi bạn làm việc vất vả hoặc làm gì đó trong một khoảng thời gian dài",
+      "key_distinction": "~ tired",
+      "examples": [
+        "He looks tired and weary after 20years in office.",
+        "weary hours spent in negotiation"
+      ]
+    },
+    "exhausted": {
+      "meaning": "rất mệt",
+      "key_distinction": "~ spent /spent/ (adj), ~ fatigued /fəˈtiːɡd/ (adj) (cả về thể chất lẫn tinh thần)",
+      "examples": [
+        "The exhausted climbers were rescued by helicopter."
+      ]
+    },
+    "drained": {
+      "meaning": "rất mệt và không có một chút năng lượng nào",
+      "key_distinction": "thường không dùng trước danh từ",
+      "examples": [
+        "She suddenly felt totally drained."
+      ]
+    },
+    "worn out": {
+      "meaning": "(miêu tả người) trông hoặc cảm thấy rất mệt, đặc biệt là do làm việc vất vả hoặc luyện tập thể lực",
+      "key_distinction": "thường không dùng trước danh từ",
+      "examples": [
+        "She got absolutely worn out looking after three small children alone."
+      ]
+    },
+    "jet-lagged": {
+      "meaning": "mệt mỏi do bạn đã có một chuyến bay dài từ nơi này tới nơi khác mà có múi giờ khác nhau",
+      "key_distinction": "mệt mỏi do lệch múi giờ chuyến bay",
+      "examples": [
+        "When the plane landed, we were slightly jet-lagged and exhausted."
+      ]
+    },
+    "drowsy": {
+      "meaning": "mệt và muốn ngủ (bởi vì bạn đang ở một nơi ấm áp/vừa uống rượu/uống thuốc/...)",
+      "key_distinction": "khiến bạn cảm thấy thư giãn và mệt",
+      "examples": [
+        "He felt cozy and drowsy, despite the strong coffee.",
+        "She lay in the sun all through the long, drowsy afternoon."
+      ]
+    }
+  }
+}

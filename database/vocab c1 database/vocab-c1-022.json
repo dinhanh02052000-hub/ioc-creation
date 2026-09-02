@@ -1,0 +1,35 @@
+{
+  "group_title": "ĐIÊN",
+  "target_words": {
+    "mad": {
+      "meaning": "điên, mất trí, tâm trí không hoạt động bình thường, và có thể làm những điều ngớ ngẩn, ngu xuẩn",
+      "key_distinction": "Mất trí, phát điên hoặc hành động ngớ ngẩn, thiếu suy nghĩ.",
+      "examples": [
+        "I thought I'd go mad if I stayed any longer."
+      ]
+    },
+    "insane": {
+      "meaning": "điên rồ, đặc biệt là theo cách có thể gây ra các vấn đề nghiêm trọng, tổn hại hoặc thương tích\nđiên, bị bệnh tâm thần nặng và không phải chịu trách nhiệm pháp lý về hành động của mình",
+      "key_distinction": "Điên rồ đến mức gây nguy hiểm/tổn hại, hoặc mắc bệnh tâm thần nặng (thuật ngữ có tính pháp lý).",
+      "examples": [
+        "It's an insane situation that I can't see any way out of.",
+        "He was certified insane in 1998."
+      ]
+    },
+    "crazy": {
+      "meaning": "điên rồ, không thực tế, không sáng suốt",
+      "key_distinction": "Điên rồ, kì quặc, thiếu thực tế hoặc thiếu sáng suốt (rất phổ biến trong giao tiếp hàng ngày).",
+      "examples": [
+        "I'd never do anything like that. That's just crazy.",
+        "'Love makes you do crazy things,' she said."
+      ]
+    },
+    "demented": {
+      "meaning": "điên cuồng, loạn trí, không thể suy nghĩ hoặc hành động thông suốt bởi vì bạn đang cực kỳ lo lắng, tức giận hoặc phấn khích trước điều gì đó",
+      "key_distinction": "Điên cuồng, mất trí tạm thời do bị kích động bởi cảm xúc quá mạnh (lo lắng, tức giận, phấn khích).",
+      "examples": [
+        "She was nearly demented with worry when her son didn't come home."
+      ]
+    }
+  }
+}

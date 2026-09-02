@@ -1,0 +1,39 @@
+{
+  "group_title": "Phổ biến",
+  "target_words": {
+    "common": {
+      "meaning": "chung, phổ biến, giống nhau ở nhiều nơi, có ở nhiều người; được chia sẻ bởi mọi người, cái thuộc về một người cũng như những người, cái khác.",
+      "key_distinction": "Phổ biến vì xuất hiện thường xuyên, quen thuộc hoặc là điểm chung được chia sẻ giữa nhiều người.",
+      "examples": [
+        "Jackson is a common English name.",
+        "They share a common interest in photography."
+      ]
+    },
+    "popular": {
+      "meaning": "được yêu thích, ưa chuộng, ủng hộ bởi rất nhiều người; bình dân, đại chúng, phổ cập",
+      "key_distinction": "Phổ biến theo hướng được đông đảo mọi người yêu thích, ưa chuộng hoặc mang tính đại chúng.",
+      "examples": [
+        "She's the most popular teacher in school.",
+        "popular music/songs/culture/fiction"
+      ]
+    },
+    "general": {
+      "meaning": "chung chung, không riêng biệt mà phổ biến, lan rộng, không cụ thể, không giới hạn; chỉ đến toàn thể, toàn bộ một tầng lớp, một tập thể.",
+      "key_distinction": "Mang tính tổng quát, bao quát toàn bộ tập thể/nhóm mà không đi vào chi tiết cụ thể.",
+      "examples": [
+        "The general feeling is that justice was not served.",
+        "general knowledge",
+        "In general, Japanese cars are very reliable and breakdowns are rare."
+      ]
+    },
+    "universal": {
+      "meaning": "tồn tại, tìm thấy ở khắp mọi nơi, liên quan đến tất cả mọi người trên thế giới, hoặc trong một nhóm nào đó, toàn thể, toàn dân",
+      "key_distinction": "Mang tính toàn cầu, phổ quát, áp dụng cho tất cả mọi người hoặc mọi nơi không ngoại lệ.",
+      "examples": [
+        "Such problems are a universal feature of old age.",
+        "universal access/service/standards",
+        "universal agreement/appeal/approval"
+      ]
+    }
+  }
+}

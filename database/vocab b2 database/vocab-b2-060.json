@@ -1,0 +1,62 @@
+{
+  "group_title": "Lỗi",
+  "target_words": {
+    "mistake": {
+      "meaning": "Hành động, nhận thức hoặc quyết định không đúng dẫn đến kết quả ngoài ý muốn; từ ngữ hoặc con số bị nói/viết sai.",
+      "key_distinction": "Dùng phổ biến trong đời sống hàng ngày để chỉ sai lầm do đánh giá sai hoặc sơ suất khi nói, viết.",
+      "examples": [
+        "It would be a mistake to ignore his opinion.",
+        "This dress was an expensive mistake.",
+        "Her essay was full of spelling mistakes.",
+        "I've discovered a few mistakes in your calculations."
+      ]
+    },
+    "error": {
+      "meaning": "Lỗi sai về thông tin, con số hoặc từ ngữ gây ảnh hưởng tới kết quả; thường mang sắc thái trang trọng hơn 'mistake' hoặc dùng trong kỹ thuật, máy tính.",
+      "key_distinction": "Sử dụng trong bối cảnh trang trọng, kỹ thuật, máy tính (human error, margin of error) hoặc các phép tính toán.",
+      "examples": [
+        "I think you have made an error in calculating the total.",
+        "a glaring error (= a mistake that is very obvious)",
+        "Almost all accidents start with a simple error by the pilot."
+      ]
+    },
+    "fault": {
+      "meaning": "Trách nhiệm đối với một sai sót hay hành động xấu; hỏng hóc trong máy móc, hệ thống làm chúng không hoạt động bình thường.",
+      "key_distinction": "Nhấn mạnh vào trách nhiệm/sự đền bù (be at fault) hoặc khuyết điểm khiến hệ thống, thiết bị gặp trục trặc.",
+      "examples": [
+        "It's nobody's fault.",
+        "I think the owners are at fault (= responsible) for not warning us.",
+        "Many people live in poverty through no fault of their own.",
+        "The engine has a serious fault.",
+        "The system, for all its faults (= in spite of its faults), is the best available at the moment."
+      ]
+    },
+    "defect": {
+      "meaning": "Khuyết điểm, sai sót trong quá trình tạo ra khiến vật thể hoặc cá nhân không đạt độ hoàn hảo.",
+      "key_distinction": "Lỗi sản xuất, khiếm khuyết vật lý ở hàng hóa hoặc nhược điểm trong tính cách, cơ thể.",
+      "examples": [
+        "a defect in the glass",
+        "a defect of her character",
+        "The child had a mild heart defect",
+        "He had a speech defect (= an incorrect way of saying certain sounds) which made it quite difficult to understand him."
+      ]
+    },
+    "flaw": {
+      "meaning": "Lỗi hoặc điểm yếu trong suy luận, kế hoạch khiến nó không chính xác; vết nứt/vết rạn nhỏ làm giảm giá trị hay vẻ đẹp của vật.",
+      "key_distinction": "Lỗi logic, sai sót trong lập luận/kế hoạch hoặc vết nứt nhỏ làm giảm độ hoàn hảo của vật dụng.",
+      "examples": [
+        "It took me a long time to find the flaw in her logic.",
+        "Unfortunately, this plate has a slight flaw in it."
+      ]
+    },
+    "slip": {
+      "meaning": "Lỗi nhỏ, sơ suất vô ý do không chú ý kĩ (thường không gây hậu quả lớn nhưng có thể làm ngại ngùng).",
+      "key_distinction": "Sơ suất nhỏ, lỡ lời hoặc trượt tay do thiếu tập trung trong chốc lát.",
+      "examples": [
+        "His team cannot afford any slips.",
+        "There were a few slips in the translation.",
+        "a slip of the tongue"
+      ]
+    }
+  }
+}

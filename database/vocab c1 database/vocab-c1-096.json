@@ -1,0 +1,45 @@
+{
+  "group_title": "THÀNH PHẦN",
+  "target_words": {
+    "ingredient": {
+      "meaning": "một trong những thứ để tạo thành cái gì (đặc biệt là đồ ăn): thành phần/nguyên liệu / một trong những thứ/phẩm chất cần thiết để tạo nên thành công",
+      "key_distinction": "nguyên liệu chế biến món ăn/thức uống hoặc yếu tố/phẩm chất cấu thành sự thành công",
+      "examples": [
+        "All food products should carry a list of ingredients on the packet.",
+        "Tolerance is an essential ingredient for a happy marriage."
+      ]
+    },
+    "element": {
+      "meaning": "[C] một phần cần thiết hoặc tiêu biểu của một cái gì đó; một trong vài thành phần mà một cái gì đó chứa đựng: yếu tố",
+      "key_distinction": "yếu tố cần thiết, trừu tượng hoặc thành phần cơ bản cấu thành bản chất của một sự việc/vấn đề",
+      "examples": [
+        "Cost was a key element in our decision.",
+        "There is often a futuristic element to her writing."
+      ]
+    },
+    "component": {
+      "meaning": "thành phần, phần hợp thành (một phần kết hợp với các phần khác để tạo thành một thứ gì đó lớn hơn như máy móc, xe, hệ thống,...). Bản thân các thành phần này đã hoàn thiện nên có thể tự đứng một mình, ví dụ như bánh xe là một component của một chiếc xe hơi.",
+      "key_distinction": "linh kiện, phụ tùng, bộ phận vật lý cấu thành máy móc/hệ thống (bản thân bộ phận đó có thể tách rời và đứng độc lập)",
+      "examples": [
+        "Nitrogen is the main component of air.",
+        "the components of a machine"
+      ]
+    },
+    "portion": {
+      "meaning": "một phần của một cái gì/điều gì đó lớn hơn: phần chia",
+      "key_distinction": "khẩu phần ăn hoặc một phần được chia/cắt ra từ một tổng thể lớn hơn",
+      "examples": [
+        "a significant portion of the population",
+        "You give this portion of the ticket to the inspector and keep the other.",
+        "The central portion of the bridge collapsed."
+      ]
+    },
+    "substance": {
+      "meaning": "phần quan trọng nhất hoặc phần chính của một cái gì đó ~ essence (n)",
+      "key_distinction": "chất/hợp chất hóa học hoặc cốt lõi, bản chất chính của một văn bản/báo cáo/lý lẽ",
+      "examples": [
+        "The real substance of the report was in the third part."
+      ]
+    }
+  }
+}

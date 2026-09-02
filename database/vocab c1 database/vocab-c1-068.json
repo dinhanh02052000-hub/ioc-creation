@@ -1,0 +1,62 @@
+{
+  "group_title": "NGẠC NHIÊN",
+  "target_words": {
+    "shocked": {
+      "meaning": "cảm thấy ngạc nhiên và bực mình vì một điều rất không mong đợi và khó chịu đã xảy ra / cảm thấy bị xúc phạm hoặc ghê tởm",
+      "key_distinction": "Ngạc nhiên kèm khó chịu/bị xúc phạm vì điều tồi tệ, không đơn thuần là bất ngờ tích cực.",
+      "examples": [
+        "He was deeply shocked by Sophia's death.",
+        "She was shocked at the racist language they used."
+      ]
+    },
+    "amazed": {
+      "meaning": "kinh ngạc/hết sức ngạc nhiên, đặc biệt bởi một thứ gì đó tốt đẹp hoặc bởi điều gì đó có vẻ như khó tin",
+      "key_distinction": "Ngạc nhiên mạnh vì điều tốt đẹp hoặc khó tin, sắc thái tích cực hơn 'shocked'.",
+      "examples": [
+        "We just moved house and are amazed at the amount of junk we have."
+      ]
+    },
+    "surprised": {
+      "meaning": "cảm thấy/thể hiện sự ngạc nhiên khi một điều gì đó xảy ra mà bạn không nghĩ nó sẽ xảy ra",
+      "key_distinction": "Mức độ ngạc nhiên nhẹ, trung tính nhất trong nhóm, dùng khi có điều không như mong đợi.",
+      "examples": [
+        "He looked surprised to see Olivia standing by the front door."
+      ]
+    },
+    "startled": {
+      "meaning": "hơi ngạc nhiên và sợ hãi bởi vì một sự ngạc nhiên bất ngờ",
+      "key_distinction": "Ngạc nhiên xen lẫn giật mình/sợ hãi vì điều xảy ra đột ngột.",
+      "examples": [
+        "I was startled to see a woman's face staring back at me."
+      ]
+    },
+    "astonished": {
+      "meaning": "kinh ngạc/hết sức ngạc nhiên về một điều gì",
+      "key_distinction": "= amazed (astonished và amazed có cùng ý nghĩa và trong hầu hết các trường hợp có thể sử dụng cả hai từ. Tuy nhiên, khi bạn muốn diễn tả cảm giác vừa ngạc nhiên vừa ngượng thì bạn dùng astonished.)",
+      "examples": [
+        "The helicopter landed before our astonished eyes."
+      ]
+    },
+    "astounded": {
+      "meaning": "rất ngạc nhiên hoặc sửng sốt bởi điều gì bởi vì điều đó có vẻ như là khó có thể xảy ra",
+      "key_distinction": "mang sắc thái trang trọng và mức độ mạnh hơn từ astonished",
+      "examples": [
+        "How can you say that? I'm absolutely astounded."
+      ]
+    },
+    "stunned": {
+      "meaning": "rất ngạc nhiên hoặc sửng sốt đến mức không biết phải làm gì hoặc nói gì",
+      "key_distinction": "Ngạc nhiên đến mức choáng váng, không biết nói/làm gì tiếp theo.",
+      "examples": [
+        "She was too stunned to speak."
+      ]
+    },
+    "taken aback": {
+      "meaning": "rất ngạc nhiên bởi một điều ai đó nói hoặc làm nên không biết phải phản ứng ra sao",
+      "key_distinction": "Ngạc nhiên vì lời nói/hành động của ai đó, không biết phản ứng ra sao (thường đứng sau 'be').",
+      "examples": [
+        "I think he was a little taken aback by my response."
+      ]
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "group_title": "LÝ DO",
+  "target_words": {
+    "reason": {
+      "meaning": "[C] một nguyên nhân hoặc một lời giải thích cho một điều gì đó đã xảy ra hoặc điều ai đó đã làm: lý do",
+      "key_distinction": "Lý do, cơ sở giải thích cho một hành động hay sự việc đã xảy ra.",
+      "examples": [
+        "The exact locations are being kept secret for reasons of security."
+      ]
+    },
+    "pretext": {
+      "meaning": "một lý do không thành thật mà bạn đưa ra để giải thích cho một điều gì đó (thường là điều xấu) để nhằm mục đích giấu/che giấu lý do thực sự",
+      "key_distinction": "Cớ, lý do bịa đặt nhằm che đậy mục đích thực sự.",
+      "examples": [
+        "He called her on the pretext of needing more information."
+      ]
+    },
+    "cause": {
+      "meaning": "[C] ai đó/thứ gì đó mà khiến cho một điều gì đó xảy ra (* cause (of something))\n[U] lý do cho những cảm xúc hoặc hành vi cụ thể",
+      "key_distinction": "Nguyên nhân trực tiếp sinh ra hậu quả, hoặc căn nguyên cho một cảm xúc/hành vi.",
+      "examples": [
+        "Unemployment is a major cause of poverty.",
+        "There is no cause for concern."
+      ]
+    },
+    "excuse": {
+      "meaning": "một lý do (có thể là thực sự hoặc được nghĩ ra) mà bạn đưa ra để giải thích hoặc bảo vệ cho một hành vi bất cẩn/mang tính xúc phạm/... của mình (đã xảy ra) để nhằm chối bỏ trách nhiệm/tránh bị trách phạt/...\nmột lý do tốt mà bạn đưa ra để giải thích vì sao bạn muốn làm một điều gì (lý do thực sự của điều này khác với lý do mà bạn đưa ra): cái cớ để làm điều gì",
+      "key_distinction": "Cớ bào chữa, lý do đưa ra nhằm giảm bớt khuyết điểm, tránh bị phạt hoặc hợp thức hóa mục đích khác.",
+      "examples": [
+        "He was late again! He had better have a good excuse for that.",
+        "The conference was just an excuse for a holiday in New York."
+      ]
+    },
+    "explanation": {
+      "meaning": "[C, U] một việc/tình huống ... cho bạn biết vì sao mà một điều gì đó đã xảy ra; lý do được đưa ra để giải thích cho điều gì: lời giải thích",
+      "key_distinction": "Lời giải thích rõ ràng chi tiết về lý do tại sao sự việc lại xảy ra.",
+      "examples": [
+        "William had no explanation for his absence the day before."
+      ]
+    }
+  }
+}

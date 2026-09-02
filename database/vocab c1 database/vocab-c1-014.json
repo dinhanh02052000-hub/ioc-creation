@@ -1,0 +1,48 @@
+{
+  "group_title": "CHẾT NGƯỜI",
+  "target_words": {
+    "fatal": {
+      "meaning": "(bệnh tật, tai nạn,...) chết người hoặc gây chết người\nrất nghiêm trọng và có ảnh hưởng rất xấu (gây ra tai hoạ hoặc thất bại), đặc biệt là khiến ai thất bại hoặc phải ngừng việc họ đang làm: tai hoạ, gây tai hoạ",
+      "key_distinction": "Gây tử vong (do bệnh tật/tai nạn) hoặc sai lầm nghiêm trọng dẫn đến thất bại thảm hại.",
+      "examples": [
+        "If she gets ill again, it could prove fatal (= be fatal).",
+        "a fatal illness",
+        "There was a fatal flaw in the plan."
+      ]
+    },
+    "mortal": {
+      "meaning": "(sinh vật sống, đặc biệt là con người) không thể sống mãi; phải chết >< immortal\ngây ra cái chết hoặc có thể sẽ gây ra cái chết; rất nghiêm trọng\n[chỉ đứng trước danh từ] [trang trọng] kéo dài cho đến khi ai đó chết ~ deadly",
+      "key_distinction": "Phàm nhân (phải chết), nguy hiểm chí mạng hoặc cuộc chiến sinh tử kéo dài tới chết.",
+      "examples": [
+        "Every living creature is mortal.",
+        "a mortal wound",
+        "mortal danger/enemy/threat (= very serious and dangerous danger, enemy, threat...)",
+        "They were locked in mortal combat (= a fight that will only end with the death of one of them)."
+      ]
+    },
+    "deadly": {
+      "meaning": "có thể sẽ gây ra cái chết trong tương lai/có khả năng gây ra cái chết cho ai đó/đã gây ra cái chết cho ai đó",
+      "key_distinction": "Có khả năng gây chết người cao (vũ khí, độc tố, bệnh tật nguy hiểm).",
+      "examples": [
+        "a deadly disease",
+        "a deadly weapon",
+        "The authorities are looking into last week's deadly gas explosions."
+      ]
+    },
+    "lethal": {
+      "meaning": "gây ra hoặc có khả năng gây ra cái chết ~ deadly, fatal\n(suồng sã, thường mang tính hài hước) gây ra hoặc có khả năng gây ra rất nhiều tác hại xấu hoặc thiệt hại",
+      "key_distinction": "Gây tử vong (đặc biệt do hóa chất, liều lượng thuốc) hoặc sự kết hợp gây ra tác hại lớn.",
+      "examples": [
+        "a lethal dose of heroin",
+        "You and that car - it's a lethal combination!"
+      ]
+    },
+    "terminal": {
+      "meaning": "(bệnh tật, một loại bệnh) không thể chữa được và sẽ dần dần dẫn đến cái chết",
+      "key_distinction": "Giai đoạn cuối của bệnh nan y, không thể chữa khỏi và chắc chắn dẫn đến tử vong.",
+      "examples": [
+        "terminal lung cancer"
+      ]
+    }
+  }
+}

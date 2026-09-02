@@ -1,0 +1,41 @@
+{
+  "group_title": "THUÊ",
+  "target_words": {
+    "rent": {
+      "meaning": "[nội động từ, ngoại động từ] trả tiền một cách định kỳ cho ai đó để bạn có thể sử dụng thứ gì mà họ sở hữu (ví dụ như nhà, phòng, đất đai,...): thuê / [ngoại động từ] cho phép ai đó sử dụng thứ gì mà bạn sở hữu để lấy tiền (được trả định kỳ): cho thuê (~ let (v) (British English)) / [ngoại động từ] rent something (North American English) trả tiền cho ai để bạn có thể sử dụng cái gì trong một khoảng thời gian ngắn: thuê (= hire (British English))",
+      "key_distinction": "thường dùng cho việc thuê/cho thuê dài hạn (nhà, phòng, đất đai) có trả tiền định kỳ, hoặc dùng trong tiếng Anh-Mỹ cho việc thuê ngắn hạn (xe, phim,...)",
+      "examples": [
+        "Are you looking to buy or rent?",
+        "Who do you rent the land from?",
+        "He rents rooms in his house (out) to students.",
+        "to rent a movie/a bike/ a boat",
+        "We rented a meeting room in a downtown hotel."
+      ]
+    },
+    "lease": {
+      "meaning": "làm một bản thoả thuận hợp pháp (hợp đồng) trong đó một số tiền nhất định được trả để sử dụng đất đai/tòa nhà/phương tiện/thiết bị/... trong một khoảng thời gian thỏa thuận: cho thuê, thuê (~ rent)",
+      "key_distinction": "nhấn mạnh vào việc có hợp đồng pháp lý rõ ràng (lease/hợp đồng thuê dài hạn)",
+      "examples": [
+        "I'm interested in leasing your cottage."
+      ]
+    },
+    "hire": {
+      "meaning": "[ngoại động từ, nội động từ] thuê/tuyển dụng ai đó làm việc / [ngoại động từ] hire somebody/something thuê và trả công cho ai đó trong một khoảng thời gian ngắn để họ làm một công việc nào đó cụ thể / [ngoại động từ] (British English) trả tiền để mượn cái gì đó trong một khoảng thời gian ngắn = rent (American English)",
+      "key_distinction": "dùng phổ biến cho việc thuê người làm (tuyển dụng/trả công) hoặc thuê vật dụng/phương tiện trong thời gian ngắn (trong tiếng Anh-Anh)",
+      "examples": [
+        "She was hired three years ago.",
+        "He does the hiring and firing (= employing and dismissing people) in our company.",
+        "to hire a lawyer/detective",
+        "Workers were hired by the day.",
+        "What's the cost of hiring by the day?"
+      ]
+    },
+    "charter": {
+      "meaning": "charter something thuê một phương tiện (máy bay, tàu, thuyền,...) cho mục đích riêng của bạn",
+      "key_distinction": "chuyên dùng cho việc thuê trọn gói một phương tiện giao thông lớn (máy bay, tàu, thuyền) để sử dụng riêng",
+      "examples": [
+        "They flew to Athens and then chartered a boat to the island."
+      ]
+    }
+  }
+}

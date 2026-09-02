@@ -1,0 +1,45 @@
+{
+  "group_title": "Em bé",
+  "target_words": {
+    "baby": {
+      "meaning": "một đứa trẻ còn rất nhỏ chưa biết nói hoặc chưa biết đi, từ 0 đến 18 tháng tuổi",
+      "key_distinction": "Trẻ sơ sinh hoặc trẻ nhỏ dưới 18 tháng tuổi, chưa biết đi/nói.",
+      "examples": [
+        "Sandra had a baby (=gave birth to it) on 29 May.",
+        "a six-week-old baby"
+      ]
+    },
+    "toddler": {
+      "meaning": "một đứa trẻ nhỏ, đặc biệt là một đứa trẻ đang học hoặc mới tập đi, khoảng từ 1 đến 3 tuổi",
+      "key_distinction": "Trẻ nhỏ trong độ tuổi chập chập tập đi (khoảng 1-3 tuổi).",
+      "examples": [
+        "Marian 's two-year-old toddler was clawing at her skirt.",
+        "Think of the toddler learning to walk and how often he falls down only to pick himself up and try again."
+      ]
+    },
+    "child": {
+      "meaning": "một đứa trẻ từ khi chúng được sinh ra cho đến khi chúng khoảng 14 tuổi (vẫn chưa trưởng thành)",
+      "key_distinction": "Từ mang tính trung lập, dùng trong văn viết/trang trọng chỉ trẻ em dưới độ tuổi vị thành niên.",
+      "examples": [
+        "Jan is married with three young children.",
+        "an eight-year-old child"
+      ]
+    },
+    "kid": {
+      "meaning": "trẻ em, người chưa trưởng thành, có nghĩa tương tự với \"child\" nhưng được sử dụng nhiều hơn trong văn nói không trang trọng",
+      "key_distinction": "Mang nghĩa tương tự child nhưng thường dùng trong văn nói thân mật, không trang trọng.",
+      "examples": [
+        "I remember reading with my grandmother as a young kid of 6.",
+        "He took the kids to the park while I was working."
+      ]
+    },
+    "infant": {
+      "meaning": "một đứa trẻ ở trường trong độ tuổi từ bốn đến bảy (ở Anh và xứ Wales), em bé còn rất nhỏ (Bắc Mỹ) (khoảng 3-12 tháng)",
+      "key_distinction": "Dùng trong ngữ cảnh y tế/pháp lý/văn bản chính thức cho trẻ sơ sinh dưới 1 tuổi, hoặc chỉ trẻ mầm non/tiểu học nhỏ ở Anh.",
+      "examples": [
+        "The majority of infant teachers are women.",
+        "I've known her since we were in the infants."
+      ]
+    }
+  }
+}

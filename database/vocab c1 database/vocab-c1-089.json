@@ -1,0 +1,28 @@
+{
+  "group_title": "Rút ra",
+  "target_words": {
+    "extract": {
+      "meaning": "chiết xuất, loại bỏ hoặc lấy một chất từ thứ gì đó, ví dụ như bằng cách sử dụng một quy trình công nghiệp hoặc hóa học",
+      "key_distinction": "Chiết xuất hoặc tách lấy một chất/thành phần ra khỏi vật thể khác bằng quy trình kỹ thuật, hóa học hoặc lực.",
+      "examples": [
+        "The Egyptians used a primitive form of distillation to extract the essential oils from plants."
+      ]
+    },
+    "withdraw": {
+      "meaning": "rút tiền từ tài khoản ngân hàng, rút lui (lực lượng, quân đội)",
+      "key_distinction": "Rút tiền từ tài khoản/ngân hàng hoặc rút lui quân đội, lực lượng khỏi một vị trí.",
+      "examples": [
+        "This credit card allows you to withdraw up to £200 a day from ATMs.",
+        "The UN has withdrawn its troops from the country."
+      ]
+    },
+    "remove": {
+      "meaning": "- loại bỏ, lấy một cái gì đó hoặc một người nào đó từ một nơi nào đó, hoặc một cái gì đó\n- cách chức, sa thải",
+      "key_distinction": "Tháo gỡ, loại bỏ cái gì đó ra khỏi một vị trí hoặc cách chức, sa thải ai đó.",
+      "examples": [
+        "The men came to remove the rubbish from the backyard.",
+        "The company's shareholders have voted to remove the executive board."
+      ]
+    }
+  }
+}

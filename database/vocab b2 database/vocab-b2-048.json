@@ -1,0 +1,22 @@
+{
+  "group_title": "Học",
+  "target_words": {
+    "learn": {
+      "meaning": "học lấy kiến thức và kỹ năng thông qua: học tập, luyện tập, được dạy dỗ hoặc trải nghiệm, học một cách tự nhiên, thấm dần vào nhận thức. Ngoài ra còn được dùng với nghĩa học thuộc, lặp đi lặp lại để ghi nhớ điều gì",
+      "key_distinction": "Nhấn mạnh quá trình tiếp thu thành công kiến thức/kỹ năng mới hoặc học thuộc lòng, lĩnh hội qua trải nghiệm.",
+      "examples": [
+        "He had the opportunity to learn English in Australia.",
+        "He's still learning how to dance.",
+        "I learnt the poem by heart."
+      ]
+    },
+    "study": {
+      "meaning": "học tập, nghiên cứu hay thu thập kiến thức, kỹ năng có thể học tập từ sách vở hay đi đến trường, đại học...,",
+      "key_distinction": "Nhấn mạnh quá trình học tập chăm chỉ, nghiên cứu sách vở, tham gia các khóa học/trường lớp chính quy.",
+      "examples": [
+        "Janet's studying for a degree in history.",
+        "She studied at New College, Oxford."
+      ]
+    }
+  }
+}

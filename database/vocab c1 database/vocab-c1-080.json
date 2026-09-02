@@ -1,0 +1,66 @@
+{
+  "group_title": "PHÁ, LÀM HỎNG",
+  "target_words": {
+    "destroy": {
+      "meaning": "làm cho một cái gì đó hư hại đến mức không dùng được nữa hoặc không tồn tại nữa",
+      "key_distinction": "phá hủy hoàn toàn vật chất hoặc trừu tượng (như hy vọng, niềm tin)",
+      "examples": [
+        "He completely destroyed the phone by smashing it into pieces.",
+        "You have destroyed my hopes of happiness."
+      ]
+    },
+    "devastate": {
+      "meaning": "phá huỷ hoàn toàn một nơi hoặc một vùng nào đó",
+      "key_distinction": "thường dùng cho quy mô lớn như khu vực, thành phố do thiên tai/chiến tranh",
+      "examples": [
+        "Western India was devastated by a huge earthquake."
+      ]
+    },
+    "demolish": {
+      "meaning": "phá huỷ hoàn toàn một toà nhà, đặc biệt là để sử dụng đất cho việc khác; phá huỷ cái gì đó",
+      "key_distinction": "chuyên dùng cho việc san bằng nhà cửa, công trình kiến trúc",
+      "examples": [
+        "They demolished the old school to build a new one.",
+        "Tornadoes demolished trailers and blew roofs off houses."
+      ]
+    },
+    "damage": {
+      "meaning": "gây hư hại hoặc làm hỏng cái gì/điều gì; có tác động xấu/gây hại đối với điều gì/ai",
+      "key_distinction": "gây tổn hại mức độ vật lý hoặc uy tín, danh dự (có thể sửa chữa hoặc phục hồi phần nào)",
+      "examples": [
+        "The building was badly damaged in the fire.",
+        "The bribery scandal damaged his reputation severely."
+      ]
+    },
+    "spoil": {
+      "meaning": "biến một cái gì đó tốt thành thứ xấu/khó chịu/không còn hấp dẫn/không còn hữu ích; chiều chuộng quá mức làm hỏng tính cách",
+      "key_distinction": "làm mất đi trải nghiệm tốt đẹp hoặc làm hư đứa trẻ",
+      "examples": [
+        "Our camping trip was spoilt by bad weather.",
+        "He spoils his children with expensive toys."
+      ]
+    },
+    "ruin": {
+      "meaning": "làm hỏng một cái gì đó khiến nó bị mất đi giá trị/thú vui/cơ hội; làm cho ai đó/điều gì đó mất hết thanh danh/tiền bạc/địa vị",
+      "key_distinction": "làm sụp đổ hoàn toàn tương lai, cơ hội, tài chính hoặc đồ vật",
+      "examples": [
+        "Her new boots got ruined in the mud.",
+        "The long legal battle ruined him financially."
+      ]
+    },
+    "deface": {
+      "meaning": "làm hỏng vẻ ngoài của một cái gì đó, đặc biệt là bằng cách vẽ hoặc viết lên nó",
+      "key_distinction": "tác động lên bề mặt (tường, tranh ảnh, sách vở) bằng vết bẩn, graffiti",
+      "examples": [
+        "Several office buildings were defaced by graffiti."
+      ]
+    },
+    "disfigure": {
+      "meaning": "làm hỏng hoàn toàn vẻ ngoài của một cái gì đó/một nơi nào đó/một người nào đó (đặc biệt là khuôn mặt của họ)",
+      "key_distinction": "biến dạng, làm mất đi vẻ đẹp mỹ quan hoặc khuôn mặt",
+      "examples": [
+        "An ugly power station disfigures the landscape."
+      ]
+    }
+  }
+}

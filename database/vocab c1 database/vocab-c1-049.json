@@ -1,0 +1,35 @@
+{
+  "group_title": "KHIẾP SỢ",
+  "target_words": {
+    "dread": {
+      "meaning": "cảm giác vô cùng sợ hãi về một điều gì đó có thể hoặc sẽ xảy ra trong tương lai",
+      "key_distinction": "Cảm giác sợ hãi, e ngại tột cùng về một điều xấu sắp xảy ra trong tương lai.",
+      "examples": [
+        "The prospect of growing old fills me with dread.",
+        "She has an irrational dread of hospitals."
+      ]
+    },
+    "apprehension": {
+      "meaning": "cảm giác lo lắng, quan ngại hoặc sợ hãi rằng điều gì đó tồi tệ có thể xảy ra ~ dread",
+      "key_distinction": "Sự lo âu, e sợ, phập phồng lo lắng về những điều tồi tệ có thể xảy đến.",
+      "examples": [
+        "He watched the election results with some apprehension.",
+        "There is apprehension about the safety of the missing children."
+      ]
+    },
+    "terror": {
+      "meaning": "cảm giác sợ hãi tột cùng, thường là về những gì đã xảy ra",
+      "key_distinction": "Sự kinh hoàng, khiếp sợ tột cùng trước một mối đe dọa hoặc sự việc nguy hiểm kinh hoàng.",
+      "examples": [
+        "Thousands of islanders fled in terror yesterday as the volcano erupted."
+      ]
+    },
+    "horror": {
+      "meaning": "cảm giác sợ hãi và sốc cực kỳ hoặc tính chất đáng sợ và gây sốc của một cái gì đó",
+      "key_distinction": "Cảm giác kinh hãi, kinh sợ kết hợp với bàng hoàng, sốc trước một sự việc rùng rợn/tồi tệ.",
+      "examples": [
+        "The crowd cried out in horror as the car burst into flames."
+      ]
+    }
+  }
+}

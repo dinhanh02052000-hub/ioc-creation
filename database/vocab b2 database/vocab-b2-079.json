@@ -1,0 +1,45 @@
+{
+  "group_title": "Thông báo",
+  "target_words": {
+    "announce": {
+      "meaning": "[ngoại động từ] báo, thông báo thông tin, kế hoạch, dự định về điều gì (một cách công khai, chính thức, thường thông qua loa đài, tin tức,...)",
+      "key_distinction": "Thông báo tin tức, kế hoạch hoặc quyết định một cách công khai, rộng rãi tới công chúng.",
+      "examples": [
+        "The company announced its decision to the public in March.",
+        "She was announced as the winner at last night's ceremony."
+      ]
+    },
+    "declare": {
+      "meaning": "[ngoại động từ] tuyên bố cái gì đó chính thức, công khai, dứt khoát, mạnh mẽ (độc lập, chủ quyền, chiến tranh, thắng lợi, tình trạng, phá sản, kế hoạch,...)",
+      "key_distinction": "Tuyên bố chính thức, dứt khoát mang tính pháp lý hoặc trọng đại (như chiến tranh, độc lập, tình trạng khẩn cấp).",
+      "examples": [
+        "Germany declared war on France on 1 August 1914.",
+        "In the end, they were both declared winners of the tournament."
+      ]
+    },
+    "inform": {
+      "meaning": "[ngoại động từ] báo tin cho, kể cho ai đó biết về thông tin cụ thể nào đó",
+      "key_distinction": "Cung cấp, báo tin hoặc cập nhật thông tin cụ thể cho một cá nhân/tổ chức.",
+      "examples": [
+        "Please inform us about/of any changes in your circumstances.",
+        "Keep me informed about any job opportunities."
+      ]
+    },
+    "state": {
+      "meaning": "[ngoại động từ] phát biểu, nói, viết rõ về điều gì đó (một cách cẩn thận và trang trọng), trình bày, bày tỏ",
+      "key_distinction": "Trình bày, bày tỏ hoặc đưa ra phát biểu/thông tin một cách rõ ràng, trang trọng (thường trong văn bản).",
+      "examples": [
+        "Please state why you wish to apply for this grant.",
+        "The facts are clearly stated in the report."
+      ]
+    },
+    "notify": {
+      "meaning": "[ngoại động từ] thông báo cho ai đó biết điều gì một cách trang trọng và chính thức (thường chia ở thể bị động) ~ inform",
+      "key_distinction": "Gửi thông báo chính thức cho ai đó về một sự việc/quyết định cụ thể (thường dùng ở dạng bị động).",
+      "examples": [
+        "The police must be notified of the date of the demonstration.",
+        "The date of the demonstration must be notified to the police."
+      ]
+    }
+  }
+}

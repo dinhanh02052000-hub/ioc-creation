@@ -1,0 +1,33 @@
+{
+  "group_title": "Trượt",
+  "target_words": {
+    "slide": {
+      "meaning": "[nội động từ] + [ngoại động từ] trượt (để di chuyển dễ dàng trên bề mặt nhẵn hoặc ướt; để làm cho một cái gì đó di chuyển theo cách này), đẩy nhẹ, đẩy trượt",
+      "key_distinction": "Di chuyển trơn tru trên bề mặt nhẵn/ướt một cách chủ động hoặc tự nhiên.",
+      "examples": [
+        "When I was little, I used to like sliding on the polished floor in my socks."
+      ]
+    },
+    "glide": {
+      "meaning": "[nội động từ] lướt (di chuyển trơn tru và yên tĩnh, đặc biệt là như thể không cần nỗ lực)",
+      "key_distinction": "Lướt đi nhẹ nhàng, mượt mà và không gây ra tiếng động.",
+      "examples": [
+        "The skaters were gliding over the ice."
+      ]
+    },
+    "skid": {
+      "meaning": "[nội động từ] trượt (đặc biệt là của một chiếc xe) trượt dọc theo một bề mặt mà bạn không thể kiểm soát nó được",
+      "key_distinction": "Thường dùng cho bánh xe/bánh xe máy, ô tô bị trượt rê mất kiểm soát.",
+      "examples": [
+        "Tony's car skidded on some ice and hit a tree."
+      ]
+    },
+    "slip": {
+      "meaning": "[nội động từ] trượt ngã (trượt một đoạn ngắn do tai nạn khiến bạn ngã hoặc suýt ngã), trượt khỏi vị trí chính xác của cái gì đó",
+      "key_distinction": "Trượt chân vô tình do trơn trượt dẫn đến ngã hoặc mất thăng bằng.",
+      "examples": [
+        "Careful you don't slip - there's water on the floor."
+      ]
+    }
+  }
+}

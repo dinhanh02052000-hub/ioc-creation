@@ -1,0 +1,45 @@
+{
+  "group_title": "Mục tiêu",
+  "target_words": {
+    "goal": {
+      "meaning": "một mục tiêu nào đó bạn hi vọng đạt được, thường là mục tiêu thường dài hạn, liên quan đến cuộc sống và kế hoạch nghề nghiệp của mọi người hoặc kế hoạch dài hạn của một công ty hoặc tổ chức",
+      "key_distinction": "Mục tiêu lớn, dài hạn mang tính cá nhân, sự nghiệp hoặc tầm nhìn chiến lược của tổ chức.",
+      "examples": [
+        "He continued to pursue his goal of becoming an actor.",
+        "My job is to help businesses achieve their goals."
+      ]
+    },
+    "aim": {
+      "meaning": "mục tiêu, kết quả mà kế hoạch, hành động của bạn dự định đạt được",
+      "key_distinction": "Ý định hoặc mục đích hướng tới thông qua một kế hoạch, hành động cụ thể.",
+      "examples": [
+        "My main aim in life is to be a good husband and father.",
+        "Our aim in protesting is to raise awareness of the unfairness of the system."
+      ]
+    },
+    "purpose": {
+      "meaning": "mục đích, lý do để làm gì hoặc điều gì đó xảy ra",
+      "key_distinction": "Lý do căn bản đằng sau một hành động hay sự tồn tại của một vật/điều gì đó.",
+      "examples": [
+        "I have included this data for the purpose of comparison.",
+        "For budgeting purposes, you really have to start estimating costs now."
+      ]
+    },
+    "objective": {
+      "meaning": "(khá trang trọng) một điều gì đó mà bạn đang cố gắng đạt được, mọi người đặt ra mục tiêu cho mình, thường nằm trong dự án hoặc đưa ra trong một cuộc phát biểu",
+      "key_distinction": "Mục tiêu trang trọng, cụ thể ngắn/trung hạn trong kinh doanh, dự án hoặc kế hoạch làm việc.",
+      "examples": [
+        "The main objective of this meeting is to give more information on our plans.",
+        "One of my objectives for this year is to increase sales"
+      ]
+    },
+    "target": {
+      "meaning": "mục tiêu, thường được ghi nhận chính thức, ví dụ như người sử dụng lao động hoặc bởi ủy ban chính phủ. Nó thường cụ thể và ở dạng số liệu, chẳng hạn như doanh thu, kết quả...,",
+      "key_distinction": "Mục tiêu con số chỉ tiêu cụ thể (doanh số, mức tăng trưởng) cần đạt được trong một khoảng thời gian.",
+      "examples": [
+        "The government's target of 3.5 percent annual growth seems easily attainable.",
+        "Oil production was 15 per cent below target."
+      ]
+    }
+  }
+}

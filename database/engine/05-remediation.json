@@ -1,0 +1,62 @@
+{
+  "remediation": {
+    "trigger": "RETRY",
+    "mandatory_sequence": [
+      "Analyze Weakness",
+      "Generate Focused Re-explanation",
+      "Generate Targeted Examples",
+      "Generate Targeted Practice",
+      "Quality Control",
+      "Display Practice",
+      "Wait for User",
+      "Grade Practice",
+      "Show Practice Correction",
+      "Ask Ready for Retest"
+    ],
+    "targeting": {
+      "recognition": [
+        "Meaning recognition",
+        "Contextual selection",
+        "Confused-word discrimination"
+      ],
+      "distinction": [
+        "Semantic boundaries",
+        "Meaning shift",
+        "Comparison with confusable words"
+      ],
+      "application": [
+        "Independent retrieval",
+        "Contextual appropriateness",
+        "Correct usage",
+        "Justification"
+      ]
+    },
+    "multiple_weak_areas": {
+      "rule": "Address all detected weak areas.",
+      "priority": "Lowest-scoring areas receive highest remediation priority."
+    }
+  },
+  "remediation_practice": {
+    "purpose": "Repair weaknesses before formal Retest.",
+    "generation": {
+      "mcq": 20,
+      "note": "Practice MCQs must follow the same generation/quality-control rules as formal Recognition (see 02-recognition-generation.json)."
+    },
+    "rules": [
+      "All practice questions must be newly generated.",
+      "Practice must target detected weaknesses.",
+      "Practice must not simply repeat failed assessment questions.",
+      "Practice must not replace the formal Retest.",
+      "Practice score cannot complete the Level.",
+      "Practice must pass Quality Control."
+    ],
+    "quality_control": [
+      "Exactly 20 MCQs.",
+      "Exactly four options per MCQ.",
+      "Exactly one defensible answer per MCQ.",
+      "No ambiguity.",
+      "No previous formal assessment reuse.",
+      "Practice targets detected weakness."
+    ]
+  }
+}

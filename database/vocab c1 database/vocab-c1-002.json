@@ -1,0 +1,49 @@
+{
+  "group_title": "Ẩm ướt",
+  "target_words": {
+    "humid": {
+      "meaning": "(Không khí hoặc khí hậu) ẩm và hơi ướt: ẩm, ẩm ướt.",
+      "key_distinction": "Dùng cho không khí, thời tiết hoặc khí hậu có độ ẩm cao.",
+      "examples": [
+        "They were not prepared for the humid heat of the tropical forest."
+      ]
+    },
+    "wet": {
+      "meaning": "Được bao phủ hoặc có chứa chất lỏng, đặc biệt là nước: ướt, đẫm nước.",
+      "key_distinction": "Tình trạng chung khi bề mặt hoặc vật thể bị dính/chứa chất lỏng.",
+      "examples": [
+        "Her hair was still dripping wet."
+      ]
+    },
+    "damp": {
+      "meaning": "Hơi ướt, thường với cách mà không dễ chịu: ướt, ẩm thấp, ẩm ướt.",
+      "key_distinction": "Ẩm ướt nhẹ gây cảm giác khó chịu hoặc không mong muốn.",
+      "examples": [
+        "damp clothes"
+      ]
+    },
+    "soaked": {
+      "meaning": "Rất ướt, ướt đẫm (thường không đứng trước danh từ, soaked with something, đồng nghĩa drenched). Có thể ghép với danh từ để chỉ thứ bị làm ướt hoàn toàn.",
+      "key_distinction": "Ướt sũng, ướt đẫm hoàn toàn từ trong ra ngoài.",
+      "examples": [
+        "He woke up soaked with sweat.",
+        "rain-soaked clothing"
+      ]
+    },
+    "moist": {
+      "meaning": "Hơi ướt, thường với cách mà dễ chịu hoặc có ích: ẩm, ẩm ướt.",
+      "key_distinction": "Độ ẩm vừa phải, mang lại cảm giác dễ chịu, tươi ngon hoặc có lợi (như bánh, đất, da).",
+      "examples": [
+        "a rich moist cake"
+      ]
+    },
+    "watery": {
+      "meaning": "Có chứa hoặc đầy nước; (đồ ăn, đồ uống) có chứa quá nhiều nước vậy nên nhạt vị.",
+      "key_distinction": "Chứa nhiều nước (mắt rấn lệ) hoặc thức ăn/nước uống bị loãng, nhạt nhẽo.",
+      "examples": [
+        "watery eyes (= full of tears)",
+        "watery soup"
+      ]
+    }
+  }
+}

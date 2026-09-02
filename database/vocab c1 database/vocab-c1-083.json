@@ -1,0 +1,50 @@
+{
+  "group_title": "PHÍ",
+  "target_words": {
+    "fee": {
+      "meaning": "phí, số tiền bạn phải trả cho các dịch vụ lời khuyên, tư vấn mang tính chuyên nghiệp (trả cho các chuyên gia, như bác sĩ, luật sư), phí trả cho một dịch vụ đặc thù như học phí, phí đăng ký xe máy, các loại dịch vụ pháp lý...",
+      "key_distinction": "Dùng cho tiền công trả chuyên gia, học phí, lệ phí đăng ký, dịch vụ pháp lý/y tế chuyên nghiệp.",
+      "examples": [
+        "The school fees are expected to rise again next year.",
+        "Customers pay an annual fee for the service."
+      ]
+    },
+    "fine": {
+      "meaning": "tiền phạt, một khoản tiền phải trả như sự trừng phạt nếu vi phạm luật pháp hoặc quy tắc",
+      "key_distinction": "Dùng cho khoản tiền phạt do vi phạm luật lệ giao thông, quy định hoặc pháp luật.",
+      "examples": [
+        "I got a parking fine for parking on double yellow lines.",
+        "Violations carry a maximum fine of $1,000."
+      ]
+    },
+    "charge": {
+      "meaning": "phí, số tiền mà ai đó yêu cầu bạn trả cho hàng hóa và dịch vụ",
+      "key_distinction": "Dùng cho mức giá hoặc tiền phí phải trả chung cho hàng hóa, dịch vụ thương mại hoặc đồ ăn thức uống.",
+      "examples": [
+        "We have to make a small charge for refreshments.",
+        "Delivery is free of charge."
+      ]
+    },
+    "toll": {
+      "meaning": "phi xa lộ, tiền phí bạn phải trả khi qua cầu đường, phí trả trên các trạm xa lộ, khi đi qua cầu đường",
+      "key_distinction": "Dùng cho phí cầu đường, phí qua trạm thu phí khi lái xe trên cao tốc, qua cầu.",
+      "examples": [
+        "Drivers have to pay 50,000 VND toll for crossing a bridge."
+      ]
+    },
+    "fare": {
+      "meaning": "phí di chuyển, tiền bạn cần phải trả khi sử dụng các phương tiện đi lại như xe buýt, tàu hỏa, máy bay,...",
+      "key_distinction": "Dùng riêng cho tiền vé tàu, xe buýt, máy bay, taxi (chi phí di chuyển bằng phương tiện công cộng/vận tải).",
+      "examples": [
+        "The old man is paying the bus fare to the driver."
+      ]
+    },
+    "rate": {
+      "meaning": "một số tiền cố định được yêu cầu trả cho một thứ gì đó",
+      "key_distinction": "Dùng cho tỷ giá, lãi suất hoặc mức giá cố định cho một dịch vụ tính theo đơn vị thời gian/định mức.",
+      "examples": [
+        "The banks now pay a lower rate of interest to savers."
+      ]
+    }
+  }
+}

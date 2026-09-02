@@ -1,0 +1,43 @@
+{
+  "group_title": "KHÓC",
+  "target_words": {
+    "cry": {
+      "meaning": "có cách dùng rộng nhất, khóc, nước mắt tuôn trào vì cảm xúc mạnh mẽ, có thể bạn gặp điều bất hạnh, đau đớn, hạnh phúc v.v",
+      "key_distinction": "Từ phổ biến nhất chỉ hành động khóc do cảm xúc mạnh (buồn, đau, vui mừng).",
+      "examples": [
+        "She cried bitter tears when she got the letter.",
+        "We all laughed until we cried."
+      ]
+    },
+    "weep": {
+      "meaning": "(trang trọng, mang tính văn chương) có nghĩa tương tự như \"cry\", nhưng dùng có vẻ kiểu cách hơn. \"Weep\" là từ được xem là lỗi thời (old-fashioned word) và hiện nay thường chỉ dùng trong những mẩu chuyện",
+      "key_distinction": "Khóc lặng lẽ, rơi lệ (mang tính văn chương, trang trọng hoặc cổ điển).",
+      "examples": [
+        "The people wept openly when his death was announced.",
+        "She almost wept with happiness."
+      ]
+    },
+    "sob": {
+      "meaning": "khóc nức nở, khóc cùng với sự hít thở bất bình thường và gây tiếng động",
+      "key_distinction": "Khóc nức nở, vừa khóc vừa hít hóp nghẹn ngào phát ra tiếng.",
+      "examples": [
+        "We could hear the child sobbing in the next room."
+      ]
+    },
+    "wail": {
+      "meaning": "kêu gào, than vãn (thường là vì ai đó trong gia đình mất), khóc than, khóc kéo dài, ầm ĩ trong khổ đau, đau đớn hoặc phiền muộn",
+      "key_distinction": "Khóc gào to, khóc thảm thiết kéo dài vì đau đớn hoặc mất mát lớn.",
+      "examples": [
+        "\"My finger hurts,\" wailed the child."
+      ]
+    },
+    "whimper": {
+      "meaning": "(đặc biệt có thể dùng cho động vật) thút thít, rên rỉ, tạo ra một loạt âm thanh nhỏ và yếu thể hiện nỗi đau hoặc sự bất hạnh",
+      "key_distinction": "Khóc thút thít, rên rỉ nho nhỏ (thường gặp ở trẻ em hoặc động vật khi sợ/đau).",
+      "examples": [
+        "A half-starved dog lay in the corner, whimpering pathetically.",
+        "I said she couldn't have an ice cream and she started to whimper."
+      ]
+    }
+  }
+}

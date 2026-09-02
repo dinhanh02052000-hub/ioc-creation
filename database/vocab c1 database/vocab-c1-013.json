@@ -1,0 +1,47 @@
+{
+  "group_title": "CHẤT",
+  "target_words": {
+    "substance": {
+      "meaning": "[C] một loại chất lỏng/bột/khí/ rắn mà có những đặc điểm cụ thể nào đó: chất",
+      "key_distinction": "Chất hóa học hoặc vật chất dạng lỏng/bột/rắn có tính chất riêng biệt.",
+      "examples": [
+        "The leaves were covered with a strange sticky substance."
+      ]
+    },
+    "material": {
+      "meaning": "[C, U] một loại chất mà được dùng để làm ra/tạo ra/sản xuất những thứ gì đó: nguyên liệu, vật liệu\n[U, C] vải được dùng để may quần áo/rèm cửa/... ~ fabric /ˈfæbrɪk/ (n)",
+      "key_distinction": "Vật liệu/nguyên liệu thô dùng để chế tạo sản phẩm, hoặc chất liệu vải.",
+      "examples": [
+        "building materials (= bricks, sand, glass, stone, etc.)",
+        "Uranium is a radioactive material.",
+        "satin, velvet, silk, and other dress material",
+        "\"What material is this dress made of?\" \"Cotton.\""
+      ]
+    },
+    "stuff": {
+      "meaning": "[U] (informal) được dùng để nói về một chất/nguyên liệu/vật liệu/nhóm đồ vật/... khi bạn không biết tên của chúng, khi tên của chúng không quan trọng hoặc khi mà ai cũng hiểu bạn đang nói tới thứ gì",
+      "key_distinction": "Từ suồng sã, phi trang trọng để chỉ những chất, thứ, đồ đạc không tên hoặc không cần gọi tên cụ thể.",
+      "examples": [
+        "What's this black stuff?",
+        "There's sticky stuff all over the chair."
+      ]
+    },
+    "matter": {
+      "meaning": "[U] (vật lý) vật chất (bao gồm chất rắn, khí, lỏng) để làm ra mọi thứ trên trái đất; không phải tinh thần hoặc linh hồn\n[U] (formal) một chất thuộc về một loại cụ thể nào đó",
+      "key_distinction": "Vật chất đối lập với tinh thần/năng lượng, hoặc một loại chất hữu cơ/chất thải cụ thể.",
+      "examples": [
+        "Einstein described what we call gravity as curves in space and time, created by matter and energy.",
+        "elimination of waste matter from the body",
+        "Add plenty of organic matter to improve the soil."
+      ]
+    },
+    "medium": {
+      "meaning": "[C] (sinh học) một chất mà một thứ gì đó tồn tại/sống/sinh trưởng trong đó hoặc di chuyển qua: môi trường",
+      "key_distinction": "Môi trường nuôi cấy hoặc môi trường sinh trưởng của vi sinh vật/cây trồng.",
+      "examples": [
+        "a good growing medium for tomatoes",
+        "Compost is an excellent growing medium."
+      ]
+    }
+  }
+}

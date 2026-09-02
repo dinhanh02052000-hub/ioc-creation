@@ -1,0 +1,53 @@
+{
+  "group_title": "Cư dân",
+  "target_words": {
+    "inhabitant": {
+      "meaning": "Một con người hoặc một con vật sống ở một nơi cụ thể nào đó: người ở, người cư trú, cư dân.",
+      "key_distinction": "Chỉ sinh vật (người hoặc động vật) sinh sống tại một khu vực/môi trường cụ thể.",
+      "examples": [
+        "The oldest inhabitant of the village",
+        "It eats mice, lizards, and other small inhabitants of the forest floor."
+      ]
+    },
+    "dweller": {
+      "meaning": "(Đặc biệt dùng trong danh từ ghép) một con người hoặc một con vật sống ở một nơi cụ thể được đề cập đến.",
+      "key_distinction": "Thường xuất hiện trong các cụm từ/danh từ ghép để chỉ cư dân sống ở một kiểu môi trường nhất định (vd: city dwellers, cave dwellers).",
+      "examples": [
+        "city dwellers (= people who live in a city)"
+      ]
+    },
+    "resident": {
+      "meaning": "Một người sống lâu dài ở một nơi cụ thể hoặc người có nhà ở đó; hoặc (formal) một người đang ở qua đêm tại một khách sạn (một hoặc hơn một đêm).",
+      "key_distinction": "Nhấn mạnh tính cư trú lâu dài, hợp pháp hoặc khách lưu trú tại khách sạn.",
+      "examples": [
+        "A resident of the United Kingdom",
+        "The hotel bar was only open to residents (= to people staying at the hotel).",
+        "The hotel restaurant is open to non-residents (= to people not staying at the hotel)."
+      ]
+    },
+    "settler": {
+      "meaning": "Một người từ một nước/vùng khác đến một nước/vùng mới (nơi mà không có nhiều người sống ở đó trước đây) để sống ở đó và sử dụng đất đai ở đó.",
+      "key_distinction": "Người thực hiện hành động di cư đến vùng đất mới để khai phá, định cư.",
+      "examples": [
+        "French settlers founded New Orleans.",
+        "When the first settlers moved into the area, they faced immense hardships."
+      ]
+    },
+    "local": {
+      "meaning": "(Thường dùng ở dạng số nhiều) một người sống ở một vùng nhỏ cụ thể mà bạn đang nói tới: người dân địa phương.",
+      "key_distinction": "Danh từ đếm được (thường dạng số nhiều). Chỉ những người bản địa/địa phương tại khu vực đang đề cập.",
+      "examples": [
+        "The café is popular with both locals and visitors."
+      ]
+    },
+    "citizen": {
+      "meaning": "Công dân của một nước cụ thể nào đó; hoặc một người sống ở một thành phố/thị trấn cụ thể: dân thành thị.",
+      "key_distinction": "Nhấn mạnh tư cách pháp lý (công dân một quốc gia) hoặc người dân sinh sống tại một thành phố/thị trấn.",
+      "examples": [
+        "She's applying to become a British citizen.",
+        "The citizens of Budapest",
+        "The decent, law-abiding citizens (= people who obey and respect the law) of this city"
+      ]
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "group_title": "Thương cảm",
+  "target_words": {
+    "sympathy": {
+      "meaning": "cảm giác thương cảm (đến từ góc nhìn cá nhân của một người ngoài cuộc) đối với ai đó; thể hiện rằng bạn quan tâm và chia sẻ những vấn đề của ai đó: sự thương cảm; sự đồng cảm\n*sympathy có nghĩa là sự chia sẻ với cảm giác/cảm xúc của ai đó",
+      "key_distinction": "Sự thương cảm, chia sẻ nỗi đau từ góc nhìn của một người ngoài cuộc quan tâm.",
+      "examples": [
+        "She felt sympathy for the children suffering in the conflict in Afghanistan."
+      ]
+    },
+    "empathy": {
+      "meaning": "[U] khả năng hiểu được những cảm giác, cảm xúc,... của người khác như thể những cảm giác/cảm xúc đó là của chính bạn hoặc cũng có thể do chính bạn đã trải qua những điều tương tự: sự thấu cảm\n*empathy có nghĩa là sự thấu hiểu với những cảm giác/cảm xúc của ai đó nhưng không nhất thiết là chia sẻ những cảm giác/cảm xúc đó",
+      "key_distinction": "Sự thấu cảm, đặt mình vào vị trí của người khác (hoặc đã trải qua tương tự) để thấu hiểu nỗi đau của họ.",
+      "examples": [
+        "She felt empathy for the grieving widow because she had lost her own husband the year before."
+      ]
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "group_title": "HẬU QUẢ, KẾT QUẢ",
+  "target_words": {
+    "result": {
+      "meaning": "kết quả, một điều gì được gây ra hoặc tạo ra (trực tiếp) bởi một điều gì đó khác",
+      "key_distinction": "Kết quả trực tiếp sinh ra từ một nguyên nhân, hành động hoặc quá trình.",
+      "examples": [
+        "She died as a result of her injuries.",
+        "This book is the result of 25years of research."
+      ]
+    },
+    "consequence": {
+      "meaning": "(khá trang trọng) hậu quả, kết quả của một hành động hoặc tình huống cụ thể, thường là kết quả xấu, không mong muốn, không thuận tiện",
+      "key_distinction": "Hậu quả tiêu cực hoặc không mong muốn do một hành động gây ra (trang trọng).",
+      "examples": [
+        "Scientists think it is unlikely that any species will actually become extinct as a consequence of the oil spill."
+      ]
+    },
+    "outcome": {
+      "meaning": "kết quả cuối cùng của một quá trình, một cuộc họp, hoạt động...,",
+      "key_distinction": "Kết cục hoặc kết quả chung cuộc của một sự kiện, cuộc đàm phán hay tiến trình.",
+      "examples": [
+        "We are waiting to hear the final outcome of the negotiations."
+      ]
+    },
+    "repercussion": {
+      "meaning": "(khá trang trọng) hậu quả (gián tiếp) của một hành động hoặc sự kiện, thường kéo dài trong khoảng thời gian dài",
+      "key_distinction": "Hậu quả gián tiếp, có tác động tiêu cực lan rộng và kéo dài sau một sự kiện lớn.",
+      "examples": [
+        "The collapse of the company will have repercussions for the whole industry."
+      ]
+    }
+  }
+}

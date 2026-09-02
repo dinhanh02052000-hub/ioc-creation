@@ -1,0 +1,44 @@
+{
+  "group_title": "NHẬN RA, CÔNG NHẬN",
+  "target_words": {
+    "recognize": {
+      "meaning": "nhận ra ai, cái gì bởi vì bạn đã từng nhìn thấy hoặc nghe thấy người đó hoặc đã trải nghiệm điều đó trước đây",
+      "key_distinction": "Nhận ra ai/cái gì nhờ đã từng biết/gặp trước đó.",
+      "examples": [
+        "I hadn't seen her for 20 years, but I recognized her immediately.",
+        "Doctors are trained to recognize the symptoms of different diseases."
+      ]
+    },
+    "realize": {
+      "meaning": "nhận thức được, hiểu được một thực tế, tình huống cụ thể nào đó, nhận ra tầm quan trọng điều gì, đôi khi là đột ngột nhận ra",
+      "key_distinction": "Nhận thức được 1 sự thật/tình huống, thường là đột ngột hiểu ra điều gì đó.",
+      "examples": [
+        "They didn't realize the danger they were in.",
+        "The moment I saw her, I realized something was wrong."
+      ]
+    },
+    "identify": {
+      "meaning": "nhận diện được ai, cái gì đó và có thể nói hoặc chứng minh được họ là ai, đó là cái gì",
+      "key_distinction": "Xác định chính xác danh tính/bản chất của ai/cái gì và có thể chứng minh được.",
+      "examples": [
+        "Even the smallest baby can identify its mother by her voice.",
+        "She was able to identify her attacker."
+      ]
+    },
+    "acknowledge": {
+      "meaning": "công nhận, chấp nhận sự thật hoặc công nhận sự tồn tại của một cái gì đó, công nhận điều gì đó là đúng",
+      "key_distinction": "Công nhận sự tồn tại/tính đúng đắn của 1 sự thật, thường là điều khó thừa nhận.",
+      "examples": [
+        "Mental illness can exist for years before families are forced to acknowledge the truth.",
+        "Most people acknowledge the existence of evil."
+      ]
+    },
+    "accredit": {
+      "meaning": "chính thức công nhận, chấp nhận hoặc chấp thuận một ai đó hoặc một cái gì đó, tuyên bố chính thức rằng một cá nhân hoặc tổ chức đủ tốt để cung cấp một loại dịch vụ cụ thể",
+      "key_distinction": "Công nhận chính thức bằng văn bản/thẩm quyền rằng ai đó/tổ chức nào đủ tiêu chuẩn.",
+      "examples": [
+        "The agency was not accredited by the Philippine Consulate to offer contracts to Filipinos abroad."
+      ]
+    }
+  }
+}

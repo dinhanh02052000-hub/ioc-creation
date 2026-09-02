@@ -1,0 +1,38 @@
+{
+  "group_title": "Chỉ ra, cho thấy",
+  "target_words": {
+    "show": {
+      "meaning": "Chỉ cho, để cho ai đó thấy cái gì, điều gì, làm rõ điều gì đó (thường thông qua số liệu, nghiên cứu, báo cáo,...).",
+      "key_distinction": "Nói về việc đưa ra hình ảnh, bằng chứng, dữ liệu để người khác xem hoặc nhận biết trực quan.",
+      "examples": [
+        "Let me show you this new book I've just bought.",
+        "These photographs show the effects of the chemical on the trees."
+      ]
+    },
+    "demonstrate": {
+      "meaning": "Chứng minh điều gì đó là đúng bằng việc đưa ra bằng chứng, chứng cứ; hoặc chứng minh cho ai đó rằng bạn có khả năng, phẩm chất nào đó.",
+      "key_distinction": "Nhấn mạnh việc đưa ra lập luận, bằng chứng logic để thể hiện rõ ràng một thực tế hay khả năng.",
+      "examples": [
+        "New research convincingly demonstrates that age-related memory loss is not inevitable.",
+        "These paintings demonstrate his extraordinary ability as a portrait painter."
+      ]
+    },
+    "indicate": {
+      "meaning": "Chỉ ra, cho thấy rằng điều gì đó đúng và tồn tại; chỉ ra dấu hiệu của một điều gì đó có thể xảy ra; hoặc làm cho một người chú ý đến người khác hoặc thứ khác bằng cách chỉ tay.",
+      "key_distinction": "Nhấn mạnh vào dấu hiệu, biểu hiện gợi ý điều gì đó hoặc hành động dùng tay/vật để chỉ hướng.",
+      "examples": [
+        "The article claims that an increase in crime indicates a decline in moral standards.",
+        "Boiling hot weather at noon often indicates heavy rain in the evening.",
+        "He indicates where we should put the book on."
+      ]
+    },
+    "prove": {
+      "meaning": "Chứng tỏ, cho thấy một kết quả cụ thể nào đó sau một khoảng thời gian, hóa ra là; hoặc chứng minh điều gì đó là đúng (thường là chứng minh ai đó có tội, vô tội, chứng minh ai, điều gì là đúng hoặc sai).",
+      "key_distinction": "Nhấn mạnh việc xác minh tính đúng/sai một cách tuyệt đối, có kết luận rõ ràng qua thời gian hoặc xét xử.",
+      "examples": [
+        "The new treatment has proved to be a disaster.",
+        "They proved him innocent."
+      ]
+    }
+  }
+}

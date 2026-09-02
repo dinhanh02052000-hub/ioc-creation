@@ -1,0 +1,47 @@
+{
+  "group_title": "THIẾU",
+  "target_words": {
+    "shortage": {
+      "meaning": "[C, U] một tình huống mà không có đủ người hoặc thứ gì đó theo như nhu cầu: sự thiếu (~ scarcity /'skeəsəti/ (n))",
+      "key_distinction": "chỉ sự thiếu hụt so với nhu cầu thực tế/cần thiết (thường dùng cho nhân lực, hàng hóa, tài nguyên)",
+      "examples": [
+        "Schools nationwide are experiencing a shortage of teachers."
+      ]
+    },
+    "lack": {
+      "meaning": "tình trạng mà không có cái gì/điều gì/con người hoặc không có đủ cái gì/điều gì/con người: sự thiếu (~ dearth, shortage)",
+      "key_distinction": "từ phổ biến nhất chỉ tình trạng không có hoặc không đủ cái gì đó (thông tin, kinh nghiệm, kỹ năng,...)",
+      "examples": [
+        "Passengers complained about the lack of information when flights were cancelled."
+      ]
+    },
+    "dearth": {
+      "meaning": "[số ít, sắc thái trang trọng] sự thiếu cái gì đó/con người; thực tế mà không có đủ cái gì đó/con người: sự thiếu (~ scarcity)",
+      "key_distinction": "mang sắc thái trang trọng (formal), dùng khi thiếu hụt nghiêm trọng một nguồn lực hay nhân sự chuyên môn",
+      "examples": [
+        "The region is suffering from a dearth of medical specialists."
+      ]
+    },
+    "deficiency": {
+      "meaning": "[C, U] tình trạng mà không có hoặc không có đủ cái gì thiết yếu (~ shortage)",
+      "key_distinction": "thường dùng trong ngữ cảnh dinh dưỡng, y học, sinh học (thiếu hụt chất thiết yếu như vitamin, khoáng chất)",
+      "examples": [
+        "Vitamin deficiency in the diet can cause illness."
+      ]
+    },
+    "inadequacy": {
+      "meaning": "[U, C] thực tế mà cái gì đó không đủ tốt hoặc có quá ít về số lượng",
+      "key_distinction": "nhấn mạnh vào sự không đáp ứng đủ yêu cầu, sự không đầy đủ/kém chất lượng hoặc thiếu hụt về số lượng",
+      "examples": [
+        "I now see the inadequacy of the explanation."
+      ]
+    },
+    "absence": {
+      "meaning": "[U] thực tế mà ai đó/cái gì đó không tồn tại hoặc sẵn có; sự thiếu cái gì đó",
+      "key_distinction": "chỉ sự vắng mặt, không tồn tại hoàn toàn của một đối tượng/yếu tố nào đó",
+      "examples": [
+        "In the absence of stone, most houses in the area are built of wood."
+      ]
+    }
+  }
+}

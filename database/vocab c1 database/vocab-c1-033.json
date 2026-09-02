@@ -1,0 +1,56 @@
+{
+  "group_title": "GIAI ĐOẠN",
+  "target_words": {
+    "duration": {
+      "meaning": "một khoảng thời gian mà một điều gì đó kéo dài hoặc tồn tại",
+      "key_distinction": "Thời lượng, khoảng thời gian tồn tại hoặc kéo dài của một sự kiện, hành động.",
+      "examples": [
+        "The school was used as a hospital for the duration of the war."
+      ]
+    },
+    "stint": {
+      "meaning": "một khoảng thời gian mà bạn làm việc ở một nơi hoặc thực hiện một hoạt động đặc biệt nào đó",
+      "key_distinction": "Khoảng thời gian giới hạn dành để làm một công việc, nghĩa vụ hoặc hoạt động cụ thể.",
+      "examples": [
+        "He has just finished a stint of compulsory military service."
+      ]
+    },
+    "phase": {
+      "meaning": "một giai đoạn trong một quá trình thay đổi hoặc phát triển",
+      "key_distinction": "Một giai đoạn, chu kỳ cụ thể trong quá trình biến đổi, phát triển hoặc thực hiện kế hoạch.",
+      "examples": [
+        "We're entering a new phase in international relations."
+      ]
+    },
+    "span": {
+      "meaning": "một khoảng thời gian giữa hai ngày/sự kiện ... mà lúc đó một việc gì đó tồn tại, kéo dài, hoặc xảy ra",
+      "key_distinction": "Khoảng thời gian trải dài từ đầu đến cuối của một đời người, khoảng chú ý hoặc tuổi thọ thiết bị.",
+      "examples": [
+        "The batteries had a life span of six hours.",
+        "James has a short attention span."
+      ]
+    },
+    "period": {
+      "meaning": "một khoảng thời gian cụ thể\nmột khoảng thời gian trong cuộc đời của một ai đó hoặc trong lịch sử của một quốc gia",
+      "key_distinction": "Một thời kỳ, giai đoạn thời gian có đặc điểm riêng (trong lịch sử, đời người hoặc thời gian định sẵn).",
+      "examples": [
+        "The study will be carried out over a six-month period.",
+        "a dark period in the country's history"
+      ]
+    },
+    "stretch": {
+      "meaning": "một khoảng thời gian liên tục/không dứt",
+      "key_distinction": "Một chuỗi thời gian kéo dài liên tục, không bị ngắt quãng.",
+      "examples": [
+        "a stretch of three weeks without sunshine"
+      ]
+    },
+    "stage": {
+      "meaning": "[C] một giai đoạn hoặc một trạng thái mà điều gì/ai đó trải qua trong khi đang phát triển hoặc đang tiến triển",
+      "key_distinction": "Một nấc, bước hoặc giai đoạn phát triển trong một tiến trình dài.",
+      "examples": [
+        "This technology is still in its early stages."
+      ]
+    }
+  }
+}

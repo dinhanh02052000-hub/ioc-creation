@@ -1,0 +1,39 @@
+{
+  "group_title": "THÚC ĐẨY, TĂNG CƯỜNG",
+  "target_words": {
+    "promote": {
+      "meaning": "[ngoại động từ] thúc đẩy, quảng bá sản phẩm, dịch vụ (thông qua quảng cáo hoặc ưu đãi giá); [ngoại động từ] khuyến khích, thúc đẩy điều gì xảy ra và phát triển (sự hiểu biết, hòa bình, chế độ, nhận thức,...)",
+      "key_distinction": "nhấn mạnh vào việc quảng bá sản phẩm/dịch vụ hoặc khuyến khích sự phát triển, nhận thức về một điều gì đó",
+      "examples": [
+        "This trade fair will help businesses from Malawi to promote their products.",
+        "to promote democracy/peace/understanding",
+        "The aim of the culture festival is to promote friendship between the two countries."
+      ]
+    },
+    "boost": {
+      "meaning": "[ngoại động từ] làm cho cái gì đó tăng lên, trở nên tốt hơn hoặc thành công hơn (hiệu quả, doanh thu, tinh thần,...)",
+      "key_distinction": "nhấn mạnh việc đẩy mạnh, gia tăng số lượng, hiệu suất, doanh thu hoặc cải thiện tinh thần/sự tự tin",
+      "examples": [
+        "to boost productivity/spending",
+        "to boost somebody's confidence/morale"
+      ]
+    },
+    "strengthen": {
+      "meaning": "[ngoại động từ] + [nội động từ] làm cho thứ gì đó mạnh mẽ, quyền lực, chắc chắn hơn, hoặc hiệu quả hơn; trở nên mạnh mẽ, quyền lực, chắc chắn hơn hoặc hiệu quả hơn (vị thế, vị trí công việc, địa vị, thể chất, cầu, sự gắn kết,...)",
+      "key_distinction": "tập trung vào việc làm tăng sức mạnh, độ bền vững (về thể chất, vị thế, mối quan hệ, kết cấu)",
+      "examples": [
+        "The move is clearly intended to strengthen the president's position as head of state.",
+        "The exercises are designed to strengthen your stomach muscles.",
+        "Repairs are necessary to strengthen the bridge."
+      ]
+    },
+    "reinforce": {
+      "meaning": "[ngoại động từ] củng cố một quan điểm, ý kiến, cảm giác,... (cung cấp nhiều hơn bằng chứng, hỗ trợ để chứng minh mình đúng); [ngoại động từ] củng cố, làm chắc chắn (công trình, vật liệu, quân đội,...) bằng việc trang bị thêm (chất liệu, người, thiết bị,...) để nó được vững chắc hơn",
+      "key_distinction": "nhấn mạnh việc củng cố bằng cách thêm bằng chứng/lý lẽ (cho ý kiến) hoặc gia cố thêm nhân lực/vật liệu (cho công trình, quân đội)",
+      "examples": [
+        "The final technical report into the accident reinforces the findings of initial investigations.",
+        "His behaviour merely reinforced my dislike of him."
+      ]
+    }
+  }
+}

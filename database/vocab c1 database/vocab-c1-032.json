@@ -1,0 +1,37 @@
+{
+  "group_title": "GIẢ VỜ",
+  "target_words": {
+    "pretend": {
+      "meaning": "[nội động từ] cư xử một cách đặc biệt để khiến ai đó tin vào một điều không đúng sự thực: giả vờ; tuyên bố rằng điều gì đó là đúng nhưng thực ra lại không phải như vậy\n[ngoại động từ] giả vờ một điều gì đó (cảm giác/cảm xúc/phẩm chất...) ~ simulate",
+      "key_distinction": "Giả vờ, làm ra vẻ một điều gì đó không có thật (hành vi, cảm xúc, hiểu biết).",
+      "examples": [
+        "The children pretended (that) they were dinosaurs.",
+        "I can't pretend I understand these technical terms. (= I admit I do not understand them.)",
+        "She pretended an interest she did not feel."
+      ]
+    },
+    "pose": {
+      "meaning": "[nội động từ, mang nghĩa chê/xúc phạm] ăn mặc hoặc hành xử như thể là một ai đó hoặc có những phẩm chất nào đó để khiến người khác chú ý hoặc ngưỡng mộ\n[nội động từ] giả vờ là ai đó để nhằm mục đích lừa ai (có thể là có ý tốt hoặc ý đồ xấu) *pose as somebody",
+      "key_distinction": "Mạo danh, đóng giả thành ai đó để lừa gạt hoặc làm màu/ra vẻ để gây sự chú ý.",
+      "examples": [
+        "Rob doesn't really know a thing about the theatre - he's just posing!",
+        "The gang entered the building posing as workmen."
+      ]
+    },
+    "simulate": {
+      "meaning": "giả vờ là bạn có một cảm xúc nào đó",
+      "key_distinction": "Mô phỏng, tái tạo hoặc giả vờ có một cảm xúc/trạng thái cụ thể.",
+      "examples": [
+        "I tried to simulate surprise at the news."
+      ]
+    },
+    "imitate": {
+      "meaning": "bắt chước/phỏng theo ai đó/thứ gì đó\nbắt chước cách ai đó nói hoặc hành xử để nhằm mục đích gây cười",
+      "key_distinction": "Bắt chước, nhại lại hành vi, giọng nói hay phong cách của người khác.",
+      "examples": [
+        "Art imitates Nature.",
+        "She knew that the girls used to imitate her and laugh at her behind her back."
+      ]
+    }
+  }
+}

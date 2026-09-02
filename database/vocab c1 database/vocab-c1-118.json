@@ -1,0 +1,52 @@
+{
+  "group_title": "VƯỢT QUÁ",
+  "target_words": {
+    "surpass": {
+      "meaning": "tốt hơn / vượt quá / làm tốt hơn",
+      "key_distinction": "tốt hơn hoặc làm tốt hơn ai đó/thứ gì đó OR tốt hơn mong đợi ~ exceed (v) OR vượt quá; lớn hơn điều gì (mang nghĩa tích cực, khen ngợi) ~ exceed (v)",
+      "examples": [
+        "He was determined to surpass the achievements of his older brothers.",
+        "Its success has surpassed/exceeded all expectations.",
+        "He hopes one day to surpass the world record."
+      ]
+    },
+    "transcend": {
+      "meaning": "vượt quá giới hạn / ranh giới",
+      "key_distinction": "vượt quá các giới hạn thông thường hoặc ranh giới của điều gì đó",
+      "examples": [
+        "The desire for peace transcended political differences."
+      ]
+    },
+    "exceed": {
+      "meaning": "lớn hơn / vượt quá",
+      "key_distinction": "lớn hơn một con số/số lượng cụ thể (mang nghĩa trung lập - có thể là điều tích cực hoặc tiêu cực) ~ surpass (v) OR vượt quá giới hạn cho phép (quyền hạn/mệnh lệnh/luật pháp) OR tốt hơn mong đợi ~ surpass (v)",
+      "examples": [
+        "The price will not exceed £100.",
+        "Jane was exceeding the speed limit (= driving faster than is allowed).",
+        "Its success has surpassed/exceeded all expectations."
+      ]
+    },
+    "outrun": {
+      "meaning": "phát triển nhanh hơn",
+      "key_distinction": "phát triển nhanh hơn thứ gì đó",
+      "examples": [
+        "The company's spending was outrunning its income."
+      ]
+    },
+    "outdo": {
+      "meaning": "vượt trội / làm tốt hơn",
+      "key_distinction": "làm nhiều hơn/tốt hơn/thành công hơn ai đó ở một lĩnh vực/khía cạnh/hoạt động nào đó",
+      "examples": [
+        "Josh always tries to outdo everybody else in the class.",
+        "Not to be outdone (= not wanting to let somebody else do better), she tried again."
+      ]
+    },
+    "outperform": {
+      "meaning": "đạt kết quả tốt hơn",
+      "key_distinction": "đạt được kết quả tốt hơn ai đó/thứ gì đó",
+      "examples": [
+        "In recent years our economy has outperformed most other industrial economies."
+      ]
+    }
+  }
+}

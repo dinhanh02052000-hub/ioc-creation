@@ -1,0 +1,46 @@
+{
+  "group_title": "TRẠNG THÁI, TÍNH KHÍ",
+  "target_words": {
+    "mood": {
+      "meaning": "[C] cách mà bạn đang cảm thấy tại một thời điểm cụ thể / một thời gian giận dữ hoặc không kiên nhẫn / cách mà một nhóm người cảm nhận về một điều gì; bầu không khí của một nơi hoặc giữa một nhóm người",
+      "key_distinction": "[C] cách mà bạn đang cảm thấy tại một thời điểm cụ thể = temper | một thời gian giận dữ hoặc không kiên nhẫn | cách mà một nhóm người cảm nhận về một điều gì; bầu không khí của một nơi hoặc giữa một nhóm người",
+      "examples": [
+        "He could sense her gloomy mood.",
+        "I wonder why he's in such a mood today.",
+        "She was in one of her moods (= one of her regular periods of being angry or impatient).",
+        "Haunting music greatly adds to the mood of the film."
+      ]
+    },
+    "temper": {
+      "meaning": "[C] cách mà bạn đang cảm thấy tại một thời điểm cụ thể / một khoảng thời gian ngắn cảm thấy hết sức giận dữ",
+      "key_distinction": "[C] cách mà bạn đang cảm thấy tại một thời điểm cụ thể = mood | một khoảng thời gian ngắn cảm thấy hết sức giận dữ",
+      "examples": [
+        "She regained her good temper after a chat.",
+        "She says awful things when she's in a temper.",
+        "As a small child, he had violent temper tantrums (= sudden short periods of uncontrolled anger)."
+      ]
+    },
+    "emotion": {
+      "meaning": "một xúc cảm mạnh mẽ, ví dụ như yêu, sợ hãi, hạnh phúc, giận dữ,...; một phần trong tính cách của một con người (phần mà bao gồm các xúc cảm)",
+      "key_distinction": "một xúc cảm mạnh mẽ, ví dụ như yêu, sợ hãi, hạnh phúc, giận dữ,...; một phần trong tính cách của một con người (phần mà bao gồm các xúc cảm)",
+      "examples": [
+        "Fear is a normal human emotion.",
+        "The decision was based on emotion rather than rational thought."
+      ]
+    },
+    "state": {
+      "meaning": "trạng thái về tinh thần, xúc cảm, hoặc thể chất của ai đó tại một thời điểm cụ thể nào",
+      "key_distinction": "trạng thái về tinh thần, xúc cảm, hoặc thể chất của ai đó tại một thời điểm cụ thể nào",
+      "examples": [
+        "She was in an extremely confused state of mind."
+      ]
+    },
+    "disposition": {
+      "meaning": "một kiểu tính cách khiến cho một người cư xử hoặc phản ứng theo một cách nào đó",
+      "key_distinction": "một kiểu tính cách khiến cho một người cư xử hoặc phản ứng theo một cách nào đó",
+      "examples": [
+        "Her cheerful disposition, sympathy, and tact made her popular."
+      ]
+    }
+  }
+}

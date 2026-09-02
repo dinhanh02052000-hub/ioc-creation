@@ -1,0 +1,45 @@
+{
+  "group_title": "Bằng chứng",
+  "target_words": {
+    "evidence": {
+      "meaning": "[U] Thông tin được sử dụng ở tòa để chứng minh điều gì đó hoặc thông tin/dấu hiệu/vật thể khiến bạn tin rằng điều gì đó là đúng sự thật: chứng cớ, bằng chứng.",
+      "key_distinction": "Dùng chung cho các thông tin, dấu hiệu, vật thể hoặc lời khai gián tiếp giúp suy ra/chứng minh sự thật (thường không có tính khẳng định tuyệt đối 100% như proof).",
+      "examples": [
+        "He was asked to give evidence (= to say what he knew, describe what he had seen, etc.) at the trial.",
+        "The room bore evidence of a struggle.",
+        "Archaeologists found evidence of a rich and varied culture at the settlement."
+      ]
+    },
+    "proof": {
+      "meaning": "[U] Thông tin, giấy tờ,... chứng minh/thể hiện điều gì đó là đúng sự thật: chứng cớ, bằng chứng. Cụm từ: be living proof of something/that ... (thể hiện bằng các hành động hoặc các phẩm chất để chứng minh một điều gì là sự thật).",
+      "key_distinction": "Bằng chứng hoàn toàn chắc chắn, kết luận chắc chắn 100% không thể chối cãi.",
+      "examples": [
+        "Can you provide any proof of identity?",
+        "There is no proof that the knife belonged to her.",
+        "He is living proof that age is no barrier to new challenges."
+      ]
+    },
+    "testimony": {
+      "meaning": "[C, U] Chứng nhận (bằng lời hoặc bằng hình thức viết) để nói rằng điều mà bạn biết là đúng sự thật (thường được dùng ở tòa): lời chứng, bản chứng nhận. Hoặc [U, singular] (trang trọng) testimony (to something): một thứ/điều gì thể hiện rằng một điều gì khác tồn tại hoặc đúng sự thật (~ testament).",
+      "key_distinction": "Lời khai/chứng nhận chính thức tại tòa án hoặc minh chứng rõ ràng cho một phẩm chất, sự thật.",
+      "examples": [
+        "Her claim was supported by the testimony of several witnesses.",
+        "His thick, swollen fingers bore testimony to a lifetime of toil."
+      ]
+    },
+    "documentation": {
+      "meaning": "[U] Những giấy tờ chính thức hoặc hợp pháp được yêu cầu để chứng minh điều gì đó: những tài liệu làm bằng chứng.",
+      "key_distinction": "Tập hợp các tài liệu, hồ sơ, giấy tờ chính thức dùng làm bằng chứng.",
+      "examples": [
+        "Passengers without the correct documentation (= official papers saying who they are) will not be allowed to travel."
+      ]
+    },
+    "warrant": {
+      "meaning": "[C] warrant (for something) Giấy tờ chính thức và hợp pháp chứng nhận rằng bạn có quyền làm điều gì đó, ví dụ như nhận tiền/dịch vụ/hàng hoá hoặc mua cổ phần của một công ty...: giấy chứng nhận.",
+      "key_distinction": "Giấy phép/chứng thư hợp pháp cho quyền lợi cụ thể (như quyền mua cổ phần, lệnh của tòa).",
+      "examples": [
+        "warrants for equity shares"
+      ]
+    }
+  }
+}

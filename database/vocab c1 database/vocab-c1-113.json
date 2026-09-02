@@ -1,0 +1,41 @@
+{
+  "group_title": "TƯƠNG TỰ",
+  "target_words": {
+    "similar": {
+      "meaning": "giống / tương tự",
+      "key_distinction": "giống ai/thứ gì nhưng không giống y hệt >< different /ˈdɪfrənt/ (adj) >< dissimilar /dɪˈsɪmɪlə(r)/ (adj)",
+      "examples": [
+        "Stir the paint with a piece of wood or something similar."
+      ]
+    },
+    "analogous": {
+      "meaning": "tương tự / tương đồng",
+      "key_distinction": "analogous (to/with something) [trang trọng] có những đặc điểm tương đồng với điều gì/tình huống nào theo một cách nào đó, vì vậy mà có thể được so sánh với điều đó/tình huống đó",
+      "examples": [
+        "The national debt is analogous with private debt."
+      ]
+    },
+    "akin": {
+      "meaning": "hơi giống / tương tự",
+      "key_distinction": "akin to something [trang trọng] có một vài phẩm chất/tính chất như của một thứ gì đó khác",
+      "examples": [
+        "They speak a language akin to French."
+      ]
+    },
+    "comparable": {
+      "meaning": "tương đồng / có thể so sánh",
+      "key_distinction": "tương đồng với một thứ gì đó/ai đó khác về kích cỡ/số lượng/phẩm chất/chất lượng/... nên có thể so sánh được",
+      "examples": [
+        "The girls are of comparable ages."
+      ]
+    },
+    "equivalent": {
+      "meaning": "tương đương",
+      "key_distinction": "Tương đương (có cùng giá trị/số lượng/ý nghĩa/tầm quan trọng/mục đích/phẩm chất/... với ai đó/thứ gì thuộc loại khác)",
+      "examples": [
+        "Is $50 equivalent to about £30?",
+        "I think that covering up the facts is equivalent to lying really."
+      ]
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "group_title": "GIẾT NGƯỜI",
+  "target_words": {
+    "murder": {
+      "meaning": "[U, C] tội giết người một cách có chủ đích\n~ homicide /ˈhɒmɪsaɪd/ (n) [U, C]\n~ killing /ˈkɪlɪŋ/ (n) [U, C]",
+      "key_distinction": "Tội giết người cố ý, có tính toán từ trước.",
+      "examples": [
+        "murders committed by terrorists",
+        "to commit a murder"
+      ]
+    },
+    "manslaughter": {
+      "meaning": "[U, C] tội giết người không cố ý (ngộ sát)",
+      "key_distinction": "Tội ngộ sát, làm chết người không cố ý hoặc do vô tình.",
+      "examples": [
+        "The charge has been reduced to manslaughter."
+      ]
+    },
+    "slaughter": {
+      "meaning": "việc giết rất nhiều người cùng một lúc một cách rất tàn bạo và bất công (đặc biệt là trong chiến tranh): sự tàn sát\n~ massacre /ˈmæsəkə(r)/ (n) [U, C]",
+      "key_distinction": "Sự tàn sát, giết hàng loạt người một cách dã man (thường trong chiến tranh/xung đột).",
+      "examples": [
+        "the slaughter of innocent people"
+      ]
+    },
+    "execution": {
+      "meaning": "[U, C] sự hành hình, sự thi hành án tử hình",
+      "key_distinction": "Việc thi hành án tử hình hoặc hành hình theo quy định/mệnh lệnh.",
+      "examples": [
+        "If caught, the men could face execution."
+      ]
+    },
+    "assassination": {
+      "meaning": "[U, C] việc giết một nhân vật nổi tiếng hoặc quan trọng (đặc biệt là vì lý do chính trị): ám sát",
+      "key_distinction": "Hành vi ám sát người nổi tiếng hoặc nhân vật quan trọng vì mục đích chính trị.",
+      "examples": [
+        "the assassination of John F. Kennedy"
+      ]
+    }
+  }
+}

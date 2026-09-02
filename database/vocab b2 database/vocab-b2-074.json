@@ -1,0 +1,21 @@
+{
+  "group_title": "Sớm",
+  "target_words": {
+    "early": {
+      "meaning": "sớm so với một khoảng thời gian, hoặc một mốc thời gian thông thường nào đó",
+      "key_distinction": "Sớm so với lịch trình, kế hoạch, giai đoạn đầu của một mốc/khoảng thời gian nhất định.",
+      "examples": [
+        "I hate having to get up early in the morning.",
+        "Early booking is essential, as space is limited."
+      ]
+    },
+    "soon": {
+      "meaning": "diễn tả một điều gì đó sắp xảy ra trong một tương lai rất ngắn, trong một khoảng thời gian ngắn tính từ thời điểm hiện tại. Ngoài ra còn được dùng với nghĩa là chẳng bao lâu sau",
+      "key_distinction": "Sắp sửa xảy ra trong thời gian ngắn sắp tới (tính từ hiện tại/mốc thời điểm đang nói đến).",
+      "examples": [
+        "She'll be here soon.",
+        "She sold the house soon after her husband died."
+      ]
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "group_title": "Sự lựa chọn",
+  "target_words": {
+    "choice": {
+      "meaning": "[C] hành động lựa chọn giữa hai (hoặc nhiều hơn) khả năng; thứ gì/điều gì mà bạn có thể chọn; [U, singular] quyền được lựa chọn; khả năng lựa chọn; [C] người/vật/việc được lựa chọn; [U, singular] các thứ để lựa chọn",
+      "key_distinction": "Sự lựa chọn nói chung, quyền lựa chọn hoặc người/vật được chọn trong số nhiều phương án.",
+      "examples": [
+        "Women are often forced to make a choice between family and career.",
+        "There is a wide range of choices open to you.",
+        "If I had the choice, I would stop working tomorrow.",
+        "This government is committed to extending parental choice in education.",
+        "She's the obvious choice for the job.",
+        "The menu has a good choice of desserts."
+      ]
+    },
+    "selection": {
+      "meaning": "[U] quá trình chọn ai/thứ gì từ một nhóm người/vật (thường là dựa theo một hệ thống tiêu chuẩn): sự chọn lọc, sự tuyển lựa; [C] những người/vật được lựa chọn từ một nhóm lớn hơn; [C] những thứ để lựa chọn (~ choice / range)",
+      "key_distinction": "Sự chọn lọc, tuyển lựa cẩn thận dựa trên hệ thống tiêu chuẩn hoặc tập hợp các món/vật đã được chọn sẵn.",
+      "examples": [
+        "Darwin's principles of natural selection",
+        "a selection of hits from well-known musicals",
+        "This restaurant's wine selection isn't bad."
+      ]
+    },
+    "option": {
+      "meaning": "[C, U] thứ gì mà bạn có thể chọn để có hoặc để làm; sự tự do để chọn điều bạn làm; [C] một môn học mà sinh viên có thể chọn để học (không bắt buộc)",
+      "key_distinction": "Tùy chọn, phương án khả thi có sẵn để cân nhắc hoặc môn học tự chọn.",
+      "examples": [
+        "There are various options open to you.",
+        "Sometimes, failure is an option.",
+        "The course offers options in design and computing."
+      ]
+    },
+    "alternative": {
+      "meaning": "một thứ mà bạn có thể chọn để làm hoặc có từ hai hoặc nhiều hơn hai khả năng (tuy nhiên alternative thường được dùng khi nói về việc chọn giữa hai khả năng thay vì nhiều hơn hai)",
+      "key_distinction": "Phương án thay thế (thường dùng khi cân nhắc lựa chọn thay thế cho một thứ khác).",
+      "examples": [
+        "There is a vegetarian alternative on the menu every day."
+      ]
+    },
+    "election": {
+      "meaning": "[C, U] quá trình chọn một người/nhóm người cho một vị trí nào đó (đặc biệt là về chính trị) bằng cách bầu cử; [U] việc được chọn thông qua bầu cử",
+      "key_distinction": "Cuộc bầu cử, sự bỏ phiếu bình chọn ai đó vào vị trí chính thức.",
+      "examples": [
+        "presidential elections",
+        "We welcome his election as president."
+      ]
+    }
+  }
+}

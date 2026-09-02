@@ -1,0 +1,37 @@
+{
+  "group_title": "Chứng chỉ, bằng cấp",
+  "target_words": {
+    "degree": {
+      "meaning": "Bằng cấp do các trường đại học cấp khi sinh viên hoàn thành chương trình học và sắp ra trường.",
+      "key_distinction": "Một khóa học cấp bằng thường kéo dài từ 3 đến 4 năm, thường được trao bởi những trường đại học uy tín.",
+      "examples": [
+        "She has a degree in physics from Edinburgh.",
+        "She has a master's degree in history from Yale."
+      ]
+    },
+    "diploma": {
+      "meaning": "Chứng chỉ, văn bằng do các trường đại học, cao đẳng và trường kỹ thuật cấp.",
+      "key_distinction": "Một khóa học cấp bằng chỉ kéo dài từ 1 đến 2 năm, có thể được trao bởi bất kỳ cơ sở giáo dục nào, kể cả các cơ sở giáo dục tư nhân.",
+      "examples": [
+        "I'm taking a two-year diploma course.",
+        "Everyone was given a diploma at the end of the course."
+      ]
+    },
+    "licence": {
+      "meaning": "Giấy phép, một tài liệu chính thức cho phép bạn sở hữu, làm hoặc sử dụng thứ gì đó.",
+      "key_distinction": "Thường là sau khi bạn đã trả tiền hoặc đã hoàn thành bài kiểm tra.",
+      "examples": [
+        "Applicants must hold a valid driving licence.",
+        "He was caught driving a car without a licence."
+      ]
+    },
+    "certificate": {
+      "meaning": "Giấy chứng nhận (tài liệu chính thức nói rằng thông tin trên đó là đúng) hoặc văn bằng chứng minh đã hoàn thành khóa học/kỳ thi.",
+      "key_distinction": "Một tài liệu chính thức chứng minh bạn đã hoàn thành một khóa học hoặc vượt qua một kỳ thi; một bằng cấp đạt được sau một khóa học hoặc một kỳ thi.",
+      "examples": [
+        "A birth/marriage/death/health certificate.",
+        "She has a certificate in Drama Education."
+      ]
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "group_title": "Bên trong",
+  "target_words": {
+    "inner": {
+      "meaning": "Bên trong; về phía hoặc gần trung tâm của một nơi nào đó. Hoặc dùng chỉ cảm xúc, suy nghĩ cá nhân, bí mật không thể hiện ra ngoài.",
+      "key_distinction": "Chỉ đứng trước danh từ. Trái nghĩa với outer.",
+      "examples": [
+        "Inner London",
+        "The inner workings of the mind"
+      ]
+    },
+    "inside": {
+      "meaning": "Hình thành phần bên trong của một thứ gì đó; không phải phần bên ngoài. Hoặc được biết/thực hiện bởi ai đó trong một nhóm, tổ chức.",
+      "key_distinction": "Chỉ đứng trước danh từ. Nhấn mạnh vị trí nằm trọn bên trong cấu trúc hoặc thông tin nội bộ.",
+      "examples": [
+        "An inside pocket",
+        "Inside information"
+      ]
+    },
+    "interior": {
+      "meaning": "Liên quan đến phần bên trong của một thứ gì đó; hoặc thuộc về vùng trung tâm/nội địa của một quốc gia; hoặc liên quan đến vấn đề nội bộ đất nước.",
+      "key_distinction": "Chỉ đứng trước danh từ. Trái nghĩa với exterior; thường dùng cho kiến trúc/bên trong công trình, vùng nội địa xa bờ biển, hoặc bộ ngành nội vụ.",
+      "examples": [
+        "Interior walls",
+        "The interior jungle regions",
+        "The interior minister"
+      ]
+    }
+  }
+}

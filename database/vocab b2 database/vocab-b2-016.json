@@ -1,0 +1,35 @@
+{
+  "group_title": "Cân bằng",
+  "target_words": {
+    "balance": {
+      "meaning": "Giữ cho cơ thể hoặc thứ gì đó ở một vị trí cân bằng và không bị đổ; hoặc giữ sự cân bằng về tầm quan trọng, thời gian, tiền bạc giữa hai thứ/phần khác nhau.",
+      "key_distinction": "Vừa là nội động từ vừa là ngoại động từ. Nhấn mạnh việc giữ thăng bằng vật lý hoặc sự hài hòa giữa các yếu tố khác biệt.",
+      "examples": [
+        "How long can you balance on one leg?",
+        "I struggle to balance work and family commitments."
+      ]
+    },
+    "equalize": {
+      "meaning": "Làm cho mọi thứ ở một nơi hoặc một nhóm được cân bằng về kích cỡ, số lượng, giá trị,...: làm cân bằng, làm ngang bằng, làm bằng nhau.",
+      "key_distinction": "Ngoại động từ. Nhấn mạnh việc san bằng sự chênh lệch để các đối tượng có mức độ, quyền lợi hoặc giá trị ngang bằng nhau.",
+      "examples": [
+        "They are putting pressure on the government to equalize state pension ages between men and women."
+      ]
+    },
+    "level": {
+      "meaning": "Làm cho cái gì đó bằng phẳng: san bằng, san phẳng.",
+      "key_distinction": "Nhấn mạnh vào bề mặt vật lý (làm cho phẳng) hoặc làm cho một vị trí/khoảng cách trở nên bằng phẳng.",
+      "examples": [
+        "Workers levelled the wet concrete with a piece of wood."
+      ]
+    },
+    "match": {
+      "meaning": "Ngang bằng với ai/điều gì về giá trị/kích cỡ/chất lượng/sự thành công/...; hoặc làm cho điều gì giống như hoặc tốt hơn điều gì khác.",
+      "key_distinction": "Ngoại động từ. Nhấn mạnh việc đáp ứng, tương xứng hoặc sánh ngang với tiêu chuẩn/yêu cầu của đối tượng khác.",
+      "examples": [
+        "The two candidates are evenly matched.",
+        "An attempt to match financial resources to needs"
+      ]
+    }
+  }
+}

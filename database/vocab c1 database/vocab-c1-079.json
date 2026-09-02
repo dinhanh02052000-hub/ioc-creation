@@ -1,0 +1,86 @@
+{
+  "group_title": "ÔM, YẾU (SỨC KHỎE)",
+  "target_words": {
+    "ill": {
+      "meaning": "thường không dùng trước danh từ; bị ốm hoặc bị bệnh; không cảm thấy khoẻ",
+      "key_distinction": "thường không dùng trước danh từ",
+      "examples": [
+        "chronically ill patients",
+        "He was critically ill in hospital.",
+        "Sophia fell ill/was taken ill (= suddenly became ill) while on holiday.",
+        "I can't eat cheese as it makes me ill."
+      ]
+    },
+    "sick": {
+      "meaning": "ốm/bị bệnh/không khoẻ về thể chất hoặc tinh thần; cảm thấy buồn nôn",
+      "key_distinction": "thường không dùng trước danh từ (với nghĩa cảm thấy buồn nôn)",
+      "examples": [
+        "She was sick with the flu.",
+        "They became sick after eating contaminated food.",
+        "a sick feeling in your stomach",
+        "Laura felt almost sick with embarrassment.",
+        "Whenever I think about my exams, I feel physically sick."
+      ]
+    },
+    "unwell": {
+      "meaning": "không khoẻ (đặc biệt là trong một khoảng thời gian ngắn) (≠ well)",
+      "key_distinction": "không dùng trước danh từ; khá trang trọng",
+      "examples": [
+        "If you feel unwell, tell the teacher.",
+        "You should delay vaccination if you are unwell with a fever."
+      ]
+    },
+    "weak": {
+      "meaning": "không khoẻ về mặt thể chất nên có thể sẽ không thể đi lại nhanh hoặc mang vác vật nặng",
+      "key_distinction": "dùng để chỉ sự thiếu sức mạnh thể chất hoặc nội lực",
+      "examples": [
+        "She is still weak after her illness.",
+        "His legs felt weak.",
+        "He was weak from shock.",
+        "I was exhausted and weak with hunger.",
+        "She suffered from a weak heart."
+      ]
+    },
+    "faint": {
+      "meaning": "cảm thấy yếu và mệt và có khả năng là sẽ bị ngất",
+      "key_distinction": "thường không dùng trước danh từ",
+      "examples": [
+        "She suddenly felt faint.",
+        "The walkers were faint from hunger."
+      ]
+    },
+    "unhealthy": {
+      "meaning": "không có sức khoẻ tốt; cho thấy sự thiếu sức khoẻ tốt; có hại cho sức khoẻ; có thể sẽ làm bạn bị ốm",
+      "key_distinction": "miêu tả tình trạng cơ thể kém hoặc lối sống/điều kiện gây hại sức khỏe",
+      "examples": [
+        "They looked poor and unhealthy.",
+        "unhealthy skin",
+        "His eyeballs were an unhealthy yellow.",
+        "unhealthy living conditions",
+        "an unhealthy diet/lifestyle"
+      ]
+    },
+    "feeble": {
+      "meaning": "rất yếu",
+      "key_distinction": "dùng chỉ sự yếu ớt rõ rệt (về thể lực hoặc âm thanh/nhịp đập)",
+      "examples": [
+        "a feeble old man",
+        "The heartbeat was feeble and irregular."
+      ]
+    },
+    "frail": {
+      "meaning": "yếu và gầy về mặt thể lực (đặc biệt là người già)",
+      "key_distinction": "thường dùng cho người già có cơ thể mỏng manh, yếu ớt",
+      "examples": [
+        "She lay in bed looking particularly frail."
+      ]
+    },
+    "bedridden": {
+      "meaning": "nằm liệt giường do bị bệnh/bị thương/già",
+      "key_distinction": "chỉ người phải nằm một chỗ trên giường không thể đi lại",
+      "examples": [
+        "His aunt was 93 and bedridden."
+      ]
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "group_title": "KIỂM SOÁT",
+  "target_words": {
+    "control": {
+      "meaning": "control somebody/something có quyền lực/quyền hành đối với ai/công ty/đất nước/... vì vậy mà bạn có thể quyết định xem họ phải làm gì hoặc được điều hành như thế nào\nđầu khiển máy móc hoặc một hệ thống để nó làm việc như cách bạn muốn",
+      "key_distinction": "Nắm quyền điều khiển, kiểm soát hoạt động của tổ chức, con người hoặc vận hành thiết bị/hệ thống.",
+      "examples": [
+        "a multinational company based in Britain but controlled from South Africa",
+        "We want to control our own destiny (= decide what happens to us).",
+        "lighting that you can control with your smartphone"
+      ]
+    },
+    "rule": {
+      "meaning": "[nội động từ, ngoại động từ] điều hành và có quyền điều khiển đối với một đất nước/một nhóm người/...: cai trị, trị vì, thống trị; chỉ huy, điều khiển ~ govern\n[ngoại động từ, thường ở dạng bị động] (thường mang nghĩa tiêu cực) là thứ chủ yếu ảnh hưởng và điều khiển ai/điều gì: chi phối, điều khiển",
+      "key_distinction": "Cai trị, trị vì đất nước/nhân dân hoặc bị chi phối/thống trị bởi một tư tưởng, cảm xúc tiêu cực.",
+      "examples": [
+        "At that time, King John ruled England.",
+        "The pursuit of money ruled his life."
+      ]
+    },
+    "reign": {
+      "meaning": "[ngoại động từ] vua/nữ hoàng/hoàng đế/... trị vì/thống trị",
+      "key_distinction": "Trị vì, làm vua/nữ hoàng trong một triều đại hoặc thời kỳ.",
+      "examples": [
+        "Queen Victoria reigned over Britain from 1837 to 1901."
+      ]
+    },
+    "dominate": {
+      "meaning": "[nội động từ, ngoại động từ] có quyền lực hoặc có rất nhiều sự ảnh hưởng lên ai đó/điều gì (đặc biệt là theo cách không dễ chịu): có ảnh hưởng lớn; thống trị",
+      "key_distinction": "Thống trị, áp đảo hoặc chiếm ưu thế vượt trội lên ai/điều gì.",
+      "examples": [
+        "In the 1960s, American styles dominated the art world.",
+        "professions that were once dominated by men"
+      ]
+    },
+    "govern": {
+      "meaning": "[nội động từ, ngoại động từ] điều hành một đất nước hoặc những người dân của đất nước đó và chịu trách nhiệm cho việc ban hành luật pháp, cung cấp các dịch vụ công cộng ...: cai trị; cầm quyền ~ rule\n[ngoại động từ, thường ở dạng bị động] điều khiển hoặc ảnh hưởng ai đó/điều gì hoặc cách mà điều gì xảy ra/vận hành/...: chi phối, ảnh hưởng",
+      "key_distinction": "Cầm quyền, quản lý bộ máy chính quyền/đất nước hoặc chi phối cách thức vận hành của một quy luật/hệ thống.",
+      "examples": [
+        "the leaders who govern the country",
+        "Prices are governed by market demand."
+      ]
+    },
+    "manage": {
+      "meaning": "[nội động từ, ngoại động từ] quản lý hoặc điều hành một đội/tổ chức/đất/công việc kinh doanh/... (đặc biệt là thứ mà một người nào đó khác sở hữu): quản lý, trông nom",
+      "key_distinction": "Quản lý, tổ chức, điều hành công việc, doanh nghiệp hoặc đội ngũ.",
+      "examples": [
+        "to manage a soccer team",
+        "I think that Forestry Tasmania manages the forest."
+      ]
+    }
+  }
+}

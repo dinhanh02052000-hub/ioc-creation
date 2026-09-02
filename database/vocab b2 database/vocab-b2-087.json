@@ -1,0 +1,23 @@
+{
+  "group_title": "Trừng phạt, hình phạt",
+  "target_words": {
+    "punishment": {
+      "meaning": "sự trừng phạt, sự trừng trị, sự bị trừng phạt, sự bị trừng trị (thường dùng cho tội phạm, hoặc lỗi sai, lỗi lầm của ai đó)",
+      "key_distinction": "Sự trừng phạt chung cho hành vi sai trái, vi phạm đạo đức, lỗi lầm hoặc tội phạm.",
+      "examples": [
+        "to inflict/impose/mete out punishment",
+        "I felt sure that it was a punishment for my sin.",
+        "new approaches to the punishment of offenders"
+      ]
+    },
+    "penalty": {
+      "meaning": "- hình phạt, án phạt (vì làm điều gì đó trái với luật pháp, hợp đồng, điều khoản) (xét về mức độ thì penalty thường nặng hơn punishment)\n- cú phạt đền (trong bóng đá)",
+      "key_distinction": "Hình phạt chính thức theo quy định pháp luật/hợp đồng (tiền phạt, án phạt) hoặc quả phạt đền trong thể thao.",
+      "examples": [
+        "The penalty for traveling without a ticket is £200.",
+        "He missed a penalty in the last minute of the game.",
+        "the death penalty = capital punishment = án tử hình"
+      ]
+    }
+  }
+}

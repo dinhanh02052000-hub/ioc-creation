@@ -1,0 +1,31 @@
+{
+  "group_title": "Ảnh hưởng, tác động",
+  "target_words": {
+    "effect": {
+      "meaning": "Sự ảnh hưởng dẫn đến một kết quả cụ thể, nhấn mạnh hơn vào kết quả hoặc sự thay đổi được tạo ra.",
+      "key_distinction": "Tập trung vào kết quả của sự ảnh hưởng, không phải quá trình tác động.",
+      "examples": [
+        "The radiation leak has had a disastrous effect on/upon the environment.",
+        "The medicine started to take effect after a few minutes.",
+        "Her tears had no/little effect on him."
+      ]
+    },
+    "influence": {
+      "meaning": "Ảnh hưởng, một người nào đó hay một việc nào đó gây tác động đến suy nghĩ, hành động, cư xử của một người khác hoặc sự vận hành, phát triển của một việc khác.",
+      "key_distinction": "Tập trung vào quá trình tác động làm thay đổi suy nghĩ, hành vi hoặc sự phát triển của đối tượng khác.",
+      "examples": [
+        "Helen's a bad/good influence on him.",
+        "Christopher hoped to exert his influence to make them change their minds."
+      ]
+    },
+    "impact": {
+      "meaning": "Ảnh hưởng, tác động của một ai đó, một vật nào đó lên ai khác, vật khác.",
+      "key_distinction": "Tập trung vào lực tác động, sự va chạm hoặc mức độ ảnh hưởng mạnh mẽ, rõ rệt lên đối tượng.",
+      "examples": [
+        "The anti-smoking campaign had had/made quite an impact on young people.",
+        "The environmental impact of tourism",
+        "A positive/a negative/an adverse impact"
+      ]
+    }
+  }
+}

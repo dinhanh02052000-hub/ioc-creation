@@ -1,0 +1,21 @@
+{
+  "group_title": "DI CƯ",
+  "target_words": {
+    "emigrate": {
+      "meaning": "[nội động từ] di cư, rời khỏi đất nước của bạn để đến và sống vĩnh viễn ở một quốc gia khác",
+      "key_distinction": "Di cư (xét từ góc độ rời khỏi đất nước quê hương) để đến định cư vĩnh viễn ở quốc gia khác.",
+      "examples": [
+        "The family left Czechoslovakia in 1968 and emigrated to America.",
+        "My grandparents emigrated from Vietnam to the US in the 1980s."
+      ]
+    },
+    "migrate": {
+      "meaning": "[nội động từ] di cư đến một nơi nào đó, một đất nước nào đó thường là để tìm kiếm công việc và thường sống ở đó tạm thời, ngoài ra còn dùng để chỉ các loại động vật di cư theo mùa",
+      "key_distinction": "Di chuyển/di cư tạm thời để tìm việc làm (con người) hoặc di cư theo mùa (động vật).",
+      "examples": [
+        "Mexican farm workers migrate into the US each year to find work at harvest time.",
+        "These animals migrate annually in search of food."
+      ]
+    }
+  }
+}

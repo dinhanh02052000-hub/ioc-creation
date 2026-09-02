@@ -1,0 +1,40 @@
+{
+  "group_title": "Ý thức, nhận thức",
+  "target_words": {
+    "perception": {
+      "meaning": "[C, U] một quan điểm/một niềm tin/một hình ảnh/một suy nghĩ dựa trên vẻ bề ngoài của sự việc/sự việc/việc ai đó làm (đây là kết quả của cách nhìn nhận hoặc hiểu một điều gì đó/ai đó có thể của nhiều người): sự nhận thức",
+      "key_distinction": "Nhận thức, góc nhìn hoặc quan niệm của con người dựa trên cảm nhận, quan sát hoặc cách hiểu về thực tế.",
+      "examples": [
+        "a campaign to change public perception of the police"
+      ]
+    },
+    "awareness": {
+      "meaning": "[U, singular] biết về một điều gì; biết rằng điều gì đang tồn tại và quan trọng (dựa trên thông tin hoặc kinh nghiệm): nhận thức, ý thức",
+      "key_distinction": "Sự nhận biết, ý thức rõ ràng về sự tồn tại hoặc tầm quan trọng của một sự vật/vấn đề.",
+      "examples": [
+        "There is a growing awareness of the seriousness of this disease."
+      ]
+    },
+    "understanding": {
+      "meaning": "[U, singular] kiến thức mà ai đó có về một chủ đề/tình huống cụ thể hoặc cách mà một thứ gì vận hành: sự hiểu biết; sự am hiểu",
+      "key_distinction": "Sự hiểu biết, nắm rõ kiến thức về một chủ đề, cơ chế hoạt động hoặc tình huống cụ thể.",
+      "examples": [
+        "How can we gain an understanding of other cultures?"
+      ]
+    },
+    "insight": {
+      "meaning": "[C, U] sự hiểu biết sâu sắc, rõ ràng về bản chất của một vấn đề/tình huống",
+      "key_distinction": "Cái nhìn sâu sắc, thấu đáo giúp hiểu rõ bản chất bên trong của một vấn đề.",
+      "examples": [
+        "I hope that this talk has given you some insight into our work."
+      ]
+    },
+    "conception": {
+      "meaning": "[C, U] sự hiểu biết hoặc một niềm tin rằng ai đó/điều gì như thế nào hoặc ai đó/điều gì nên như thế nào: quan niệm, ý niệm",
+      "key_distinction": "Ý niệm, quan niệm hoặc hình dung trong đầu về một khái niệm/điều gì đó.",
+      "examples": [
+        "He has no conception of what it's like to be unemployed."
+      ]
+    }
+  }
+}

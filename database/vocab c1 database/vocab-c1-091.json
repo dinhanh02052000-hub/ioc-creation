@@ -1,0 +1,52 @@
+{
+  "group_title": "SỰ NGHI NGỜ",
+  "target_words": {
+    "suspicion": {
+      "meaning": "[U, C] cảm giác một người đã làm điều gì sai, trái pháp luật hoặc không thành thật (cho dù không có bằng chứng để chứng minh cho cảm giác đó) / [U, C] cảm giác bạn không thể tin ai (bạn nghĩ rằng họ không đáng tin cậy)/điều gì = mistrust / [C] cảm giác hoặc niềm tin điều gì đó là đúng cho dù bạn không hề có bằng chứng",
+      "key_distinction": "[U, C] cảm giác một người đã làm điều gì sai, trái pháp luật hoặc không thành thật (cho dù không có bằng chứng để chứng minh cho cảm giác đó) | [U, C] cảm giác bạn không thể tin ai (bạn nghĩ rằng họ không đáng tin cậy)/điều gì = mistrust /ˌmɪsˈtrʌst/ (n) [U] | [C] cảm giác hoặc niềm tin điều gì đó là đúng cho dù bạn không hề có bằng chứng",
+      "examples": [
+        "His strange behaviour aroused his neighbours' suspicion.",
+        "She always treated us with suspicion.",
+        "an atmosphere of suspicion and mistrust",
+        "I have a suspicion (that) the local authority may be planning to close the school."
+      ]
+    },
+    "doubt": {
+      "meaning": "[U, C] cảm giác không chắc chắn về một điều gì hoặc không tin vào điều đó",
+      "key_distinction": "[U, C] cảm giác không chắc chắn về một điều gì hoặc không tin vào điều đó",
+      "examples": [
+        "I'm having doubts about his ability to do the job."
+      ]
+    },
+    "scepticism": {
+      "meaning": "[U] thái độ hoài nghi về sự chính xác của những tuyên bố/khẳng định hoặc hoài nghi về việc một điều gì đó sẽ xảy ra",
+      "key_distinction": "[U] thái độ hoài nghi về sự chính xác của những tuyên bố/khẳng định hoặc hoài nghi về việc một điều gì đó sẽ xảy ra",
+      "examples": [
+        "The company's environmental claims have been treated with scepticism by conservationists."
+      ]
+    },
+    "disbelief": {
+      "meaning": "[U] cảm giác không thể tin rằng điều gì là thật",
+      "key_distinction": "[U] cảm giác không thể tin rằng điều gì là thật",
+      "examples": [
+        "We could only watch in disbelief as the car rolled into the water."
+      ]
+    },
+    "reservation": {
+      "meaning": "[U, C] cảm giác nghi ngờ bởi bạn không hoàn toàn đồng tình với một kế hoạch/ý tưởng/gợi ý/... (bạn không chắc là nó hoàn toàn tốt hoặc đúng)",
+      "key_distinction": "[U, C] cảm giác nghi ngờ bởi bạn không hoàn toàn đồng tình với một kế hoạch/ý tưởng/gợi ý/... (bạn không chắc là nó hoàn toàn tốt hoặc đúng)",
+      "examples": [
+        "She is one of the best students in my class. I can recommend her without reservation."
+      ]
+    },
+    "uncertainty": {
+      "meaning": "[U] trạng thái mà không chắc chắn về điều gì sẽ xảy ra trong tương lai hoặc về điều đúng đắn phải làm / [C] điều gì mà bạn không thể chắc chắn về; một tình huống khiến bạn không thấy/không cảm thấy chắc chắn",
+      "key_distinction": "[U] trạng thái mà không chắc chắn về điều gì sẽ xảy ra trong tương lai hoặc về điều đúng đắn phải làm | [C] điều gì mà bạn không thể chắc chắn về; một tình huống khiến bạn không thấy/không cảm thấy chắc chắn",
+      "examples": [
+        "Times of great change are also times of uncertainty.",
+        "life's uncertainties",
+        "the uncertainties of war"
+      ]
+    }
+  }
+}

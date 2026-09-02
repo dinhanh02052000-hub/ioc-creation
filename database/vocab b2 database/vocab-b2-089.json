@@ -1,0 +1,19 @@
+{
+  "group_title": "Tủ",
+  "target_words": {
+    "wardrobe": {
+      "meaning": "tủ quần áo, cao hơn cupboard, thường đặt trong phòng ngủ và ta có thể xếp áo quần vào trong tủ này",
+      "key_distinction": "Tủ đựng quần áo cao, đứng, thường đặt ở phòng ngủ.",
+      "examples": [
+        "Ted was putting his clean clothes away in the wardrobe."
+      ]
+    },
+    "cupboard": {
+      "meaning": "tủ nhỏ có ngăn bên trong, có cửa phía trước, tủ búp phê, tủ để ly, dùng để lưu trữ nhiều thứ ly, chén, đĩa, thức ăn, dụng cụ...,",
+      "key_distinction": "Tủ đựng ly, bát đĩa, thực phẩm hoặc đồ dùng gia đình (thường đặt ở bếp hoặc phòng ăn).",
+      "examples": [
+        "The kitchen cupboard is stocked with dishes, cups and food."
+      ]
+    }
+  }
+}

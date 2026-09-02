@@ -1,0 +1,37 @@
+{
+  "group_title": "Cuối cùng",
+  "target_words": {
+    "eventual": {
+      "meaning": "[chỉ đứng trước danh từ] xảy ra vào cuối một giai đoạn hoặc một quá trình (đặc biệt sau rất nhiều nỗ lực, khó khăn).",
+      "key_distinction": "Chỉ đứng trước danh từ. Nhấn mạnh kết quả diễn ra ở đoạn cuối của một quá trình nhiều thử thách.",
+      "examples": [
+        "The Dukes were the eventual winners of the competition."
+      ]
+    },
+    "ultimate": {
+      "meaning": "[chỉ đứng trước danh từ] xảy ra ở cuối một quá trình dài (liên quan đến những gì quan trọng).",
+      "key_distinction": "Chỉ đứng trước danh từ. Nhấn mạnh tính chất quan trọng nhất, tối cao hoặc mang tính quyết định sau cùng.",
+      "examples": [
+        "our ultimate goal/aim/objective/target (mục tiêu đích cuối cùng)",
+        "The ultimate decision lies with the parents. (quyết định cuối cùng nằm ở cha mẹ)"
+      ]
+    },
+    "last": {
+      "meaning": "sau cùng (sau tất cả mọi người, mọi thứ khác về thứ tự); (thuộc) phần còn lại cuối cùng.",
+      "key_distinction": "Chỉ vị trí sau cùng trong một chuỗi thứ tự hoặc phần duy nhất còn lại.",
+      "examples": [
+        "He was last in line for tickets.",
+        "Do you mind if I have the last chocolate?"
+      ]
+    },
+    "final": {
+      "meaning": "[chỉ đứng trước danh từ] là hoặc đang ở phần cuối của một chuỗi sự kiện, hành động, giai đoạn, quá trình; sau cùng, cuối cùng, dứt khoát (vì nó cố định, không thể thay đổi được nữa, không bàn cãi đến nữa).",
+      "key_distinction": "Chỉ phần kết thúc của một chuỗi sự kiện hoặc mang tính dứt khoát, không thể sửa đổi.",
+      "examples": [
+        "Jamie is in his final year at Stirling University.",
+        "The project is in its final stages.",
+        "I'm not coming, and that's final! (= I will not change my mind)"
+      ]
+    }
+  }
+}

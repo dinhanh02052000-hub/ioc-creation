@@ -1,0 +1,43 @@
+{
+  "group_title": "NHÌN",
+  "target_words": {
+    "look": {
+      "meaning": "[nội động từ] hướng mắt nhìn về một hướng cụ thể nào đó",
+      "key_distinction": "Nhìn hướng về 1 phía trong khoảnh khắc ngắn, trung tính nhất trong nhóm.",
+      "examples": [
+        "She looked at me and smiled."
+      ]
+    },
+    "watch": {
+      "meaning": "[nội động từ, ngoại động từ] nhìn vào ai đó/thứ gì đó trong một khoảng thời gian và tập trung chú ý đến những việc xảy ra",
+      "key_distinction": "Nhìn liên tục trong 1 khoảng thời gian, tập trung theo dõi diễn biến.",
+      "examples": [
+        "She stood and watched as the taxi drove off.",
+        "\"Would you like to play?\" - \"No thanks - I'll just watch.\""
+      ]
+    },
+    "observe": {
+      "meaning": "[ngoại động từ] nhìn thấy/để ý thấy ai đó/điều gì / [nội động từ, ngoại động từ] nhìn ai đó/điều gì một cách cẩn thận, đặc biệt là để biết thêm về họ; quan sát",
+      "key_distinction": "~ monitor /'mɒnɪtə(r)/ (v)",
+      "examples": [
+        "Have you observed any changes lately?",
+        "He observed two children playing with marbles on the street corner.",
+        "He observes keenly but says little"
+      ]
+    },
+    "gaze": {
+      "meaning": "[ngoại động từ] nhìn chăm chăm vào ai đó/thứ gì trong một khoảng thời gian dài, có thể là bởi vì bạn rất quan tâm/ngạc nhiên hoặc bởi vì bạn đang nghĩ đến điều gì đó khác",
+      "key_distinction": "~ stare /steə(r)/ (v)",
+      "examples": [
+        "She gazed at hill in amazement."
+      ]
+    },
+    "eye": {
+      "meaning": "eye somebody/something (+ adv./prep.) nhìn ai đó/thứ gì một cách cẩn thận, đặc biệt là bởi vì bạn muốn thứ gì hoặc bạn nghi ngờ điều gì đó không đúng",
+      "key_distinction": "Nhìn ai/cái gì cẩn thận, thường vì tò mò, thèm muốn hoặc nghi ngờ (sắc thái riêng, ít trung tính).",
+      "examples": [
+        "He couldn't help eyeing the cakes hungrily."
+      ]
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "group_title": "Chào",
+  "target_words": {
+    "greet": {
+      "meaning": "Chào đón ai đó bằng những lời nói (ví dụ như 'hello') hoặc hành động cụ thể (ví dụ như bắt tay): chào, chào hỏi, đón chào; phản ứng với việc gì/ai theo một cách cụ thể nào đó; hoặc [thường ở dạng bị động] (hình ảnh/âm thanh/mùi) là thứ đầu tiên mà bạn thấy/nghe thấy/ngửi thấy ở một nơi cụ thể nào đó.",
+      "key_distinction": "Nói về việc chào hỏi giao tiếp thông thường, phản ứng đón nhận hoặc cảm giác/hình ảnh đập vào mắt/tai đầu tiên.",
+      "examples": [
+        "She greeted us with a warm smile.",
+        "Loud cheers greeted the athletes.",
+        "When she opened the door, she was greeted by a scene of utter confusion."
+      ]
+    },
+    "bow": {
+      "meaning": "Cúi đầu hoặc khom lưng để thể hiện sự kính trọng/tôn trọng/cảm ơn hoặc để nói xin chào hoặc tạm biệt.",
+      "key_distinction": "Thể hiện hành động cúi chào mang tính cử chỉ cơ thể (cúi đầu, khom lưng) thể hiện sự tôn trọng hoặc lịch sự.",
+      "examples": [
+        "The pianist stood up and bowed to the audience."
+      ]
+    },
+    "salute": {
+      "meaning": "Chào theo nghi thức (giơ tay lên trán) hoặc thể hiện sự tôn trọng chính thức.",
+      "key_distinction": "Vừa là nội động từ vừa là ngoại động từ. Thường dùng trong bối cảnh quân đội hoặc các nghi thức trang trọng.",
+      "examples": [
+        "The soldiers stood at attention and saluted the flag."
+      ]
+    },
+    "welcome": {
+      "meaning": "Đến gặp và nói với ai đó một cách thân thiện khi người đó đến chỗ bạn đang có mặt: chào đón (= greet); hoặc hài lòng với việc ai đó đến hoặc gia nhập vào một tổ chức/tham gia vào một hoạt động/...",
+      "key_distinction": "Nhấn mạnh sự mến khách, niềm vui mừng và sự sẵn lòng tiếp đón khách hoặc thành viên mới.",
+      "examples": [
+        "The prime minister of Canada welcomed the president warmly.",
+        "We are always pleased to welcome new members."
+      ]
+    }
+  }
+}

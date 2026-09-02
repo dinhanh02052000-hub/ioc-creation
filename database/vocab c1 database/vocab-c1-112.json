@@ -1,0 +1,44 @@
+{
+  "group_title": "TUỔI THỌ",
+  "target_words": {
+    "lifespan": {
+      "meaning": "tuổi thọ / vòng đời",
+      "key_distinction": "một khoảng thời gian mà một con người/động vật/máy móc/... có thể sống/tiếp tục tồn tại hoặc vận hành trong những điều kiện bình thường",
+      "examples": [
+        "Worms have a lifespan of a few months."
+      ]
+    },
+    "life expectancy": {
+      "meaning": "tuổi thọ trung bình / thời gian tồn tại dự kiến",
+      "key_distinction": "[U, C] số năm mà một người có thể sẽ sống đến: tuổi thọ trung bình; độ dài của thời gian mà thứ gì đó có thể sẽ tồn tại hoặc tiếp tục",
+      "examples": [
+        "Life expectancy for both men and women has improved greatly in the past 20years.",
+        "The life expectancy of a large bus is about 15years."
+      ]
+    },
+    "lifetime": {
+      "meaning": "cả cuộc đời / đời người",
+      "key_distinction": "độ dài khoảng thời gian mà ai đó sống; thứ gì/điều gì tồn tại/kéo dài: cả cuộc đời",
+      "examples": [
+        "His diary was not published during his lifetime.",
+        "Memories can last a lifetime.",
+        "After a lifetime as a journalist in the trouble spots of the world, he retired to the country."
+      ]
+    },
+    "longevity": {
+      "meaning": "sự trường thọ / sự tồn tại lâu dài",
+      "key_distinction": "[U] (trang trọng) sự sống lâu (trường thọ); sự tồn tại trong một khoảng thời gian dài",
+      "examples": [
+        "We wish you both health and longevity.",
+        "He prides himself on the longevity of the company."
+      ]
+    },
+    "permanence": {
+      "meaning": "sự lâu bền / sự vĩnh cửu",
+      "key_distinction": "[U] trạng thái giữ nguyên hoặc không thay đổi trong một khoảng thời gian rất dài, có thể là mãi mãi: sự lâu bền, sự cố định, sự vĩnh cửu",
+      "examples": [
+        "The spoken word is immediate but lacks permanence."
+      ]
+    }
+  }
+}

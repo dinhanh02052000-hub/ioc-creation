@@ -1,0 +1,20 @@
+{
+  "group_title": "Ủy ban",
+  "target_words": {
+    "commission": {
+      "meaning": "[C] một nhóm chính thức gồm những người được giao trách nhiệm để thực hiện một nhiệm vụ nào đó (thường là cho chính phủ) như kiểm tra một vấn đề gì hoặc để tìm ra điều gì\n*commission là một uỷ ban/hội đồng độc lập được vận hành như là một quá trình kiểm soát/điều tra từ bên ngoài",
+      "key_distinction": "Ủy ban/hội đồng độc lập được thành lập (thường bởi chính phủ) để điều tra, kiểm soát hoặc thực hiện nhiệm vụ từ bên ngoài.",
+      "examples": [
+        "The government has set up a joint commission to consider the problem.",
+        "The European Commission is the EU's political independent executive arm. It is working on all fronts to contain the spread of the coronavirus, support national health systems and counter the socio-economic impact of the pandemic by taking unprecedented measures at both national and EU level."
+      ]
+    },
+    "committee": {
+      "meaning": "[C] một nhóm những người được lựa chọn từ một nhóm lớn hơn để đại diện cho nhóm lớn hơn đó để đưa ra quyết định hoặc để giải quyết một vấn đề nào đó hoặc để thu thập thông tin\n*committee là một uỷ ban đóng vai trò như là một phương tiện mang yếu tố từ bên trong để thực hiện một nhiệm vụ",
+      "key_distinction": "Ủy ban/ban chuyên trách gồm các thành viên được chọn từ một tổ chức/nhóm lớn hơn để đại diện quản lý nội bộ từ bên trong.",
+      "examples": [
+        "The finance committee has decided to raise membership fees for the next season."
+      ]
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "open_ended_generation": {
+    "trigger": "After valid Confidence submission.",
+    "generation_rule": "Generate Distinction and Application in one generation cycle.",
+    "distinction": {
+      "count": 1,
+      "rules": [
+        "Generate a new sentence.",
+        "Use one target word correctly.",
+        "Do not copy Knowledge Base examples.",
+        "Ask how meaning would change if another target word were substituted.",
+        "Ask why the alternative is less appropriate.",
+        "For groups larger than 4, select 1 or 2 genuinely confusable counterpart words.",
+        "Do not require comparison against every word in a large group."
+      ]
+    },
+    "application": {
+      "count": 1,
+      "rules": [
+        "Generate a new Imagine-based scenario.",
+        "Do not include target vocabulary words in the scenario.",
+        "Require independent retrieval.",
+        "Require the learner to use a target word.",
+        "Require justification.",
+        "Do not reveal the expected target word.",
+        "Avoid scenarios where multiple target words are equally defensible unless comparison is explicitly requested."
+      ]
+    }
+  },
+  "open_ended_grading": {
+    "distinction": {
+      "total": 10,
+      "step": 0.5,
+      "criteria": {
+        "understanding_of_original_word": 2,
+        "meaning_shift": 2,
+        "semantic_distinction": 2,
+        "contextual_appropriateness": 2,
+        "comparative_reasoning": 2
+      }
+    },
+    "application": {
+      "total": 10,
+      "step": 0.5,
+      "criteria": {
+        "word_selection": 2,
+        "correct_usage": 3,
+        "justification": 3,
+        "scenario_response": 2
+      }
+    },
+    "zero_rules": [
+      "Blank response = 0.",
+      "Meaningless response = 0.",
+      "Explicit I don't know or equivalent = 0."
+    ],
+    "grading_rules": [
+      "Grade semantic competence rather than answer length.",
+      "Do not award points merely because a target word is mentioned.",
+      "Grammar errors may be tolerated when they do not change the vocabulary meaning being assessed.",
+      "A semantically incorrect word choice must reduce the relevant score.",
+      "Contradiction of Knowledge Base meaning must reduce relevant criteria.",
+      "Use only 0.5-point increments.",
+      "Both responses must be graded before final calculation."
+    ]
+  }
+}

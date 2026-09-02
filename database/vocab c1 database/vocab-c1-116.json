@@ -1,0 +1,39 @@
+{
+  "group_title": "TRỐNG, RỖNG",
+  "target_words": {
+    "void": {
+      "meaning": "trống rỗng / không có giá trị",
+      "key_distinction": "không có hiệu lực hoặc không có giá trị, vi phạm pháp luật OR trống không (khoảng không) OR không có/thiếu điều gì",
+      "examples": [
+        "Both parties accepted that the partnership agreement was void.",
+        "He continued to sit, staring into the void space.",
+        "The letter was void of warm and feelings."
+      ]
+    },
+    "vacant": {
+      "meaning": "trống / bỏ trống",
+      "key_distinction": "trống/chưa được sử dụng (chỗ ngồi, phòng khách sạn, nhà,...) ~ unoccupied /ˌʌnˈɒkjupaɪd/ OR chưa có người làm (công việc)",
+      "examples": [
+        "There was only one vacant room in the hotel then.",
+        "The president resigned and the post was left vacant."
+      ]
+    },
+    "empty": {
+      "meaning": "trống / rỗng",
+      "key_distinction": "trống (không có thứ gì hoặc người bên trong) OR không thành thật (~ hollow) hoặc vô nghĩa",
+      "examples": [
+        "When he reached the supermarket checkout, he found to his horror that his wallet was completely empty.",
+        "Don't trust them! Their promises are empty words and nothing more."
+      ]
+    },
+    "hollow": {
+      "meaning": "rỗng / rỗng tuếch",
+      "key_distinction": "có lỗ hổng/không gian trống bên trong OR không thành thật ~ empty OR không có giá trị thực sự",
+      "examples": [
+        "A broken bone with a hollow space inside indicated that the creature was a carnivore.",
+        "Will their good intentions become realities or are they just hollow promises?",
+        "For me \"Have a nice day.\" is just a hollow form of words, with no real content."
+      ]
+    }
+  }
+}

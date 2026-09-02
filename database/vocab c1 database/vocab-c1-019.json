@@ -1,0 +1,35 @@
+{
+  "group_title": "DẤU VẾT",
+  "target_words": {
+    "trace": {
+      "meaning": "[C, U] dấu/đồ vật/dấu hiệu/... chứng tỏ rằng ai đó/thứ gì đã từng tồn tại/đã từng ở đó/đã xảy ra: dấu vết, dấu, vết, vết tích, dấu hiệu\ntrace of something một lượng rất nhỏ cái gì đó; một chút, một ít",
+      "key_distinction": "Dấu vết sót lại của thứ gì đó đã qua, hoặc một lượng vô cùng nhỏ còn sót lại.",
+      "examples": [
+        "The ship has vanished without a trace.",
+        "The water was found to contain traces of cocaine."
+      ]
+    },
+    "hint": {
+      "meaning": "hint (of something) một lượng rất nhỏ cái gì đó; một chút, một ít ~ trace",
+      "key_distinction": "Một chút, một thoáng biểu hiện (về hương vị, cảm xúc, màu sắc).",
+      "examples": [
+        "a dish with a strong hint of garlic",
+        "There was a hint of amusement in his voice."
+      ]
+    },
+    "mark": {
+      "meaning": "một dấu hiệu chứng tỏ rằng một phẩm chất hoặc cảm giác nào đó tồn tại",
+      "key_distinction": "Dấu hiệu, biểu hiện thể hiện phẩm chất, thái độ hoặc cảm xúc.",
+      "examples": [
+        "On the day of the funeral, businesses remained closed as a mark of respect."
+      ]
+    },
+    "evidence": {
+      "meaning": "[U] sự việc, dấu hiệu hoặc vật mà khiến bạn tin rằng điều gì đó là đúng sự thật hoặc điều gì có tồn tại: bằng chứng, chứng cứ, dấu hiệu",
+      "key_distinction": "Bằng chứng, chứng cứ giúp xác thực sự thật hoặc bằng chứng mang tính pháp lý/khoa học.",
+      "examples": [
+        "At present we have no evidence of life on other planets."
+      ]
+    }
+  }
+}

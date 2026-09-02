@@ -1,0 +1,19 @@
+{
+  "group_title": "Chăm sóc trẻ",
+  "target_words": {
+    "childcare": {
+      "meaning": "Việc chăm sóc trẻ con khi bố mẹ chúng đi làm hoặc vắng mặt.",
+      "key_distinction": "Danh từ không đếm được [U]. Nhấn mạnh đến dịch vụ hoặc công việc giữ trẻ trong thời gian cha mẹ vắng mặt.",
+      "examples": [
+        "People earning low wages will find it difficult to pay for childcare."
+      ]
+    },
+    "child-rearing": {
+      "meaning": "Việc chăm sóc con cái cho đến khi chúng đủ lớn để tự chăm sóc mình.",
+      "key_distinction": "Danh từ không đếm được [U]. Nhấn mạnh toàn bộ quá trình nuôi nấng, dạy dỗ con cái trưởng thành của cha mẹ.",
+      "examples": [
+        "It's often difficult for a woman to have a job after years of child-rearing."
+      ]
+    }
+  }
+}

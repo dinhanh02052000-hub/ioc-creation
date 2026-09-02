@@ -1,0 +1,48 @@
+{
+  "group_title": "TIẾT LỘ",
+  "target_words": {
+    "disclose": {
+      "meaning": "cung cấp cho ai đó thông tin về điều gì mà trước đây là một bí mật",
+      "key_distinction": "thường dùng trong bối cảnh chính thức, cung cấp thông tin/tài liệu mật cho ai đó",
+      "examples": [
+        "Jane was accused of disclosing confidential material to a competitor."
+      ]
+    },
+    "reveal": {
+      "meaning": "tiết lộ điều gì đó cho ai",
+      "key_distinction": "bản chất chung nhất của việc tiết lộ sự thật/thông tin bị giấu",
+      "examples": [
+        "They didn't reveal the truth to him."
+      ]
+    },
+    "divulge": {
+      "meaning": "cung cấp thông tin lẽ ra phải được giữ bí mật cho ai đó",
+      "key_distinction": "nhấn mạnh vào việc thông tin đó lẽ ra phải được giữ kín tuyệt đối (như danh tính, bí mật quốc gia/điều tra)",
+      "examples": [
+        "Police refused to divulge the identity of the suspect."
+      ]
+    },
+    "uncover": {
+      "meaning": "phát hiện ra điều gì mà trước đó là bí mật hoặc được giấu (ngoại động từ)",
+      "key_distinction": "mang ý nghĩa khám phá, tìm ra, bóc mở điều bị giấu/chôn giấu",
+      "examples": [
+        "Archaeologists have uncovered an entire Roman city."
+      ]
+    },
+    "unfold": {
+      "meaning": "lộ ra (nội động từ); dần dần tiết lộ/hé lộ điều gì đó với ai (ngoại động từ)",
+      "key_distinction": "có thể dùng làm nội động từ (sự việc tự diễn ra/lộ ra) hoặc hé lộ dần dần một câu chuyện",
+      "examples": [
+        "Dramatic events were about to unfold.",
+        "Sophia unfolded her tale to us."
+      ]
+    },
+    "spill": {
+      "meaning": "spill the beans (thành ngữ): tiết lộ/nói cho ai đó biết về điều gì mà đáng lẽ ra nên được giữ bí mật",
+      "key_distinction": "sử dụng dưới dạng thành ngữ 'spill the beans', mang tính thân mật, giao tiếp hàng ngày",
+      "examples": [
+        "He spilled the beans, and she knew all about the party in advance."
+      ]
+    }
+  }
+}

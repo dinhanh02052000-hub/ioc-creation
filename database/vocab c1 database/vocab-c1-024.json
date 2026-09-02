@@ -1,0 +1,41 @@
+{
+  "group_title": "ĐIỀU CHỈNH, SỬA ĐỔI",
+  "target_words": {
+    "modify": {
+      "meaning": "[ngoại động từ] thay đổi, sửa đổi (một kế hoạch, quan điểm, luật pháp, chính sách, hành vi,...), nhẹ, không đáng kể để nó được cải thiện và thỏa đáng hơn",
+      "key_distinction": "Thay đổi, điều chỉnh nhẹ cấu trúc/kế hoạch/luật pháp để phù hợp hoặc tốt hơn.",
+      "examples": [
+        "The law has been significantly modified since that ruling."
+      ]
+    },
+    "adjust": {
+      "meaning": "- [ngoại động từ] thay đổi cái gì đó để phù hợp với các điều kiện mới, để đạt hiệu quả hơn, tốt hơn, điều chỉnh\n- sắp xếp lại đồ áo để ngăn nắp, gọn gàng",
+      "key_distinction": "Điều chỉnh nhỏ (máy móc, hành vi, trang phục) để thích ứng hoặc chỉnh cho đúng vị trí/trạng thái mong muốn.",
+      "examples": [
+        "Adjust your language to the age of your audience."
+      ]
+    },
+    "adapt": {
+      "meaning": "- [nội động từ] thích nghi với môi trường (vật sống)\n- [nội động từ] + [ngoại động từ] thay đổi, làm cái gì đó thay đổi để phù hợp với các điều kiện (biến đổi), chức năng sử dụng khác nhau ~ modify",
+      "key_distinction": "Thích nghi với hoàn cảnh/môi trường mới hoặc sửa đổi thiết bị/tác phẩm để dùng cho mục đích khác.",
+      "examples": [
+        "Many software companies have adapted popular programs to the new operating system.",
+        "Species have adapted to climate changes throughout history."
+      ]
+    },
+    "tailor": {
+      "meaning": "[ngoại động từ] chỉnh sửa, thay đổi để phù hợp với một mục đích, đối tượng cụ thể nào đó",
+      "key_distinction": "Thiết kế hoặc điều chỉnh riêng biệt cho đúng nhu cầu/đối tượng cụ thể.",
+      "examples": [
+        "Special programs of study are tailored to/for the needs of specific groups."
+      ]
+    },
+    "correct": {
+      "meaning": "[ngoại động từ] sửa đổi, thay đổi để chính xác hơn, sửa lỗi sai, lỗi lầm, khuyết điểm...,",
+      "key_distinction": "Sửa chữa lỗi sai, khuyết điểm để trở nên chính xác hoàn toàn.",
+      "examples": [
+        "Read through your work and correct any mistakes that you find."
+      ]
+    }
+  }
+}

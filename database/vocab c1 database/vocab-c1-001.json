@@ -1,0 +1,35 @@
+{
+  "group_title": "Ám chỉ",
+  "target_words": {
+    "imply": {
+      "meaning": "ám chỉ rằng điều gì đó là đúng sự thật hoặc bạn cảm thấy/nghĩ thấy điều gì mà không cần phải nói thẳng ra (~ suggest);\nlàm cho điều gì có thể là điều đúng với sự thực hoặc có tồn tại: hàm ý, ngụ ý (~ suggest)",
+      "key_distinction": "Ngụ ý, hàm ý, gợi ý gián tiếp một ý nghĩa mà không cần phát biểu trực tiếp.",
+      "examples": [
+        "Are you implying/suggesting that I'm fat?",
+        "The fact that she was here implies a degree of interest."
+      ]
+    },
+    "infer": {
+      "meaning": "hình thành một quan điểm/đoán rằng điều gì đó là đúng sự thực dựa trên những thông tin mà bạn có sẵn: suy ra, luận ra ~ deduce /dɪ'djuːs/ (v)",
+      "key_distinction": "Suy luận, luận ra điều gì đó dựa trên thông tin hoặc bằng chứng có sẵn (đi ngược lại với imply).",
+      "examples": [
+        "I inferred from her expression that she wanted to leave."
+      ]
+    },
+    "refer": {
+      "meaning": "refer to somebody/something (phrasal verb)\nmiêu tả hoặc có liên quan đến ai/thứ gì",
+      "key_distinction": "Đề cập, ám chỉ hoặc liên quan trực tiếp đến một người hay sự vật cụ thể.",
+      "examples": [
+        "This paragraph refers to the events of last year.",
+        "These figures refer only to full-time employees."
+      ]
+    },
+    "denote": {
+      "meaning": "là một dấu hiệu của điều gì/việc gì: biểu hiện, biểu thị, chứng tỏ ~ indicate /'ɪndɪkeɪt/ (v)",
+      "key_distinction": "Biểu thị, chỉ ra hoặc làm dấu hiệu đại diện cho một ý nghĩa, triệu chứng hay điều gì đó.",
+      "examples": [
+        "A very high temperature often denotes a serious illness."
+      ]
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "group_title": "Xác nhận",
+  "target_words": {
+    "certify": {
+      "meaning": "tuyên bố một cách chính thức rằng điều gì là đúng sự thực hoặc chính xác, đặc biệt là bằng hình thức viết: chứng nhận, chứng thực",
+      "key_distinction": "Tuyên bố chính thức hoặc cấp văn bản chứng nhận tính chính xác, hợp pháp của điều gì đó.",
+      "examples": [
+        "I hereby certify that the above information is true and accurate."
+      ]
+    },
+    "verify": {
+      "meaning": "verify something / verify that ...\nchỉ ra hoặc nói rằng điều gì là đúng sự thực hoặc chính xác: xác nhận\n~ confirm /kən'fɜːm/ (v)",
+      "key_distinction": "Kiểm tra, đối chiếu để xác minh tính chính xác hoặc xác nhận tính chân thực của thông tin/sự việc.",
+      "examples": [
+        "Several witnesses verified his story."
+      ]
+    }
+  }
+}

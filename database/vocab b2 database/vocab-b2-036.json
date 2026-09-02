@@ -1,0 +1,52 @@
+{
+  "group_title": "Đầu tiên, ban đầu",
+  "target_words": {
+    "first": {
+      "meaning": "xảy ra hoặc đến trước tất cả những người/thứ khác (trong một chuỗi) về thứ tự/thời gian/lượng/chất lượng/sự quan trọng: đầu tiên; thứ nhất",
+      "key_distinction": "Chỉ vị trí, thứ tự đầu tiên trong một chuỗi sự kiện, thời gian hoặc cấp độ.",
+      "examples": [
+        "I fell in love with him the first time I saw him.",
+        "Today is the first of August."
+      ]
+    },
+    "initial": {
+      "meaning": "[chỉ đứng trước danh từ] xảy ra tại thời điểm ban đầu; đầu tiên ~ first",
+      "key_distinction": "Chỉ đứng trước danh từ. Nhấn mạnh giai đoạn, phản ứng hoặc bước đi ban đầu của một quá trình.",
+      "examples": [
+        "in the initial stages (= at the beginning) of the campaign",
+        "My initial reaction was to decline the offer."
+      ]
+    },
+    "original": {
+      "meaning": "[chỉ đứng trước danh từ] tồn tại kể từ thời điểm ban đầu của một thời kỳ/quá trình/hoạt động nào đó; là mẫu/dạng/hình thái đầu tiên của một thứ gì đó: thuộc gốc, thuộc nguồn gốc, thuộc căn nguyên, đầu tiên, ban đầu; mới và thú vị theo cái cách mà nó khác biệt với bất kỳ thứ gì đã tồn tại trước đó; có thể cung cấp những ý tưởng mới và thú vị: độc đáo, nguyên bản, sáng tạo",
+      "key_distinction": "Nhấn mạnh tính nguyên bản, bản gốc ban đầu hoặc sự sáng tạo, độc đáo chưa từng có.",
+      "examples": [
+        "Is this the original fireplace?",
+        "The gardens have recently been restored to their original glory.",
+        "the original meaning of the word",
+        "an original idea",
+        "the product of a highly original mind",
+        "The film is great - it's challenging and highly original."
+      ]
+    },
+    "opening": {
+      "meaning": "đầu tiên, mở đầu, khai mạc; bắt đầu >< closing (adj)",
+      "key_distinction": "Chỉ phần mở đầu, bắt đầu hoặc sự kiện khai mạc của một buổi lễ, cuốn sách, mùa giải.",
+      "examples": [
+        "the opening match of the season",
+        "the opening chapter of the book",
+        "the chairman's opening remarks"
+      ]
+    },
+    "introductory": {
+      "meaning": "thuộc phần giới thiệu (được viết hoặc nói) cho thứ gì sau đó: để giới thiệu (~ opening); với mục đích là phần giới thiệu/nhập môn/bước đầu làm quen cho một môn học hoặc một hoạt động cho những người mà chưa từng học hoặc thực hiện trước đó; (giá cả/lời chào hàng) chỉ được đề nghị/thực hiện trong một khoảng thời gian ngắn khi một sản phẩm mới được tung ra bán để thu hút khách hàng",
+      "key_distinction": "Mang tính chất giới thiệu, nhập môn cho người bắt đầu, hoặc mức giá ưu đãi chào hàng ban đầu.",
+      "examples": [
+        "Introductory chapters/paragraphs/remarks",
+        "Introductory courses/lectures",
+        "a special introductory price of just £10",
+        "This introductory offer is for three days only."
+      ]
+    }
+  }
+}

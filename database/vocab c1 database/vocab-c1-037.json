@@ -1,0 +1,43 @@
+{
+  "group_title": "NHỚ, GỢI LẠI",
+  "target_words": {
+    "evoke": {
+      "meaning": "[ngoại động từ] làm cho ai đó nhớ lại một cảm giác, cảm xúc, gợi lên",
+      "key_distinction": "Gợi lên những kí ức, cảm xúc hoặc suy tưởng từ quá khứ.",
+      "examples": [
+        "The music evoked memories of her youth."
+      ]
+    },
+    "reminisce": {
+      "meaning": "[nội động từ] hồi tưởng, nhớ lại",
+      "key_distinction": "Nhớ lại, trò chuyện vui vẻ hoặc hồi tưởng về những kỉ niệm đẹp trong quá khứ.",
+      "examples": [
+        "We spent a happy evening reminiscing about the past."
+      ]
+    },
+    "recall": {
+      "meaning": "[ngoại động từ] + [nội động từ] nhớ lại kí ức trong quá khứ và thường mô tả lại những gì nhớ được",
+      "key_distinction": "Gợi lại, nhớ lại các thông tin/sự kiện cụ thể trong quá khứ và thuật lại.",
+      "examples": [
+        "I cannot recall a time when the country faced such serious problems.",
+        "Can you recall exactly what happened?"
+      ]
+    },
+    "remind": {
+      "meaning": "[ngoại động từ] nhắc nhớ ai, làm cho ai đó nhớ lại điều gì họ đã quên hoặc có thể đã quên",
+      "key_distinction": "Nhắc nhở ai đó làm việc gì hoặc làm ai nhớ đến một ai đó/điều gì.",
+      "examples": [
+        "Remind me to phone Alan before I go out.",
+        "Can you remind us about/of your plans for the building?"
+      ]
+    },
+    "remember": {
+      "meaning": "[ngoại động từ] nhớ, nhớ lại ai, điều gì (trong quá khứ), ghi nhớ điều gì đó (những điều quan trọng)",
+      "key_distinction": "Nhớ, lưu giữ thông tin trong trí nhớ hoặc nhớ phải thực hiện hành động nào đó.",
+      "examples": [
+        "This is Carla. Do you remember her?",
+        "Remember to call me when you arrive!"
+      ]
+    }
+  }
+}

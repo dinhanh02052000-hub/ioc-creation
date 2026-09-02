@@ -1,0 +1,47 @@
+{
+  "group_title": "Cười",
+  "target_words": {
+    "laugh": {
+      "meaning": "Cười thành tiếng (thể hiện bạn nghĩ điều gì rất buồn cười hoặc bạn đang vui/hạnh phúc). Cấu trúc: laugh at something, laugh about something, burst out laughing.",
+      "key_distinction": "Cười phát ra âm thanh rõ ràng khi thấy điều gì vui/buồn cười.",
+      "examples": [
+        "They laughed at her jokes."
+      ]
+    },
+    "smile": {
+      "meaning": "Mỉm cười để thể hiện sự thân thiện hoặc bởi vì bạn vui hoặc thấy điều gì buồn cười. Cấu trúc: smile at somebody/something, smile with/in something.",
+      "key_distinction": "Cười không phát ra tiếng, chỉ biểu lộ qua nét mặt/môi để thể hiện sự thân thiện hoặc niềm vui.",
+      "examples": [
+        "\"I'm delighted to meet you,\" he said, smiling at the girl."
+      ]
+    },
+    "grin": {
+      "meaning": "Cười lớn (nhe răng ra cười, cười toe toét). Cấu trúc: grin at somebody, grin something.",
+      "key_distinction": "Cười rộng miệng nhe răng, thể hiện niềm vui hoặc sự thích thú lớn.",
+      "examples": [
+        "He just stood there, grinning like an idiot."
+      ]
+    },
+    "giggle": {
+      "meaning": "Cười (nhanh chóng và cố gắng giữ im lặng) một cách ngớ ngẩn bởi vì bạn đang bối rối hoặc bồn chồn hoặc bạn nghĩ điều gì rất buồn cười: cười khúc khích. Cấu trúc: giggle (at/about somebody/something).",
+      "key_distinction": "Cười khúc khích, ngắc ngứ, liên tục do bối rối hoặc cố nén cười.",
+      "examples": [
+        "The girls were giggling at the back of the classroom."
+      ]
+    },
+    "chuckle": {
+      "meaning": "Cười lặng lẽ, cười một mình. Cấu trúc: chuckle (at/about something).",
+      "key_distinction": "Cười thầm, cười nhỏ nhẹ trong miệng khi nghĩ về điều gì đó thú vị.",
+      "examples": [
+        "She chuckled at the memory."
+      ]
+    },
+    "smirk": {
+      "meaning": "Cười một cách ngớ ngẩn hoặc không dễ chịu để thể hiện rằng bạn hài lòng với chính bản thân/biết điều gì mà những người khác không biết/nghĩ mình hơn người khác/hài lòng vì người khác không may mắn/...: cười nhếch mép, cười tự mãn.",
+      "key_distinction": "Nụ cười nhếch mép mang thái độ tự mãn, đắc thắng hoặc coi thường người khác.",
+      "examples": [
+        "I don't like the way he winks and smirks at me whenever he sees me."
+      ]
+    }
+  }
+}

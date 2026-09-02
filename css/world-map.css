@@ -1,0 +1,482 @@
+/* ==== World Map (world1.html / world2.html) ====
+   Dùng chung biến màu từ style.css (đã link trước file này). Mỗi theme
+   (forest/ice) override --world-map-accent để đồng bộ màu node/thanh tiến
+   trình/road với đúng chủ đề của world đó. */
+
+.world-map-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  color: var(--text);
+}
+
+.world-map--forest {
+  --world-map-accent: var(--accent-green);
+  --world-map-accent-soft-bg: var(--accent-green-soft-bg);
+  --world-map-accent-soft-border: var(--accent-green-soft-border);
+}
+
+.world-map--ice {
+  --world-map-accent: var(--accent);
+  --world-map-accent-soft-bg: var(--accent-soft-bg);
+  --world-map-accent-soft-border: var(--accent-soft-border);
+}
+
+.world-map-bg {
+  position: fixed;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+/* Canvas particle (lá rơi world1 / tuyết rơi world2) - phủ toàn viewport,
+   nổi trên bản đồ + node nhưng dưới header và mọi overlay UI (chat AI z-index
+   100...), không chặn click nhờ pointer-events: none. */
+#world1-particles-canvas,
+#world2-particles-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.world-map-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+}
+
+.world-map--forest .world-map-overlay {
+  background: linear-gradient(180deg, rgba(4, 9, 6, 0.72) 0%, rgba(4, 9, 6, 0.88) 100%);
+}
+
+.world-map--ice .world-map-overlay {
+  background: linear-gradient(180deg, rgba(4, 9, 18, 0.68) 0%, rgba(4, 9, 18, 0.85) 100%);
+}
+
+.world-map-header {
+  position: relative;
+  z-index: 10;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 24px;
+  background: rgba(13, 17, 23, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+
+.world-map-back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 0.82rem;
+  padding: 7px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  transition: color 0.15s ease, background-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.world-map-back svg {
+  width: 14px;
+  height: 14px;
+}
+
+.world-map-back:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.world-map-heading {
+  text-align: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.world-map-heading h1 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.world-map-heading p {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--world-map-accent);
+  margin-top: 2px;
+}
+
+.world-map-progress-pill {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--world-map-accent-soft-border);
+  background: var(--world-map-accent-soft-bg);
+  color: var(--world-map-accent);
+  white-space: nowrap;
+}
+
+.world-map-scroll {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.world-map-track {
+  position: relative;
+  flex: none;
+}
+
+.world-map-road {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+/* Đường đi phân 4 lớp chồng nhau (glow mờ -> nền -> highlight -> vệt dấu chân
+   đứt nét) để trông có chất liệu thật thay vì 1 nét kẻ đơn điệu. Màu cụ thể
+   theo từng theme override bên dưới. */
+.world-map-road-glow {
+  fill: none;
+  stroke: var(--world-map-accent);
+  stroke-width: 34;
+  stroke-linecap: round;
+  opacity: 0.28;
+}
+
+.world-map-road-base {
+  fill: none;
+  stroke-width: 26;
+  stroke-linecap: round;
+}
+
+.world-map-road-highlight {
+  fill: none;
+  stroke-width: 14;
+  stroke-linecap: round;
+  opacity: 0.55;
+}
+
+.world-map-road-dash {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-dasharray: 2 15;
+  stroke-linecap: round;
+}
+
+.world-map--forest .world-map-road-base { stroke: #5a3d24; }
+.world-map--forest .world-map-road-highlight { stroke: #8a6242; }
+.world-map--forest .world-map-road-dash { stroke: rgba(255, 255, 255, 0.32); }
+
+.world-map--ice .world-map-road-base { stroke: #d3e6f2; }
+.world-map--ice .world-map-road-highlight { stroke: #f4fbff; }
+.world-map--ice .world-map-road-dash { stroke: rgba(96, 165, 250, 0.55); }
+
+.world-map-decoration {
+  position: absolute;
+  pointer-events: none;
+  z-index: 3;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.45));
+}
+
+.world-map-decoration svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.world-map-decoration img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+.world-map-node {
+  position: absolute;
+  z-index: 4;
+  width: 66px;
+  height: 66px;
+  margin-left: -33px;
+  margin-top: -33px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.15rem;
+  font-family: inherit;
+  border: 2px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.world-map-node svg {
+  width: 24px;
+  height: 24px;
+}
+
+.world-map-node--completed {
+  background: var(--world-map-accent);
+  border-color: var(--world-map-accent);
+  color: #fff;
+}
+
+.world-map-node--completed:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 0 6px var(--world-map-accent-soft-bg);
+}
+
+.world-map-node--current {
+  background: var(--bg-card);
+  border-color: var(--world-map-accent);
+  color: var(--world-map-accent);
+  box-shadow: 0 0 0 8px var(--world-map-accent-soft-bg);
+  animation: world-map-pulse 1.8s ease-in-out infinite;
+}
+
+.world-map-node--current:hover {
+  transform: scale(1.08);
+}
+
+.world-map-node--locked {
+  background: rgba(22, 27, 34, 0.75);
+  border-color: var(--border);
+  color: var(--text-faint);
+  cursor: not-allowed;
+}
+
+@keyframes world-map-pulse {
+  0%, 100% { box-shadow: 0 0 0 8px var(--world-map-accent-soft-bg); }
+  50% { box-shadow: 0 0 0 15px transparent; }
+}
+
+/* Badge kết quả (Overall + trạng thái) dưới level node - 1 khối duy nhất
+   xếp dọc bằng flex, đảm bảo có khoảng cách rõ ràng giữa điểm số và nhãn
+   trạng thái, không còn 2 phần tử định vị tuyệt đối chồng lên nhau. */
+.world-map-node-badge {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.world-map-node-badge-score {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--text);
+  background: rgba(13, 17, 23, 0.75);
+  padding: 2px 8px;
+  border-radius: 5px;
+}
+
+.world-map-node-badge-status {
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.world-map-node-badge-status--red {
+  background: rgba(239, 68, 68, 0.18);
+  border: 1px solid rgba(239, 68, 68, 0.45);
+  color: #f87171;
+}
+
+.world-map-node-badge-status--green {
+  background: rgba(16, 185, 129, 0.18);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  color: #34d399;
+}
+
+/* ==== Ô "Vị trí hiện tại" (góc trên-phải) ==== */
+
+.world-map-position-badge {
+  position: fixed;
+  right: 20px;
+  top: 84px;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--world-map-accent-soft-border);
+  background: rgba(13, 17, 23, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text);
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.world-map-position-badge svg {
+  width: 16px;
+  height: 16px;
+  color: var(--world-map-accent);
+  flex: none;
+}
+
+/* ==== Nút "Từ vựng đã học" (góc dưới-trái) + modal danh sách ==== */
+
+.world-map-vocab-btn {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--world-map-accent-soft-border);
+  background: rgba(13, 17, 23, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.world-map-vocab-btn svg {
+  width: 18px;
+  height: 18px;
+  color: var(--world-map-accent);
+  flex: none;
+}
+
+.world-map-vocab-btn:hover {
+  transform: translateY(-2px);
+  background: rgba(13, 17, 23, 0.9);
+}
+
+.vocab-list-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(4, 6, 10, 0.82);
+}
+
+.vocab-list-panel {
+  width: min(640px, 100%);
+  max-height: min(720px, 90vh);
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.vocab-list-header {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.vocab-list-title {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.vocab-list-close {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 1.1rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px;
+}
+
+.vocab-list-close:hover {
+  color: var(--text);
+}
+
+.vocab-list-body {
+  overflow-y: auto;
+  padding: 8px 12px;
+}
+
+.vocab-list-item {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.vocab-list-item:last-child {
+  border-bottom: none;
+}
+
+.vocab-list-item-level {
+  flex: none;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--world-map-accent);
+  border: 1px solid var(--world-map-accent-soft-border);
+  background: var(--world-map-accent-soft-bg);
+  border-radius: 999px;
+  padding: 2px 9px;
+  white-space: nowrap;
+}
+
+.vocab-list-item-text {
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+
+.vocab-list-item-text strong {
+  color: var(--text);
+}
+
+.vocab-list-empty {
+  padding: 32px 16px;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.86rem;
+}

@@ -1,0 +1,36 @@
+{
+  "group_title": "PHỚT LỜ",
+  "target_words": {
+    "ignore": {
+      "meaning": "không để ý đến điều gì; phớt lờ, lờ đi (= disregard); giả vờ là bạn không nhìn thấy ai đó hoặc người đó không có mặt ở đó; lờ ai đó đi",
+      "key_distinction": "Dùng khi chủ động không quan tâm, không để ý đến một sự việc, tình huống hoặc cố tình phớt lờ một người.",
+      "examples": [
+        "We can't ignore/disregard the fact that there is a huge problem here.",
+        "She ignored him and carried on with her work."
+      ]
+    },
+    "neglect": {
+      "meaning": "không chăm sóc ai đó/điều gì đó; bỏ bê, bỏ mặc; không đủ tập trung đến điều gì đó; xao lãng, không chú ý",
+      "key_distinction": "Dùng khi bỏ bê việc chăm sóc sức khỏe, bản thân, trách nhiệm, học tập hoặc không chú ý đúng mức.",
+      "examples": [
+        "Don't neglect your health.",
+        "James has neglected his studies."
+      ]
+    },
+    "tune out/tune sb/sth <=> out": {
+      "meaning": "lờ ai đó đi hoặc không chú ý đến điều gì đó hoặc những thứ đang xảy ra xung quanh bạn",
+      "key_distinction": "Dùng cụm động từ chỉ hành động ngưng chú ý, phớt lờ âm thanh/lời nói hoặc mọi thứ xung quanh (như không thèm nghe ai nói nữa).",
+      "examples": [
+        "When she started talking about her job, he just tuned out"
+      ]
+    },
+    "overlook": {
+      "meaning": "không nhìn thấy hoặc không để ý thấy điều gì; thấy được là điều gì sai hoặc xấu nhưng quyết định lờ nó đi; bỏ qua, tha thứ, coi nhẹ",
+      "key_distinction": "Dùng khi sơ ý bỏ sót/không nhìn thấy một chi tiết, hoặc chủ động bỏ qua/châm chước cho lỗi lầm của ai.",
+      "examples": [
+        "He seems to have overlooked one important fact.",
+        "I'm prepared to overlook his behaviour this time."
+      ]
+    }
+  }
+}

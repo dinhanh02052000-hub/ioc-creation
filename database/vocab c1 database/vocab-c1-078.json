@@ -1,0 +1,29 @@
+{
+  "group_title": "Ô NHIỄM",
+  "target_words": {
+    "pollution": {
+      "meaning": "quá trình làm cho không khí, nước, đất,... bị nhiễm bẩn (nguy hiểm cho con người/động vật/thực vật và gây hại cho môi trường); trạng thái bị nhiễm bẩn; những chất làm cho môi trường bị nhiễm bẩn",
+      "key_distinction": "danh từ chỉ chung tình trạng ô nhiễm môi trường",
+      "examples": [
+        "The pollution was so bad that most of the fish died.",
+        "beaches covered with pollution"
+      ]
+    },
+    "contamination": {
+      "meaning": "quá trình/thực tế của việc làm bẩn một chất/nơi hoặc không còn tinh khiết/nguyên chất nữa bằng cách thêm một chất nguy hiểm hoặc mang mầm bệnh; hành động chi phối/tác động lên suy nghĩ/quan điểm/thái độ của ai theo chiều hướng xấu",
+      "key_distinction": "mang nghĩa rộng hơn pollution (pollution là một dạng contamination); thường dùng cho việc làm bẩn nguồn nước, thực phẩm, bằng chứng hoặc sự ô uế về văn hóa/tư tưởng",
+      "examples": [
+        "Swimming in the lake is banned until the contamination is identified and neutralized.",
+        "The police immediately sealed off the crime scene to prevent contamination of evidence.",
+        "They feared cultural contamination from the influx of tourists."
+      ]
+    },
+    "carbon footprint": {
+      "meaning": "đơn vị đo lường tổng lượng khí CO2 thải ra từ các hoạt động của một con người/công ty/nhà máy/...",
+      "key_distinction": "chỉ lượng khí thải carbon cá nhân hoặc tổ chức tạo ra",
+      "examples": [
+        "Flying is the biggest contribution to my carbon footprint."
+      ]
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "group_title": "CAN THIỆP, XEN VÀO",
+  "target_words": {
+    "intervene": {
+      "meaning": "[nội động từ] can thiệp vào một tình huống khó khăn để làm cải thiện, giúp đỡ, ngăn cản nó trở nên tệ hơn",
+      "key_distinction": "Can thiệp nhằm mục đích tích cực: giải quyết mâu thuẫn, giúp đỡ hoặc ngăn tình hình xấu đi.",
+      "examples": [
+        "The police had to intervene when protesters blocked traffic.",
+        "The situation calmed down when police intervened."
+      ]
+    },
+    "interfere": {
+      "meaning": "[nội động từ] xen vào, can thiệp vào một tình huống mà bạn thật sự không nên liên quan, làm cho tình huống đó trở nên tệ hơn, và thường làm người khác cảm thấy bực mình",
+      "key_distinction": "Xen vào chuyện không liên quan tới mình (xía vào), gây phiền hà hoặc làm tình hình tệ hơn.",
+      "examples": [
+        "I wish my mother would stop interfering and let me make my own decisions.",
+        "If you try and interfere in my life, I'll leave."
+      ]
+    },
+    "interrupt": {
+      "meaning": "[nội động từ] + [ngoại động từ] xen vào, làm gián đoạn khi ai đó đang nói gì hoặc làm gì",
+      "key_distinction": "Làm gián đoạn, ngắt lời ai đó khi họ đang nói chuyện hoặc đang tập trung làm việc.",
+      "examples": [
+        "Sorry to interrupt, but there's someone to see you.",
+        "They were interrupted by a knock at the door."
+      ]
+    },
+    "intercede": {
+      "meaning": "[nội động từ] can thiệp giùm, can ngăn, nói chuyện với ai đó để thuyết phục họ đối xử tốt với người khác hoặc giúp giải quyết một cuộc tranh cãi",
+      "key_distinction": "Đứng ra can thiệp, xin giùm hoặc đứng trung gian hòa giải cho ai đó.",
+      "examples": [
+        "They asked my father to intercede with the king on their behalf.",
+        "Both times his employer interceded and got him freed."
+      ]
+    }
+  }
+}

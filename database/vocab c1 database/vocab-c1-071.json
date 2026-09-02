@@ -1,0 +1,37 @@
+{
+  "group_title": "NGƯỜI QUẢN LÝ, GIÁM SÁT",
+  "target_words": {
+    "controller": {
+      "meaning": "- người chỉ đạo, điều khiển điều gì đó, đặc biệt là một tổ chức lớn hoặc một bộ phận nào đó trong tổ chức, kiểm soát viên / - người kiểm soát, phụ trách các tài khoản tài chính của một công ty kinh doanh, chính phủ",
+      "key_distinction": "Người kiểm soát/điều hành 1 mảng cụ thể (VD tài chính, chương trình), thiên về quyền kiểm soát hơn quản lý toàn diện.",
+      "examples": [
+        "He is the new program controller for BBC2.",
+        "He was the controller of finances."
+      ]
+    },
+    "manager": {
+      "meaning": "- người quản lý, có trách nhiệm điều hành một doanh nghiệp, một cửa hàng, hoặc một bộ phận trong đó / - quản lý (một người giải quyết các công việc cho một diễn viên, một nhạc sĩ, v.v.) / - người quản lý (đội bóng)",
+      "key_distinction": "Từ chung nhất, chỉ người điều hành doanh nghiệp/bộ phận/đội nhóm.",
+      "examples": [
+        "a bank/hotel manager",
+        "the sales/marketing/human resources manager",
+        "I'm a senior manager in a multinational company."
+      ]
+    },
+    "supervisor": {
+      "meaning": "- người giám sát một hoạt động, một nơi, hoặc một nhóm người (học sinh, công nhân,...) để đảm bảo đúng việc, đúng nội quy / - giáo viên (ở trường đại học) có trách nhiệm giám sát một học sinh nào đó",
+      "key_distinction": "Người giám sát trực tiếp hoạt động/nhân sự để đảm bảo làm đúng, cấp bậc thường thấp hơn manager.",
+      "examples": [
+        "All work is done under the guidance of a supervisor."
+      ]
+    },
+    "regulator": {
+      "meaning": "cơ quan quản lý (một người hoặc tổ chức được chính phủ chỉ định để điều chỉnh một lĩnh vực hoạt động như ngân hàng hoặc công nghiệp,...)",
+      "key_distinction": "Cơ quan/người được chính phủ chỉ định để quản lý cả 1 ngành (VD ngân hàng), không phải quản lý nội bộ 1 công ty.",
+      "examples": [
+        "the gas/water/telecommunications regulator",
+        "Cost savings are essential if we have to live with the 15- 20% price cut proposed by the industry regulator."
+      ]
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "group_title": "Tiêu đề, chủ đề",
+  "target_words": {
+    "title": {
+      "meaning": "tiêu đề, tên của một cuốn sách, bài thơ, bức tranh, bản nhạc, bài báo v.v.",
+      "key_distinction": "Tên gọi chính thức của tác phẩm nghệ thuật, sách, bài báo hoặc album.",
+      "examples": [
+        "His poems were published under the title of 'Love and Reason'.",
+        "a book/album title",
+        "Some of his song titles and lyrics have also attracted criticism."
+      ]
+    },
+    "topic": {
+      "meaning": "chủ đề, vấn đề mà chúng ta thảo luận, viết hoặc nghiên cứu về nó",
+      "key_distinction": "Đề tài cụ thể được đưa ra để bàn luận, nói chuyện, viết hoặc thảo luận.",
+      "examples": [
+        "The main topic of conversation was Tom's new girlfriend.",
+        "a topic of discussion/interest",
+        "to cover/discuss a topic",
+        "hot topics",
+        "In the next chapter the writer focuses on the topic of adoption."
+      ]
+    },
+    "subject": {
+      "meaning": "chủ đề (có thể là người hoặc vật) mà đang được thảo luận, xem xét, nghiên cứu, miêu tả, hoặc giải quyết",
+      "key_distinction": "Đối tượng (người, vật, sự việc) trọng tâm đang được xem xét, phân tích, nghiên cứu hoặc miêu tả.",
+      "examples": [
+        "Walker's work has been the subject of much debate.",
+        "on the subject of something",
+        "I wish you'd change the subject (= talk about something else)."
+      ]
+    },
+    "theme": {
+      "meaning": "chủ đề hoặc ý tưởng chính trong một bài nói, bài viết, sách, phim hoặc tác phẩm nghệ thuật..., (thông điệp)",
+      "key_distinction": "Chủ đề xuyên suốt, thông điệp cốt lõi hoặc ý tưởng chủ đạo của tác phẩm nghệ thuật/phim/sách.",
+      "examples": [
+        "the central/main/key/major theme",
+        "Love and honour are the main themes of the book.",
+        "a recurrent/recurring theme (=one that occurs several times)"
+      ]
+    }
+  }
+}

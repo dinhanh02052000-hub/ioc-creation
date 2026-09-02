@@ -1,0 +1,37 @@
+{
+  "group_title": "Không",
+  "target_words": {
+    "no": {
+      "meaning": "hầu hết được dùng như một tính từ, bổ nghĩa cho danh từ đi sau nó. Ngoài ra còn trả lời câu hỏi \"yes - no\", hoặc đưa ra một lời phát biểu, phản hồi mang tính phủ định",
+      "key_distinction": "Dùng trực tiếp trước danh từ (đóng vai trò như determiner) hoặc dùng để trả lời phủ định cho câu hỏi.",
+      "examples": [
+        "We didn't want to dismiss him, but we had no option.",
+        "Is she there? - No, she isn't.",
+        "'Another drink?' 'No, thanks.'"
+      ]
+    },
+    "not": {
+      "meaning": "thường đi sau động từ \"to be\" hoặc trợ động từ trong câu phủ định",
+      "key_distinction": "Trạng từ phủ định đứng sau động từ to be, trợ động từ hoặc bổ nghĩa cho tính từ/trạng từ.",
+      "examples": [
+        "Photography is not permitted inside the museum.",
+        "It did not cost anything to alter the booking."
+      ]
+    },
+    "none": {
+      "meaning": "thường được dùng như một đại từ, dùng được với danh từ đếm được hoặc không đếm được, động từ đi sau chia theo số ít hay số nhiều đều chấp nhận được",
+      "key_distinction": "Đại từ chỉ \"không ai/không cái gì\", dùng độc lập hoặc đi với \"of + danh từ\".",
+      "examples": [
+        "None of these pens works",
+        "We saw several houses but none we really liked."
+      ]
+    },
+    "nope": {
+      "meaning": "dùng trong văn nói khi ai đó hỏi bạn",
+      "key_distinction": "Từ cảm thán dùng thay cho \"no\" trong văn nói thân mật, không trang trọng.",
+      "examples": [
+        "'Have you seen my pen?' 'Nope.'"
+      ]
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "group_title": "Trông giống nhau",
+  "target_words": {
+    "look like": {
+      "meaning": "[không dùng ở dạng bị động; không dùng trong các thì tiếp diễn] có vẻ bề ngoài rất giống với ai đó/cái gì đó ~ resemble",
+      "key_distinction": "Chỉ sự tương đồng về diện mạo/bề ngoài giữa hai người hoặc vật.",
+      "examples": [
+        "He very much resembles/looks like a friend of mine.",
+        "That powdered sugar looks like/resembles snow."
+      ]
+    },
+    "resemble": {
+      "meaning": "[không dùng ở dạng bị động; không dùng trong các thì tiếp diễn] trông giống ai đó/thứ gì đó ~ look like; giống ai/thứ gì đó",
+      "key_distinction": "Trang trọng hơn 'look like', dùng chỉ sự giống nhau về ngoại hình hoặc tính chất/đặc điểm.",
+      "examples": [
+        "He very much resembles/looks like a friend of mine.",
+        "That powdered sugar looks like/resembles snow.",
+        "a fight for something resembling justice"
+      ]
+    },
+    "take after somebody": {
+      "meaning": "[không dùng ở dạng bị động; không dùng trong các thì tiếp diễn] giống với một thành viên lớn tuổi hơn trong gia đình (đặc biệt là bố hoặc mẹ) về vẻ bề ngoài hoặc tính cách",
+      "key_distinction": "Giống người lớn tuổi hơn trong gia đình (bố, mẹ, ông, bà) về ngoại hình hoặc tính cách do di truyền.",
+      "examples": [
+        "Jenny really takes after her mother."
+      ]
+    }
+  }
+}

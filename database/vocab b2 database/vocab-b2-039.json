@@ -1,0 +1,45 @@
+{
+  "group_title": "Đúng, chính xác",
+  "target_words": {
+    "correct": {
+      "meaning": "được coi là đúng với thực tế, sự thật hoặc không có sai sót nào cả",
+      "key_distinction": "Dùng phổ biến để chỉ tính đúng đắn, không mắc lỗi hay sai sót (đối lập với wrong/incorrect).",
+      "examples": [
+        "Only one of the answers is correct.",
+        "Check that all the details are correct."
+      ]
+    },
+    "precise": {
+      "meaning": "rõ ràng và chính xác (chi tiết, hướng dẫn, đo lường, định nghĩa...,)",
+      "key_distinction": "Nhấn mạnh sự rõ ràng, tỉ mỉ, có độ chính xác cao trong đo lường, con số, định nghĩa hoặc thời gian.",
+      "examples": [
+        "Can you give a more precise definition of the word?",
+        "I can be reasonably precise about the time of the incident."
+      ]
+    },
+    "true": {
+      "meaning": "đúng sự thật, liên quan đến thực tế, sự kiện hơn là những thứ được nghĩ ra hoặc phỏng đoán",
+      "key_distinction": "Chỉ sự thật khách quan dựa trên thực tế (đối lập với false/untrue).",
+      "examples": [
+        "Are the following statements true or false?",
+        "Is it true (that) she's leaving?"
+      ]
+    },
+    "exact": {
+      "meaning": "được làm, hoàn thành, mô tả một cách rất kỹ lưỡng, với tất cả các chi tiết đều chuẩn xác",
+      "key_distinction": "Nhấn mạnh sự chuẩn xác hoàn toàn, khớp đến từng chi tiết nhỏ nhất (như bản sao, con số tuyệt đối).",
+      "examples": [
+        "The model is exact in every detail.",
+        "It is an exact copy of the original document."
+      ]
+    },
+    "accurate": {
+      "meaning": "đúng đến từng chi tiết, chính xác và không có bất kỳ sai sót nào",
+      "key_distinction": "Nhấn mạnh sự chính xác thu được từ việc đo đạc, tính toán, dự đoán hoặc cung cấp dữ liệu cẩn thận.",
+      "examples": [
+        "We'll need accurate costings before we can agree to fund the scheme.",
+        "His predictions proved accurate."
+      ]
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "group_title": "GỢI Ý",
+  "target_words": {
+    "suggestion": {
+      "meaning": "[C] một ý tưởng hoặc kế hoạch mà bạn đề cập đến để cho ai đó cân nhắc: sự đề xuất, gợi ý\n[U, C, usually singular] một điều (một dấu hiệu/khả năng/... không rõ ràng hoặc mơ hồ) chỉ ra sự tồn tại của một việc gì đó (thường là việc gì xấu)",
+      "key_distinction": "Lời đề xuất, gợi ý để người khác xem xét hoặc ý niệm/dấu hiệu mơ hồ về một sự việc.",
+      "examples": [
+        "I'd like to hear your suggestions for ways of raising money.",
+        "There was no suggestion that he was doing anything illegal."
+      ]
+    },
+    "hint": {
+      "meaning": "điều gì mà bạn nói hoặc làm một cách gián tiếp để cho người khác thấy điều bạn đang nghĩ\n* take a/the hint: hiểu điều mà ai đó muốn bạn làm cho dù họ nói với bạn về điều đó một cách gián tiếp\ndấu hiệu cho điều gì sẽ xảy ra trong tương lai ~ sign",
+      "key_distinction": "Lời nói/hành động bóng gió, gợi ý gián tiếp hoặc manh mối, dấu hiệu báo trước.",
+      "examples": [
+        "He gave a broad hint (= one that was obvious) that he was thinking of retiring.",
+        "Can't you take a hint and leave me alone?",
+        "The opening scene gives us a hint of things to come."
+      ]
+    },
+    "indication": {
+      "meaning": "[C, U] một dấu hiệu/bình luận/sự kiện/... chỉ ra rằng một điều gì đó đang xảy ra hoặc điều ai đó đang nghĩ/cảm thấy hoặc điều gì là đúng: sự biểu lộ, sự biểu thị, dấu hiệu",
+      "key_distinction": "Dấu hiệu rõ ràng chỉ ra một thực trạng, ý định hoặc suy nghĩ cụ thể.",
+      "examples": [
+        "There are clear indications that the economy is improving."
+      ]
+    },
+    "implication": {
+      "meaning": "[C, U] điều gì được gợi ý hoặc gián tiếp thể hiện (điều gì được ẩn ý, không nói ra/thể hiện trực tiếp): ẩn ý",
+      "key_distinction": "Hàm ý, ẩn ý ngầm hiểu đằng sau một lời nói hay hành động mà không nêu ra trực tiếp.",
+      "examples": [
+        "He criticized the Director and, by implication, the whole of the organization."
+      ]
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "group_title": "LIẾC NHÌN",
+  "target_words": {
+    "glare": {
+      "meaning": "nhìn trừng trừng một cách giận dữ",
+      "key_distinction": "Nhìn chằm chằm đầy đe dọa, thể hiện sự tức giận hay bực bội.",
+      "examples": [
+        "She glared angrily at everyone and stormed out of the room."
+      ]
+    },
+    "glance": {
+      "meaning": "lướt nhìn, nhìn nhanh qua",
+      "key_distinction": "Chủ động nhìn lướt qua nhanh trong khoảnh khắc ngắn.",
+      "examples": [
+        "He glanced towards the kitchen."
+      ]
+    },
+    "gaze": {
+      "meaning": "nhìn chằm chằm vào ai đó hoặc cái gì đó một thời gian dài bởi bạn ngạc nhiên, ngưỡng mộ, yêu thích hoặc suy tư về điều gì khác",
+      "key_distinction": "Nhìn đăm đắm, chăm chú lâu vì ngưỡng mộ, yêu thương hoặc chìm đắm trong suy nghĩ.",
+      "examples": [
+        "Many people gazed at her beautiful jewels."
+      ]
+    },
+    "stare": {
+      "meaning": "nhìn chòng chọc, nhìn chằm chằm vào một thời gian dài, mắt mở to vì ngạc nhiên, hoảng sợ, hoặc đang suy nghĩ ~ gaze",
+      "key_distinction": "Nhìn chòng chọc, mở to mắt vì tò mò, bất ngờ hoặc bất lịch sự.",
+      "examples": [
+        "Don't stare at people like that, it's rude."
+      ]
+    },
+    "glimpse": {
+      "meaning": "nhìn thoáng qua, thoáng thấy, nhìn thấy ai đó / cái gì đó trong giây lát, nhưng không rõ ràng lắm",
+      "key_distinction": "Vô tình thấy thoáng qua trong khoảnh khắc, hình ảnh chưa rõ ràng hoàn toàn.",
+      "examples": [
+        "He'd glimpsed her through the window as he passed."
+      ]
+    }
+  }
+}

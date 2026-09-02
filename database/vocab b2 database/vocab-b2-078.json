@@ -1,0 +1,47 @@
+{
+  "group_title": "Tham gia",
+  "target_words": {
+    "participate": {
+      "meaning": "[nội động từ] tham gia vào, có góp phần vào một hoạt động (mang tính trang trọng) thường với mục đích đảm nhận một vai trò nào đó trong hoạt động mình tham gia, mang tính chủ động.",
+      "key_distinction": "Tham gia mang tính chủ động, giữ một vai trò hoặc góp phần vào hoạt động (mang sắc thái trang trọng).",
+      "examples": [
+        "We encourage students to participate fully in the running of the college.",
+        "to participate in a study/programme",
+        "to participate in an activity/event"
+      ]
+    },
+    "take part in": {
+      "meaning": "tham gia vào, có liên quan đến một hoạt động nào đó (= participate)",
+      "key_distinction": "Cùng nghĩa với participate nhưng mang tính thông dụng hơn trong giao tiếp.",
+      "examples": [
+        "to take part in a discussion/ demonstration/ fight/ celebration",
+        "Most of the board members took part in the discussions."
+      ]
+    },
+    "join": {
+      "meaning": "- [ngoại động từ] + [nội động từ] gia nhập (trở thành thành viên của một tổ chức, câu lạc bộ, công ty...)\n- join in sth/doing sth = join in (with sb/sth) [cụm động từ] tham gia vào một hoạt động nào đó (đang xảy ra) với những người khác",
+      "key_distinction": "Gia nhập để trở thành một thành viên của tổ chức/nhóm, hoặc hòa nhập cùng tham gia hoạt động đang diễn ra.",
+      "examples": [
+        "to join a group/club/team/party",
+        "New members can join online.",
+        "Everyone joined in with the singing."
+      ]
+    },
+    "involve": {
+      "meaning": "[ngoại động từ] bao gồm một người nào đó vào một cái gì hoặc để khiến họ tham gia hoặc cảm thấy là một phần của nó",
+      "key_distinction": "Lôi kéo, thu hút hoặc đưa ai đó vào tham gia một hoạt động/lĩnh vực.",
+      "examples": [
+        "We want to involve as many people as possible in the celebrations.",
+        "She's been involved with animal rights for many years."
+      ]
+    },
+    "attend": {
+      "meaning": "[ngoại động từ] + [nội động từ] (khá trang trọng) tham dự, đề cập đến việc tham gia một sự kiện chính thức. Chẳng hạn như cuộc họp, hội nghị...,",
+      "key_distinction": "Có mặt, tham dự các sự kiện chính thức, lễ nghi, hội thảo, lớp học hoặc cuộc họp.",
+      "examples": [
+        "to attend a wedding/ funeral/ service/ ceremony/ meeting",
+        "5,000 people from around the world were invited to attend the conference."
+      ]
+    }
+  }
+}

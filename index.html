@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Illusion of Competence</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/chatbot.css">
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- Core: khung ứng dụng, dữ liệu tĩnh, điều hướng -->
+  <script src="js/core/App.js"></script>
+  <script src="js/core/data.js"></script>
+
+  <!-- Features: các khối chức năng độc lập, dùng lại được ở nhiều trang -->
+  <script src="js/features/streak.js"></script>
+  <script src="js/features/course-progress.js"></script>
+
+  <!-- Pages: mỗi file render một trang trong #main-content -->
+  <script src="js/pages/home.js"></script>
+  <script src="js/pages/course.js"></script>
+  <script src="js/pages/analysis.js"></script>
+
+  <!-- main.js phải load sau cùng trong nhóm logic vì nó gọi các hàm render ở trên -->
+  <script src="js/core/main.js"></script>
+
+  <script src="js/features/particles.js"></script>
+  <script src="js/features/gesture.js"></script>
+</body>
+</html>

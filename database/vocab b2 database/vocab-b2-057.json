@@ -1,0 +1,32 @@
+{
+  "group_title": "Lễ, nghi lễ",
+  "target_words": {
+    "celebration": {
+      "meaning": "một sự kiện xã hội đặc biệt, chẳng hạn như một bữa tiệc để ăn mừng, khi bạn tổ chức, kỷ niệm một điều gì đó; hành động kỷ niệm, tổ chức một cái gì đó",
+      "key_distinction": "Sự kiện vui vẻ, tiệc tùng ăn mừng một thành tựu hoặc dịp đặc biệt mang không khí hoan hỉ.",
+      "examples": [
+        "The winners will be honoured at a celebration in Boston next week.",
+        "wedding/victory/birthday celebrations",
+        "in celebration of something"
+      ]
+    },
+    "ceremony": {
+      "meaning": "nghi thức, nghi lễ, một dịp trang trọng để ghi nhận một sự kiện quan trọng nào đó (thường mang tính truyền thống và ổn định)",
+      "key_distinction": "Nghi lễ mang tính trang trọng, chính thức hoặc theo phong tục, truyền thống.",
+      "examples": [
+        "an awards/opening ceremony",
+        "a wedding/marriage/graduation ceremony",
+        "They were married in a simple ceremony.",
+        "She was last seen in public at the closing ceremony of the Commonwealth Games"
+      ]
+    },
+    "anniversary": {
+      "meaning": "ngày kỷ niệm, lễ kỷ niệm (một ngày mà chúng ta nhớ hoặc kỷ niệm một điều gì đó quan trọng đã xảy ra vào ngày đó trong một năm trước đó)",
+      "key_distinction": "Ngày kỷ niệm quay lại đúng ngày/tháng của một sự kiện quan trọng từng diễn ra trong quá khứ.",
+      "examples": [
+        "The company is celebrating its 100-year anniversary this year.",
+        "on the anniversary of his wife's death"
+      ]
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "group_title": "Bắt buộc",
+  "target_words": {
+    "force": {
+      "meaning": "[Thường ở dạng bị động] Khiến ai đó làm việc gì mà họ không muốn (việc khó khăn/không dễ chịu/bất thường), đặc biệt là bằng cách đe doạ hoặc không cho phép bất kỳ sự lựa chọn nào khác: ép buộc, bắt buộc, cưỡng ép (~ compel).",
+      "key_distinction": "Bắt buộc bằng sức mạnh, quyền lực hoặc đe dọa, không cho đối phương lựa chọn.",
+      "examples": [
+        "The President was forced into resigning."
+      ]
+    },
+    "oblige": {
+      "meaning": "[Trang trọng] [Ngoại động từ, thường dùng ở dạng bị động] oblige somebody to do something: Bắt buộc/ép buộc ai đó làm việc gì vì theo luật/quy định, theo tình huống, hoặc bởi vì đó là bổn phận/nghĩa vụ/trách nhiệm: bắt buộc, cưỡng bách.",
+      "key_distinction": "Bắt buộc dựa trên nghĩa vụ pháp lý, luật lệ, đạo đức hoặc trách nhiệm.",
+      "examples": [
+        "The law does not oblige sellers to accept the highest offer."
+      ]
+    },
+    "compel": {
+      "meaning": "Bắt buộc/ép buộc ai đó làm việc gì vì theo luật/quy định, theo tình huống, hoặc bởi vì đó là bổn phận/nghĩa vụ/trách nhiệm...: bắt buộc, cưỡng bách.",
+      "key_distinction": "Ép buộc hoặc tạo sức ép mạnh mẽ khiến người khác không thể cưỡng lại.",
+      "examples": [
+        "The law can compel fathers to make regular payments for their children."
+      ]
+    },
+    "constrain": {
+      "meaning": "(Trang trọng) [Thường ở dạng bị động] be/feel constrained to do something: Bắt buộc ai đó làm việc gì hoặc cư xử theo một cách cụ thể nào đó (vì bị giới hạn về hành động hoặc sự lựa chọn); be/feel constrained from doing something / constrain somebody from doing something: Ngăn không cho ai/bị ngăn không cho làm việc mà họ muốn làm.",
+      "key_distinction": "Bị kiềm chế, giới hạn hoặc ép buộc hành động do hoàn cảnh hay các rào cản gò bó.",
+      "examples": [
+        "They found themselves constrained to accept the proposal.",
+        "Financial factors should not constrain doctors from prescribing the best treatment for patients."
+      ]
+    },
+    "impel": {
+      "meaning": "impel somebody to do something / impel somebody (to something): Khi một cảm xúc/cảm giác/ý tưởng impels bạn để bạn làm việc gì thì khi đó bạn cảm thấy như thể bạn bắt buộc phải làm việc đó.",
+      "key_distinction": "Thúc giục, thôi thúc từ bên trong (cảm xúc, niềm tin, ý tưởng nội tại).",
+      "examples": [
+        "There are various reasons that impel me to that conclusion."
+      ]
+    },
+    "drive": {
+      "meaning": "[Ngoại động từ] drive somebody + adv/prep, drive yourself + adv/prep, be driven by something, drive somebody to do something, drive somebody to something: Bắt buộc ai đó hành động theo một cách cụ thể nào hoặc làm việc gì tiêu cực; ép cái gì/ai đi đến tình trạng nào (thường là không dễ chịu).",
+      "key_distinction": "Đẩy ai đó vào tình thế tồi tệ/tiêu cực hoặc bị thôi thúc mạnh mẽ bởi nhu cầu cơ bản.",
+      "examples": [
+        "The urge to survive drove them on.",
+        "Hunger drove her to steal.",
+        "Those kids are driving me to despair."
+      ]
+    },
+    "push": {
+      "meaning": "[Ngoại động từ] push somebody into something, push somebody into doing something, push somebody to do something: Thuyết phục hoặc khuyến khích ai đó làm việc gì mà có thể họ không muốn làm: thúc ép, thúc bách.",
+      "key_distinction": "Thuyết phục, hối thúc hoặc tác động tâm lý khiến ai đó làm điều họ ngần ngại.",
+      "examples": [
+        "No one pushed you to take the job, did they?"
+      ]
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "group_title": "Biển",
+  "target_words": {
+    "shore": {
+      "meaning": "Bờ biển, bờ hồ, bờ sông lớn; hoặc chỉ một đất nước (ở dạng số nhiều shores).",
+      "key_distinction": "Chỉ vùng đất mép nước (đặc biệt là nơi nghỉ ngơi) hoặc dải đất dọc bờ nước; ở dạng số nhiều 'shores' dùng để chỉ một đất nước có đường bờ biển.",
+      "examples": [
+        "Let's go to the shore.",
+        "He is swimming towards the shore.",
+        "We will fight to death to defend our shores."
+      ]
+    },
+    "coast": {
+      "meaning": "Bờ biển.",
+      "key_distinction": "Đất ở bên cạnh hoặc gần biển/biên giới giữa đất liền và biển/phần gần biển của một đất nước nào đó.",
+      "examples": [
+        "We spent a week by the coast (= by the sea)."
+      ]
+    },
+    "coastline": {
+      "meaning": "Đường bờ biển.",
+      "key_distinction": "Đất dọc theo bờ biển, đặc biệt là khi nghĩ đến hình dạng hoặc vẻ bề ngoài của nó.",
+      "examples": [
+        "A rugged coastline",
+        "A beautiful coastline"
+      ]
+    },
+    "sea / ocean": {
+      "meaning": "Biển, đại dương.",
+      "key_distinction": "'sea' thường dùng trong British English, 'ocean' thường dùng trong American English.",
+      "examples": [
+        "We went swimming in the sea.",
+        "A hotel room with sea view"
+      ]
+    },
+    "beach": {
+      "meaning": "Bãi biển.",
+      "key_distinction": "Một khu vực có cát hoặc sỏi gần biển/hồ nơi mà mọi người thường nằm phơi nắng/chơi đùa/đi dạo khi đi nghỉ.",
+      "examples": [
+        "A sandy beach",
+        "Tourists sunbathing on the beach",
+        "He walked along the beach."
+      ]
+    },
+    "seaside": {
+      "meaning": "Bờ biển, vùng ven biển.",
+      "key_distinction": "Một vùng bên cạnh biển, đặc biệt là nơi mà mọi người đến để đi nghỉ.",
+      "examples": [
+        "A trip to the seaside"
+      ]
+    }
+  }
+}

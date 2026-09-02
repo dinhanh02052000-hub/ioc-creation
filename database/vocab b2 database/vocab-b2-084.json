@@ -1,0 +1,30 @@
+{
+  "group_title": "Tổ chức",
+  "target_words": {
+    "hold": {
+      "meaning": "[ngoại động từ] tổ chức, sắp xếp (sự kiện nào đó) một cuộc họp, một cuộc thi, thảo luận, bầu cử, bữa tiệc..., (make happen)",
+      "key_distinction": "Tổ chức/tiến hành một sự kiện, cuộc họp hay cuộc thi tại một địa điểm hay thời điểm cụ thể.",
+      "examples": [
+        "The next conference will be held in Ohio.",
+        "hold an event/a meeting/a party/a competition"
+      ]
+    },
+    "celebrate": {
+      "meaning": "[ngoại động từ] tổ chức, kỷ niệm, tham gia vào một sự kiện, dịp quan trọng, đặc biệt (thường là diễn ra đều đặn) (enjoy an occasion)",
+      "key_distinction": "Tổ chức để kỷ niệm, ăn mừng một sự kiện vui vẻ, thành tựu hoặc ngày lễ đặc biệt.",
+      "examples": [
+        "We celebrated our 25th wedding anniversary in Florence.",
+        "to celebrate a victory/a success/an achievement",
+        "to celebrate a birthday"
+      ]
+    },
+    "organize": {
+      "meaning": "[ngoại động từ] sắp xếp, chuẩn bị cho một hoạt động, sự kiện (nhằm đảm bảo rằng các sắp xếp cần thiết đã được thực hiện)",
+      "key_distinction": "Sắp xếp, điều phối, lập kế hoạch chi tiết cho các công việc hoặc sự kiện.",
+      "examples": [
+        "to organize a conference/meeting",
+        "I'll invite people if you can organize food and drinks."
+      ]
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "group_title": "Sinh con",
+  "target_words": {
+    "childbirth": {
+      "meaning": "quá trình sinh một đứa trẻ",
+      "key_distinction": "Chỉ chính quá trình/thời điểm sinh nở, đẻ con về mặt y học/sinh lý.",
+      "examples": [
+        "In the past, there used to be a great number of women who died in childbirth."
+      ]
+    },
+    "childbearing": {
+      "meaning": "việc sinh con; việc có con",
+      "key_distinction": "Chỉ quá trình mang thai và sinh con nói chung (thường dùng trong cụm 'childbearing age' - độ tuổi sinh đẻ).",
+      "examples": [
+        "women of childbearing age"
+      ]
+    }
+  }
+}

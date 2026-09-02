@@ -1,0 +1,45 @@
+{
+  "group_title": "Nông nhiệt",
+  "target_words": {
+    "ardent": {
+      "meaning": "Hết sức nhiệt tình và thể hiện cảm xúc mạnh mẽ về ai/điều gì: nồng nhiệt, cuồng nhiệt",
+      "key_distinction": "Thường chỉ đứng trước danh từ; ~ passionate",
+      "examples": [
+        "an ardent supporter of Manchester United"
+      ]
+    },
+    "passionate": {
+      "meaning": "Có thể hiện những cảm xúc mạnh mẽ về tình yêu, sự giận dữ, hoặc sự say mê/niềm tin mãnh liệt vào điều gì: nồng nhiệt, thiết tha",
+      "key_distinction": "~ ardent",
+      "examples": [
+        "a passionate kiss",
+        "She is passionate about her work (= she likes it very much).",
+        "a passionate supporter of women's rights"
+      ]
+    },
+    "avid": {
+      "meaning": "Rất say mê điều gì (thường là một sở thích)",
+      "key_distinction": "Thường chỉ đứng trước danh từ; ~ keen [adj]",
+      "examples": [
+        "an avid reader",
+        "an avid collector"
+      ]
+    },
+    "enthusiastic": {
+      "meaning": "Cảm thấy/thể hiện rất nhiều sự hào hứng và sự quan tâm về ai đó/điều gì: say mê; nhiệt tình",
+      "key_distinction": "Thể hiện sự hào hứng và quan tâm rõ rệt",
+      "examples": [
+        "You don't sound very enthusiastic about the idea."
+      ]
+    },
+    "intense": {
+      "meaning": "Người rất nghiêm túc/tập trung vào việc họ làm hoặc có/thể hiện những cảm xúc mạnh mẽ/quan điểm mạnh mẽ/suy nghĩ về ai đó/điều gì",
+      "key_distinction": "Có thể mang nghĩa tiêu cực (tùy vào quan điểm của người nói/viết)",
+      "examples": [
+        "an intense student",
+        "There was an intense relationship between mother and son.",
+        "an intense look (= somebody looks at you very directly and seems to know what you are thinking or feeling)"
+      ]
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "group_title": "LUẬT SƯ, CỐ VẤN",
+  "target_words": {
+    "solicitor": {
+      "meaning": "luật sư chuyên tư vấn luật cho khách hàng và chuẩn bị tài liệu và hồ sơ pháp lý (ví dụ như đối với việc bán hoặc mua đất, nhà), thường ít xuất hiện ở tòa án",
+      "key_distinction": "Luật sư Anh chuyên soạn thảo giấy tờ, tư vấn pháp lý, thường không tranh tụng trực tiếp trước toà.",
+      "examples": [
+        "You should lodge a copy of the letter with your solicitor."
+      ]
+    },
+    "lawyer": {
+      "meaning": "(được sử dụng ở nước Anh) người được đào tạo bài bản về luật để tư vấn cũng như đại diện cho thân chủ của họ trước tòa án",
+      "key_distinction": "Từ chung chỉ người hành nghề luật, tư vấn và đại diện thân chủ, có thể xuất hiện tại toà (dùng phổ biến ở Anh).",
+      "examples": [
+        "She's hired a lawyer who specializes in divorce cases."
+      ]
+    },
+    "attorney": {
+      "meaning": "(được sử dụng ở nước Mỹ) là từ trang trọng hơn để dùng cho \"lawyer\" và để sử dụng đặc biệt khi nói về chức danh công việc (chức danh là thuật ngữ được miêu tả ngắn gọn trong 2 - 3 từ về vị trí công việc của một nhân viên trong thông tin tuyển dụng.)",
+      "key_distinction": "Cách gọi trang trọng của 'lawyer' dùng ở Mỹ, hay xuất hiện trong chức danh công việc chính thức.",
+      "examples": [
+        "They paid a high-powered attorney to plead their case."
+      ]
+    },
+    "counsellor": {
+      "meaning": "cố vấn, một người được đào tạo để lắng nghe mọi người và cho họ lời khuyên về các vấn đề của họ",
+      "key_distinction": "Người tư vấn tâm lý/cá nhân, không nhất thiết có chuyên môn luật như 3 từ trên.",
+      "examples": [
+        "The college now has a counsellor to help students with both personal and work problems."
+      ]
+    },
+    "advisor": {
+      "meaning": "người khuyên bảo, người chỉ bảo, với công việc là đưa ra lời khuyên về một lĩnh vực cụ thể nào đó",
+      "key_distinction": "Người khuyên bảo chuyên môn về 1 lĩnh vực bất kỳ (không giới hạn luật hay tâm lý), phạm vi rộng nhất nhóm.",
+      "examples": [
+        "She is the party's main economic advisor."
+      ]
+    }
+  }
+}

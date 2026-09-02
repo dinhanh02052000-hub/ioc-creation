@@ -1,0 +1,38 @@
+{
+  "group_title": "XÂM LẤN",
+  "target_words": {
+    "encroach": {
+      "meaning": "xâm lấn / che phủ / bao trùm",
+      "key_distinction": "[nội động từ] [mang nghĩa chê/tiêu cực] encroach (on/upon something) bắt đầu dần dần tác động/chiếm quá nhiều thời gian/quyền/cuộc sống cá nhân/... của ai đó OR [nội động từ] encroach (on/upon something) bắt đầu từ từ che/phủ/bao trùm một vùng",
+      "examples": [
+        "These devices are encroaching on people's privacy.",
+        "the encroaching tide (= that is coming in)",
+        "Each year the sea continues to encroach upon the island's beaches."
+      ]
+    },
+    "trespass": {
+      "meaning": "xâm phạm",
+      "key_distinction": "[nội động từ] trespass (on something) đi vào vùng đất hoặc toà nhà mà bạn không được phép hoặc có quyền đi vào",
+      "examples": [
+        "He told me I was trespassing on private land."
+      ]
+    },
+    "invade": {
+      "meaning": "xâm lược, xâm chiếm",
+      "key_distinction": "[nội động từ, ngoại động từ] đi vào một đất nước/thị trấn/... và sử dụng vũ lực quân sự để nắm quyền kiểm soát nó OR [ngoại động từ] invade something đi vào một nơi nào đó với số lượng lớn, đặc biệt là để gây ra thiệt hại hoặc vấn đề rắc rối",
+      "examples": [
+        "When did the Romans invade Britain?",
+        "Demonstrators invaded the government buildings.",
+        "The cancer cells may invade other parts of the body."
+      ]
+    },
+    "intrude": {
+      "meaning": "can thiệp, xâm phạm / xâm nhập",
+      "key_distinction": "[ngoại động từ] can thiệp, xâm phạm OR [ngoại động từ] intrude (on/into/upon something) xâm nhập vào một điều gì đó theo cách không mong muốn hoặc có tác động không dễ chịu lên điều đó",
+      "examples": [
+        "We should not intrude upon their private grief.",
+        "The sound of the telephone intruded into his dreams."
+      ]
+    }
+  }
+}

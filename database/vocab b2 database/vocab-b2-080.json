@@ -1,0 +1,46 @@
+{
+  "group_title": "Tỉ lệ",
+  "target_words": {
+    "ratio": {
+      "meaning": "[C] mối quan hệ giữa hai nhóm người/vật thể hiện mức độ lớn hơn của nhóm này so với nhóm còn lại: tỉ lệ",
+      "key_distinction": "Tỷ lệ so sánh trực tiếp giữa hai tập hợp/đại lượng khác nhau (ví dụ: A:B hoặc A so với B).",
+      "examples": [
+        "The ratio of nursing staff to doctors is 2:1 (= for every 2 nurses there is 1 doctor)."
+      ]
+    },
+    "proportion": {
+      "meaning": "[U] mối quan hệ giữa một thứ với một thứ khác về kích cỡ/số lượng/...: tỉ lệ (~ ratio); [U, C, usually plural] mối quan hệ chính xác về kích thước/mức độ/tầm quan trọng/... giữa một thứ này với một thứ khác hoặc giữa các phần của một chỉnh thể nào đó: sự cân xứng, sự cân đối",
+      "key_distinction": "Tỷ lệ đại diện cho một phần nằm trong tổng thể, hoặc thể hiện mối tương quan/sự cân đối giữa các yếu tố.",
+      "examples": [
+        "The proportion of women to men at my college was about five to one/5:1 (= for every 5 women, there is 1 man).",
+        "The room is very long in proportion to (= relative to) its width.",
+        "The chart shows how weight increases in proportion to height (= the increase in weight depends on the increase in height).",
+        "Her feet are small in proportion to her height.",
+        "The porch is out of proportion with (= too big or too small when compared with) the rest of the house."
+      ]
+    },
+    "rate": {
+      "meaning": "[C] sự đo lường số lần mà việc gì xảy ra hoặc được làm, thực hiện trong một thời kỳ cụ thể: tỉ lệ",
+      "key_distinction": "Tốc độ, tần suất diễn ra của một sự việc hoặc tỷ lệ gia tăng/giảm sút theo thời gian.",
+      "examples": [
+        "a high/low/rising rate of unemployment"
+      ]
+    },
+    "percentage": {
+      "meaning": "[C + singular or plural verb] số lượng/lượng/tỉ lệ của một thứ gì trong mỗi 100: tỉ lệ phần trăm",
+      "key_distinction": "Tỷ lệ phần trăm tính trên quy chuẩn 100, đi kèm với con số hoặc số liệu cụ thể.",
+      "examples": [
+        "Tax is paid as a percentage of total income.",
+        "What percentage of women return to work after having a baby?"
+      ]
+    },
+    "scale": {
+      "meaning": "(bản đồ/biểu đồ/mô hình) tỉ lệ giữa kích thước thật của một thứ gì với kích thước của nó ở trên một bản đồ/biểu đồ/mô hình (* scale là một dạng của ratio)",
+      "key_distinction": "Tỷ lệ thu nhỏ hoặc phóng to áp dụng trên mô hình, bản đồ, bản vẽ kỹ thuật.",
+      "examples": [
+        "a map with a scale of 1:50 (That can mean 1 cm on the map represents 50cm on the ground - in reality.)",
+        "Is this diagram made to scale? (= are all its parts the same size and shape in relation to each other as they are in the thing presented)"
+      ]
+    }
+  }
+}

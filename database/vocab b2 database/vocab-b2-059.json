@@ -1,0 +1,51 @@
+{
+  "group_title": "Lo lắng",
+  "target_words": {
+    "worried": {
+      "meaning": "nghĩ về những điều không dễ chịu đã xảy ra hoặc sẽ xảy ra và vì vậy cảm thấy không vui hoặc lo sợ. *worried chỉ dùng để miêu tả cảm giác, không dùng để miêu tả tính cách. *worried có thể được dùng khi bạn đang nói đến một vấn đề ảnh hưởng đến người khác/xã hội/thế giới/... hoặc cả những vấn đề mang tính cá nhân.",
+      "key_distinction": "Chỉ cảm giác lo lắng tạm thời về một sự việc, vấn đề cụ thể (không dùng để miêu tả tính cách con người).",
+      "examples": [
+        "What's wrong? You look worried."
+      ]
+    },
+    "nervous": {
+      "meaning": "nervous có thể được dùng để miêu tả cảm giác và tính cách. *Nếu ai đó đang cảm thấy nervous thì người đó cảm thấy lo âu, lo lắng hoặc sợ hãi về một điều đang xảy ra hoặc sắp xảy ra và cảm giác này thể hiện trong hành vi của họ. Nervous thường được sử dụng để miêu tả cảm giác của bạn trước khi bạn làm một điều gì đó rất quan trọng (một kỳ thi, một cuộc phỏng vấn, thuyết trình trước nhiều người,...) hoặc một điều gì khó khăn hoặc không dễ chịu khiến bạn không thể thư giãn. *Một người có tính cách mà nervous thì người đó dễ lo lắng, cũng căng thẳng hoặc sợ hãi.",
+      "key_distinction": "Cảm giác bồn chồn, hồi hộp trước sự kiện quan trọng (thi cử, phỏng vấn) hoặc chỉ tính cách dễ nhút nhát, căng thẳng.",
+      "examples": [
+        "Pippa was so nervous about her exams that she couldn't sleep.",
+        "The movie is unsuitable for people of a nervous disposition (= who are easily frightened)."
+      ]
+    },
+    "anxious": {
+      "meaning": "Nếu bạn cảm thấy anxious thì bạn cảm thấy lo lắng, lo âu vì bạn nghĩ một điều tồi tệ có thể sẽ xảy ra hoặc sẽ xảy ra. *anxious có thể miêu tả cảm giác lo âu/lo lắng mạnh hơn worried và trang trọng hơn worried. *anxious có thể miêu tả cảm giác hoặc tính cách. Gây ra sự lo lắng, sự lo nghĩ; thể hiện sự lo lắng, sự lo nghĩ.",
+      "key_distinction": "Mức độ lo âu, bất an mạnh và trang trọng hơn 'worried', sợ điều tồi tệ xảy ra; dùng được cho cả cảm giác lẫn tính cách.",
+      "examples": [
+        "My mother always gets a bit anxious if we don't arrive when we say we will.",
+        "A friend of mine is a very anxious person.",
+        "He saw his mother's anxious face at the window."
+      ]
+    },
+    "concerned": {
+      "meaning": "lo lắng/lo âu và cảm thấy sự lo lắng/lo âu về điều gì/ai. *concerned thường được dùng khi bạn đang nói đến một vấn đề ảnh hưởng đến người khác/xã hội/thế giới/...",
+      "key_distinction": "Thể hiện sự quan tâm, lo ngại về ảnh hưởng tới người khác, xã hội hoặc cộng đồng.",
+      "examples": [
+        "Concerned parents have complained about the dangerous playground."
+      ]
+    },
+    "bothered": {
+      "meaning": "[không dùng trước danh từ, thường được dùng trong câu phủ định] nếu bạn đang bothered về một điều gì thì có nghĩa là điều đó quan trọng đối với bạn và bạn lo lắng về nó.",
+      "key_distinction": "Bận tâm, lo lắng về điều gì đó (thường dùng trong câu phủ định hoặc không đứng trước danh từ).",
+      "examples": [
+        "He's very bothered about what people think of him.",
+        "\"Tea or coffee?\" - \"Either - I'm not bothered.\""
+      ]
+    },
+    "stressed (out)": {
+      "meaning": "[không dùng trước danh từ] rất lo lắng, mệt mỏi, và không vui bởi vì có quá nhiều vấn đề/quá nhiều việc cần giải quyết nên không thể thư giãn hoặc tận hưởng cuộc sống",
+      "key_distinction": "Căng thẳng, kiệt sức do chịu quá nhiều áp lực hoặc khối lượng công việc lớn.",
+      "examples": [
+        "The kids are sick, I just lost my babysitter, and our toilet doesn't work - no wonder I feel stressed-out!"
+      ]
+    }
+  }
+}

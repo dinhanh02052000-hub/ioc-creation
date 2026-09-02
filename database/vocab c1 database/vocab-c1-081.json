@@ -1,0 +1,38 @@
+{
+  "group_title": "PHÂN BIỆT",
+  "target_words": {
+    "distinguish": {
+      "meaning": "nhận ra và hiểu được sự khác nhau giữa hai người/vật/việc; là một đặc điểm/một phẩm chất khiến hai người/động vật/thứ khác nhau",
+      "key_distinction": "distinguish between A and B / distinguish A from B; không dùng trong các thì tiếp diễn khi chỉ đặc điểm phân biệt",
+      "examples": [
+        "At what age are children able to distinguish between right and wrong?",
+        "There is something about music that distinguishes it from all other art forms.",
+        "The bird has no distinguishing features."
+      ]
+    },
+    "discriminate": {
+      "meaning": "nhận ra là có một sự khác nhau giữa hai người/vật; đối xử với ai/một nhóm người tệ hơn/tốt hơn một người/nhóm người khác một cách không công bằng (phân biệt đối xử)",
+      "key_distinction": "discriminate between A and B hoặc discriminate against someone",
+      "examples": [
+        "The computer program can discriminate between letters and numbers.",
+        "A number of features discriminate this species from others.",
+        "She felt she had been discriminated against because of her age."
+      ]
+    },
+    "separate": {
+      "meaning": "khiến cho ai/điều gì khác theo một cách nào đó so với người/điều nào đó khác",
+      "key_distinction": "separate somebody/something from somebody/something",
+      "examples": [
+        "Only four points separate the top three teams."
+      ]
+    },
+    "contrast": {
+      "meaning": "thể hiện sự khác nhau rõ rệt khi được so sánh hoặc ở gần nhau",
+      "key_distinction": "A contrasts with B / A and B contrast",
+      "examples": [
+        "Her actions contrasted sharply with her promises.",
+        "Her actions and her promises contrasted sharply."
+      ]
+    }
+  }
+}

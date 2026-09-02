@@ -1,0 +1,55 @@
+{
+  "group_title": "To lớn",
+  "target_words": {
+    "huge": {
+      "meaning": "cực kì to về kích cỡ hoặc số lượng; lớn về mức độ ~ enormous ~ vast",
+      "key_distinction": "Cực kỳ to lớn về mặt thể tích, quy mô, số lượng hoặc có mức độ/ảnh hưởng rất lớn.",
+      "examples": [
+        "The building is huge.",
+        "Social media has made a huge difference to how we communicate with others."
+      ]
+    },
+    "giant": {
+      "meaning": "cực kì to; to hơn rất nhiều hoặc quan trọng hơn so với những thứ cùng loại",
+      "key_distinction": "Khổng lồ, vượt trội hơn hẳn so với kích thước hoặc tầm quan trọng của các đối tượng cùng loại.",
+      "examples": [
+        "He put a giant TV screen in his living room."
+      ]
+    },
+    "big": {
+      "meaning": "lớn về kích cỡ/mức độ/số lượng/...",
+      "key_distinction": "Từ thông dụng nhất chỉ độ lớn chung về kích thước, mức độ, quy mô hoặc tầm quan trọng.",
+      "examples": [
+        "a big man (= tall and wide without being fat)",
+        "They were earning big money."
+      ]
+    },
+    "large": {
+      "meaning": "to về kích cỡ/số lượng/khối lượng",
+      "key_distinction": "To lớn về mặt vật lý, diện tích, quy mô, số lượng (thường dùng trong văn phong trang trọng hơn 'big').",
+      "examples": [
+        "They sell clothes for large men (= tall and wide, and often fat).",
+        "Women usually do the larger share of the housework."
+      ]
+    },
+    "great": {
+      "meaning": "nhiều hơn mức trung bình về mức độ/khối lượng; [thường chỉ đứng trước danh từ] rất lớn; to hơn rất nhiều so với mức trung bình về kích cỡ/số lượng; [chỉ đứng trước danh từ] dùng để nhấn mạnh cho một tính từ chỉ kích cỡ hoặc chất lượng",
+      "key_distinction": "Nhấn mạnh mức độ, quy mô phi thường, xuất sắc hoặc lượng lớn hơn hẳn mức trung bình.",
+      "examples": [
+        "The concert was a great success.",
+        "A great crowd has gathered.",
+        "People were arriving in great numbers.",
+        "He cut himself a great thick slice of cake."
+      ]
+    },
+    "massive": {
+      "meaning": "rất to, nặng và rắn; cực kì lớn; cực kỳ nghiêm trọng",
+      "key_distinction": "Rất to lớn, đồ sộ, có trọng lượng nặng vững chắc hoặc mang mức độ vô cùng nghiêm trọng.",
+      "examples": [
+        "a massive rock",
+        "The Chancellor is to announce a massive increase in spending.",
+        "He suffered a massive heart attack."
+      ]
+    }
+  }
+}

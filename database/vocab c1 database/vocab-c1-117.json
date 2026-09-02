@@ -1,0 +1,49 @@
+{
+  "group_title": "VẤN ĐỀ",
+  "target_words": {
+    "matter": {
+      "meaning": "vấn đề",
+      "key_distinction": "the matter [so it] được dùng (để hỏi) nếu ai đó đang không vui/phiền muộn/... hoặc nếu có vấn đề gì",
+      "examples": [
+        "What's the matter? Is there something wrong?",
+        "There's something the matter with my eyes."
+      ]
+    },
+    "problem": {
+      "meaning": "vấn đề / khó khăn",
+      "key_distinction": "một việc/thứ mà khó để giải quyết hoặc hiểu và gây ra những khó khăn/không được mong đợi",
+      "examples": [
+        "Our main problem is lack of cash."
+      ]
+    },
+    "issue": {
+      "meaning": "vấn đề / nỗi lo lắng",
+      "key_distinction": "[C] một vấn đề/nỗi lo lắng/sự khó khăn (thường thuộc về cá nhân) mà ai đó đang gặp phải",
+      "examples": [
+        "William still has some issues with women (= has some problems dealing with them)."
+      ]
+    },
+    "affair": {
+      "meaning": "vấn đề / tình huống / sự việc",
+      "key_distinction": "một tình huống hoặc chủ đề mà đang được giải quyết hoặc cân nhắc OR một vấn đề/tình huống (thường là về chính trị hoặc phạm trù đạo đức) khiến cho dư luận quan tâm",
+      "examples": [
+        "She organizes her financial affairs very efficiently.",
+        "the Watergate affair"
+      ]
+    },
+    "setback": {
+      "meaning": "khó khăn / trở ngại",
+      "key_distinction": "một khó khăn hoặc vấn đề làm chậm tiến độ của một điều gì đó hoặc làm cho một tình huống trở nên xấu hơn",
+      "examples": [
+        "The December elections were a major setback for the party."
+      ]
+    },
+    "obstacle": {
+      "meaning": "trở ngại / vật cản",
+      "key_distinction": "một tình huống/sự kiện/... khiến cho bạn khó có thể làm gì hoặc đạt được điều gì ~ hindrance /'hɪndrəns/ (n)",
+      "examples": [
+        "Fear of change is an obstacle to progress."
+      ]
+    }
+  }
+}

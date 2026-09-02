@@ -1,0 +1,40 @@
+{
+  "group_title": "Nhanh",
+  "target_words": {
+    "quick": {
+      "meaning": "thường được sử dụng để mô tả điều gì đó được thực hiện trong thời gian ngắn hoặc không bị chậm trễ",
+      "key_distinction": "Diễn ra trong thời gian ngắn, tốn ít thời gian hoặc không mất nhiều thời gian chờ đợi.",
+      "examples": [
+        "a quick look/glance/check/search/chat/decision",
+        "There's no quick fix for this problem.",
+        "Thanks for the quick response."
+      ]
+    },
+    "fast": {
+      "meaning": "được sử dụng đặc biệt để mô tả một người hoặc vật di chuyển hoặc có thể di chuyển với tốc độ nhanh",
+      "key_distinction": "Chỉ tốc độ di chuyển của người hoặc phương tiện, sự vật.",
+      "examples": [
+        "a fast car/train/horse",
+        "He's just become the world's fastest runner."
+      ]
+    },
+    "rapid": {
+      "meaning": "được sử dụng phổ biến nhất để mô tả tốc độ mà một thứ gì đó thay đổi. Nó không được sử dụng để mô tả tốc độ mà một cái gì đó di chuyển hoặc được thực hiện",
+      "key_distinction": "Chỉ sự thay đổi, phát triển, tăng/giảm nhanh chóng trong thời gian ngắn (không dùng cho di chuyển).",
+      "examples": [
+        "rapid change/expansion/growth/development/progress",
+        "a rapid rise/increase/decline in sales",
+        "The patient made a rapid recovery."
+      ]
+    },
+    "swift": {
+      "meaning": "thường mô tả điều gì đó xảy ra hoặc được thực hiện nhanh chóng và ngay lập tức",
+      "key_distinction": "Xảy ra hoặc phản ứng ngay lập tức, tức thì và không chậm trễ.",
+      "examples": [
+        "swift action",
+        "a swift decision",
+        "The White House was swift to deny the rumours."
+      ]
+    }
+  }
+}

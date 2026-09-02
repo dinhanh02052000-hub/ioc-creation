@@ -1,0 +1,21 @@
+{
+  "group_title": "Động cơ",
+  "target_words": {
+    "motor": {
+      "meaning": "một thiết bị biến đổi điện năng hoặc nhiên liệu làm cho máy móc hoặc xe cộ hoạt động hoặc chuyển động",
+      "key_distinction": "Thường dùng chỉ động cơ chạy bằng điện năng hoặc các bộ phận truyền động nhỏ trong máy móc.",
+      "examples": [
+        "An electric motor is used to pump the water.",
+        "Batteries power the motor."
+      ]
+    },
+    "engine": {
+      "meaning": "máy có các bộ phận chuyển động nhờ sử dụng năng lượng từ nhiên liệu lỏng hoặc hơi nước, ví dụ như trong phương tiện giao thông đường bộ hoặc máy bay",
+      "key_distinction": "Chỉ động cơ đốt trong/nhiệt năng tạo năng lượng từ nhiên liệu (xăng, dầu, hơi nước) cho xe cộ, máy bay.",
+      "examples": [
+        "The engine runs on diesel.",
+        "My car had to have a new engine."
+      ]
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "group_title": "THAY ĐỔI",
+  "target_words": {
+    "change": {
+      "meaning": "[nội động từ] trở nên khác đi ~ alter / [ngoại động từ] làm cho ai/điều gì/cái gì khác đi ~ alter / [nội động từ, ngoại động từ] chuyển từ trạng thái/hình thái này sang trạng thái/hình thái khác; khiến ai đó/cái gì chuyển từ trạng thái/hình thái này sang trạng thái/hình thái khác / [ngoại động từ] ngừng một trạng thái/vị trí/hướng và bắt đầu một trạng thái/vị trí/hướng mới / [ngoại động từ] thay thế một thứ/ai đó/dịch vụ... bằng một thứ/ai đó/dịch vụ... mới hoặc khác",
+      "key_distinction": "từ tổng quát nhất chỉ sự thay đổi hoàn toàn hoặc biến đổi từ dạng/trạng thái này sang dạng/trạng thái khác",
+      "examples": [
+        "My attitude to life has changed with age.",
+        "We examined changing attitudes towards education.",
+        "Information technology has changed the way people work.",
+        "The lights changed from red to green.",
+        "Leaves change colour in autumn.",
+        "I want to change my doctor."
+      ]
+    },
+    "alter": {
+      "meaning": "[nội động từ, ngoại động từ] trở nên khác đi; làm cho ai/điều gì/việc gì khác đi (thường là thay đổi nhỏ) hoặc khiến cho đặc điểm của một thứ gì đó thay đổi ~ change / [ngoại động từ] sửa cỡ của quần áo để làm cho chúng vừa với bạn hơn",
+      "key_distinction": "thay đổi nhỏ về đặc điểm, tính chất hoặc sửa chữa quần áo cho vừa vặn",
+      "examples": [
+        "We've had to alter some of our plans.",
+        "Giving up our car has radically altered our lifestyle.",
+        "I took the coat back to the shop to have it altered."
+      ]
+    },
+    "modify": {
+      "meaning": "[ngoại động từ] thay đổi cái gì/điều gì (ví dụ như kế hoạch, quan điểm, luật, hoặc hành vi) ở một mức độ nhỏ, đặc biệt là để làm cho chúng trở nên phù hợp hơn với một mục đích cụ thể/để cải thiện chúng/khiến cho chúng trở nên dễ chấp nhận hơn ~ adapt",
+      "key_distinction": "sửa đổi, điều chỉnh một chút ở chính sách, luật, kế hoạch để cải thiện hoặc phù hợp với mục đích mới",
+      "examples": [
+        "The software we use has been modified for us.",
+        "A modified version of my article was published in the newspaper."
+      ]
+    },
+    "adapt": {
+      "meaning": "[ngoại động từ] thay đổi cái gì/điều gì để làm cho nó phù hợp với cách sử dụng mới hoặc tình huống mới ~ modify / [ngoại động từ] thay đổi một cuốn sách/vở kịch thành một bộ phim, vở kịch, chương trình tivi, chuyển thể / [nội động từ, ngoại động từ] thay đổi hành vi/cách cư xử của bạn để thích ứng với một tình huống mới ~ adjust",
+      "key_distinction": "thích nghi với hoàn cảnh mới hoặc chuyển thể (từ tác phẩm văn học sang phim/kịch)",
+      "examples": [
+        "These teaching materials can be adapted for older children.",
+        "The radio play had been adapted from a novel.",
+        "We have had to adapt quickly to the new system."
+      ]
+    },
+    "adjust": {
+      "meaning": "[nội động từ, ngoại động từ] thay đổi cách bạn cư xử/hành xử/suy nghĩ để làm quen với một tình huống mới ~ adapt / [ngoại động từ] thay đổi cái gì ở một mức độ nhỏ để làm cho nó phù hợp hơn với những điều kiện mới hoặc làm cho nó làm việc tốt hơn ~ modify",
+      "key_distinction": "điều chỉnh nhỏ máy móc/thông số cho hoạt động tốt hơn hoặc điều chỉnh bản thân để thích nghi",
+      "examples": [
+        "You'll quickly adjust yourself to student life.",
+        "This button is for adjusting the volume.",
+        "To attract investors, the government has adjusted its tax and labour laws."
+      ]
+    },
+    "reform": {
+      "meaning": "[ngoại động từ] cải thiện một hệ thống/tổ chức/luật/... bằng cách tạo ra rất nhiều sự thay đổi cho chúng: cải cách",
+      "key_distinction": "cải cách, cải thiện quy mô lớn đối với hệ thống, tổ chức hoặc bộ luật",
+      "examples": [
+        "plans to radically reform the tax system"
+      ]
+    },
+    "transform": {
+      "meaning": "[nội động từ, ngoại động từ] thay đổi hoàn toàn diện mạo hoặc tính cách/đặc điểm của ai đó/thứ gì, đặc biệt là khi nó trở nên tốt hơn; thay đổi hoàn toàn về diện mạo hoặc tính cách/đặc điểm",
+      "key_distinction": "biến đổi hoàn toàn về diện mạo, ngoại hình hoặc bản chất (thường theo hướng tốt lên)",
+      "examples": [
+        "A new colour scheme will transform your bedroom."
+      ]
+    }
+  }
+}

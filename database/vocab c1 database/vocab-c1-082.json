@@ -1,0 +1,44 @@
+{
+  "group_title": "PHẢN ĐỐI",
+  "target_words": {
+    "reject": {
+      "meaning": "[ngoại động từ] không chấp thuận, loại bỏ, bác bỏ (ai/cái gì) (ý kiến, quan điểm, đề xuất, lập luận, yêu cầu, đơn xin việc...)",
+      "key_distinction": "Dùng khi từ chối, bác bỏ một đề xuất, ý kiến, đơn từ, hoặc không chấp nhận một vật/người nào đó.",
+      "examples": [
+        "reject something/somebody",
+        "The prime minister rejected any idea of reforming the system."
+      ]
+    },
+    "oppose": {
+      "meaning": "[ngoại động từ] chống đối, phản đối ai, cái gì (về chính sách, kế hoạch) bằng cách đứng lên kháng, đấu tranh, ngăn không để nó thành công được",
+      "key_distinction": "Dùng khi phản đối một chính sách, kế hoạch, hành động bằng cách chống đối, đấu tranh công khai.",
+      "examples": [
+        "be opposed to something",
+        "He was strongly opposed to modernism in art.",
+        "oppose doing something",
+        "I would oppose changing the law.",
+        "oppose somebody/something",
+        "This party would bitterly oppose the re-introduction of the death penalty."
+      ]
+    },
+    "disagree": {
+      "meaning": "- [nội động từ] không cùng chung quan điểm, ý kiến, có quan điểm, ý kiến khác nhau về điều gì\n- [nội động từ] mâu thuẫn, khác nhau về thông tin",
+      "key_distinction": "Dùng khi không đồng tình, không cùng quan điểm với ai đó hoặc các thông tin/dữ liệu không khớp nhau.",
+      "examples": [
+        "No, I disagree. I don't think it would be the right thing to do.",
+        "I must respectfully disagree with my colleague.",
+        "Victoria and I obviously disagree on this issue.",
+        "The results of the two approaches disagree."
+      ]
+    },
+    "object": {
+      "meaning": "[nội động từ] bày tỏ, nói lên sự phản đối, không chấp thuận, chống đối lại (= oppose)",
+      "key_distinction": "Dùng nội động từ kèm giới từ 'to' để bày tỏ sự không bằng lòng, phản đối kịch liệt một việc gì đó ảnh hưởng đến mình.",
+      "examples": [
+        "object to doing something",
+        "I really object to being charged for parking.",
+        "Many local people object to the building of the new airport."
+      ]
+    }
+  }
+}

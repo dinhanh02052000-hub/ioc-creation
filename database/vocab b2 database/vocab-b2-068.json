@@ -1,0 +1,45 @@
+{
+  "group_title": "Phần thưởng",
+  "target_words": {
+    "prize": {
+      "meaning": "một phần thưởng được trao tặng cho người chiến thắng một cuộc thi, cuộc đua, hoặc trao cho người hoàn thành công việc rất tốt.",
+      "key_distinction": "Giải thưởng dành cho người chiến thắng trong cuộc thi, giải đấu hoặc giải thưởng danh giá về thành tựu xuất sắc.",
+      "examples": [
+        "She won the first prize in the English Olympic Contest.",
+        "Scientists from Oxford shared the Nobel Prize for Medicine in 1945."
+      ]
+    },
+    "award": {
+      "meaning": "một giải thưởng hay một khoản tiền mà một người hay một tổ chức nhận được cho thành tích của họ và giải thưởng ấy được công nhận và đánh giá cao.",
+      "key_distinction": "Giải thưởng mang tính chính thức, được hội đồng đánh giá và công nhận rộng rãi trong một ngành nghề hay tổ chức.",
+      "examples": [
+        "A recently launched advertising agency got an award for the best marketing campaign of 2009.",
+        "Angelina Jolie received the award for best actress."
+      ]
+    },
+    "reward": {
+      "meaning": "một phần thưởng ghi nhận cho sự nỗ lực của bạn để hoàn thành một công việc nào đó; phần thưởng không chỉ ở dạng vật chất mà còn ở trạng thái tinh thần; là số tiền thưởng trao cho người cung cấp thông tin quan trọng cho cảnh sát về một điều gì đó",
+      "key_distinction": "Sự đền đáp, phần thưởng ghi nhận nỗ lực/công sức (vật chất hoặc tinh thần), hoặc tiền hậu tạ cho người báo tin.",
+      "examples": [
+        "A child's smile is the best reward for each mother.",
+        "The police offered a reward for any information about the robbery"
+      ]
+    },
+    "present": {
+      "meaning": "một món quà ít trang trọng hơn, một cái gì đó mà bạn được cho, mà không yêu cầu, vào một dịp đặc biệt như lễ cưới, sinh nhật,... đặc biệt là để thể hiện tình bạn hoặc để nói lời cảm ơn; các món quà này thường được trao cho nhau bởi những người có vị thế ngang hàng hoặc một người có vị thế thấp hơn trao cho một người ở vị thế cao hơn.",
+      "key_distinction": "Món quà thông thường, thân mật trao tay nhau nhân dịp đặc biệt (sinh nhật, ngày lễ) giữa bạn bè, người thân.",
+      "examples": [
+        "Yuki was wrapping a present for her friend.",
+        "The children gave their mothers many special presents on Women's Day."
+      ]
+    },
+    "gift": {
+      "meaning": "một món quà, quà tặng tới ai đó; dùng để nói về những món quà trang trọng; món quà này có thể do một người giàu tặng một người nghèo hơn hoặc một người ở vị thế cao tặng cho một người ở vị thế thấp.",
+      "key_distinction": "Quà tặng mang sắc thái trang trọng hơn, hoặc từ người có vị thế/điều kiện cao hơn ban tặng cho người thấp hơn.",
+      "examples": [
+        "She made a £50,000 gift to those living in poor conditions.",
+        "Her grandpa sent her a gift for her birthday."
+      ]
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "group_title": "CHỌN, LỰA CHỌN",
+  "target_words": {
+    "choose": {
+      "meaning": "[nội động từ, ngoại động từ] quyết định xem bạn muốn thứ gì/điều gì/ai từ những thứ/điều/người đang hiện có; nếu bạn chọn làm điều gì thì có nghĩa là bạn muốn làm điều đó hoặc bạn cảm thấy điều đó là đúng đắn\n*Trong choose, select và pick thì choose là từ được sử dụng rộng rãi nhất.",
+      "key_distinction": "Từ phổ biến và thông dụng nhất để chỉ hành động lựa chọn.",
+      "examples": [
+        "You choose - I can't decide.",
+        "He chose a shirt from the many in his wardrobe.",
+        "We chose to go there by train."
+      ]
+    },
+    "select": {
+      "meaning": "[nội động từ, ngoại động từ] [thường ở dạng bị động] chọn ai/thứ gì/điều gì là tốt nhất/phù hợp nhất/... (thường là một cách cẩn thận, trừ khi bạn nói rõ là chọn một cách ngẫu nhiên) từ một nhóm người/vật/việc",
+      "key_distinction": "Lựa chọn cẩn thận, cân nhắc kỹ lưỡng để tìm ra đối tượng tốt nhất/phù hợp nhất (mang tính trang trọng).",
+      "examples": [
+        "He was selected to play for France at the age of only 18.",
+        "a randomly selected sample of 23 schools"
+      ]
+    },
+    "pick": {
+      "meaning": "[ngoại động từ] [mang sắc thái suồng sã, thân mật] chọn ai đó/thứ gì đó từ một nhóm người/vật\n*thường là chọn một cách ít cẩn thận (đặc biệt được dùng khi sự lựa chọn không quá quan trọng)",
+      "key_distinction": "Lựa chọn nhanh chóng, ngẫu nhiên hoặc không quá quan trọng trong giao tiếp hàng ngày.",
+      "examples": [
+        "She picked the best cake for herself."
+      ]
+    },
+    "opt": {
+      "meaning": "[nội động từ, ngoại động từ] chọn thực hiện hoặc không thực hiện một hành động cụ thể nào đó",
+      "key_distinction": "Đưa ra lựa chọn giữa các phương án hoặc hướng hành động cụ thể (thường đi với 'for' hoặc động từ nguyên mẫu).",
+      "examples": [
+        "Depending on your circumstances you may wish to opt for one method or the other."
+      ]
+    },
+    "decide": {
+      "meaning": "[ngoại động từ, nội động từ] suy nghĩ một cách cẩn thận về những khả năng khác nhau để chọn một trong số chúng",
+      "key_distinction": "Quyết định chọn một giải pháp sau khi suy nghĩ, cân nhắc kỹ lưỡng.",
+      "examples": [
+        "I had a cold and couldn't decide whether to go to work or not."
+      ]
+    },
+    "cherry-pick": {
+      "meaning": "chỉ chọn (những) người/thứ tốt nhất/có lợi nhất/... và bỏ lại những người/thứ còn lại",
+      "key_distinction": "Chọn lọc thiên vị, chỉ lấy những phần tốt nhất hay có lợi nhất và bỏ qua phần còn lại.",
+      "examples": [
+        "In 1877, Japanese nobles formed the Iwakura mission and travelled the world cherry-picking ideas on how to industrialize the country."
+      ]
+    },
+    "elect": {
+      "meaning": "chọn ai đó để làm một công việc gì cụ thể bằng cách bỏ phiếu cho họ (bầu cử)\nelect to do something (mang sắc thái trang trọng) chọn làm điều gì đó",
+      "key_distinction": "Lựa chọn thông qua bầu cử/bỏ phiếu, hoặc quyết định làm gì (văn phong trang trọng).",
+      "examples": [
+        "The people of the Philippines have voted to elect a new president.",
+        "After six months, he elected to take early retirement."
+      ]
+    },
+    "appoint": {
+      "meaning": "chọn ai đó cho một công việc hoặc một vị trí trách nhiệm nào đó",
+      "key_distinction": "Bổ nhiệm, chỉ định ai đó vào một chức vụ hoặc vị trí công việc chính thức.",
+      "examples": [
+        "He's just been appointed as director of the publishing division."
+      ]
+    }
+  }
+}

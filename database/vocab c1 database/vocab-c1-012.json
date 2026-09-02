@@ -1,0 +1,49 @@
+{
+  "group_title": "CẢNH GIÁC",
+  "target_words": {
+    "watchful": {
+      "meaning": "tập trung chú ý đến những gì đang xảy ra để đề phòng trường hợp nguy hiểm/tai nạn/... và sẵn sàng để giải quyết các vấn đề: đề phòng, cảnh giác",
+      "key_distinction": "Cảnh giác, để mắt theo dõi liên tục để kịp thời xử lý sự cố hoặc nguy hiểm.",
+      "examples": [
+        "The entrances are guarded by watchful security staff."
+      ]
+    },
+    "alert": {
+      "meaning": "tập trung hoàn toàn sự chú ý vào những thứ xung quanh và có thể nhanh chóng nhìn ra, hiểu hoặc hành động trong một tình huống cụ thể; nhìn ra/nhận thấy/nhận thức được điều gì (đặc biệt là các mối nguy hiểm hoặc vấn đề tiềm tàng): tập trung, cảnh giác",
+      "key_distinction": "Tập trung cao độ, nhạy bén phát hiện và sẵn sàng ứng phó ngay lập tức.",
+      "examples": [
+        "Try to stay alert while driving at night.",
+        "We must be alert to the possibility of danger."
+      ]
+    },
+    "vigilant": {
+      "meaning": "(formal) luôn luôn cẩn thận để nhìn ra được bất kỳ dấu hiệu nào của sự nguy hiểm hoặc vấn đề tiềm tàng: thận trọng, cảnh giác ~ alert, watchful",
+      "key_distinction": "Cảnh giác cao độ, thận trọng tìm kiếm mọi dấu hiệu rủi ro (dùng trong văn phong trang trọng).",
+      "examples": [
+        "The thief was spotted by vigilant neighbours."
+      ]
+    },
+    "cautious": {
+      "meaning": "cẩn thận trong những việc bạn làm hoặc nói, đặc biệt là để tránh nguy hiểm hoặc mắc lỗi; không mạo hiểm: thận trọng >< rash /ræʃ/ (adj)",
+      "key_distinction": "Thận trọng, tính toán cẩn kẽ trong hành động/lời nói để tránh rủi ro hay sai lầm.",
+      "examples": [
+        "She is cautious about making predictions for the success of the program."
+      ]
+    },
+    "wary": {
+      "meaning": "không hoàn toàn tin tưởng hoặc chắc chắn về điều gì hoặc ai đó; cẩn thận khi tiếp xúc hoặc quan hệ với ai hoặc giải quyết việc gì vì bạn nghĩ rằng có thể có vấn đề hoặc sự nguy hiểm: thận trọng, cảnh giác, đề phòng ~ cautious",
+      "key_distinction": "Cảnh giác, nghi ngờ, giữ khoảng cách do chưa thực sự tin tưởng.",
+      "examples": [
+        "We must teach children to be wary of strangers.",
+        "The police will need to keep a wary eye on this area of town (= watch it carefully in case there is trouble)."
+      ]
+    },
+    "observant": {
+      "meaning": "(khen ngợi) giỏi hoặc có thể nhanh chóng để ý thấy những việc xung quanh: hay quan sát, tinh mắt ~ sharp-eyed /ʃɑːp 'aɪd/ (adj)",
+      "key_distinction": "Tinh mắt, có khả năng quan sát tốt và nhanh chóng chú ý đến các chi tiết.",
+      "examples": [
+        "Most men aren't very observant about things like hair or clothes."
+      ]
+    }
+  }
+}

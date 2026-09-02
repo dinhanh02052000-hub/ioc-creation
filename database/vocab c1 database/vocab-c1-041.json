@@ -1,0 +1,42 @@
+{
+  "group_title": "HOÃN, LÀM CHẬM LẠI",
+  "target_words": {
+    "retard": {
+      "meaning": "retard something\nlàm cho sự phát triển hoặc sự tiến triển của một điều gì chậm lại\n~ delay\n~ slow",
+      "key_distinction": "Làm chậm lại sự tiến triển, phát triển hoặc quá trình của điều gì đó.",
+      "examples": [
+        "Continuing violence will retard negotiations over the country's future."
+      ]
+    },
+    "delay": {
+      "meaning": "[ngoại động từ] làm cho ai đó/việc gì bị muộn hoặc khiến họ làm việc gì chậm hơn\n[nội động từ, ngoại động từ] không làm việc gì ngay lập tức hoặc theo như kế hoạch mà chờ tới thời gian sau đó mới làm; làm cho việc gì xảy ra tại thời điểm muộn hơn\n~ defer",
+      "key_distinction": "Làm ai đó/việc gì bị trễ, hoãn lại hoặc trì hoãn không thực hiện ngay.",
+      "examples": [
+        "Thousands of commuters were delayed for over an hour.",
+        "Don't delay - call us today!"
+      ]
+    },
+    "slow": {
+      "meaning": "[nội động từ, ngoại động từ] đi hoặc làm cho ai/việc gì đi ở một tốc độ chậm hơn hoặc ít tích cực hơn",
+      "key_distinction": "Giảm tốc độ, làm cho chuyển động hoặc tiến trình diễn ra chậm lại.",
+      "examples": [
+        "Economic growth has slowed a little."
+      ]
+    },
+    "postpone": {
+      "meaning": "sắp xếp cho một sự kiện/cuộc họp/... diễn ra tại một thời gian/ngày muộn hơn so với ban đầu: hoãn (cho đến khi...)\n~ put off",
+      "key_distinction": "Lùi lịch, hoãn một sự kiện/cuộc họp sang một thời điểm khác muộn hơn.",
+      "examples": [
+        "The game has already been postponed three times."
+      ]
+    },
+    "detain": {
+      "meaning": "detain somebody\nlàm cho ai bị muộn (một khoảng thời gian ngắn)\n~ delay hoặc ngăn không cho họ đi đâu",
+      "key_distinction": "Cản trở, giữ chân ai đó làm họ bị trễ/muộn trong một thời gian ngắn.",
+      "examples": [
+        "I'm sorry I'm late - I was unavoidably detained.",
+        "The minister was unavoidably detained in Lisbon on affairs of state."
+      ]
+    }
+  }
+}

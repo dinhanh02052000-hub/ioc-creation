@@ -1,0 +1,40 @@
+{
+  "group_title": "Vị",
+  "target_words": {
+    "flavour": {
+      "meaning": "[U] thức ăn và đồ uống có vị như thế nào (~ taste);\n[C] một loại vị cụ thể nào đó",
+      "key_distinction": "Hương vị tổng thể của thức ăn/đồ uống (kết hợp cả vị giác lẫn khứu giác) hoặc một loại hương vị đặc trưng.",
+      "examples": [
+        "vegetables that are fresh and full of flavour",
+        "Salt is a common flavour enhancer.",
+        "a wine with a delicate fruit flavour",
+        "a dish with a strong spicy flavour"
+      ]
+    },
+    "taste": {
+      "meaning": "[C, U] đặc điểm cụ thể mà các loại đồ ăn hoặc đồ uống khác nhau có, thứ mà cho phép bạn nhận ra chúng khi bạn cho chúng vào mồm: vị;\n[U] giác quan mà cho phép bạn nhận ra được các loại đồ ăn và đồ uống khác nhau khi bạn cho chúng vào mồm: vị giác",
+      "key_distinction": "Vị giác (giác quan) hoặc vị cơ bản nếm được bằng lưỡi (chua, cay, mặn, ngọt,...).",
+      "examples": [
+        "a sweet taste",
+        "I like the taste of olives.",
+        "The soup has very little taste.",
+        "She's lost her sense of taste."
+      ]
+    },
+    "savour": {
+      "meaning": "[usually singular] (formal) một mùi hoặc vị dễ chịu",
+      "key_distinction": "Mùi thơm hoặc hương vị thơm ngon, dễ chịu (thường dùng trong văn phong trang trọng).",
+      "examples": [
+        "the sweet savour of wood smoke"
+      ]
+    },
+    "tang": {
+      "meaning": "[usually singular] mùi hoặc vị đậm (đặc trưng của cái gì)",
+      "key_distinction": "Mùi hoặc vị cay nồng, chua mặn cay đậm đà đặc trưng xộc vào mũi/lưỡi.",
+      "examples": [
+        "the tang of lemons",
+        "the tang of the sea air"
+      ]
+    }
+  }
+}

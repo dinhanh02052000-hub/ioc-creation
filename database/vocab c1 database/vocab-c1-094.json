@@ -1,0 +1,61 @@
+{
+  "group_title": "TĂNG",
+  "target_words": {
+    "increase": {
+      "meaning": "trở nên lớn hơn về số lượng/giá trị/mức độ/...; khiến điều gì lớn hơn về số lượng/giá trị/mức độ/...",
+      "key_distinction": "[nội động từ, ngoại động từ] trở nên lớn hơn về số lượng/giá trị/mức độ/...; khiến điều gì lớn hơn về số lượng/giá trị/mức độ/...",
+      "examples": [
+        "The population continues to increase.",
+        "The company has increased the price of its cars."
+      ]
+    },
+    "rise": {
+      "meaning": "tăng về số lượng/giá trị/...",
+      "key_distinction": "[nội động từ] tăng về số lượng/giá trị/...",
+      "examples": [
+        "Inflation is rising by 2.1 percent a month."
+      ]
+    },
+    "raise": {
+      "meaning": "tăng số lượng/mức độ/giá cả/tiêu chuẩn/... của điều gì/thứ gì",
+      "key_distinction": "[ngoại động từ] tăng số lượng/mức độ/giá cả/tiêu chuẩn/... của điều gì/thứ gì = increase [ngoại động từ]",
+      "examples": [
+        "to raise/increase prices/taxes",
+        "We need to raise/increase public awareness of the issue."
+      ]
+    },
+    "boost": {
+      "meaning": "khiến cho điều gì tăng lên/trở nên tốt hơn hoặc thành công hơn",
+      "key_distinction": "[ngoại động từ] khiến cho điều gì tăng lên/trở nên tốt hơn hoặc thành công hơn",
+      "examples": [
+        "The plan was meant to boost agricultural production.",
+        "Getting that job did a lot to boost his ego (= make him feel more confident)."
+      ]
+    },
+    "escalate": {
+      "meaning": "trở nên lớn hơn hoặc lớn hơn về kích cỡ/mức độ nghiêm trọng/sự căng thẳng/...; làm cho điều gì lớn hơn hoặc lớn hơn về kích cỡ/mức độ nghiêm trọng/sự căng thẳng/...",
+      "key_distinction": "[nội động từ, ngoại động từ] trở nên lớn hơn hoặc lớn hơn về kích cỡ/mức độ nghiêm trọng/sự căng thẳng/...; làm cho điều gì lớn hơn hoặc lớn hơn về kích cỡ/mức độ nghiêm trọng/sự căng thẳng/...",
+      "examples": [
+        "the escalating costs of healthcare",
+        "The protests escalated into five days of rioting.",
+        "We do not want to escalate the war."
+      ]
+    },
+    "amplify": {
+      "meaning": "làm cho âm thanh to hơn / tăng cường độ/sức mạnh/mức độ/tác động/ảnh hưởng của điều gì",
+      "key_distinction": "làm cho âm thanh to hơn | tăng cường độ/sức mạnh/mức độ/tác động/ảnh hưởng của điều gì",
+      "examples": [
+        "The music was amplified with microphones.",
+        "These stories only amplified her fears."
+      ]
+    },
+    "expand": {
+      "meaning": "trở nên lớn hơn về kích cỡ/số lượng/tầm quan trọng; làm cho điều gì lớn hơn về kích cỡ/số lượng/tầm quan trọng",
+      "key_distinction": "[nội động từ, ngoại động từ] trở nên lớn hơn về kích cỡ/số lượng/tầm quan trọng; làm cho điều gì lớn hơn về kích cỡ/số lượng/tầm quan trọng",
+      "examples": [
+        "Sydney's population expanded rapidly in the 1960s.",
+        "The new system expanded the role of family doctors."
+      ]
+    }
+  }
+}

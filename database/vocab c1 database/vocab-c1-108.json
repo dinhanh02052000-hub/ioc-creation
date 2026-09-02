@@ -1,0 +1,52 @@
+{
+  "group_title": "TRỞ NGẠI, RÀO CẢN",
+  "target_words": {
+    "obstacle": {
+      "meaning": "trở ngại, chướng ngại vật",
+      "key_distinction": "trở ngại, chướng ngại vật làm cản trở sự di chuyển hoặc gây khó khăn cho ai đó đạt được điều gì hoặc thành công",
+      "examples": [
+        "The biggest obstacle in our way was a tree trunk in the road.",
+        "A lack of qualifications can be a major obstacle to finding a job."
+      ]
+    },
+    "hindrance": {
+      "meaning": "sự cản trở, chướng ngại",
+      "key_distinction": "sự cản trở, một người hay thứ gì đó gây khó khăn cho bạn làm gì hoặc gây khó khăn cho cái gì xảy ra",
+      "examples": [
+        "To be honest, she was more of a hindrance than a help.",
+        "The high price is a major hindrance to potential buyers."
+      ]
+    },
+    "barrier": {
+      "meaning": "rào cản, hàng rào",
+      "key_distinction": "rào cản, một thứ gì đó giống như hàng rào ngăn mọi người tiến từ nơi này đến nơi khác OR bất cứ thứ gì ngăn cản, cản trở mọi người cùng ở, hòa hợp với nhau hoặc hiểu lẫn nhau",
+      "examples": [
+        "The crowd managed to break through the barriers and get onto the pitch.",
+        "Despite the language barrier (= not speaking the same language), they soon became good friends."
+      ]
+    },
+    "impediment": {
+      "meaning": "trở ngại, chướng ngại (về tiến trình/thể chất)",
+      "key_distinction": "(trang trọng) sự trở ngại, thứ gì đó làm trì hoãn hoặc ngăn tiến trình, sự phát triển của cái gì OR sự trở ngại, vấn đề về mặt thể chất, tinh thần khiến ai đó khó khăn trong việc nói, nghe một cách bình thường",
+      "examples": [
+        "The level of inflation is a serious impediment to economic recovery.",
+        "He's upset about his speech impediment."
+      ]
+    },
+    "hurdle": {
+      "meaning": "rào cản, chướng ngại vật (cần vượt qua)",
+      "key_distinction": "(thể dục, thể thao) chướng ngại vật, hàng rào cho vận động viên nhảy qua trong cuộc đua vượt rào OR vật chướng ngại, một vấn đề mà bạn phải đương đầu, giải quyết trước khi bạn có thể đạt được tiến bộ hoặc đạt được điều gì",
+      "examples": [
+        "She cleared the first hurdle in the lead.",
+        "The next hurdle will be getting her parents' agreement."
+      ]
+    },
+    "obstruction": {
+      "meaning": "sự cản trở, sự làm tắc nghẽn (pháp lý/chính phủ)",
+      "key_distinction": "điều trở ngại, hành vi hoặc các hành động ngăn cản điều gì đó xảy ra hoặc hoạt động bình thường (thường liên quan đến pháp luật, chính phủ)",
+      "examples": [
+        "They were charged with obstruction of the police/of justice (= preventing the police/law courts from doing their jobs)."
+      ]
+    }
+  }
+}

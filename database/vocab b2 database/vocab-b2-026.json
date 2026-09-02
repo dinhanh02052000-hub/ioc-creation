@@ -1,0 +1,91 @@
+{
+  "group_title": "Chuyến đi",
+  "target_words": {
+    "tour": {
+      "meaning": "Một cuộc hành trình, chuyến đi được thực hiện cho niềm vui trong đó có một số địa điểm khác nhau được thăm viếng thăm.",
+      "key_distinction": "Chuyến đi tham quan qua nhiều điểm dừng chân khác nhau rồi quay trở lại điểm xuất phát.",
+      "examples": [
+        "A walking/sightseeing/bus tour",
+        "Tour of/round/around something",
+        "We're going on a tour of Bavaria."
+      ]
+    },
+    "trip": {
+      "meaning": "Một hành động đi từ nơi này đến nơi khác và thường quay lại, có khoảng thời gian ngắn, thường có mục đích là: đi chơi, đi du lịch, đi công tác, hay có mục đích cụ thể khác.",
+      "key_distinction": "Chuyến đi ngắn ngày mang mục đích rõ ràng (công tác, mua sắm, du lịch ngắn).",
+      "examples": [
+        "A business/school/shopping trip",
+        "A fishing/camping trip",
+        "The trip from York to Newcastle takes about an hour by train.",
+        "We went on a trip to the mountains.",
+        "They took a trip down the river."
+      ]
+    },
+    "journey": {
+      "meaning": "Cuộc hành trình, đi từ nơi này đến nơi khác, đặc biệt là khi họ ở một khoảng cách xa, đặc biệt là đi bằng phương tiện xe cộ.",
+      "key_distinction": "Nhấn mạnh quãng thời gian, chặng đường di chuyển dài từ nơi này đến nơi khác.",
+      "examples": [
+        "He makes the journey to Moscow three times a year.",
+        "Train/car/bus journey",
+        "I love going on long journeys."
+      ]
+    },
+    "travel": {
+      "meaning": "Việc đi lại nói chung (đi lại giữa hai nơi, đi du lịch).",
+      "key_distinction": "Danh từ không đếm được chỉ hoạt động đi lại, di chuyển chung chung.",
+      "examples": [
+        "The job involves a considerable amount of foreign travel.",
+        "The pass allows unlimited travel on all public transport in the city.",
+        "Air/rail/space travel"
+      ]
+    },
+    "outing": {
+      "meaning": "Một chuyến đi ngắn nhằm mục đích giải trí hoặc giáo dục, thường là với một nhóm người và kéo dài không quá một ngày.",
+      "key_distinction": "Chuyến đi chơi dã ngoại ngắn ngày (thường trong ngày) của một tập thể/nhóm người.",
+      "examples": [
+        "We went on an outing to London.",
+        "Every year she organized an outing to the countryside."
+      ]
+    },
+    "expedition": {
+      "meaning": "Sự thám hiểm, chuyến viễn chinh, hành trình có tổ chức với một mục đích cụ thể, đặc biệt là để tìm hiểu về một địa điểm chưa được nhiều người biết đến.",
+      "key_distinction": "Cuộc hành trình thám hiểm, nghiên cứu quy mô đến vùng đất xa xôi/mới lạ.",
+      "examples": [
+        "Captain Scott's expedition to the South Pole",
+        "To plan/lead/go on/mount/undertake an expedition"
+      ]
+    },
+    "excursion": {
+      "meaning": "Cuộc tham quan du ngoạn, thường ngắn và có tổ chức cho một nhóm người.",
+      "key_distinction": "Chuyến tham quan ngắn ngày, có tổ chức tập thể.",
+      "examples": [
+        "They've gone on an excursion to York."
+      ]
+    },
+    "picnic": {
+      "meaning": "Cuộc đi chơi và ăn ngoài trời; bữa ăn ngoài trời (thân mật, không mang tính trang trọng).",
+      "key_distinction": "Gắn liền với hoạt động chuẩn bị đồ ăn và ăn uống dã ngoại ngoài trời.",
+      "examples": [
+        "It's a nice day. Let's go for a picnic.",
+        "We had a picnic beside the river."
+      ]
+    },
+    "voyage": {
+      "meaning": "Một chuyến đi dài, đặc biệt là trên biển hay trong không gian.",
+      "key_distinction": "Hành trình dài ngày di chuyển đường biển hoặc trên không gian vũ trụ.",
+      "examples": [
+        "The ship sank on its maiden voyage (the first voyage of a ship).",
+        "An around-the-world voyage",
+        "A voyage in space"
+      ]
+    },
+    "cruise": {
+      "meaning": "Một cuộc hành trình trên một con tàu lớn để cho vui, thỏa mãn, trong đó bạn đi thăm một số nơi khác nhau, đặc biệt là trong một kỳ nghỉ lễ.",
+      "key_distinction": "Chuyến du thuyền nghỉ dưỡng trên tàu thủy lớn qua nhiều điểm dừng.",
+      "examples": [
+        "I'd love to go on a round-the-world cruise.",
+        "A luxury cruise ship"
+      ]
+    }
+  }
+}

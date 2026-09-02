@@ -1,0 +1,63 @@
+{
+  "group_title": "Sản sinh, tạo ra",
+  "target_words": {
+    "make": {
+      "meaning": "làm ra hoặc chuẩn bị một thứ gì bằng cách kết hợp các nguyên vật liệu hoặc ghép các bộ phận lại với nhau (*thường ám chỉ những thứ thuộc về vật chất mà bạn tạo ra bằng cách sử dụng các nguyên vật liệu);\nnếu bạn make một bộ phim hoặc một chương trình tivi thì có nghĩa là bạn làm đạo diễn hoặc diễn xuất trong bộ phim/chương trình đó",
+      "key_distinction": "Làm ra, chế tạo vật thể từ nguyên liệu hoặc tham gia sản xuất/đóng phim.",
+      "examples": [
+        "to make a table/dress/cake",
+        "Wine is made from grapes.",
+        "She made tea for us all.",
+        "She has made (= directed or acted in) several movies."
+      ]
+    },
+    "create": {
+      "meaning": "khiến cho điều gì xảy ra hoặc tồn tại;\nsáng tạo ra cái gì mới hoặc nguyên bản (chưa từng tồn tại trước đây)\n*create được dùng phù hợp nhất trong những trường hợp mà nguyên liệu thô bị biến đổi hoàn toàn khi tạo ra sản phẩm cuối cùng",
+      "key_distinction": "Sáng tạo ra điều mới hoàn toàn hoặc gây ra một tình trạng, cảm xúc, công việc.",
+      "examples": [
+        "Her behaviour is creating a lot of problems.",
+        "The new factory is expected to create more than 400 new jobs.",
+        "This dish was created by our head chef Jean-Richard.",
+        "The novelist created a unique view of life by using everyday language."
+      ]
+    },
+    "produce": {
+      "meaning": "sản xuất ra hàng hoá (đặc biệt là với số lượng lớn) để bán (~ manufacture);\ntrồng hoặc sản xuất ra thứ gì như là một phần của một quá trình tự nhiên;\nnếu ai đó produce một bộ phim hay một vở kịch thì họ tìm nguồn tiền và quản lý/kiểm soát việc sản xuất bộ phim hoặc vở kịch đó",
+      "key_distinction": "Sản xuất hàng hóa số lượng lớn, sinh ra tự nhiên (nông sản/chất cơ thể), hoặc làm nhà sản xuất tài chính cho phim.",
+      "examples": [
+        "Our company mainly produces goods for export.",
+        "This region produces the grapes used for champagne.",
+        "Under stress, the body produces adrenaline.",
+        "Costner produced and directed the film."
+      ]
+    },
+    "manufacture": {
+      "meaning": "sử dụng máy móc để sản xuất hàng hoá với số lượng lớn (~ produce);\nbịa đặt ra một câu chuyện hoặc một lý do bào chữa cho hành động nào đó để nhằm mục đích lừa gạt ai;\nsản xuất ra một chất gì",
+      "key_distinction": "Sản xuất bằng máy móc quy mô công nghiệp, hoặc bịa đặt thông tin/chuyện gian dối.",
+      "examples": [
+        "manufactured goods",
+        "He works for a company that manufactures car parts.",
+        "If the media can manufacture stories like this, who are we supposed to believe?",
+        "Bile is manufactured by the liver..."
+      ]
+    },
+    "fabricate": {
+      "meaning": "tạo ra thông tin giả hoặc giấy tờ giả đặc biệt là/nguỵ tạo chứng cứ... để nhằm mục đích lừa gạt ai (~ make up);\nsản xuất ra hàng hoá, thiết bị,... từ nhiều nguyên vật liệu khác nhau (~ manufacture)",
+      "key_distinction": "Làm giả tài liệu, bằng chứng, câu chuyện lừa dối, hoặc chế tạo sản phẩm kỹ thuật phức tạp từ nhiều linh kiện.",
+      "examples": [
+        "They claim that officers fabricated evidence against them.",
+        "These specialized chips will be fabricated by Mylexcorp Inc."
+      ]
+    },
+    "generate": {
+      "meaning": "tạo ra năng lượng, đặc biệt là điện;\ntạo ra điều gì (~ create)",
+      "key_distinction": "Tạo ra/phát ra năng lượng (điện, nhiệt) hoặc phát sinh ý tưởng, lợi nhuận, phản ứng.",
+      "examples": [
+        "The wind turbines are used to generate electricity.",
+        "The proposal would generate a lot of new jobs.",
+        "We need someone to generate new ideas.",
+        "The project generated enormous interest."
+      ]
+    }
+  }
+}

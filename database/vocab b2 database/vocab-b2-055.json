@@ -1,0 +1,48 @@
+{
+  "group_title": "Kiểu, loại",
+  "target_words": {
+    "type": {
+      "meaning": "[C] một nhóm người/vật có cùng chung những phẩm chất/đặc điểm/tính chất cụ thể và là một phần của một nhóm lớn hơn (~ sort / ~ kind); một kiểu/mẫu người với những đặc điểm tính cách/vẻ bề ngoài/cách hành xử cụ thể",
+      "key_distinction": "Dùng cho phân loại kĩ thuật, chính xác, phân nhóm rõ ràng hoặc dùng để chỉ mẫu người điển hình.",
+      "examples": [
+        "a rare blood type",
+        "I am rather an indoor type."
+      ]
+    },
+    "kind": {
+      "meaning": "một nhóm người/vật giống nhau một cách nào đó (~ sort)",
+      "key_distinction": "Từ phổ thông nhất trong giao tiếp hàng ngày chỉ thể loại, kiểu, loại chung chung.",
+      "examples": [
+        "\"What kind/sort of music do you like?\" - \"Oh, all kinds/sorts.\""
+      ]
+    },
+    "form": {
+      "meaning": "một kiểu gì đó cụ thể mà tồn tại trong nhiều trạng thái/hình thái/loại khác nhau",
+      "key_distinction": "Chỉ hình thái, dạng biểu hiện hoặc cấu trúc tồn tại của một vật hay hiện tượng.",
+      "examples": [
+        "one of the most primitive forms of life on earth"
+      ]
+    },
+    "genre": {
+      "meaning": "[trang trọng] thể loại (một kiểu/phong cách văn học/âm nhạc/nghệ thuật/điện ảnh có cùng chung những đặc điểm cụ thể)",
+      "key_distinction": "Chỉ thể loại trong các lĩnh vực nghệ thuật, điện ảnh, văn học hoặc âm nhạc.",
+      "examples": [
+        "What genre does the book fall into - comedy or tragedy?"
+      ]
+    },
+    "variety": {
+      "meaning": "nhiều loại khác nhau của cùng một thứ",
+      "key_distinction": "Nhấn mạnh tính đa dạng, sự phong phú của các loại khác nhau thuộc cùng một chủng loại.",
+      "examples": [
+        "I don't eat meat, only fish, but there's a good variety available here."
+      ]
+    },
+    "category": {
+      "meaning": "nếu con người/việc/thứ được chia thành các categories thì họ được chia thành các nhóm sao cho các thành viên của mỗi nhóm có cùng chung một đặc điểm nào đấy",
+      "key_distinction": "Chỉ hạng, loại trong một hệ thống phân loại chính thức, có tiêu chí rõ ràng.",
+      "examples": [
+        "Students over 25years old fall into a different category."
+      ]
+    }
+  }
+}

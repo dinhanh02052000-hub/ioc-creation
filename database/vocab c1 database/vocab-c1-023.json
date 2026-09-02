@@ -1,0 +1,51 @@
+{
+  "group_title": "DIỄN RA, XẢY RA",
+  "target_words": {
+    "happen": {
+      "meaning": "[nội động từ] xảy ra (đặc biệt khi mà không được lên kế hoạch)\n~ occur /ə'kɜ:(r)/ (v) (mang sắc thái trang trọng) [nội động từ]\n~ come about /kʌm ə'baʊt/ (phrasal verb) [nội động từ]\n[nội động từ] xảy ra (là kết quả của một điều gì đó)",
+      "key_distinction": "Xảy ra ngẫu nhiên, không được lên kế hoạch trước hoặc là kết quả của sự việc khác.",
+      "examples": [
+        "I don't remember learning to swim, it just happened.",
+        "What happens if nobody comes to the party?"
+      ]
+    },
+    "take place": {
+      "meaning": "[nội động từ] xảy ra (đặc biệt là sau khi đã được sắp xếp hoặc lên kế hoạch trước hoặc nói về những việc đã xảy ra)",
+      "key_distinction": "Xảy ra theo kế hoạch, lịch trình sắp xếp trước hoặc diễn ra một sự kiện cụ thể.",
+      "examples": [
+        "The film festival takes place in October.",
+        "We may never discover what took place that night."
+      ]
+    },
+    "come up": {
+      "meaning": "[nội động từ] xảy ra (thường nói về những vấn đề/các câu hỏi/cơ hội/... và thường là không lường trước/tính trước)\n~ arise",
+      "key_distinction": "Xuất hiện, nảy sinh bất ngờ (vấn đề, câu hỏi, cơ hội).",
+      "examples": [
+        "I'm afraid something urgent has come up.",
+        "We'll let you know if any vacancies come up."
+      ]
+    },
+    "arise": {
+      "meaning": "[nội động từ] xảy ra một cách bất ngờ (đặc biệt dùng khi nói đến các vấn đề/tranh cãi/tình huống khó khăn); bắt đầu tồn tại\narise (out of/from something) [nội động từ] xảy ra (là kết quả của một tình huống cụ thể)",
+      "key_distinction": "Bắt đầu xuất hiện, phát sinh bất ngờ (vấn đề, khó khăn) hoặc là hệ quả từ một tình huống.",
+      "examples": [
+        "A new crisis has arisen.",
+        "Violence typically arises out of anger."
+      ]
+    },
+    "strike": {
+      "meaning": "[nội động từ, ngoại động từ] (sự kiện xấu: thảm họa/bệnh tật/...) xảy ra một cách bất ngờ và không được lường trước và để lại hậu quả xấu hoặc hư hại cho ai/điều gì",
+      "key_distinction": "Xảy ra đột ngột và gây thiệt hại, tai hoạ (thiên tai, dịch bệnh, thảm họa).",
+      "examples": [
+        "Earthquakes can strike without warning."
+      ]
+    },
+    "turn out": {
+      "meaning": "(dùng với trạng từ hoặc tính từ hoặc trong câu hỏi với từ để hỏi how) xảy ra theo một cách cụ thể nào đó; phát triển hoặc kết thúc theo một cách cụ thể",
+      "key_distinction": "Diễn biến hoặc kết thúc theo một hướng/kết quả cụ thể nào đó.",
+      "examples": [
+        "Despite our worries, everything turned out well."
+      ]
+    }
+  }
+}

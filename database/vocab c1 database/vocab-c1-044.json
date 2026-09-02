@@ -1,0 +1,40 @@
+{
+  "group_title": "KHẢ NĂNG",
+  "target_words": {
+    "capacity": {
+      "meaning": "khả năng để hiểu hoặc làm gì đó",
+      "key_distinction": "Năng lực tiếp thu, sức chứa hoặc khả năng tự nhiên của trí óc/cơ thể để trải nghiệm hay làm gì.",
+      "examples": [
+        "A habit becomes an addiction when it reduces our capacity to enjoy life."
+      ]
+    },
+    "ability": {
+      "meaning": "hiện thực mà ai đó/cái gì đó có thể làm được điều gì",
+      "key_distinction": "Năng lực, kỹ năng hoặc khả năng thực tế (do tập luyện hay bẩm sinh) để làm được việc gì.",
+      "examples": [
+        "This program has the ability to adapt to its user."
+      ]
+    },
+    "possibility": {
+      "meaning": "một việc mà có thể sẽ xảy ra hoặc trở thành hiện thực; hiện thực mà một việc gì đó có thể sẽ xảy ra hoặc thành hiện thực (nhưng không chắc chắn)",
+      "key_distinction": "Khả năng xảy ra của một sự việc (mang tính tình huống, có thể có hoặc không).",
+      "examples": [
+        "There's a strong possibility that it will rain."
+      ]
+    },
+    "likelihood": {
+      "meaning": "khả năng mà một điều gì đó có thể xảy ra ~ probability /ˌprɒbəˈbɪləti/ (n)",
+      "key_distinction": "Xác suất hay độ khả thi cao mà một sự việc có thể xảy ra.",
+      "examples": [
+        "Using a seatbelt will reduce the likelihood of serious injury in a car accident."
+      ]
+    },
+    "prospect": {
+      "meaning": "khả năng mà một điều gì đó (tốt đẹp) có thể sẽ xảy ra trong tương lai",
+      "key_distinction": "Triển vọng, viễn cảnh tốt đẹp có thể diễn ra trong tương lai.",
+      "examples": [
+        "Is there any immediate prospect of peace in this area?"
+      ]
+    }
+  }
+}

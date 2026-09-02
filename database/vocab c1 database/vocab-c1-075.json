@@ -1,0 +1,58 @@
+{
+  "group_title": "Nhỏ",
+  "target_words": {
+    "small": {
+      "meaning": "Nhỏ về kích cỡ, số lượng, mức độ,... hoặc không quan trọng",
+      "key_distinction": "Dùng cho cả kích cỡ vật lý và mức độ/tính chất",
+      "examples": [
+        "This house would be small for a family of six members.",
+        "Don't worry. It's only a small problem."
+      ]
+    },
+    "little": {
+      "meaning": "Nhỏ nhắn, xinh xắn hoặc không quan trọng; không nghiêm trọng",
+      "key_distinction": "Thường mang sắc thái biểu cảm (nhỏ nhắn, đáng yêu hoặc vấn đề nhỏ nhặt)",
+      "examples": [
+        "We passed through several nice little towns on the way to Somerset.",
+        "All those grave problems occurred because of one little mistake!"
+      ]
+    },
+    "undersized": {
+      "meaning": "Nhỏ hơn kích cỡ bình thường",
+      "key_distinction": "Chuyên dùng để chỉ kích thước nhỏ hơn mức tiêu chuẩn/bình thường",
+      "examples": [
+        "Mia was a skinny undersized kid."
+      ]
+    },
+    "minute": {
+      "meaning": "Rất nhỏ về kích cỡ (thường là rất khó để nhìn ra hoặc nhận thấy)",
+      "key_distinction": "Nhấn mạnh mức độ cực kỳ nhỏ, vi mô",
+      "examples": [
+        "There were minute traces of the drug present in his blood."
+      ]
+    },
+    "minor": {
+      "meaning": "Không to lắm/không quan trọng/không nghiêm trọng",
+      "key_distinction": "Thường dùng trước danh từ; ~ petty; >< major",
+      "examples": [
+        "The new plan involves widening a minor road through the valley.",
+        "With one or two minor changes, the course is the same as last year.",
+        "James fell off his horse but suffered only minor injuries."
+      ]
+    },
+    "trivial": {
+      "meaning": "Không quan trọng hoặc không nghiêm trọng; không đáng để cân nhắc",
+      "key_distinction": "Nhấn mạnh sự tầm thường, không có giá trị hay tầm ảnh hưởng",
+      "examples": [
+        "I didn't want to bother you with such a trivial matter."
+      ]
+    },
+    "petty": {
+      "meaning": "Nhỏ và không quan trọng",
+      "key_distinction": "~ minor",
+      "examples": [
+        "The meeting spent too much time on petty issues and didn't address the real problem."
+      ]
+    }
+  }
+}

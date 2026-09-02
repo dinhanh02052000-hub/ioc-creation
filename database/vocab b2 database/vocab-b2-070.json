@@ -1,0 +1,21 @@
+{
+  "group_title": "Phong cách",
+  "target_words": {
+    "stylishly": {
+      "meaning": "hợp thời trang, đặc sắc, kiểu cách, phong cách (thể hiện chất lượng cao trong cách ăn mặc, thiết kế, cách xử lý...)",
+      "key_distinction": "Liên quan đến gu ăn mặc, thời trang, ngoại hình hoặc kiểu dáng hợp mốt.",
+      "examples": [
+        "a stylishly dressed young man",
+        "Her hair was stylishly cut into a bob."
+      ]
+    },
+    "stylistically": {
+      "meaning": "(thuộc) văn phong; (thuộc) phong cách nghệ thuật; có liên quan đến văn phong, có liên quan đến phong cách nghệ thuật",
+      "key_distinction": "Liên quan đến phong cách nghệ thuật, văn học, âm nhạc hoặc phương pháp thể hiện nghệ thuật.",
+      "examples": [
+        "The works are stylistically related.",
+        "Her music crosses a lot of lines stylistically."
+      ]
+    }
+  }
+}

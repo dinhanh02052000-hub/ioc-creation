@@ -1,0 +1,36 @@
+{
+  "group_title": "TIẾN TRÌNH, QUÁ TRÌNH",
+  "target_words": {
+    "process": {
+      "meaning": "quá trình, tiến trình",
+      "key_distinction": "một chuỗi các hành động được thực hiện để đạt được một kết quả cụ thể nào đó OR một chuỗi những thay đổi diễn ra một cách tự nhiên",
+      "examples": [
+        "the peace process",
+        "We're in the process of selling our house.",
+        "the digestive process",
+        "the ageing process"
+      ]
+    },
+    "procedure": {
+      "meaning": "thủ tục",
+      "key_distinction": "[U, C] một cách để làm điều gì, đặc biệt là cách thông thường/chính xác/chính thức/được chấp nhận: thủ tục",
+      "examples": [
+        "What's the procedure for applying for a visa?"
+      ]
+    },
+    "operation": {
+      "meaning": "hoạt động / chiến dịch",
+      "key_distinction": "[C] một tập hợp các hành động/hoạt động được lên kế hoạch (bao gồm nhiều người) để đạt được một mục đích cụ thể",
+      "examples": [
+        "the UN peacekeeping operations"
+      ]
+    },
+    "proceeding": {
+      "meaning": "quá trình tố tụng / vụ kiện",
+      "key_distinction": "[C, thường dùng dạng số nhiều] quá trình dùng luật pháp hoặc toà án để giải quyết một vụ tranh chấp/khiếu nại/...",
+      "examples": [
+        "She has begun divorce proceedings."
+      ]
+    }
+  }
+}

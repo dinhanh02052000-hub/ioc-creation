@@ -1,0 +1,37 @@
+{
+  "group_title": "NGHI NGỜ, ĐÁNG NGỜ",
+  "target_words": {
+    "doubtful": {
+      "meaning": "ngờ vực, hồ nghi, không chắc chắn về điều gì sẽ xảy ra hay đúng (someone), không có khả năng xảy ra, không thể (something)",
+      "key_distinction": "Không chắc chắn điều gì đó đúng/sẽ xảy ra, mang tính trung lập hơn 'suspicious'.",
+      "examples": [
+        "Rose was doubtful about the whole idea.",
+        "With her injuries it's doubtful that she'll ever walk again."
+      ]
+    },
+    "suspicious": {
+      "meaning": "nghi ngờ rằng ai đó làm điều gì sai trái, phạm pháp, không trung thực (someone), đáng nghi (something, thường là hành vi)",
+      "key_distinction": "Nghi ngờ ai đó làm điều sai trái/phạm pháp, hoặc thấy hành vi/sự việc đáng ngờ.",
+      "examples": [
+        "They became suspicious of his behavior and contacted the police.",
+        "She died in suspicious circumstances."
+      ]
+    },
+    "sceptical": {
+      "meaning": "hoài nghi về một lời phát biểu, tuyên bố có đúng hoặc xảy hay không, nghi ngờ về sự hữu dụng của một điều gì (someone)",
+      "key_distinction": "Hoài nghi về tính đúng đắn của 1 tuyên bố/lời phát biểu, thiên về thái độ không dễ tin.",
+      "examples": [
+        "Many experts remain sceptical about/of his claims.",
+        "Dan thinks it will all work out but I remain sceptical."
+      ]
+    },
+    "dubious": {
+      "meaning": "không chắc chắn về điều gì đó và nghi ngờ rằng điều gì đó có thể sai; không biết điều gì đó là tốt hay xấu và do đó không thể đưa ra quyết định được (someone), không hoàn toàn đúng, không thể tin cậy được (something)",
+      "key_distinction": "~ doubtful (someone)",
+      "examples": [
+        "We were dubious about signing the deal.",
+        "The team had the dubious distinction of ranking 31st in the league."
+      ]
+    }
+  }
+}

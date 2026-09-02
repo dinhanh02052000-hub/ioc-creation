@@ -1,0 +1,29 @@
+{
+  "group_title": "Cướp, trộm",
+  "target_words": {
+    "rob": {
+      "meaning": "[ngoại động từ] cướp đoạt, lấy trộm (tài sản, nhất là tiền mặt) của người nào, nơi nào một cách bất hợp pháp (tập trung vào địa điểm hoặc người mà bị mất)",
+      "key_distinction": "Tập trung vào nạn nhân (người) hoặc địa điểm bị cướp (rob somebody/a place).",
+      "examples": [
+        "The gang robbed three banks over a period of six months, but were finally caught.",
+        "The gang had robbed and killed the drugstore owner."
+      ]
+    },
+    "steal": {
+      "meaning": "[ngoại động từ] + [nội động từ] lấy đi thứ gì đó mà không có sự cho phép của chủ sở hữu và giữ nó (tập trung vào thứ bị lấy đi)",
+      "key_distinction": "Tập trung vào đồ vật/tài sản bị lấy đi (steal something).",
+      "examples": [
+        "Thieves stole jewellery worth over £10 000.",
+        "I'll report you to the police if I catch you stealing again."
+      ]
+    },
+    "burgle": {
+      "meaning": "[ngoại động từ] vào một tòa nhà bất hợp pháp, thường là sử dụng vũ lực, và ăn cắp những thứ ở đó, nhấn mạnh hành động \"đột nhập\" khi chủ nhà đi vắng",
+      "key_distinction": "Nhấn mạnh hành vi đột nhập trái phép vào nhà/tòa nhà (đặc biệt khi vắng chủ) để trộm đồ.",
+      "examples": [
+        "On their return they discovered that their house had been burgled.",
+        "He went out burgling nearly every night to support his drugs habit."
+      ]
+    }
+  }
+}

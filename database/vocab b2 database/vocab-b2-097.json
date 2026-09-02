@@ -1,0 +1,56 @@
+{
+  "group_title": "Ngượng, xấu hổ",
+  "target_words": {
+    "shy": {
+      "meaning": "(miêu tả người) lo lắng hoặc bối rối/ngượng khi gặp gỡ và nói chuyện với người khác: nhút nhát, bẽn lẽn, e thẹn ~ timid",
+      "key_distinction": "Cảm giác e ngại, bối rối hoặc rụt rè tự nhiên khi tiếp xúc với người khác.",
+      "examples": [
+        "Don't be shy - come and say hello."
+      ]
+    },
+    "timid": {
+      "meaning": "rụt rè, nhút nhát, bẽn lẽn, lo lắng; không bạo dạn/dũng cảm ~ shy >< confident",
+      "key_distinction": "Thiếu sự tự tin, can đảm; dễ sợ hãi hoặc e sợ trước những tình huống mới.",
+      "examples": [
+        "Deer are naturally timid creatures.",
+        "He stopped in the doorway, too timid to go in."
+      ]
+    },
+    "reserved": {
+      "meaning": "(về một con người hoặc tính cách của họ) chậm hoặc không sẵn lòng thể hiện cảm xúc hoặc bày tỏ suy nghĩ: kín đáo, dè dặt",
+      "key_distinction": "Tính cách kín đáo, ít bộc lộ cảm xúc hay suy nghĩ ra bên ngoài.",
+      "examples": [
+        "English people have a reputation for being very reserved."
+      ]
+    },
+    "bashful": {
+      "meaning": "rụt rè, bẽn lẽn, e lệ, nhút nhát, dễ xấu hổ và không muốn nói nhiều ~ shy",
+      "key_distinction": "Dễ cảm thấy xấu hổ hay e lệ, bẽn lẽn (thường liên quan đến việc thu hút sự chú ý).",
+      "examples": [
+        "He was too bashful to talk about sex."
+      ]
+    },
+    "inhibited": {
+      "meaning": "không thể thoải mái hoặc thể hiện cảm xúc một cách tự nhiên; không đủ tự tin để nói hoặc làm điều bạn muốn: lúng túng, gượng gạo, rụt rè, thiếu tự nhiên",
+      "key_distinction": "Cảm giác bị đè nén, gượng gạo, không thể tự nhiên bộc lộ bản thân.",
+      "examples": [
+        "The presence of the strangers made her feel inhibited."
+      ]
+    },
+    "ashamed": {
+      "meaning": "(không dùng trước danh từ) cảm thấy ngượng hoặc có lỗi về một ai đó/ điều gì đó hoặc một lỗi nghiêm trọng mà bạn đã cố tình làm",
+      "key_distinction": "Cảm giác hổ thẹn, cắn rứt lương tâm vì làm điều gì sai trái hoặc vi phạm đạo đức.",
+      "examples": [
+        "Mental illness is nothing to be ashamed of.",
+        "She was deeply ashamed of her behaviour at the party."
+      ]
+    },
+    "embarrassed": {
+      "meaning": "(về một con người hoặc hành vi của họ) nhút nhát, không thoải mái hoặc ngượng (đặc biệt là trong một tình huống giao tiếp xã hội); ngượng khi mắc lỗi hoặc làm điều gì đó ngớ ngẩn hoặc cảm thấy không thoải mái trước mặt người khác",
+      "key_distinction": "Ngượng ngùng, xấu hổ vì lỡ làm điều ngớ ngẩn hoặc rơi vào tình huống bối rối trước mặt người khác.",
+      "examples": [
+        "He felt embarrassed at being the centre of attention."
+      ]
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "group_title": "Huấn luyện, giáo dục, đào tạo",
+  "target_words": {
+    "teach": {
+      "meaning": "[ngoại động từ] + [nội động từ] giảng, dạy giúp học sinh có được kiến thức thông qua việc cung cấp thông tin về nó; [ngoại động từ] hướng dẫn, chỉ cách cho người khác để họ có thể tự làm việc gì đó.",
+      "key_distinction": "Dạy kiến thức, môn học cụ thể hoặc hướng dẫn kĩ năng để ai đó biết làm một việc gì đó.",
+      "examples": [
+        "teach science/maths/history etc",
+        "teach something/somebody",
+        "teach something to somebody",
+        "She teaches them English.",
+        "My mother teaches me how to cook.",
+        "Schools should teach children about healthy eating."
+      ]
+    },
+    "educate": {
+      "meaning": "[ngoại động từ] giáo dục, dạy ai đó, thường là trong vài năm, đặc biệt là tại một trường học, trường cao đẳng hoặc đại học (thường chia ở dạng bị động); [ngoại động từ] + [nội động từ] cung cấp cho ai đó kiến thức cần thiết hoặc hữu ích về điều gì.",
+      "key_distinction": "Giáo dục hệ thống dài hạn (trường học, viện đào tạo) hoặc nâng cao nhận thức chung của ai đó về một vấn đề.",
+      "examples": [
+        "educate someone at/in something",
+        "All their children have been educated privately.",
+        "The government say they are trying to do more to educate the public about the consequences of drug abuse.",
+        "educate somebody to do something"
+      ]
+    },
+    "train": {
+      "meaning": "[ngoại động từ] + [nội động từ] đào tạo cho kỹ năng và cách thực hiện một việc hay hành động nào đó.",
+      "key_distinction": "Đào tạo, rèn luyện kĩ năng chuyên môn cho công việc, động vật hoặc khả năng ứng phó cụ thể.",
+      "examples": [
+        "The crew are well trained to deal with emergencies.",
+        "They train dogs to sniff out drugs.",
+        "train somebody as/in/for something",
+        "The students are being trained for careers in big business."
+      ]
+    },
+    "coach": {
+      "meaning": "[ngoại động từ] huấn luyện ai đó chơi thể thao, hoàn thành công việc tốt hơn hoặc nâng cao kỹ năng (đặc biệt là các kỹ năng thể hiện trước đám đông), đặc biệt là hình thức là tư nhân.",
+      "key_distinction": "Huấn luyện thi đấu thể thao hoặc gia sư/kèm riêng 1-1 để chuẩn bị cho kỳ thi, bài biểu diễn.",
+      "examples": [
+        "He has coached the team for five years.",
+        "Her father coached her for the Olympics.",
+        "Youngsters will be coached in the basics of the game."
+      ]
+    }
+  }
+}

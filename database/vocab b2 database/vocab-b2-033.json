@@ -1,0 +1,43 @@
+{
+  "group_title": "Đơn, độc nhất",
+  "target_words": {
+    "unique": {
+      "meaning": "độc nhất vô nhị, độc đáo, không có cái khác tương tự",
+      "key_distinction": "Nhấn mạnh sự đặc biệt, tính chất duy nhất không có cái thứ hai giống như vậy.",
+      "examples": [
+        "Each person's genetic code is unique except in the case of identical twins."
+      ]
+    },
+    "solo": {
+      "meaning": "(chỉ đứng trước danh từ) tự mình, thực hiện, trình diễn một mình mà không có sự tham gia giúp đỡ của người khác",
+      "key_distinction": "Chỉ đứng trước danh từ. Thường dùng trong lĩnh vực âm nhạc, nghệ thuật, thể thao để chỉ hoạt động đơn độc, không có ai hỗ trợ.",
+      "examples": [
+        "The game is famous for a stunning solo goal from John Barnes.",
+        "She is releasing a solo album."
+      ]
+    },
+    "only": {
+      "meaning": "(chỉ đứng trước danh từ) chỉ, duy nhất, không có ai, cái nào, cách nào khác cả",
+      "key_distinction": "Chỉ đứng trước danh từ. Nhấn mạnh giới hạn số lượng duy nhất là 1.",
+      "examples": [
+        "I was the only person on the train.",
+        "Is this really the only way to do it?"
+      ]
+    },
+    "individual": {
+      "meaning": "cá nhân, riêng lẻ, tồn tại và được xem xét tách biệt với những thứ khác hoặc những người khác trong một nhóm",
+      "key_distinction": "Nhấn mạnh tính riêng biệt của từng đối tượng/cá thể trong một tập thể hoặc nhóm.",
+      "examples": [
+        "We interviewed each individual member of the community.",
+        "Farmers each have their own individual concerns about the changes."
+      ]
+    },
+    "single": {
+      "meaning": "độc thân, chưa kết hôn hoặc chưa có mối quan hệ tình cảm với ai khác",
+      "key_distinction": "Chỉ tình trạng hôn nhân/tình cảm (độc thân) hoặc một đơn vị duy nhất.",
+      "examples": [
+        "He's been single for so long now"
+      ]
+    }
+  }
+}

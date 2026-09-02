@@ -1,0 +1,19 @@
+{
+  "group_title": "Sự tự do",
+  "target_words": {
+    "liberty": {
+      "meaning": "tự do trong một hệ thống luật lệ cho phép mọi người được hành xử theo ý nguyện của mỗi cá nhân, không bị giới hạn bởi chính phủ hoặc cơ quan có thẩm quyền",
+      "key_distinction": "Tự do về mặt pháp lý, quyền công dân hoặc tự do trong khuôn khổ hệ thống luật pháp và xã hội.",
+      "examples": [
+        "The Turkish government has fought to uphold religious liberty."
+      ]
+    },
+    "freedom": {
+      "meaning": "có nghĩa rộng hơn \"liberty\", không bị cản trở thực hiện điều mình muốn làm, tự do làm điều mình thích, muốn làm",
+      "key_distinction": "Tự do cá nhân ở phạm vi rộng lớn hơn, không bị ràng buộc hay cản trở làm điều mình thích.",
+      "examples": [
+        "In college, you have the freedom to do what you want."
+      ]
+    }
+  }
+}

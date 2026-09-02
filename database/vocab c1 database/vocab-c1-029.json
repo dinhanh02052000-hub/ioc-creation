@@ -1,0 +1,34 @@
+{
+  "group_title": "ĐÁNH GIÁ, KIỂM TRA",
+  "target_words": {
+    "judge": {
+      "meaning": "hình thành một quan điểm về ai đó/điều gì đó dựa trên thông tin mà bạn có: xét, xét đoán, đánh giá",
+      "key_distinction": "Đánh giá, phán xét dựa trên nhận thức hoặc thông tin có sẵn.",
+      "examples": [
+        "You shouldn't judge her too harshly."
+      ]
+    },
+    "assess": {
+      "meaning": "đưa ra một nhận định về bản chất/phẩm chất/chất lượng của ai đó/cái gì đó: đánh giá ~ evaluate /ɪˈvæljueɪt/ (v)",
+      "key_distinction": "Đánh giá chất lượng, giá trị hoặc bản chất của sự việc/mức độ hiệu quả.",
+      "examples": [
+        "We are trying to assess/evaluate how well the system works."
+      ]
+    },
+    "examine": {
+      "meaning": "xem xét ai đó/cái gì đó một cách kỹ lưỡng để xem có vấn đề gì không hoặc để tìm ra nguyên nhân của một vấn đề: khám xét, xem xét, thẩm tra",
+      "key_distinction": "Xem xét, kiểm tra kỹ lưỡng tỉ mỉ để tìm vết tích, lỗi sai hoặc khám bệnh.",
+      "examples": [
+        "Investigators examined the room minutely for clues."
+      ]
+    },
+    "review": {
+      "meaning": "đưa ra nhận xét/quan điểm về một cuốn sách/vở kịch/bộ phim/sản phẩm ...\nkiểm tra hoặc xem xét lại cái gì đó một cách cẩn thận (đặc biệt là để quyết định xem có cần thiết phải thay đổi điều gì không) ~ reassess /ˌriːəˈses/ (v)",
+      "key_distinction": "Đánh giá/viết nhận xét về tác phẩm, sản phẩm hoặc xem xét lại tình hình để cân nhắc thay đổi.",
+      "examples": [
+        "Please rate and review your purchase on our website.",
+        "After reviewing the evidence, the judge dismissed the case."
+      ]
+    }
+  }
+}

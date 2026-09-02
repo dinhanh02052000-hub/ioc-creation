@@ -1,0 +1,38 @@
+{
+  "group_title": "Sự tạm dừng",
+  "target_words": {
+    "break": {
+      "meaning": "- sự dừng lại, sự ngừng lại, sự gián đoạn\n- sự nghỉ ngơi, thư giãn (trong khoảng thời gian ngắn)\n- giờ ra chơi, giờ giải lao giữa các tiết học = recess\n- thời gian nghỉ ngơi (không làm việc, hoạt động, ngày nghỉ lễ)\n- khoảng ngừng lại (ti vi, đài...) để quảng cáo",
+      "key_distinction": "Giờ nghỉ giải lao ngắn giữa giờ học/giờ làm, hoặc quãng nghỉ xả hơi sau công việc.",
+      "examples": [
+        "Finally, there was a break in the rain and we went out.",
+        "They worked through the night without a break."
+      ]
+    },
+    "interval": {
+      "meaning": "- khoảng thời gian giữa hai sự kiện\n- một khoảng thời gian ngắn giữa các phần của vở kịch, bộ phim, buổi hòa nhạc, sự kiện thể thao, quãng nghỉ",
+      "key_distinction": "Khoảng thời gian nghỉ giữa các phần/hiệp của buổi diễn, trận đấu, hoặc khoảng cách thời gian định kỳ.",
+      "examples": [
+        "He knocked on the door and after a brief interval it was opened.",
+        "at regular/monthly/10-minute etc intervals",
+        "There will be two 20-minute intervals during the opera."
+      ]
+    },
+    "lull": {
+      "meaning": "thời gian yên tĩnh, thời gian tạm lắng",
+      "key_distinction": "Giai đoạn tạm lắng xuống, yên tĩnh trong chốc lát (trước khi hoạt động/sự việc sôi nổi tiếp lại).",
+      "examples": [
+        "There has been a lull in the fighting.",
+        "a lull in the conversation/traffic."
+      ]
+    },
+    "pause": {
+      "meaning": "sự tạm nghỉ, sự tạm ngừng; ngừng (nói, hoạt động, âm thanh) trước khi bắt đầu lại tiếp",
+      "key_distinction": "Sự dừng lại ngắn trong khi đang nói hoặc đang làm một hoạt động trước khi tiếp tục.",
+      "examples": [
+        "After a brief pause, they continued climbing.",
+        "The rain fell without pause."
+      ]
+    }
+  }
+}

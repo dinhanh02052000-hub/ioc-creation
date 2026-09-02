@@ -1,0 +1,43 @@
+{
+  "group_title": "Nhà ở, chỗ ở",
+  "target_words": {
+    "home": {
+      "meaning": "[C, U] ngôi nhà/căn hộ/con tàu/... mà bạn sống ở đó, đặc biệt là cùng với gia đình bạn (*home mang nghĩa cá nhân và cảm xúc: tổ ấm, mái ấm); [C] một nơi dành cho những người không thể tự chăm sóc bản thân sống và họ được chăm sóc bởi người khác ở đó",
+      "key_distinction": "Mang yếu tố cảm xúc, gia đình (mái ấm, tổ ấm) hoặc viện chăm sóc tập trung (viện dưỡng lão, trại trẻ mọc côi).",
+      "examples": [
+        "While travelling she missed the comforts of home.",
+        "They run a retirement home for the elderly."
+      ]
+    },
+    "house": {
+      "meaning": "[C] ám chỉ đến vật chất, hình hài cụ thể của một công trình",
+      "key_distinction": "Chỉ về mặt kiến trúc, công trình vật lý, tòa nhà dùng để ở.",
+      "examples": [
+        "We live in a four-bedroom house."
+      ]
+    },
+    "shelter": {
+      "meaning": "[U] một nơi để sống hoặc ở (được coi là một nhu cầu cơ bản của con người); [C] một tòa nhà (thường được sở hữu bởi một tổ chức từ thiện) cung cấp một nơi để ở cho những người vô gia cư hoặc sự bảo vệ cho những người/động vật bị ngược đãi",
+      "key_distinction": "Nơi trú ẩn, che mưa che nắng (nhu cầu thiết yếu) hoặc nhà tình thương, nơi trú ẩn tạm thời cho người vô gia cư/động vật.",
+      "examples": [
+        "Human beings need food, clothing, and shelter.",
+        "a night shelter for the homeless"
+      ]
+    },
+    "accommodation": {
+      "meaning": "[U] một nơi để sống/làm việc/ở/...",
+      "key_distinction": "Chỗ ở, chỗ trọ nói chung (dùng phổ biến trong du lịch, công tác, nhà ở dịch vụ).",
+      "examples": [
+        "There's a shortage of cheap accommodation (places to live).",
+        "We have first- and second-class accommodation (= seats) on this flight."
+      ]
+    },
+    "lodging": {
+      "meaning": "[C, usually plural] một phòng/những phòng trong nhà của một người khác mà bạn thuê để sống ở đó",
+      "key_distinction": "Chỗ trọ, phòng cho thuê tạm thời trong nhà của người khác.",
+      "examples": [
+        "He stays in cheap lodgings near the university."
+      ]
+    }
+  }
+}

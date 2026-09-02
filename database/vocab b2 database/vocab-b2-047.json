@@ -1,0 +1,27 @@
+{
+  "group_title": "Ghen tỵ",
+  "target_words": {
+    "envious": {
+      "meaning": "muốn được như người khác; muốn thứ mà người khác có: thèm muốn, ghen tị",
+      "key_distinction": "Chỉ cảm xúc thèm muốn, đố kỵ với thành công, may mắn hoặc tài sản của người khác.",
+      "examples": [
+        "Everyone seems so envious of her having the chance to study abroad."
+      ]
+    },
+    "jealous": {
+      "meaning": "cảm thấy giận giữ hoặc không vui bởi vì người mà bạn thích hoặc yêu thể hiện sự quan tâm đến người khác: ghen, ghen tuông; cảm thấy giận dữ hoặc không vui vì bạn muốn có thứ mà người khác có: ghen tị, ghen ghét, đố kỵ (~ envious)",
+      "key_distinction": "Bao gồm cả ghen tuông trong tình cảm (sợ mất đi người/vật thuộc về mình) lẫn ghen tị với người khác như envious.",
+      "examples": [
+        "Anna says she feels jealous every time another woman looks at her boyfriend.",
+        "She's jealous/envious of my success."
+      ]
+    },
+    "enviable": {
+      "meaning": "thứ gì đó mà enviable là thứ tốt mà người khác cũng muốn có: gây sự thèm muốn, gây sự ganh tị, đáng thèm, đáng ganh tị",
+      "key_distinction": "Dùng để miêu tả một vị trí, hoàn cảnh hoặc vật có đặc điểm tốt đẹp khiến người khác ước có được.",
+      "examples": [
+        "Now he is in the enviable position of not having to work for a living."
+      ]
+    }
+  }
+}

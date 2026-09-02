@@ -1,0 +1,20 @@
+{
+  "group_title": "Mỗi",
+  "target_words": {
+    "each": {
+      "meaning": "được dùng để nói đến mỗi người/thứ trong hai hoặc nhiều người/thứ khi bạn nghĩ đến chúng một cách tách biệt. *each được dùng trước một danh từ số ít và đi cùng động từ chia ở dạng số ít. *Khi each được dùng đứng sau một chủ ngữ số nhiều, động từ sẽ được chia ở dạng số nhiều.",
+      "key_distinction": "Nói đến từng đối tượng riêng rẽ/tách biệt (áp dụng cho nhóm từ 2 trở lên); khi đứng sau chủ ngữ số nhiều thì động từ chia số nhiều.",
+      "examples": [
+        "There are 15 answers. Each answer is worth 20 points.",
+        "They each have their own email address."
+      ]
+    },
+    "every": {
+      "meaning": "[đứng trước danh từ] được dùng với danh từ số ít để ám chỉ tất cả các thành viên của một nhóm người/vật. *Động từ theo sau every luôn là động từ chia ở dạng số ít.",
+      "key_distinction": "Nói đến tổng thể tất cả các thành viên như một tập hợp (áp dụng cho nhóm từ 3 trở lên); luôn đi với danh từ số ít và động từ chia số ít.",
+      "examples": [
+        "They were watching her every movement."
+      ]
+    }
+  }
+}

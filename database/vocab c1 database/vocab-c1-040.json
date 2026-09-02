@@ -1,0 +1,52 @@
+{
+  "group_title": "HỘ TỐNG, ĐI CÙNG",
+  "target_words": {
+    "accompany": {
+      "meaning": "(formal) đi đến đâu đó cùng với ai/cái gì (đi cùng để làm bạn đồng hành, để giúp đỡ,...)\nxảy ra hoặc xuất hiện cùng với thứ gì/điều gì đó",
+      "key_distinction": "Đi cùng, đồng hành cùng ai đó hoặc xảy ra đồng thời với một sự việc khác.",
+      "examples": [
+        "His wife accompanied him on the trip.",
+        "Shouts of protests accompanied this announcement.",
+        "strong winds accompanied by heavy rain"
+      ]
+    },
+    "escort": {
+      "meaning": "escort somebody (+ adv/prep.): đi cùng với ai hoặc phương tiện gì để bảo vệ hoặc giữ an toàn cho họ hoặc để chỉ đường cho họ hoặc để đảm bảo họ rời đi: hộ tống",
+      "key_distinction": "Hộ tống, đi kèm ai đó nhằm mục đích bảo vệ an toàn hoặc dẫn đường.",
+      "examples": [
+        "The president arrived, escorted by twelve soldiers.",
+        "The prisoners were escorted back to their cells."
+      ]
+    },
+    "walk": {
+      "meaning": "[ngoại động từ] walk somebody + adv./prep.: đi bộ cùng với ai đến đâu đó, đặc biệt là để đảm bảo họ đến đó được an toàn",
+      "key_distinction": "Đi bộ cùng ai đó để đảm bảo họ đến nơi an toàn.",
+      "examples": [
+        "He always walked her home."
+      ]
+    },
+    "convoy": {
+      "meaning": "[ngoại động từ] đi cùng phương tiện gì hoặc một nhóm người để đảm bảo họ đến nơi an toàn: hộ tống",
+      "key_distinction": "Hộ tống theo đoàn (phương tiện, tàu thuyền) để đảm bảo an toàn suốt chặng đường.",
+      "examples": [
+        "The tankers were convoyed by warships."
+      ]
+    },
+    "convey": {
+      "meaning": "convey somebody/something (from ...) (to ...) (formal) đưa/mang/vận chuyển ai đó/thứ gì từ một nơi này đến một nơi khác",
+      "key_distinction": "Chuyên chở, vận chuyển người hoặc hàng hóa từ nơi này sang nơi khác.",
+      "examples": [
+        "A carriage was waiting to convey her home.",
+        "Pipes convey hot water from the boiler to the radiators."
+      ]
+    },
+    "conduct": {
+      "meaning": "[ngoại động từ] conduct somebody/something + adv./prep. (formal) dẫn đường hoặc hướng dẫn ai ở một nơi nào đó",
+      "key_distinction": "Dẫn đường, hướng dẫn tour hoặc đưa người khác tham quan một địa điểm.",
+      "examples": [
+        "a conducted tour of Athens (= one with a guide, giving information about it)",
+        "A guide conducted us around the museum."
+      ]
+    }
+  }
+}

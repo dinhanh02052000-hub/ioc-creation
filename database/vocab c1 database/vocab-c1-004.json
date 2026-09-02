@@ -1,0 +1,42 @@
+{
+  "group_title": "Bảo tồn, giữ",
+  "target_words": {
+    "preserve": {
+      "meaning": "Giữ cho một cái gì (thường là có giá trị) hoặc điều gì ở nguyên trạng thái ban đầu/trong tình trạng tốt nhất bằng cách không thay đổi hoặc thậm chí không sử dụng đến nó bởi vì một khi nó bị hỏng/mất đi thì không có thứ khác để thay thế.",
+      "key_distinction": "Bảo tồn nguyên vẹn trạng thái ban đầu, tránh bị thay đổi, hư hỏng hoặc biến mất hoàn toàn.",
+      "examples": [
+        "Campaigners are fighting to preserve this house because it was where Sherlock Holmes lived."
+      ]
+    },
+    "conserve": {
+      "meaning": "Giữ gìn/bảo vệ/sử dụng cái gì để ngăn cho nó không bị hư hại/thay đổi/lãng phí vì nếu khi nó bị sử dụng hết thì sẽ khó có thứ khác để thay thế; sử dụng cái gì càng ít càng tốt để có thể dùng được lâu.",
+      "key_distinction": "Bảo vệ môi trường/tài nguyên thiên nhiên hoặc tiết kiệm tài nguyên (điện, nước, năng lượng) để dùng lâu dài.",
+      "examples": [
+        "New laws have been enacted to conserve wildlife in this area.",
+        "We are cutting down on our heating to conserve electricity."
+      ]
+    },
+    "maintain": {
+      "meaning": "Bảo trì - giữ cho cái gì (nhà/đường/máy móc...) ở tình trạng tốt bằng cách kiểm tra hoặc sửa chữa thường xuyên; duy trì điều gì đó để nó tiếp tục giữ nguyên được vị thế/trình độ/trạng thái...",
+      "key_distinction": "Duy trì trạng thái/phong độ hoặc bảo trì, chăm sóc định kỳ cho máy móc, công trình.",
+      "examples": [
+        "Money raised from tickets and tours will go towards maintaining Scarborough Castle.",
+        "In between meals, she maintains her sugar levels by eating a piece of cake or fruit."
+      ]
+    },
+    "store": {
+      "meaning": "Giữ cái gì đó ở đâu đó để sau này dùng.",
+      "key_distinction": "Cất giữ, lưu trữ đồ đạc, hàng hóa ở một vị trí cố định để sử dụng sau.",
+      "examples": [
+        "He stored all his possessions in his parents' house while he was travelling abroad."
+      ]
+    },
+    "reserve": {
+      "meaning": "Giữ chỗ/bàn/phòng... để nó không bị người khác sử dụng hoặc sử dụng cho mục đích khác.",
+      "key_distinction": "Đặt trước (phòng, chỗ ngồi) hoặc để dành tài nguyên/quyền lợi cho mục đích đặc biệt.",
+      "examples": [
+        "These seats are reserved for pregnant women and disabled people."
+      ]
+    }
+  }
+}

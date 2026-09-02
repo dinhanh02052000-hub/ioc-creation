@@ -1,0 +1,62 @@
+{
+  "group_title": "GẦN",
+  "target_words": {
+    "near": {
+      "meaning": "gần về khoảng cách\nmột thời gian ngắn nữa trong tương lai: gần/cận\n[chỉ đứng trước danh từ] near relative/relation mối quan hệ trong gia đình gần (như bố hoặc mẹ): gần, (người) thân",
+      "key_distinction": "Chỉ khoảng cách không gian, thời gian ngắn trong tương lai hoặc quan hệ họ hàng gần.",
+      "examples": [
+        "His house is very near.",
+        "Wales may be a near neighbour but its history is quite distinct.",
+        "The conflict is unlikely to be resolved in the near future (= very soon).",
+        "Only the nearest relatives were present at the funeral."
+      ]
+    },
+    "nearby": {
+      "meaning": "[thường đứng trước danh từ] gần về vị trí; không xa",
+      "key_distinction": "Gần ở phạm vi địa lý xung quanh, thường đóng vai trò làm tính từ đứng trước danh từ hoặc trạng từ.",
+      "examples": [
+        "We walked to a nearby park.",
+        "At a nearby table a man was complaining in a loud voice."
+      ]
+    },
+    "adjacent": {
+      "meaning": "liền, gần kề, sát ngay cạnh",
+      "key_distinction": "Nằm ngay bên cạnh, tiếp giáp hoặc chung đường ranh giới với thứ khác.",
+      "examples": [
+        "We stayed in adjacent rooms.",
+        "Our farmland was adjacent to the river."
+      ]
+    },
+    "close": {
+      "meaning": "[không thường đứng trước danh từ] gần về không gian và thời gian ~ near\nbiết rất rõ về ai đó và rất quý họ: gần gũi, thân thiết; gần trong mối quan hệ gia đình: họ hàng gần >< distant /ˈdɪstənt/ (adj)",
+      "key_distinction": "Chỉ sự gần gũi về mặt tình cảm, quan hệ thân thiết hoặc vị trí sát vách, tiệm cận.",
+      "examples": [
+        "Our new house is close to the school.",
+        "We all have to work in close proximity (= near each other).",
+        "The children are close to each other in age.",
+        "Jo is a very close friend.",
+        "She is very close to her father.",
+        "close relatives, such as your mother and father, and brothers and sisters"
+      ]
+    },
+    "neighbouring": {
+      "meaning": "[chỉ đứng trước danh từ] sống/nằm ở vị trí gần hoặc bên cạnh một ai đó/nơi nào đó",
+      "key_distinction": "Láng giềng, ở vùng/khu vực phụ cận lân cận.",
+      "examples": [
+        "a neighbouring house",
+        "neighbouring towns",
+        "a neighbouring farmer",
+        "The fair attracted hundreds of people from the neighbouring towns and villages."
+      ]
+    },
+    "convenient": {
+      "meaning": "gần một nơi cụ thể nào đó; dễ dàng đi đến (nếu bạn dùng convenient để miêu tả một nơi nào đó, điều đó có nghĩa là bạn hài lòng vì nơi đó gần chỗ bạn hoặc có thể là vì bạn có thể đi đến một nơi khác từ chỗ đó một cách nhanh chóng và dễ dàng)\nconvenient for something (British English) convenient to something (American English)",
+      "key_distinction": "Thuận tiện, tiện lợi di chuyển do vị trí ở gần nơi cần đến.",
+      "examples": [
+        "The office is just five minutes from the station, so it's very convenient.",
+        "Our new house is very convenient for/to (= near to) the kids' school.",
+        "Martin drove along until he found a convenient parking place."
+      ]
+    }
+  }
+}

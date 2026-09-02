@@ -1,0 +1,43 @@
+{
+  "group_title": "BỐI RỐI",
+  "target_words": {
+    "puzzled": {
+      "meaning": "không thể hiểu điều gì hoặc lý do cho điều gì, đặc biệt là khi mà điều đó khác với những gì bạn mong đợi: không hiểu được ~ baffled /ˈbæfld/ (adj)",
+      "key_distinction": "Cảm giác thắc mắc, khó hiểu trước một sự việc bất ngờ hoặc khác lạ.",
+      "examples": [
+        "He looked puzzled so I repeated the question."
+      ]
+    },
+    "confused": {
+      "meaning": "không thể suy nghĩ một cách rõ ràng/không thể hiểu điều gì đang xảy ra/không thể hiểu điều mà người khác đang nói/không thể biết chính xác cần phải làm điều gì: bối rối, lúng túng",
+      "key_distinction": "Trạng thái xáo trộn tâm trí, khó đưa ra quyết định hoặc chưa nắm rõ thông tin.",
+      "examples": [
+        "She seemed confused by the question.",
+        "I was confused about my feelings for him."
+      ]
+    },
+    "bewildered": {
+      "meaning": "không thể suy nghĩ một cách rõ ràng/không thể hiểu điều gì đang xảy ra/không thể hiểu điều mà người khác đang nói/không thể biết chính xác cần phải làm điều gì và không chắc về điều gì khi một điều bất thường hoặc không mong đợi xảy đến: bối rối, lúng túng, hoang mang, ngơ ngác\n*bewildered làm sâu sắc hơn sự bối rối và nó có thêm ý nghĩa của sự không thoải mái về cảm xúc. Ngoài ra nó còn có ý nghĩa là sự mất phương hướng mà nó tạo ra kéo dài hơn so với confused và có ý nghĩa là làm cho ai đó mất đi khả năng lựa chọn hoặc phản ứng phù hợp với tình huống.",
+      "key_distinction": "Mức độ bối rối sâu sắc hơn confused, đi kèm cảm giác hoang mang, mất phương hướng kéo dài.",
+      "examples": [
+        "He sat up in bed, bewildered, unsure of where he was.",
+        "She was so bewildered by his accusations that she sat down and cried.",
+        "Bewildered train passengers watched as the man was arrested."
+      ]
+    },
+    "embarrassed": {
+      "meaning": "(một con người hoặc hành vi của họ) ngượng ngùng, không thoải mái hoặc xấu hổ trong các tình huống giao tiếp: lúng túng, bối rối; ngượng",
+      "key_distinction": "Bối rối do cảm giác ngượng ngùng, xấu hổ hoặc không thoải mái khi giao tiếp.",
+      "examples": [
+        "She looked a bit embarrassed by all the praise."
+      ]
+    },
+    "dazed": {
+      "meaning": "hết sức bối rối/lúng túng và không thể suy nghĩ rõ ràng, thường là bởi vì ngạc nhiên/bàng hoàng/bị đánh vào đầu/mệt mỏi/bị thương",
+      "key_distinction": "Choáng váng, đờ đẫn do chấn thương thể chất (bị đánh) hoặc gục ngã vì sốc, mệt mỏi.",
+      "examples": [
+        "Jimmy was still dazed by the blow to his head."
+      ]
+    }
+  }
+}

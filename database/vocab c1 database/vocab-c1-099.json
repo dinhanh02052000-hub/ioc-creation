@@ -1,0 +1,59 @@
+{
+  "group_title": "THIẾT BỊ, DỤNG CỤ",
+  "target_words": {
+    "tool": {
+      "meaning": "chỉ một dụng cụ ví dụ như cái búa, tua vít, cưa,... mà bạn cầm trong tay và sử dụng để làm ra cái gì, sửa chữa cái gì,... / một thứ mà giúp bạn trong công việc hoặc đạt được điều gì: công cụ",
+      "key_distinction": "dụng cụ cầm tay cơ bản (búa, tua vít...) hoặc công cụ hỗ trợ công việc/nghiên cứu",
+      "examples": [
+        "gardening tools",
+        "research tools like questionnaires"
+      ]
+    },
+    "facility": {
+      "meaning": "facilities [plural] các tòa nhà, các dịch vụ, các thiết bị,... được cung cấp cho một mục đích cụ thể nào đó",
+      "key_distinction": "dùng ở dạng số nhiều (facilities) chỉ cơ sở vật chất, tiện ích, tòa nhà hoặc trang thiết bị phục vụ cho một mục đích nhất định",
+      "examples": [
+        "educational facilities",
+        "leisure facilities"
+      ]
+    },
+    "instrument": {
+      "meaning": "musical instrument: nhạc cụ (piano, trống, violin,...) / một dụng cụ hoặc thiết bị được sử dụng cho một nhiệm vụ cụ thể nào đó, đặc biệt là dành cho các công việc của chuyên gia hoặc nhà khoa học",
+      "key_distinction": "dùng cho nhạc cụ hoặc dụng cụ tinh vi, chính xác dành cho chuyên gia, bác sĩ (phẫu thuật), nhà khoa học, thiết bị vẽ kỹ thuật",
+      "examples": [
+        "Is he learning an instrument?",
+        "surgical instruments",
+        "All pupils should learn to use drawing instruments."
+      ]
+    },
+    "equipment": {
+      "meaning": "[U] những thứ cần thiết (máy móc, dụng cụ, đồ vật) cho một mục đích/hoạt động cụ thể nào đó: các thiết bị (thường là những thứ rắn, đặc biệt là những thiết bị lớn)",
+      "key_distinction": "danh từ không đếm được chỉ tập hợp trang thiết bị, máy móc cần thiết cho một hoạt động hay môi trường làm việc",
+      "examples": [
+        "office equipment"
+      ]
+    },
+    "gear": {
+      "meaning": "[U] các thiết bị hoặc quần áo đặc biệt dành cho một hoạt động cụ thể nào",
+      "key_distinction": "danh từ không đếm được chỉ đồ dùng, trang phục, dụng cụ chuyên dụng cho hoạt động thể thao, câu cá, dã ngoại...",
+      "examples": [
+        "sports gear",
+        "fishing gear"
+      ]
+    },
+    "device": {
+      "meaning": "một loại máy móc hoặc một thiết bị được thiết kế chuyên biệt cho một công việc cụ thể nào",
+      "key_distinction": "thiết bị điện tử, máy móc nhỏ gọn được thiết kế để thực hiện một chức năng chuyên biệt",
+      "examples": [
+        "a recording device"
+      ]
+    },
+    "appliance": {
+      "meaning": "một chiếc máy được thiết kế để làm một việc cụ thể trong nhà, chẳng hạn như chuẩn bị thức ăn, sưởi ấm hoặc dọn dẹp",
+      "key_distinction": "thiết bị, máy móc gia dụng dùng trong gia đình (tủ lạnh, máy giặt, lò nướng...)",
+      "examples": [
+        "electrical/household appliances"
+      ]
+    }
+  }
+}

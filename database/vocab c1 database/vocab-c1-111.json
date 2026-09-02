@@ -1,0 +1,43 @@
+{
+  "group_title": "TỤ TẬP, TẬP HỢP",
+  "target_words": {
+    "gather": {
+      "meaning": "tụ tập, tập hợp",
+      "key_distinction": "[nội động từ, ngoại động từ] tụ tập lại hoặc tập hợp mọi người lại một chỗ để tạo thành một nhóm (thường là mang tính ngẫu nhiên) ~ collect",
+      "examples": [
+        "A crowd immediately gathered around the stricken man.",
+        "The kids were gathered in one room."
+      ]
+    },
+    "collect": {
+      "meaning": "tập trung lại, tụ họp",
+      "key_distinction": "[nội động từ] tập trung lại một chỗ (từ những chỗ khác nhau hoặc trong một khoảng thời gian) để hình thành một nhóm lớn hơn * collect có thể nhấn mạnh vào quá trình tập hợp dần dần, từng người một ~ gather",
+      "examples": [
+        "A crowd began to collect in front of the embassy."
+      ]
+    },
+    "assemble": {
+      "meaning": "tập hợp, tụ họp",
+      "key_distinction": "[nội động từ, ngoại động từ] tập hợp lại như một nhóm hoặc tập hợp mọi người/thu thập đồ vật lại như một nhóm (thường là vì một mục đích chung cụ thể nào đó hoặc cùng nhau làm gì)",
+      "examples": [
+        "Everyone is assembling outside the cathedral, ready for the Remembrance Day parade."
+      ]
+    },
+    "convene": {
+      "meaning": "triệu tập, họp",
+      "key_distinction": "(trang trọng) [ngoại động từ] convene something sắp xếp cho mọi người tập trung lại với nhau để họp OR [nội động từ] tập trung lại để tham gia một cuộc họp (triệu tập)",
+      "examples": [
+        "to convene a meeting",
+        "The committee will convene at 11:30 next Thursday."
+      ]
+    },
+    "reunite": {
+      "meaning": "đoàn tụ, hợp nhất lại",
+      "key_distinction": "[nội động từ, ngoại động từ] [thường dùng ở dạng bị động] mang hai người hoặc hơn hai người lại gần nhau lần nữa sau khi họ bị chia cách trong một khoảng thời gian dài: đoàn tụ; tập trung lại lần nữa; hợp nhất lại, nhóm lại",
+      "examples": [
+        "The family was reunited after the war.",
+        "The band will reunite for a US tour."
+      ]
+    }
+  }
+}

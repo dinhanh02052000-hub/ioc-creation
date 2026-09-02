@@ -1,0 +1,45 @@
+{
+  "group_title": "Giữa",
+  "target_words": {
+    "between": {
+      "meaning": "ở trong khoảng không gian tách biệt giữa 2 (hoặc hơn) người/đồ vật/... (nếu những người/việc/đồ vật này là những thứ hoàn toàn tách biệt); trong khoảng thời gian tách biệt giữa 2 ngày/năm/sự kiện/...; được dùng để chỉ ra một mối liên hệ hoặc quan hệ",
+      "key_distinction": "Chỉ vị trí, khoảng thời gian hoặc mối quan hệ giữa các đối tượng tách biệt rõ ràng (thường là 2 đối tượng hoặc nhiều hơn nếu được gọi tên cụ thể).",
+      "examples": [
+        "I sat down between Jo and Diana.",
+        "Switzerland lies between France, Germany, Austria, and Italy.",
+        "Don't eat between meals.",
+        "There was a lot of bad feeling between them."
+      ]
+    },
+    "among / amongst": {
+      "meaning": "được bao quanh bởi ai/cái gì; ở giữa ai/cái gì (thường là những người/vật tách biệt nhưng có điểm tương đồng); được tính đến hoặc đang xảy ra giữa những nhóm người/việc; được dùng khi bạn đang lựa chọn hoặc phân chia cái gì giữa một nhóm từ 3 người/vật trở lên",
+      "key_distinction": "Nằm trong một tập hợp, đám đông hoặc được phân chia/lựa chọn trong một nhóm từ 3 người/vật trở lên.",
+      "examples": [
+        "a house among the trees",
+        "It's OK, you're among friends now.",
+        "He was among the last to leave.",
+        "This attitude is common among the under-25s.",
+        "They divided the money up among their three children."
+      ]
+    },
+    "amid / amidst": {
+      "meaning": "giữa chừng của việc gì/trong bầu không khí của việc gì đang diễn ra (đặc biệt là những việc mà có thể gây ra sự hào hứng hoặc sợ hãi); ở giữa hoặc được bao quanh bởi cái gì (có thể là giữa những thứ tách biệt hoặc một khối không phân biệt)",
+      "key_distinction": "Chỉ vị trí ở giữa hoặc trong bối cảnh một sự kiện, không khí, ồn ào, hỗn loạn (thường đi với danh từ không đếm được hoặc danh từ số nhiều).",
+      "examples": [
+        "He finished his speech amid tremendous applause.",
+        "He was sitting amid the trees.",
+        "A reaper is working amid the grain."
+      ]
+    },
+    "middle": {
+      "meaning": "in the middle / in the middle of something: ở giữa/trung tâm, giữa điều gì; be in the middle of something/of doing something: đang bận làm việc gì",
+      "key_distinction": "Đóng vai trò là danh từ, chỉ vị trí chính giữa/trung tâm của một khoảng không gian, thời gian hoặc trạng thái đang dở dang.",
+      "examples": [
+        "a lake with an island in the middle",
+        "The phone rang in the middle of the night.",
+        "I have a pain in the middle of my back.",
+        "I'm in the middle of writing a difficult letter"
+      ]
+    }
+  }
+}

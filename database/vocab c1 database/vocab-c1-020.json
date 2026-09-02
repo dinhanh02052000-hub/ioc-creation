@@ -1,0 +1,78 @@
+{
+  "group_title": "ĐẠT ĐƯỢC",
+  "target_words": {
+    "accomplish": {
+      "meaning": "thành công trong việc thực hiện hoặc hoàn thành việc gì ~ achieve (v)",
+      "key_distinction": "Hoàn thành xuất sắc một nhiệm vụ, công việc hoặc kế hoạch đã đề ra.",
+      "examples": [
+        "We have accomplished/achieved all we aimed to do."
+      ]
+    },
+    "achieve": {
+      "meaning": "[ngoại động từ] thành công trong việc thực hiện điều gì hoặc khiến cho việc gì xảy ra ~ accomplish (v)\n[ngoại động từ] thành công trong việc hoàn thành một mục tiêu, đạt đến một địa vị hoặc trình độ nhất định (đặc biệt là bằng cách nỗ lực trong một khoảng thời gian dài) ~ attain (v)",
+      "key_distinction": "Đạt được mục tiêu, thành công lớn nhờ nỗ lực và cố gắng trong thời gian dài.",
+      "examples": [
+        "All you've achieved is to upset my parents!",
+        "Martha finally achieved her ambition to study in the UK."
+      ]
+    },
+    "attain": {
+      "meaning": "[ngoại động từ] (mang sắc thái trang trọng) thành công trong việc đạt được điều gì (thường là sau rất nhiều sự nỗ lực) ~ achieve (v)",
+      "key_distinction": "Đạt được điều gì đó khó khăn sau nhiều nỗ lực (văn phong trang trọng).",
+      "examples": [
+        "After years of struggle, the nation attained independence."
+      ]
+    },
+    "fulfil": {
+      "meaning": "thực hiện được điều gì như đã mong đợi/hy vọng/hứa/mơ về\n(mang sắc thái trang trọng) thực hiện được hoặc có thứ gì theo như được yêu cầu hoặc cần thiết",
+      "key_distinction": "Thực hiện/đáp ứng được mong đợi, ước mơ, lời hứa hoặc yêu cầu, tiêu chuẩn.",
+      "examples": [
+        "At the age of 50, Emma finally fulfilled her ambition to run a marathon.",
+        "Much of the electrical equipment failed to fulfil safety requirements."
+      ]
+    },
+    "realize": {
+      "meaning": "đạt được điều gì quan trọng mà bạn rất muốn",
+      "key_distinction": "Hiện thực hóa giấc mơ, tham vọng hoặc phát huy tối đa tiềm năng.",
+      "examples": [
+        "Jane finally realized her ambition of winning an Olympic gold medal.",
+        "Camile is a young singer who has not yet realized her full potential (= be as successful as she is able to be)."
+      ]
+    },
+    "acquire": {
+      "meaning": "nếu bạn acquire một thứ gì như kỹ năng/kiến thức/thói quen/danh tiếng/tai tiếng thì có nghĩa là bạn học/phát triển/đạt được thứ đó trong cuộc sống thường ngày hoặc qua kinh nghiệm/khả năng/nỗ lực/hành vi của bạn\ngiành được/thu được thứ gì bằng cách mua hoặc được cho/tặng",
+      "key_distinction": "Tích lũy được kiến thức, kỹ năng, thói quen qua quá trình trải nghiệm hoặc sở hữu đồ vật qua mua bán/cho tặng.",
+      "examples": [
+        "He spent years acquiring his skills as a surgeon.",
+        "I have recently acquired a taste for olives.",
+        "Jack has acquired a reputation for dishonesty.",
+        "I recently acquired some wood from a holly tree."
+      ]
+    },
+    "obtain": {
+      "meaning": "có được thứ/điều gì mà bạn muốn (đặc biệt là nhờ sự nỗ lực/kỹ năng/công việc của chính bạn)",
+      "key_distinction": "Có được, thu được thứ gì đó nhờ sự nỗ lực, tìm kiếm hoặc yêu cầu.",
+      "examples": [
+        "In the second experiment they obtained a very clear result."
+      ]
+    },
+    "reach": {
+      "meaning": "[ngoại động từ] đạt được sự đồng thuận/kết luận/quyết định/... về một điều gì sau khi thảo luận hoặc suy nghĩ\n[ngoại động từ] tăng đến một mức độ/trình độ/tốc độ/... cụ thể; đi đến một giai đoạn/thời điểm cụ thể sau một khoảng thời gian",
+      "key_distinction": "Đạt tới một giai đoạn, mức độ, độ tuổi cụ thể hoặc đi đến quyết định/thỏa thuận sau thảo luận.",
+      "examples": [
+        "It took the conference four days to reach an agreement on the draft treaty.",
+        "The temperature is expected to reach 30 °C today.",
+        "His parents have not yet reached retirement age."
+      ]
+    },
+    "gain": {
+      "meaning": "[ngoại động từ] có được/thắng thứ gì (đặc biệt là thứ mà bạn cần hoặc muốn có)\n[ngoại động từ, nội động từ] giành được lợi thế hoặc lợi ích từ một điều gì hoặc từ việc thực hiện điều gì\n[ngoại động từ] dần dần có thêm điều gì",
+      "key_distinction": "Giành được, thu được lợi thế, sự công nhận hoặc tăng thêm (trọng lượng, kinh nghiệm, tốc độ).",
+      "examples": [
+        "His ideas gradually gained acceptance.",
+        "The firm is hoping to gain an advantage over its competitors.",
+        "Peter's gained weight recently."
+      ]
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "group_title": "Bỏ quên / Quên",
+  "target_words": {
+    "forget": {
+      "meaning": "vô tình bỏ quên thứ gì đó, không đề cập đến nơi bạn đã bỏ quên nó",
+      "key_distinction": "Bỏ quên đồ vật nhưng không nhắc đến địa điểm cụ thể.",
+      "examples": [
+        "She forgot her sunglasses.",
+        "When he got to the airport he found he'd forgotten his passport."
+      ]
+    },
+    "leave": {
+      "meaning": "để lại, bỏ quên, nhưng ở một nơi nào đó, thường có địa điểm cụ thể bạn đã bỏ quên",
+      "key_distinction": "Bỏ quên đồ vật tại một vị trí, địa điểm cụ thể.",
+      "examples": [
+        "I've left my bag on the bus.",
+        "Hang on a minute - I left my phone upstairs."
+      ]
+    }
+  }
+}

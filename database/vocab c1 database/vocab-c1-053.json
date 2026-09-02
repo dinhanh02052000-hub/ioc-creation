@@ -1,0 +1,52 @@
+{
+  "group_title": "KÌ LẠ, LẠ LÙNG",
+  "target_words": {
+    "strange": {
+      "meaning": "không thông thường, lạ, khác thường (đặc biệt là theo cách mà khó có thể giải thích hoặc hiểu)\n~ odd",
+      "key_distinction": "Kì lạ, khác thường theo cách khó giải thích hoặc chưa từng gặp.",
+      "examples": [
+        "I had a strange feeling that we'd met before."
+      ]
+    },
+    "odd": {
+      "meaning": "khác so với những gì bình thường/thông thường/mong đợi (đặc biệt là theo cách mà bạn không đồng tình hoặc không thể hiểu)\n~ strange\nodd-Ving: khác hoặc không thông thường theo cách mà được đề cập đến",
+      "key_distinction": "Lạ đời, bất thường, khác với kỳ vọng hoặc thói quen thông thường.",
+      "examples": [
+        "Doesn't it strike you as rather odd that he never talks about his family?",
+        "an odd-looking house",
+        "an odd-sounding name"
+      ]
+    },
+    "weird": {
+      "meaning": "rất khác thường hoặc không bình thường và khó để giải thích\n~ strange\n~ bizarre /bɪˈzɑː(r)/ (adj)\n*mặc dù weird cùng trường nghĩa với strange nhưng weird mang nghĩa mạnh hơn strange\nlạ lùng theo cách bí ẩn và gây sợ hãi\n~ eerie",
+      "key_distinction": "Rất kì quái, khác thường mạnh hơn 'strange', đôi khi có nét bí ẩn, quái dị.",
+      "examples": [
+        "She only had lipstick on her bottom lip, which looked weird.",
+        "They sell all sorts of weird and wonderful (= very strange) products.",
+        "She began to make weird inhuman sounds."
+      ]
+    },
+    "eerie": {
+      "meaning": "lạ lùng, bí ẩn và gây sợ hãi (có thể khiến bạn lo lắng)",
+      "key_distinction": "Kì quái, rợn người, gây cảm giác sợ hãi và lo âu.",
+      "examples": [
+        "He had an eerie feeling that he was not alone."
+      ]
+    },
+    "mysterious": {
+      "meaning": "lạ, không thể biết hoặc không thể hiểu (thường gây sợ hãi đôi chút)\nlạ và thú vị bởi vì bạn không biết nhiều về ai/điều gì\n~ enigmatic /ˌenɪɡˈmætɪk/ (adj)",
+      "key_distinction": "Bí ẩn, huyền bí, ẩn chứa nhiều điều chưa biết.",
+      "examples": [
+        "the mysterious disappearance of ships in the waters of the Bermuda Triangle",
+        "Her last years remain somewhat mysterious."
+      ]
+    },
+    "surreal": {
+      "meaning": "rất lạ giống như một giấc mơ chứ không phải là hiện thực, với những ý tưởng và hình ảnh trộn lẫn nhau theo một cách lạ lùng",
+      "key_distinction": "Kì ảo, siêu thực, giống như trong một giấc mơ.",
+      "examples": [
+        "The movie was a surreal mix of fact and fantasy."
+      ]
+    }
+  }
+}

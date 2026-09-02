@@ -1,0 +1,34 @@
+{
+  "group_title": "Khoảng trống",
+  "target_words": {
+    "seat": {
+      "meaning": "khoảng không gian mà bạn có thể ngồi, ví dụ như ghế, chỗ ngồi (danh từ đếm được)",
+      "key_distinction": "Ghế ngồi hoặc vị trí chỗ ngồi cụ thể dành cho một người.",
+      "examples": [
+        "He was in the back seat of the car when the accident happened."
+      ]
+    },
+    "room": {
+      "meaning": "không gian trống có thể được sử dụng cho một mục đích cụ thể, với nghĩa này thì \"room\" (danh từ không đếm được)",
+      "key_distinction": "Chỗ trống, khoảng không gian vừa đủ để chứa thêm người hoặc đồ vật (danh từ không đếm được).",
+      "examples": [
+        "How can we make room for all the furniture?"
+      ]
+    },
+    "place": {
+      "meaning": "một vị trí, tòa nhà, thị trấn, khu vực, chỗ, nơi, địa điểm v.v. là danh từ đếm được; vị trí, chỗ ngồi, v.v., đặc biệt là vị trí có sẵn hoặc được sử dụng bởi một người hoặc phương tiện (danh từ đếm được)",
+      "key_distinction": "Địa điểm, vị trí chung hoặc chỗ đứng/chỗ ngồi trong hàng lối, sự kiện.",
+      "examples": [
+        "This would be a good place for a picnic.",
+        "I don't want to lose my place in the line."
+      ]
+    },
+    "space": {
+      "meaning": "không gian, khoảng trống, khoảng không, một khu vực trống có sẵn để sử dụng, danh từ đếm được",
+      "key_distinction": "Khoảng trống hoặc khu vực chưa bị chiếm chỗ để đặt để thứ gì đó (như đỗ xe) hoặc khoảng không gian vũ trụ.",
+      "examples": [
+        "He parked in a space reserved for the disabled."
+      ]
+    }
+  }
+}

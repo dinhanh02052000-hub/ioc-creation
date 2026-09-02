@@ -1,0 +1,50 @@
+{
+  "group_title": "Sự hướng dẫn",
+  "target_words": {
+    "guidance": {
+      "meaning": "Sự giúp đỡ hoặc lời khuyên (đặc biệt là từ ai đó nhiều tuổi hơn hoặc có nhiều kinh nghiệm hơn) về cách để làm việc gì hoặc cách để giải quyết các vấn đề liên quan đến công việc, giáo dục, hoặc các mối quan hệ cá nhân của bạn: sự hướng dẫn, sự dìu dắt; lời khuyên.",
+      "key_distinction": "Danh từ không đếm được [U]. Nhấn mạnh vào sự dìu dắt, định hướng từ người có chuyên môn hoặc kinh nghiệm.",
+      "examples": [
+        "Under her teacher's guidance, she has developed into an accomplished pianist.",
+        "guidance for teachers on how to use video in the classroom",
+        "The helpline was set up for young people in need of guidance and support."
+      ]
+    },
+    "advice": {
+      "meaning": "[U] Một ý kiến, quan điểm, hoặc gợi ý mà ai đó đưa ra cho bạn về việc bạn nên làm gì hoặc hành xử như thế nào trong một tình huống cụ thể: lời khuyên, lời chỉ bảo.",
+      "key_distinction": "Danh từ không đếm được [U]. Mang tính chất đề xuất, gợi ý cách giải quyết tình huống.",
+      "examples": [
+        "I need some advice on which smartphone to buy.",
+        "She went back to work against the advice of her doctor (= her doctor advised her not to)."
+      ]
+    },
+    "direction": {
+      "meaning": "[C] (plural) Những hướng dẫn về cách để làm việc gì/đi đến đâu; hoặc [U] sự quản lý/hướng dẫn/chỉ đạo ai đó/việc gì.",
+      "key_distinction": "Ở dạng số nhiều (directions) chỉ lời chỉ đường hoặc các bước thực hiện; ở dạng không đếm được [U] chỉ sự quản lý, chỉ đạo công việc.",
+      "examples": [
+        "It's ever so easy to cook. You just follow the directions on the packet.",
+        "A farmer gave us directions to the town.",
+        "All such research is under government direction.",
+        "All work was produced by the students under the direction of John Williams."
+      ]
+    },
+    "instruction": {
+      "meaning": "(plural) Thông tin chi tiết về cách để làm việc gì hoặc sử dụng cái gì (= direction); hoặc [U] (formal) hành động dạy một kỹ năng hoặc một môn học cụ thể cho ai đó.",
+      "key_distinction": "Ở dạng số nhiều (instructions) chỉ bản hướng dẫn sử dụng/thực hiện cụ thể; ở dạng không đếm được [U] mang nghĩa sự truyền thụ kiến thức, giảng dạy kỹ năng.",
+      "examples": [
+        "Step-by-step instructions on how to use the photocopier are provided.",
+        "driver under instruction (= being taught how to drive)",
+        "basic instruction on using the internet",
+        "She had no formal instruction in music."
+      ]
+    },
+    "demonstration": {
+      "meaning": "[C, U] Hành động chỉ/dạy/hướng dẫn/giải thích cách thứ gì đó hoạt động hoặc được làm hoặc cách để làm việc gì: minh họa.",
+      "key_distinction": "Nhấn mạnh vào việc thực hành, làm mẫu trực quan (thao tác trực tiếp) để người khác quan sát và học theo.",
+      "examples": [
+        "Sandra and Nigel provided a demonstration of salsa dance steps.",
+        "We're going to a cookery demonstration tonight."
+      ]
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "group_title": "LƯƠNG, THU NHẬP",
+  "target_words": {
+    "income": {
+      "meaning": "[C, U] số tiền mà một người/một vùng/một quốc gia/... kiếm được hằng tuần/hằng tháng/hằng năm từ việc làm (salary/wage), từ việc đầu tư tiền, từ việc kinh doanh,...: thu nhập",
+      "key_distinction": "Tổng thu nhập nói chung từ mọi nguồn (lương, đầu tư, kinh doanh...), không riêng gì tiền lương.",
+      "examples": [
+        "Tourism is a major source of income for the area."
+      ]
+    },
+    "salary": {
+      "meaning": "[C] số tiền cố định (thường được trả hằng tháng) mà một người nhận được để làm một công việc (đặc biệt dành cho những người làm việc ở văn phòng hoặc những người làm những công việc cần được đào tạo như giảng viên, quản lý hay bác sĩ): tiền lương",
+      "key_distinction": "Lương cố định trả định kỳ (thường hằng tháng), dùng cho công việc văn phòng/chuyên môn.",
+      "examples": [
+        "She's on an annual salary of £35,000."
+      ]
+    },
+    "wage": {
+      "meaning": "[C] số tiền mà ai đó được trả hằng ngày/hằng tuần/hằng tháng để làm một công việc nào đó hoặc một dịch vụ nào đó (đặc biệt dùng cho ai đó làm một công việc yêu cầu về thể lực): tiền lương/tiền công",
+      "key_distinction": "Lương trả theo ngày/tuần/tháng, thường dùng cho công việc lao động chân tay.",
+      "examples": [
+        "Workers in these stores earn a good wage."
+      ]
+    },
+    "pay": {
+      "meaning": "[U] số tiền mà ai đó nhận được để làm một công việc nào đó thường xuyên: tiền lương",
+      "key_distinction": "* pay mang nghĩa chung chung nhất trong số ba từ pay, wage, và salary.",
+      "examples": [
+        "Her job is hard work, but the pay is good."
+      ]
+    },
+    "pension": {
+      "meaning": "[C] một số tiền được trả thường xuyên bởi chính phủ/công ty/... cho một người đã nghỉ hưu: lương hưu",
+      "key_distinction": "Khoản tiền trả định kỳ cho người đã nghỉ hưu, không phải tiền công đang đi làm.",
+      "examples": [
+        "He is now retired and on a pension."
+      ]
+    },
+    "dole": {
+      "meaning": "tiền được trả bởi chính phủ cho những người thất nghiệp: trợ cấp thất nghiệp",
+      "key_distinction": "Trợ cấp chính phủ trả cho người thất nghiệp, mang tính khẩu ngữ (informal).",
+      "examples": [
+        "Sophia was on the dole (= without a job) for eight months before she got a job."
+      ]
+    },
+    "stipend": {
+      "meaning": "[C] một số tiền được trả thường xuyên cho ai đó như là tiền lương (đặc biệt dùng cho linh mục) hoặc tiền để sinh sống",
+      "key_distinction": "Khoản trợ cấp định kỳ cho người tu hành/thực tập sinh để trang trải sinh hoạt, không hẳn là lương chính thức.",
+      "examples": [
+        "Your monthly stipend is calculated to cover your basic expenses only, such as accommodation, meals, and phone bill."
+      ]
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "group_title": "XÓA BỎ, LOẠI BỎ",
+  "target_words": {
+    "delete": {
+      "meaning": "xoá đi",
+      "key_distinction": "delete something (from something) - bỏ đi thứ gì đã được viết hoặc in ra hoặc thứ đã được lưu trong máy tính",
+      "examples": [
+        "The word 'it' has been deleted."
+      ]
+    },
+    "erase": {
+      "meaning": "xoá",
+      "key_distinction": "xóa bỏ hoàn toàn điều gì/thứ gì; khiến cho một cảm xúc/một kỷ niệm/một quãng thời gian hoàn toàn bị quên đi OR xóa đi dấu (bút/phấn/...) hoặc thứ mà bạn đã viết ra, thường bằng cách lau chúng đi bằng một mảnh giẻ (đặc biệt là để chữa chúng cho đúng) OR xoá bản ghi âm ở đĩa hoặc thông tin được lưu trữ trong máy tính",
+      "examples": [
+        "You cannot erase injustice from the world.",
+        "She tried to erase the memory of that evening.",
+        "He has erased the wrong word.",
+        "The computer crashed, and all our records were erased."
+      ]
+    },
+    "eradicate": {
+      "meaning": "loại bỏ hoàn toàn",
+      "key_distinction": "loại bỏ hoàn toàn thứ gì đó, đặc biệt là những thứ xấu (như bệnh tật hoặc các vấn đề xã hội) ~ wipe out /waɪp aʊt/ (phrasal verb)",
+      "examples": [
+        "Their aim is to eradicate child poverty in the country within ten years."
+      ]
+    }
+  }
+}

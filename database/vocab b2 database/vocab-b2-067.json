@@ -1,0 +1,37 @@
+{
+  "group_title": "Niềm tin, sự tin tưởng",
+  "target_words": {
+    "trust": {
+      "meaning": "[U] niềm tin rằng ai đó/điều gì là tốt/chân thành/thật thà/... và sẽ không làm hại hoặc lừa dối bạn: sự tin tưởng, lòng tin *take something on trust: tin điều ai đó nói thậm chí kể cả khi mà bạn không có bất kì bằng chứng hay minh chứng để chứng minh điều đó là thật; trust (in something) [U] niềm tin rằng điều gì đó là đúng hoặc là sự thật hoặc bạn có thể phụ thuộc vào: lòng tin",
+      "key_distinction": "Sự tin tưởng vào lòng tốt, sự chân thật, độ tin cậy hoặc khả năng phụ thuộc của ai đó/điều gì đó.",
+      "examples": [
+        "Our partnership is based on trust",
+        "I don't know anything about cars, so I had to take the mechanic's recommendation on trust.",
+        "a campaign to build consumer trust in the quality of dairy products"
+      ]
+    },
+    "belief": {
+      "meaning": "[U] một cảm giác mạnh mẽ rằng ai/điều gì tồn tại hoặc là sự thật; sự tự tin rằng ai đó/điều gì là tốt hoặc đúng đắn: niềm tin",
+      "key_distinction": "Tôn giáo, tín ngưỡng, hoặc niềm tin chắc chắn rằng một điều gì đó là đúng/tồn tại (thường mang tính tư tưởng, triết lý).",
+      "examples": [
+        "They share a belief that there is life after death."
+      ]
+    },
+    "faith": {
+      "meaning": "[U] sự tin tưởng vào khả năng hoặc kiến thức của ai đó; sự tin tưởng rằng ai đó/điều gì sẽ làm việc như đã hứa: sự tin tưởng, sự tin cậy",
+      "key_distinction": "Sự tin tưởng tuyệt đối vào khả năng, cam kết của người khác hoặc đức tin tôn giáo.",
+      "examples": [
+        "I have faith in you - I know you'll do well."
+      ]
+    },
+    "confidence": {
+      "meaning": "[U] cảm giác rằng bạn có thể tin tưởng, tin vào hoặc chắc chắn về những khả năng/những phẩm chất tốt đẹp của ai/điều gì: sự tin tưởng; [U] niềm tin vào chính khả năng của bản thân bạn để làm việc gì và thành công: sự tự tin (~ assurance /ə'ʃʊərəns/ (n))",
+      "key_distinction": "Sự tự tin vào bản thân hoặc sự tin tưởng của công chúng/tập thể vào khả năng, chất lượng của tổ chức, cá nhân.",
+      "examples": [
+        "Public confidence in the government is at an all-time low.",
+        "She has done little to earn their confidence.",
+        "He gained confidence when he went to college."
+      ]
+    }
+  }
+}
