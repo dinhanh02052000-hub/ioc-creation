@@ -5,11 +5,18 @@ tiền tố + thư mục riêng. Muốn thêm world mới chỉ cần thêm 1 d�
 WORLD_KB_CONFIG, không cần sửa logic nơi khác.
 """
 
+import os
 from pathlib import Path
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATABASE_DIR = BASE_DIR / "database"
 ENGINE_DIR = DATABASE_DIR / "engine"
+
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", "")
 
 WORLD_KB_CONFIG = {
     "world-1": {

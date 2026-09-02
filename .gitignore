@@ -9,6 +9,9 @@ __pycache__/
 # Logs
 server/uvicorn_log.txt
 
+# User database (dữ liệu người dùng thật - không commit)
+server/ioc_users.db
+
 # OS / editor
 .DS_Store
 Thumbs.db

@@ -25,15 +25,20 @@ Prompt được nén tối đa (xem engine_prompts.py) để 1 lượt đầy đ
 chỉ rơi vào khoảng 4000-5000 token thay vì ~18K như bản JSON-dump trước đó.
 """
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import Depends, FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
+from google.auth.transport import requests as google_requests
+from google.oauth2 import id_token as google_id_token
 from pydantic import BaseModel
 
+import db
 import scoring
 from ai_json import parse_ai_json
 from ai_client import AIProviderError, AIRateLimitError, ask
 from analysis_prompts import analysis_task
+from config import BASE_DIR, GOOGLE_CLIENT_ID
 from engine_prompts import (
     assemble,
     compact_kb,
@@ -48,6 +53,7 @@ from engine_prompts import (
 from session_store import create_session, get_session
 
 app = FastAPI(title="IOC AI Tutor Backend")
+db.init_db()
 
 app.add_middleware(
     CORSMiddleware,
@@ -249,6 +255,27 @@ class AnalysisGroup(BaseModel):
 
 class AnalysisRequest(BaseModel):
     groups: list[AnalysisGroup]
+
+
+class GoogleAuthRequest(BaseModel):
+    credential: str  # ID token JWT do Google Identity Services trả về ở frontend
+
+
+class ProgressSaveRequest(BaseModel):
+    data: dict
+
+
+def get_current_user(authorization: str | None = Header(default=None)):
+    """Dependency xác thực Bearer token cho các route cần đăng nhập
+    (progress save/load) - KHÔNG áp dụng cho các route chat AI (không cần
+    đăng nhập mới học được, đăng nhập chỉ để đồng bộ tiến độ)."""
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Chưa đăng nhập.")
+    token = authorization.removeprefix("Bearer ").strip()
+    user = db.get_user_by_token(token)
+    if not user:
+        raise HTTPException(status_code=401, detail="Phiên đăng nhập không hợp lệ hoặc đã hết hạn.")
+    return user
 
 
 # ---------- endpoints ----------
@@ -570,3 +597,84 @@ def generate_analysis(req: AnalysisRequest):
         "improvement_tips": data.get("improvement_tips", []),
         "encouragement": data.get("encouragement", ""),
     }
+
+
+# ---------- đăng nhập Google + đồng bộ tiến độ (không đụng session_store,
+# đăng nhập chỉ để backup/đồng bộ dữ liệu localStorage giữa các trình duyệt/
+# thiết bị, KHÔNG bắt buộc mới học được) ----------
+
+@app.post("/api/auth/google")
+def google_login(req: GoogleAuthRequest):
+    try:
+        idinfo = google_id_token.verify_oauth2_token(
+            req.credential, google_requests.Request(), GOOGLE_CLIENT_ID
+        )
+    except ValueError:
+        raise HTTPException(status_code=401, detail="Token Google không hợp lệ hoặc đã hết hạn.")
+
+    user = db.upsert_user(
+        google_sub=idinfo["sub"],
+        email=idinfo.get("email", ""),
+        name=idinfo.get("name", ""),
+        picture=idinfo.get("picture", ""),
+    )
+    token = db.create_session(user["id"])
+    return {
+        "token": token,
+        "user": {"email": user["email"], "name": user["name"], "picture": user["picture"]},
+    }
+
+
+@app.post("/api/auth/logout")
+def logout(authorization: str | None = Header(default=None)):
+    if authorization and authorization.startswith("Bearer "):
+        db.delete_session(authorization.removeprefix("Bearer ").strip())
+    return {"ok": True}
+
+
+@app.get("/api/auth/me")
+def get_me(user=Depends(get_current_user)):
+    return {"email": user["email"], "name": user["name"], "picture": user["picture"]}
+
+
+@app.post("/api/progress/save")
+def save_progress(req: ProgressSaveRequest, user=Depends(get_current_user)):
+    db.save_progress(user["id"], req.data)
+    return {"ok": True}
+
+
+@app.get("/api/progress/load")
+def load_progress_endpoint(user=Depends(get_current_user)):
+    return {"data": db.load_progress(user["id"])}
+
+
+# ---------- phục vụ frontend tĩnh cùng origin với API (Google Sign-In yêu
+# cầu trang chạy ở origin http(s) đã đăng ký trên Google Cloud Console, không
+# hoạt động khi mở file:// trực tiếp). CHỈ mount đúng các thư mục tài nguyên
+# công khai (không mount cả BASE_DIR để tránh lộ server/.env). Đặt Ở CUỐI file
+# vì Mount("/") là catch-all, phải đăng ký sau mọi route /api/... để không
+# che mất chúng.
+
+app.mount("/js", StaticFiles(directory=str(BASE_DIR / "js")), name="static-js")
+app.mount("/css", StaticFiles(directory=str(BASE_DIR / "css")), name="static-css")
+app.mount("/assets", StaticFiles(directory=str(BASE_DIR / "assets")), name="static-assets")
+app.mount(
+    "/world1iconbackground",
+    StaticFiles(directory=str(BASE_DIR / "world1iconbackground")),
+    name="static-world1iconbackground",
+)
+
+
+@app.get("/")
+def serve_index():
+    return FileResponse(str(BASE_DIR / "index.html"))
+
+
+@app.get("/world1.html")
+def serve_world1():
+    return FileResponse(str(BASE_DIR / "world1.html"))
+
+
+@app.get("/world2.html")
+def serve_world2():
+    return FileResponse(str(BASE_DIR / "world2.html"))

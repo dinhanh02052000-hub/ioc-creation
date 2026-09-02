@@ -52,6 +52,11 @@ function loadContent(target) {
     if (typeof initAnalysisInteractions === 'function') {
       initAnalysisInteractions();
     }
+  } else if (target === 'profile' && typeof renderProfile === 'function') {
+    contentArea.innerHTML = renderProfile();
+    if (typeof initProfileInteractions === 'function') {
+      initProfileInteractions();
+    }
   } else {
     contentArea.innerHTML = `<div class="placeholder-page"><h2>Trang ${target.toUpperCase()} đang phát triển...</h2></div>`;
   }
