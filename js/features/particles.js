@@ -1,8 +1,9 @@
-// Dải sao trôi nhẹ phía sau nội dung — chỉ để gợi không khí "công nghệ",
-// cố tình giữ mật độ thấp và không dùng glow/màu sắc rực rỡ để tránh
-// trông giống nền AI-generated mặc định.
+// Nền chuyển động nhẹ phía sau nội dung — chỉ để gợi không khí, mật độ thấp.
+// Dark mode: sao lấp lánh. Light mode: mây trôi dạt nhẹ nhàng. Tự đổi ngay
+// khi người dùng bấm nút Sáng/Tối ở trang Profile (đọc getTheme() mỗi khung
+// hình), không cần tải lại trang.
 (function () {
-  function initStars() {
+  function initParticles() {
     let canvas = document.getElementById('particles-canvas');
     if (!canvas) {
       canvas = document.createElement('canvas');
@@ -19,28 +20,26 @@
       height = canvas.height = window.innerHeight;
     });
 
+    // ---- Dark mode: sao lấp lánh ----
     const STAR_COUNT = 90;
-    const stars = [];
-
-    for (let i = 0; i < STAR_COUNT; i++) {
-      stars.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        radius: Math.random() * 1.1 + 0.3,
-        baseAlpha: Math.random() * 0.4 + 0.25,
-        twinkleSpeed: Math.random() * 0.02 + 0.006,
-        twinklePhase: Math.random() * Math.PI * 2,
-        driftX: Math.random() * 0.06 + 0.015,
-        driftY: Math.random() * 0.03 + 0.005
-      });
+    function makeStars() {
+      const stars = [];
+      for (let i = 0; i < STAR_COUNT; i++) {
+        stars.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: Math.random() * 1.1 + 0.3,
+          baseAlpha: Math.random() * 0.4 + 0.25,
+          twinkleSpeed: Math.random() * 0.02 + 0.006,
+          twinklePhase: Math.random() * Math.PI * 2,
+          driftX: Math.random() * 0.06 + 0.015,
+          driftY: Math.random() * 0.03 + 0.005
+        });
+      }
+      return stars;
     }
 
-    let t = 0;
-
-    function animate() {
-      t += 1;
-      ctx.clearRect(0, 0, width, height);
-
+    function drawStars(stars, t) {
       stars.forEach(s => {
         s.x += s.driftX;
         s.y += s.driftY;
@@ -54,6 +53,110 @@
         ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
         ctx.fill();
       });
+    }
+
+    // ---- Light mode: mây trôi dạt (mỗi cụm mây = vài hình tròn chồng lên
+    // nhau tạo dáng bồng bềnh, thay vì 1 hình tròn đơn giản như sao) ----
+    const CLOUD_COUNT = 7;
+    const CLOUD_PUFFS = [
+      { dx: 0, dy: 0, r: 34 },
+      { dx: -30, dy: 6, r: 24 },
+      { dx: 30, dy: 6, r: 26 },
+      { dx: -12, dy: -14, r: 20 },
+      { dx: 16, dy: -12, r: 18 },
+      { dx: 50, dy: 10, r: 16 }
+    ];
+
+    function makeClouds() {
+      const clouds = [];
+      for (let i = 0; i < CLOUD_COUNT; i++) {
+        const scale = Math.random() * 0.8 + 0.7;
+        clouds.push({
+          x: Math.random() * width,
+          y: Math.random() * height * 0.7 + height * 0.05,
+          scale,
+          speed: (Math.random() * 0.15 + 0.05) * scale,
+          baseAlpha: Math.random() * 0.25 + 0.55, // đủ đậm để nổi rõ trên nền trời xanh
+          bobPhase: Math.random() * Math.PI * 2,
+          bobSpeed: Math.random() * 0.004 + 0.001
+        });
+      }
+      return clouds;
+    }
+
+    // Mặt trời buổi sáng mờ ảo, vẽ CỐ ĐỊNH góc trên - làm nền trước khi vẽ
+    // mây để mây trông như đang trôi trước mặt trời.
+    function drawSun() {
+      const sunX = width * 0.82;
+      const sunY = height * 0.16;
+      const gradient = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, 140);
+      gradient.addColorStop(0, 'rgba(255, 236, 190, 0.9)');
+      gradient.addColorStop(0.4, 'rgba(255, 224, 170, 0.35)');
+      gradient.addColorStop(1, 'rgba(255, 224, 170, 0)');
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(sunX, sunY, 140, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.globalAlpha = 0.9;
+      ctx.fillStyle = '#fff3d8';
+      ctx.beginPath();
+      ctx.arc(sunX, sunY, 30, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function drawClouds(clouds, t) {
+      drawSun();
+
+      clouds.forEach(c => {
+        c.x += c.speed;
+        const edge = 80 * c.scale;
+        if (c.x - edge > width) c.x = -edge;
+
+        const bob = Math.sin(t * c.bobSpeed + c.bobPhase) * 6;
+
+        // Lớp bóng mờ (hơi lệch xuống-phải) tạo độ dày cho cụm mây trước khi
+        // phủ lớp trắng lên trên - nếu không mây sẽ trông phẳng như đốm tròn.
+        ctx.globalAlpha = c.baseAlpha * 0.35;
+        ctx.fillStyle = '#c3d3e6';
+        CLOUD_PUFFS.forEach(p => {
+          ctx.beginPath();
+          ctx.arc(c.x + p.dx * c.scale + 4, c.y + p.dy * c.scale + bob + 5, p.r * c.scale, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        ctx.globalAlpha = c.baseAlpha;
+        ctx.fillStyle = '#ffffff';
+        CLOUD_PUFFS.forEach(p => {
+          ctx.beginPath();
+          ctx.arc(c.x + p.dx * c.scale, c.y + p.dy * c.scale + bob, p.r * c.scale, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      });
+    }
+
+    let stars = makeStars();
+    let clouds = makeClouds();
+    let mode = typeof getTheme === 'function' ? getTheme() : 'dark';
+    let t = 0;
+
+    function animate() {
+      t += 1;
+
+      // Kiểm tra theme mỗi khung hình (hàm rẻ, không đáng lo hiệu năng) - đổi
+      // ngay lập tức nếu người dùng vừa bấm nút Sáng/Tối ở trang Profile.
+      const currentTheme = typeof getTheme === 'function' ? getTheme() : 'dark';
+      if (currentTheme !== mode) {
+        mode = currentTheme;
+      }
+
+      ctx.clearRect(0, 0, width, height);
+      if (mode === 'light') {
+        drawClouds(clouds, t);
+      } else {
+        drawStars(stars, t);
+      }
 
       requestAnimationFrame(animate);
     }
@@ -62,8 +165,8 @@
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initStars);
+    document.addEventListener('DOMContentLoaded', initParticles);
   } else {
-    initStars();
+    initParticles();
   }
 })();

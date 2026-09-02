@@ -185,7 +185,7 @@ function renderWorldMap(config) {
       </div>
 
       <header class="world-map-header">
-        <a href="index.html?page=course" class="world-map-back">
+        <a href="/" class="world-map-back">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3L5 8l5 5"/></svg>
           <span>Quay lại</span>
         </a>

@@ -86,6 +86,18 @@ def delete_session(token: str) -> None:
     conn.close()
 
 
+def delete_user(user_id: int) -> None:
+    """Xoá vĩnh viễn tài khoản: mọi phiên đăng nhập + tiến độ đã lưu của user
+    này. Không có ràng buộc khoá ngoại/cascade ở schema nên xoá thủ công cả 3
+    bảng liên quan."""
+    conn = get_conn()
+    conn.execute("DELETE FROM sessions WHERE user_id = ?", (user_id,))
+    conn.execute("DELETE FROM progress WHERE user_id = ?", (user_id,))
+    conn.execute("DELETE FROM users WHERE id = ?", (user_id,))
+    conn.commit()
+    conn.close()
+
+
 def save_progress(user_id: int, data: dict) -> None:
     conn = get_conn()
     conn.execute(

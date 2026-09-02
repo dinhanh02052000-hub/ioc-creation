@@ -647,6 +647,14 @@ def get_me(user=Depends(get_current_user)):
     return {"email": user["email"], "name": user["name"], "picture": user["picture"]}
 
 
+@app.delete("/api/auth/delete-account")
+def delete_account(user=Depends(get_current_user)):
+    """Xoá vĩnh viễn tài khoản + toàn bộ tiến độ đã lưu trên server. Không thể
+    khôi phục - frontend phải xác nhận rõ ràng với người dùng trước khi gọi."""
+    db.delete_user(user["id"])
+    return {"ok": True}
+
+
 @app.post("/api/progress/save")
 def save_progress(req: ProgressSaveRequest, user=Depends(get_current_user)):
     db.save_progress(user["id"], req.data)

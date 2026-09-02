@@ -6,7 +6,10 @@ function App() {
           <div class="logo-placeholder">
             <img src="assets/images/ioc-logo.jpg" alt="IOC Logo" class="logo-img">
           </div>
-          <span class="brand-title">IOC <span class="sub-title">ILLUSION OF COMPETENCE</span></span>
+          <div class="brand-text">
+            <span class="brand-title">IOC <span class="sub-title">ILLUSION OF COMPETENCE</span></span>
+            <span class="brand-notice">Để kết quả được tối ưu, trong quá trình làm bài không dùng công cụ hoặc thiết bị hỗ trợ</span>
+          </div>
         </div>
         <nav class="nav-links">
           <button class="nav-btn active" data-target="home">

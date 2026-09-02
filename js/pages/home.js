@@ -82,6 +82,9 @@ function renderHome() {
             <span class="badge inactive" id="streak-badge">Chưa kích hoạt (00:00/10:00)</span>
           </div>
           <div class="streak-main">
+            <svg id="streak-flame-icon" class="streak-flame" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2c1 3-2 4.5-2 7a2 2 0 0 0 4 0c0-1-.5-1.5-.5-1.5 1.5.5 3.5 2.5 3.5 5.5a5 5 0 0 1-10 0c0-4 2-5 2-7 0-1.5-.5-3-1-4 2 0 4 1 4 3.5 0-1.5 0-2.5 0-3.5z"/>
+            </svg>
             <div class="streak-number" id="streak-number">0 DAY</div>
             <span class="status-tag" id="streak-status-tag">Chờ học 10p</span>
           </div>
