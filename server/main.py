@@ -117,7 +117,15 @@ def _rubric_rows(scores: dict, criteria: dict, labels: dict) -> list[dict]:
 
 def _parse_mcq_rows(rows: list, expected_n: int) -> list[dict]:
     """Parse + validate JSON rows AI trả về thành list câu hỏi MCQ chuẩn. Dùng
-    chung cho cả recognition (20 câu) và remediation practice (ít câu hơn)."""
+    chung cho cả recognition (20 câu) và remediation practice (ít câu hơn).
+
+    Phần tử thứ 6 là NGUYÊN VĂN đáp án đúng (không phải số index) - AI chỉ cần
+    chép lại đúng 1 trong 4 lựa chọn đã viết ra, code tự đối chiếu để suy ra
+    index. Bắt AI tự đếm số thứ tự 0-3 (nhất là khi vị trí đáp án đúng bị yêu
+    cầu random mỗi câu) là nguồn lỗi phổ biến - AI đôi khi chọn đúng từ nhưng
+    khai sai index, khiến câu hỏi bị chấm/hiển thị nhầm đáp án. Đối chiếu text
+    loại bỏ hẳn kiểu lỗi này, đồng thời tự phát hiện (và bắt thử lại) nếu AI
+    khai đáp án không khớp bất kỳ lựa chọn nào."""
     if len(rows) != expected_n:
         raise HTTPException(status_code=502, detail=f"AI trả về {len(rows)} câu thay vì {expected_n}, thử lại.")
 
@@ -125,18 +133,20 @@ def _parse_mcq_rows(rows: list, expected_n: int) -> list[dict]:
     for i, row in enumerate(rows, start=1):
         if not isinstance(row, list) or len(row) != 6:
             raise HTTPException(status_code=502, detail=f"Câu {i} sai định dạng, thử lại.")
-        question, opt_a, opt_b, opt_c, opt_d, correct_idx = row
+        question, opt_a, opt_b, opt_c, opt_d, correct_text = row
         if "___" not in str(question):
             raise HTTPException(status_code=502, detail=f"Câu {i} thiếu chỗ trống (___), thử lại.")
         options = [opt_a, opt_b, opt_c, opt_d]
-        if len({str(o).strip().lower() for o in options}) != 4:
+        normalized_options = [str(o).strip().lower() for o in options]
+        if len(set(normalized_options)) != 4:
             raise HTTPException(status_code=502, detail=f"Câu {i} có lựa chọn trùng lặp, thử lại.")
-        try:
-            correct_idx = int(correct_idx)
-        except (TypeError, ValueError):
-            raise HTTPException(status_code=502, detail=f"Câu {i} có chỉ số đáp án không hợp lệ, thử lại.")
-        if not (0 <= correct_idx <= 3):
-            raise HTTPException(status_code=502, detail=f"Câu {i} có chỉ số đáp án không hợp lệ, thử lại.")
+        correct_norm = str(correct_text).strip().lower()
+        if correct_norm not in normalized_options:
+            raise HTTPException(
+                status_code=502,
+                detail=f"Câu {i} có đáp án đúng không khớp với 4 lựa chọn đã cho, thử lại.",
+            )
+        correct_idx = normalized_options.index(correct_norm)
         questions.append({
             "id": i,
             "question": question,
@@ -666,6 +676,7 @@ app.mount(
 
 
 @app.get("/")
+@app.get("/index.html")
 def serve_index():
     return FileResponse(str(BASE_DIR / "index.html"))
 

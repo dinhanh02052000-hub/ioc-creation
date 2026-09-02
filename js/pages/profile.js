@@ -28,7 +28,7 @@ function renderAuthWidget() {
   if (session) {
     area.innerHTML = `
       <div class="profile-logged-in">
-        ${session.picture ? `<img src="${session.picture}" alt="Avatar" class="profile-avatar">` : ''}
+        <img alt="Avatar" class="profile-avatar" id="profile-avatar-img">
         <div class="profile-info">
           <div class="profile-name">${session.name || 'Người dùng'}</div>
           <div class="profile-email">${session.email || ''}</div>
@@ -36,6 +36,16 @@ function renderAuthWidget() {
         <button id="auth-logout-btn" class="ai-btn" type="button">Đăng xuất</button>
       </div>
     `;
+    // Gán qua .src (không chèn thẳng vào chuỗi HTML) + fallback ảnh mặc định
+    // nếu ảnh Google lỗi, đồng bộ cách làm với avatar ở trang Home.
+    const avatarImg = document.getElementById('profile-avatar-img');
+    if (avatarImg) {
+      avatarImg.src = typeof getEffectiveAvatarUrl === 'function' ? getEffectiveAvatarUrl() : (session.picture || '');
+      avatarImg.addEventListener('error', () => {
+        if (typeof getDefaultAvatarDataUri === 'function') avatarImg.src = getDefaultAvatarDataUri();
+      });
+    }
+
     const logoutBtn = document.getElementById('auth-logout-btn');
     if (logoutBtn) {
       // authSignOut() tự reload trang sau khi xoá session + tiến độ cục bộ

@@ -101,7 +101,7 @@ def recognition_task(n: int, is_retry: bool = False) -> str:
         f"TRẢI CHỦ ĐỀ đa dạng qua các lĩnh vực sau (mỗi câu 1 chủ đề khác nhau, xoay vòng, KHÔNG lặp lại 1-2 "
         f"chủ đề quen thuộc cho cả 20 câu): {domains}, và các lĩnh vực đời sống khác. "
         "Đáp án đúng phải rải đều giữa các từ mục tiêu (chênh lệch số lần đúng tối đa 1). Vị trí đáp án đúng "
-        "(0-3) ngẫu nhiên, không theo mẫu. "
+        "trong 4 lựa chọn phải ngẫu nhiên, không theo mẫu (không phải lúc nào cũng ở lựa chọn đầu/cuối). "
         "RÀNG BUỘC CHẤT LƯỢNG BẮT BUỘC: "
         "(0) MỖI câu hỏi PHẢI có ĐÚNG 1 chỗ trống hiển thị bằng dấu gạch dưới '___' ngay tại vị trí từ mục tiêu "
         "sẽ điền vào (VD: \"A teacher's encouragement can ___ a child's confidence.\"). TUYỆT ĐỐI KHÔNG được "
@@ -118,8 +118,15 @@ def recognition_task(n: int, is_retry: bool = False) -> str:
         "trên - mỗi câu hỏi phải là tình huống hoàn toàn mới do bạn tự nghĩ ra, khác cả nội dung lẫn cấu trúc "
         "câu so với các ví dụ đó. "
         f"{retry_note}"
+        "(6) Phần tử thứ 6 của mỗi câu (đáp án đúng) PHẢI là bản CHÉP NGUYÊN VĂN - từng ký tự, không diễn giải "
+        "lại, không đổi hoa/thường - của ĐÚNG 1 trong 4 lựa chọn đã viết ở vị trí 2-5 của chính câu đó. TUYỆT "
+        "ĐỐI không dùng số thứ tự (0/1/2/3) hay chữ cái (A/B/C/D) ở đây - phải là text của đáp án. Trước khi trả "
+        "kết quả, tự kiểm tra lại từng câu: đáp án đúng (phần tử 6) có xuất hiện y hệt trong danh sách 4 lựa "
+        "chọn (phần tử 2-5) của ĐÚNG câu đó không - nếu không khớp, sửa lại trước khi trả JSON. "
         "CHỈ trả JSON, không chữ thừa, không markdown fence, đúng schema:\n"
-        '{"q": [["câu hỏi có ___ ở chỗ trống", "optA", "optB", "optC", "optD", idx_đúng_0_đến_3], ... đủ 20 phần tử]}'
+        '{"q": [["câu hỏi có ___ ở chỗ trống", "optA", "optB", "optC", "optD", "optB (chép nguyên văn đáp án '
+        'đúng, ở đây minh hoạ là optB nhưng thực tế phải khớp đúng lựa chọn nào là đáp án đúng của câu đó)"], '
+        '... đủ 20 phần tử]}'
     )
 
 
@@ -159,7 +166,9 @@ def remediation_task(missed_words_text: str, weak_area: str, d_fb: str, a_fb: st
         "tiêu (TUYỆT ĐỐI không viết thành câu đã hoàn chỉnh không có chỗ trống), 4 lựa chọn khác nhau hoàn "
         "toàn, nhiễu ngoài phải thực sự sai trong ngữ cảnh, không dùng lại chính từ mục tiêu ở phần câu hỏi, "
         "không trùng câu hỏi/cấu trúc giữa các câu, không sao chép/paraphrase sát các câu ví dụ đã có trong "
-        "Knowledge Base, vị trí đáp án đúng ngẫu nhiên. ƯU TIÊN xoáy sâu vào các từ hay nhầm lẫn liệt kê ở "
+        "Knowledge Base, vị trí đáp án đúng trong 4 lựa chọn ngẫu nhiên. Phần tử thứ 6 của mỗi câu PHẢI là bản "
+        "chép NGUYÊN VĂN đáp án đúng (khớp y hệt 1 trong 4 lựa chọn vừa viết), TUYỆT ĐỐI không dùng số thứ tự "
+        "hay chữ cái - tự kiểm tra lại từng câu trước khi trả JSON. ƯU TIÊN xoáy sâu vào các từ hay nhầm lẫn liệt kê ở "
         f"trên; nếu không có từ nào thì trải đều cả nhóm từ. Trải chủ đề đa dạng qua: {domains}, và các lĩnh "
         "vực đời sống khác (mỗi câu 1 chủ đề khác nhau).\n"
         "3) 'd': 1 câu hỏi Distinction MỚI bằng tiếng Anh (cùng dạng câu Distinction chuẩn: viết 1 câu ví dụ MỚI "
@@ -169,9 +178,34 @@ def remediation_task(missed_words_text: str, weak_area: str, d_fb: str, a_fb: st
         "chứa sẵn từ mục tiêu, không sao chép ví dụ trong KB), xoáy vào điểm yếu nêu trên nếu có nhận xét liên "
         "quan.\n\n"
         "CHỈ trả JSON, không chữ thừa, không markdown fence, đúng schema:\n"
-        '{"recap": "...", "q": [["câu hỏi có ___ ở chỗ trống","optA","optB","optC","optD",idx_đúng_0_đến_3], '
-        f'...đủ {n_practice} phần tử], "d": "distinction question in English", "a": "application scenario in English"}}'
+        '{"recap": "...", "q": [["câu hỏi có ___ ở chỗ trống","optA","optB","optC","optD","optB (chép nguyên '
+        f'văn đáp án đúng của câu đó)"], ...đủ {n_practice} phần tử], "d": "distinction question in English", '
+        '"a": "application scenario in English"}'
     )
+
+
+# Hướng dẫn cấu trúc trả lời gắn CỐ ĐỊNH vào cuối câu hỏi hiển thị cho học
+# sinh (main.py nối vào sau khi nhận data["d"]/data["a"] từ AI, KHÔNG lưu vào
+# session["distinction_prompt"]/["application_prompt"] - context gửi cho
+# open_ended_grading_task giữ nguyên câu hỏi gốc, đỡ tốn token lặp lại).
+# Cố định (không để AI tự viết lại mỗi lần) để đảm bảo học sinh LUÔN thấy
+# đúng 1 cấu trúc nhất quán, không phụ thuộc AI có tuân thủ hay không.
+DISTINCTION_ANSWER_FORMAT = (
+    "\n\n**Cách trả lời (viết đúng 3 phần theo thứ tự, có thể viết bằng tiếng Việt - riêng câu ví dụ minh hoạ "
+    "nếu có thì phải viết bằng tiếng Anh):**\n"
+    "1) *Meaning* - giải thích từ trong câu trên nghĩa là gì và vì sao nó hợp với câu này (1-2 câu).\n"
+    "2) *Compare* - chọn đúng 1 từ khác trong nhóm; nếu thay vào thì nghĩa/sắc thái câu đổi thế nào (2-3 câu).\n"
+    "3) *Why it fits best* - 1 câu so sánh ngắn gọn nêu rõ vì sao từ ban đầu là lựa chọn đúng nhất.\n"
+    "*Lưu ý:* viết thành đoạn văn hoàn chỉnh (câu có đầy đủ chủ ngữ - vị ngữ), không viết dạng gạch đầu dòng "
+    "hay liệt kê từ khoá rời rạc."
+)
+APPLICATION_ANSWER_FORMAT = (
+    "\n\n**Cách trả lời (viết đúng 2 phần theo thứ tự):**\n"
+    "1) *Your sentence* - viết đúng 1 câu tiếng Anh hoàn chỉnh, dùng đúng 1 từ trong nhóm, phù hợp tình huống trên.\n"
+    "2) *Why* - 1-2 câu giải thích vì sao chọn từ này thay vì các từ còn lại trong nhóm.\n"
+    "*Lưu ý:* phần Why viết thành đoạn văn hoàn chỉnh (câu có đầy đủ chủ ngữ - vị ngữ), không viết dạng gạch "
+    "đầu dòng hay liệt kê từ khoá rời rạc."
+)
 
 
 def open_ended_generation_task(used_questions: list[str] | None = None) -> str:
@@ -201,14 +235,32 @@ def open_ended_generation_task(used_questions: list[str] | None = None) -> str:
 def open_ended_grading_task(context: str) -> str:
     return (
         f"{context}\n\n"
-        "Chấm theo tiêu chí sau (bước 0.5):\n"
-        "Distinction - 5 tiêu chí, MỖI tiêu chí tối đa 2đ (tổng tối đa 10): hiểu từ gốc, thay đổi nghĩa, "
-        "phân biệt ngữ nghĩa, phù hợp ngữ cảnh, lập luận so sánh.\n"
-        "Application - 4 tiêu chí (tổng tối đa 10): chọn từ đúng tối đa 2đ, dùng đúng tối đa 3đ, giải "
-        "thích hợp lý tối đa 3đ, phù hợp tình huống tối đa 2đ.\n"
+        "Học sinh được yêu cầu trả lời theo cấu trúc bắt buộc sau (xem DISTINCTION_ANSWER_FORMAT/"
+        "APPLICATION_ANSWER_FORMAT ở engine_prompts.py) - chấm theo tiêu chí sau (bước 0.5), MỖI tiêu chí gắn "
+        "với ĐÚNG 1 phần bắt buộc; nếu học sinh bỏ hẳn 1 phần thì mọi tiêu chí thuộc phần đó = 0:\n"
+        "Distinction - 5 tiêu chí, MỖI tiêu chí tối đa 2đ (tổng tối đa 10):\n"
+        "  - hieu_goc (Phần 1 - Meaning): có giải thích ĐÚNG nghĩa của từ đã dùng trong câu không.\n"
+        "  - ngu_canh (Phần 1 - Meaning): có nêu đúng vì sao từ đó phù hợp với NGỮ CẢNH câu này không.\n"
+        "  - doi_nghia (Phần 2 - Compare): có chọn đúng 1 từ khác trong nhóm và nêu đúng nghĩa/sắc thái đổi "
+        "thế nào nếu thay vào không.\n"
+        "  - phan_biet (Phần 2 - Compare): độ chính xác của việc phân biệt 2 từ (không nhầm lẫn nghĩa).\n"
+        "  - so_sanh (Phần 3 - Why it fits best): có lập luận so sánh ngắn gọn, rõ ràng, thuyết phục không.\n"
+        "Application - 4 tiêu chí (tổng tối đa 10):\n"
+        "  - chon_tu tối đa 2đ (Phần 1 - Your sentence): có chọn đúng từ phù hợp NHẤT trong nhóm cho tình "
+        "huống này không.\n"
+        "  - dung_dung tối đa 3đ (Phần 1 - Your sentence): câu viết ra đúng ngữ pháp và đúng nghĩa từ đó không.\n"
+        "  - tinh_huong tối đa 2đ (Phần 1 - Your sentence): câu có thực sự khớp với tình huống/kịch bản đã cho "
+        "không.\n"
+        "  - giai_thich tối đa 3đ (Phần 2 - Why): lý do giải thích có cụ thể, hợp lý, đúng trọng tâm không "
+        "(không chỉ nói chung chung).\n"
+        "Học sinh được phép trả lời phần giải thích bằng tiếng Việt hoặc tiếng Anh đều được - TUYỆT ĐỐI không "
+        "trừ điểm chỉ vì trả lời bằng tiếng Việt, chỉ chấm nội dung đúng/sai (riêng câu ví dụ minh hoạ nếu học "
+        "sinh có viết thì mới cần bằng tiếng Anh). Câu trả lời phải là đoạn văn hoàn chỉnh (câu có chủ ngữ - "
+        "vị ngữ đầy đủ) - nếu học sinh chỉ liệt kê từ khoá/gạch đầu dòng rời rạc thay vì viết câu hoàn chỉnh thì "
+        "trừ điểm tiêu chí liên quan (dù nội dung đúng ý cũng không cho điểm tối đa). "
         "Bỏ trống/vô nghĩa/'không biết' = 0 hết các tiêu chí liên quan. Mỗi feedback (d_fb, a_fb) viết 2-3 câu "
-        "tiếng Việt: nêu rõ điểm làm tốt, điểm còn thiếu/sai cụ thể là gì, và gợi ý ngắn để cải thiện — không "
-        "chỉ nói chung chung 'đúng' hay 'sai'. "
+        "tiếng Việt: nêu rõ điểm làm tốt, điểm còn thiếu/sai cụ thể là gì (kèm phần nào bị thiếu nếu có), và "
+        "gợi ý ngắn để cải thiện — không chỉ nói chung chung 'đúng' hay 'sai'. "
         "CHỈ trả JSON, không chữ thừa, đúng schema (điểm là số, tổng 5 số distinction phải <=10, tổng 4 số "
         "application phải <=10):\n"
         '{"d_scores": {"hieu_goc":0,"doi_nghia":0,"phan_biet":0,"ngu_canh":0,"so_sanh":0}, "d_fb": "...", '

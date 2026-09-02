@@ -1,10 +1,14 @@
 const USER_NAME_KEY = 'ioc_user_name';
-const DEFAULT_USER_NAME = 'Anh';
+const DEFAULT_USER_NAME = 'Guest';
 
 function getUserName() {
   try {
-    const saved = localStorage.getItem(USER_NAME_KEY);
-    return saved && saved.trim() ? saved.trim() : DEFAULT_USER_NAME;
+    // Lưu ý: PHẢI JSON.parse vì mọi key "ioc_*" được đồng bộ lên server đều
+    // giả định giá trị là JSON hợp lệ (xem collectLocalProgressData ở
+    // auth.js) - lưu chuỗi thô sẽ khiến JSON.parse ở đó lỗi và bị âm thầm bỏ
+    // qua, tên đặt sẽ không bao giờ đồng bộ được (đây từng là 1 lỗi thật).
+    const saved = JSON.parse(localStorage.getItem(USER_NAME_KEY));
+    return typeof saved === 'string' && saved.trim() ? saved.trim() : DEFAULT_USER_NAME;
   } catch (e) {
     return DEFAULT_USER_NAME;
   }
@@ -13,10 +17,31 @@ function getUserName() {
 function setUserName(name) {
   const trimmed = (name || '').trim();
   try {
-    localStorage.setItem(USER_NAME_KEY, trimmed || DEFAULT_USER_NAME);
+    localStorage.setItem(USER_NAME_KEY, JSON.stringify(trimmed || DEFAULT_USER_NAME));
   } catch (e) {
     // localStorage không khả dụng -> bỏ qua
   }
+}
+
+// Ảnh mặc định khi chưa đăng nhập (hoặc ảnh Google bị lỗi) - vẽ trực tiếp
+// bằng SVG (data URI) thay vì dùng file ảnh, luôn có sẵn không cần tải.
+function getDefaultAvatarDataUri() {
+  const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">'
+    + '<circle cx="20" cy="20" r="20" fill="#1c2129"/>'
+    + '<circle cx="20" cy="16.5" r="7.2" fill="#6e7681"/>'
+    + '<path d="M6.5 34.5c1.3-8.4 7.6-13 13.5-13s12.2 4.6 13.5 13" fill="#6e7681"/>'
+    + '</svg>';
+  return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+}
+
+// Ảnh Google của tài khoản đang đăng nhập (lấy mới mỗi lần đăng nhập, không
+// có ảnh riêng nào để tự đặt) - chưa đăng nhập thì dùng ảnh mặc định.
+function getEffectiveAvatarUrl() {
+  if (typeof getAuthSession === 'function') {
+    const session = getAuthSession();
+    if (session && session.picture) return session.picture;
+  }
+  return getDefaultAvatarDataUri();
 }
 
 function getDayOfYear() {
@@ -129,15 +154,22 @@ function renderHome() {
       <!-- Cột phải: Welcome & Developer -->
       <div class="right-column">
         <div class="card welcome-card">
-          <p class="welcome-subtitle">WELCOME BACK, LEARNER!</p>
-          <h2 class="welcome-title">
-            <span id="user-name-display" contenteditable="true" spellcheck="false">${userName}</span>
-            <button id="edit-name-btn" class="edit-name-btn" title="Đổi tên hiển thị" type="button">
-              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M13.5 3.5a1.5 1.5 0 0 1 2.12 0l0.88 0.88a1.5 1.5 0 0 1 0 2.12L6.5 16.5 3 17.5l1-3.5L13.5 3.5z"/>
-              </svg>
-            </button>
-          </h2>
+          <div class="welcome-row">
+            <div class="welcome-avatar-wrap">
+              <img alt="Ảnh đại diện" class="welcome-avatar" id="welcome-avatar-img">
+            </div>
+            <div class="welcome-text">
+              <p class="welcome-subtitle">WELCOME BACK, LEARNER!</p>
+              <h2 class="welcome-title">
+                <span id="user-name-display" contenteditable="true" spellcheck="false">${userName}</span>
+                <button id="edit-name-btn" class="edit-name-btn" title="Đổi tên hiển thị" type="button">
+                  <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M13.5 3.5a1.5 1.5 0 0 1 2.12 0l0.88 0.88a1.5 1.5 0 0 1 0 2.12L6.5 16.5 3 17.5l1-3.5L13.5 3.5z"/>
+                  </svg>
+                </button>
+              </h2>
+            </div>
+          </div>
         </div>
 
         <div class="card dev-card">
@@ -157,6 +189,15 @@ function renderHome() {
             </blockquote>
           </div>
         </div>
+      </div>
+
+      <div class="ai-disclaimer">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="10" cy="10" r="7.5"/>
+          <line x1="10" y1="6.5" x2="10" y2="10.5"/>
+          <circle cx="10" cy="13.3" r="0.15" fill="currentColor" stroke-width="1.2"/>
+        </svg>
+        <span>Illusion of Competence Detector là AI và có thể mắc sai lầm. Hãy kiểm tra kĩ lại thông tin nếu phát hiện bất thường.</span>
       </div>
     </div>
   `;
@@ -190,6 +231,16 @@ function initHomeInteractions() {
       const selection = window.getSelection();
       selection.removeAllRanges();
       selection.addRange(range);
+    });
+  }
+
+  // --- Ảnh đại diện: lấy trực tiếp ảnh Google của tài khoản đang đăng nhập,
+  // không có ảnh riêng thì hiện ảnh mặc định (không cho tự đặt link nữa). ---
+  const avatarImg = document.getElementById('welcome-avatar-img');
+  if (avatarImg) {
+    avatarImg.src = getEffectiveAvatarUrl();
+    avatarImg.addEventListener('error', () => {
+      avatarImg.src = getDefaultAvatarDataUri();
     });
   }
 
