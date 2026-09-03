@@ -36,32 +36,25 @@ function worldMapBuildRoadPath(totalLevels) {
 
 // ---- Icon trang trí quanh đường đi ----
 // World "ice" vẽ tay bằng SVG (nền trong suốt tự nhiên). World "forest" dùng
-// bộ 21 sticker huyền bí/rừng trong assets/images/world1-decor (cắt từ 1 sheet
-// nền trắng phẳng bằng scripts/extract_stickers.py - flood-fill nền trắng +
-// connected-components để tách từng sticker, có kênh alpha trong suốt thật).
+// bộ 13 icon rừng/động vật trong assets/images/world1-decor (đổi từ bộ
+// sticker huyền bí cũ - xem world1iconbackground2.0 gốc, đã xoá sau khi copy
+// vào đây).
 const WORLD_MAP_DECOR_PATH = {
   forest: 'assets/images/world1-decor/',
   ice: 'assets/images/world2-decor/'
 };
 
 const WORLD_MAP_FOREST_ICONS = [
-  'owl-guardian.png', 'rune-snake.png', 'clockwork-butterfly.png', 'mushroom-trio.png',
-  'leaf-mask.png', 'antler-key.png', 'owl-perched.png', 'badger.png', 'galaxy-shell.png',
-  'dragonfly-pair.png', 'glowing-orb.png', 'skull-bat.png', 'star-frog.png', 'crescent-moon.png',
-  'acorn-lock.png', 'feather.png', 'spiderweb-gem.png', 'stone-tower.png', 'ram-totem.png',
-  'tree-of-life.png', 'shadow-fox.png'
+  'animal-1.png', 'animal-2.png', 'animal-3.png', 'bear.png', 'bird.png',
+  'butterfly.png', 'fox.png', 'mushroom.png', 'paw.png', 'reindeer.png',
+  'rock.png', 'temple.png', 'tree.png'
 ];
 
-// World 2 (ice) trước đây dùng 8 icon SVG vẽ tay ở đây, giờ thay bằng bộ 18
-// sticker cắt từ 1 sheet ảnh (scripts/extract_stickers_ice.py) giống hệt
-// cách làm với World 1 - đã xoá các hàm SVG cũ (không còn dùng, đỡ nặng file
-// JS) và đổi WORLD_MAP_DECORATIONS.ice sang dùng WORLD_MAP_ICE_ICONS bên dưới.
+// World 2 (ice) dùng bộ 10 icon băng tuyết/động vật trong assets/images/world2-decor
+// (đổi từ bộ sticker cũ - xem world2iconbackground2.0 gốc, đã xoá sau khi copy vào đây).
 const WORLD_MAP_ICE_ICONS = [
-  'crystal-seal.png', 'aurora-orb.png', 'snowflake-1.png', 'snowflake-2.png',
-  'crystal-penguin.png', 'crystal-polar-bear.png', 'snowflake-3.png', 'snowflake-4.png',
-  'snowflake-5.png', 'snowflake-6.png', 'pine-tree-tall.png', 'ice-mountain.png',
-  'frost-reindeer.png', 'snowman.png', 'pine-tree-small-a.png', 'pine-tree-small-b.png',
-  'snowflake-7.png', 'campfire.png'
+  'ice.png', 'mountain.png', 'penguin.png', 'pine-tree.png', 'polar-bear.png',
+  'raccoon.png', 'reindeer.png', 'seal.png', 'snowflake.png'
 ];
 
 const WORLD_MAP_DECORATIONS = {

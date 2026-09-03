@@ -39,7 +39,7 @@ function isLoggedIn() {
 
 // Gom toàn bộ dữ liệu tiến độ (mọi key "ioc_*" trừ chính session đăng nhập)
 // thành 1 object phẳng để gửi lên server - tự động bao gồm cả những key mới
-// thêm sau này (course progress, level results, vocab learned, streak, chat
+// thêm sau này (course progress, level results, vocab learned, playtime, chat
 // đang dở...) mà không cần sửa lại chỗ này.
 function collectLocalProgressData() {
   const data = {};
@@ -55,7 +55,7 @@ function collectLocalProgressData() {
   return data;
 }
 
-// Xoá SẠCH mọi dữ liệu tiến độ cục bộ (streak, course progress, level
+// Xoá SẠCH mọi dữ liệu tiến độ cục bộ (playtime, course progress, level
 // results, từ vựng đã học, chat đang dở, cache analysis...) - dùng khi đăng
 // nhập vào 1 tài khoản (dữ liệu ẩn danh trước đó không được mang theo, tránh
 // lẫn dữ liệu giữa các tài khoản) VÀ khi đăng xuất (không để lộ tiến độ của
@@ -134,7 +134,7 @@ async function authSyncPull() {
 }
 
 // Tự động đẩy dữ liệu lên server mỗi khi có bất kỳ key "ioc_*" nào được ghi
-// (course-progress.js, streak.js... không cần biết gì về tính năng đăng nhập,
+// (course-progress.js, playtime.js... không cần biết gì về tính năng đăng nhập,
 // chỉ cần gọi localStorage.setItem như bình thường). Gộp nhiều lần ghi liên
 // tiếp (vd lưu xong 1 level ghi 2-3 key liền) thành 1 lần gọi API bằng debounce.
 (function interceptLocalStorageForSync() {
@@ -159,7 +159,7 @@ async function handleGoogleCredentialResponse(response) {
     // xoá sạch trước, rồi mới tải tiến độ thật của tài khoản này về (nếu có).
     clearAllLocalProgressData();
     await authSyncPull();
-    // Reload để MỌI phần UI (streak timer, thanh tiến độ Course, cache
+    // Reload để MỌI phần UI (đồng hồ tổng thời gian học, thanh tiến độ Course, cache
     // Analysis...) đọc lại đúng dữ liệu vừa đổi thay vì phải tự dò từng nơi.
     window.location.reload();
   } catch (e) {

@@ -18,10 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initVocabList(config.worldId);
   }
 
-  // Streak/daily goal/tổng thời gian học phải chạy ở MỌI trang, không riêng
-  // gì Home - trước đây world1.html không nạp streak.js nên toàn bộ thời
-  // gian chơi thực tế trong world không được tính (bug đã sửa).
-  if (typeof startStreakTimer === 'function') {
-    startStreakTimer();
+  // Tổng thời gian học phải chạy ở MỌI trang, không riêng gì Home.
+  if (typeof startPlaytimeTimer === 'function') {
+    startPlaytimeTimer();
   }
 });

@@ -74,41 +74,32 @@ function renderHome() {
 
   return `
     <div class="home-dashboard">
-      <!-- Cột trái: Streak -->
+      <!-- Cột trái: mascot IOC (thay cho Streak đã bỏ) -->
       <div class="left-column">
-        <div class="card streak-card">
+        <div class="card mascot-card">
           <div class="card-header">
-            <span class="card-title">STREAK</span>
-            <span class="badge inactive" id="streak-badge">Chưa kích hoạt (00:00/10:00)</span>
+            <span class="card-title">MEET IOC</span>
           </div>
-          <div class="streak-main">
-            <svg id="streak-flame-icon" class="streak-flame" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2c1 3-2 4.5-2 7a2 2 0 0 0 4 0c0-1-.5-1.5-.5-1.5 1.5.5 3.5 2.5 3.5 5.5a5 5 0 0 1-10 0c0-4 2-5 2-7 0-1.5-.5-3-1-4 2 0 4 1 4 3.5 0-1.5 0-2.5 0-3.5z"/>
-            </svg>
-            <div class="streak-number" id="streak-number">0 DAY</div>
-            <span class="status-tag" id="streak-status-tag">Chờ học 10p</span>
-          </div>
-          <p class="sub-text">LEARNING STREAK</p>
-          
-          <div class="progress-section">
-            <div class="progress-info">
-              <span>Hoạt động hôm nay:</span>
-              <span id="streak-progress-current">00:00 / 10:00</span>
-            </div>
-            <div class="progress-bar">
-              <div class="progress-fill" id="streak-progress-fill" style="width: 0%;"></div>
-            </div>
-              <p class="hint-text" id="streak-hint-text">Còn 10:00 để kích hoạt Streak</p>
-          </div>
+          <p class="sub-text">TRỢ LÝ HỌC TẬP CỦA BẠN</p>
 
           <div class="mascot-container">
             <svg class="mascot-robot" viewBox="0 0 140 130" xmlns="http://www.w3.org/2000/svg">
+              <path class="mascot-cape" d="M46 76 Q28 96 32 120 L48 106 Q68 116 90 106 L106 120 Q110 96 92 76 Z" />
+
               <line class="mascot-antenna" x1="68" y1="12" x2="68" y2="26" />
               <circle class="mascot-antenna-dot" cx="68" cy="12" r="5" />
 
               <rect class="mascot-shell" x="34" y="26" width="68" height="48" rx="17" />
+
+              <g class="mascot-cap">
+                <path class="mascot-cap-top" d="M68 4 L102 19 L68 34 L34 19 Z" />
+                <rect class="mascot-cap-band" x="50" y="19" width="36" height="9" rx="3" />
+                <line class="mascot-cap-string" x1="102" y1="19" x2="102" y2="33" />
+                <circle class="mascot-cap-tassel" cx="102" cy="35" r="3" />
+              </g>
+
               <rect class="mascot-eye" x="51" y="45" width="9" height="13" rx="4.5" />
-              <rect class="mascot-eye" x="76" y="45" width="9" height="13" rx="4.5" />
+              <path class="mascot-eye-wink" d="M76 51 q4.5 4 9 0" />
               <path class="mascot-mouth" d="M54 64 q14 10 28 0" />
 
               <rect class="mascot-shell" x="46" y="78" width="44" height="36" rx="15" />
@@ -123,6 +114,10 @@ function renderHome() {
                 <line class="mascot-finger" x1="118" y1="46" x2="123" y2="35" />
               </g>
             </svg>
+          </div>
+
+          <div class="mascot-speech-bubble">
+            <p>Chào bạn! Mình là IOC — luôn sẵn sàng đồng hành cùng bạn chinh phục từ vựng mỗi ngày! 🚀</p>
           </div>
         </div>
       </div>
@@ -177,20 +172,33 @@ function renderHome() {
 
         <div class="card dev-card">
           <div class="card-header">
-            <span class="card-title">DEVELOPER</span>
+            <span class="card-title">MEET THE FOUNDER</span>
           </div>
-          <h3 class="dev-heading">Tiểu ban AI trường THPT Hạ Hoà</h3>
-          <p class="dev-subheading">HA HOA HIGH SCHOOL - AI INNOVATION GROUP</p>
-          
-          <div class="dev-body">
-            <div class="dev-logo-placeholder" id="dev-logo-placeholder">
-              <img src="assets/images/stem-logo.jpg" alt="STEM Club THPT Hạ Hòa" class="dev-logo-img" id="dev-logo-img">
+
+          <div class="founder-row">
+            <div class="founder-member">
+              <img src="${getDefaultAvatarDataUri()}" alt="Đinh Việt Anh" class="founder-avatar">
+              <div class="founder-role">Trưởng nhóm</div>
+              <div class="founder-name">Đinh Việt Anh</div>
             </div>
-            <blockquote class="dev-quote">
-              "Vượt qua ảo tưởng về năng lực, chuyển hoá trí thức thành hành động thực tế. Tiên phong ứng dụng Trí tuệ Nhân tạo để nâng tầm tư duy và làm chủ tương lai số."
-              <footer>— Lời ngỏ từ Tiểu ban AI <span class="motto">See Beyond. Improve Truly.</span></footer>
-            </blockquote>
+            <div class="founder-member">
+              <img src="${getDefaultAvatarDataUri()}" alt="Nguyễn Minh Tuấn" class="founder-avatar">
+              <div class="founder-role">Thành viên</div>
+              <div class="founder-name">Nguyễn Minh Tuấn</div>
+            </div>
+            <div class="founder-member">
+              <img src="${getDefaultAvatarDataUri()}" alt="Hán Linh Linh" class="founder-avatar">
+              <div class="founder-role">Thành viên</div>
+              <div class="founder-name">Hán Linh Linh</div>
+            </div>
           </div>
+
+          <div class="dev-divider"></div>
+
+          <blockquote class="dev-quote">
+            Cảm ơn bạn đã trải nghiệm IOC! Mong rằng hệ thống của chúng mình sẽ luôn là người bạn đồng hành đáng tin cậy, giúp bạn làm chủ kiến thức mỗi ngày.
+            <footer>— Lời nhắn từ tác giả <span class="motto">See you Beyond, Improve Truly.</span></footer>
+          </blockquote>
         </div>
       </div>
 
@@ -245,30 +253,6 @@ function initHomeInteractions() {
     avatarImg.addEventListener('error', () => {
       avatarImg.src = getDefaultAvatarDataUri();
     });
-  }
-
-  // --- Ảnh logo Developer bị lỗi -> hiển thị fallback thay vì icon vỡ ---
-  const devImg = document.getElementById('dev-logo-img');
-  if (devImg) {
-    devImg.addEventListener(
-      'error',
-      () => {
-        const placeholder = document.getElementById('dev-logo-placeholder');
-        devImg.remove();
-        if (placeholder && !placeholder.querySelector('.dev-logo-fallback')) {
-          const fallback = document.createElement('span');
-          fallback.className = 'dev-logo-fallback';
-          fallback.textContent = 'STEM';
-          placeholder.appendChild(fallback);
-        }
-      },
-      { once: true }
-    );
-  }
-
-  // --- Khởi động bộ đếm streak ---
-  if (typeof startStreakTimer === 'function') {
-    startStreakTimer();
   }
 
   // --- Theo dõi để quote/tip tự cập nhật khi sang ngày mới mà trang Home

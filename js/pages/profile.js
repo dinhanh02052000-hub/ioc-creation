@@ -1,13 +1,37 @@
 // ==== TRANG PROFILE ====
 // Không bắt buộc đăng nhập mới học được - đăng nhập chỉ để backup/đồng bộ
 // tiến độ (localStorage) lên server. Xem js/features/auth.js cho logic đăng
-// nhập + đồng bộ, js/features/streak.js cho daily goal/tổng thời gian học
-// (timer chạy toàn site, xem updateStreakUI() ở đó cho cả 2 nơi hiển thị:
-// Home VÀ Profile), js/features/theme.js cho chế độ sáng/tối,
-// js/features/bg-music.js cho nhạc nền.
+// nhập + đồng bộ, js/features/playtime.js cho tổng thời gian học (timer chạy
+// toàn site, tự cập nhật #profile-total-playtime mỗi giây nếu đang mở trang
+// này), js/features/theme.js cho chế độ sáng/tối, js/features/bg-music.js
+// cho nhạc nền.
 //
 // Gộp chung 1 ô "TÀI KHOẢN + CÀI ĐẶT" theo yêu cầu, dưới cùng là hàng Đăng
 // xuất + Xoá tài khoản (chỉ hiện khi đã đăng nhập).
+//
+// Tiểu sử ngắn do người học tự viết về bản thân - thay cho "Mục tiêu học mỗi
+// ngày" đã bỏ. Lưu debounce khi gõ (giống pattern chỉnh tên hiển thị ở Home),
+// đồng bộ tự động vì bắt đầu bằng "ioc_".
+const USER_BIO_KEY = 'ioc_user_bio';
+const USER_BIO_MAX_LENGTH = 200;
+
+function getUserBio() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(USER_BIO_KEY));
+    return typeof saved === 'string' ? saved : '';
+  } catch (e) {
+    return '';
+  }
+}
+
+function setUserBio(bio) {
+  const trimmed = (bio || '').slice(0, USER_BIO_MAX_LENGTH);
+  try {
+    localStorage.setItem(USER_BIO_KEY, JSON.stringify(trimmed));
+  } catch (e) {
+    // localStorage không khả dụng -> bỏ qua
+  }
+}
 
 function renderProfile() {
   return `
@@ -123,15 +147,7 @@ function renderAuthWidget() {
       <div id="google-signin-btn" class="profile-signin-btn-area"></div>
     `;
 
-  const goalMinutes = typeof getDailyGoalMinutes === 'function' ? getDailyGoalMinutes() : 10;
-  const goalOptions = typeof STREAK_GOAL_OPTIONS_MINUTES !== 'undefined' ? STREAK_GOAL_OPTIONS_MINUTES : [10, 20, 30];
-  const goalButtonsHtml = goalOptions
-    .map(minutes => `
-      <button type="button" class="profile-goal-btn${minutes === goalMinutes ? ' active' : ''}" data-minutes="${minutes}">
-        ${minutes} phút
-      </button>
-    `)
-    .join('');
+  const currentBio = getUserBio();
 
   area.innerHTML = `
     ${identityHtml}
@@ -149,22 +165,13 @@ function renderAuthWidget() {
         <span class="profile-stat-value ${session ? 'linked' : 'unlinked'}">${session ? 'Đã liên kết' : 'Chưa liên kết'}</span>
       </div>
     </div>
-    <div class="profile-goal-block">
+    <div class="profile-bio-block">
       <div class="profile-setting-label">
-        <span>Mục tiêu học mỗi ngày</span>
-        <span class="profile-setting-hint">Reset lúc 0h hằng ngày</span>
+        <span>Tiểu sử</span>
+        <span class="profile-setting-hint">Viết vài dòng về bản thân bạn</span>
       </div>
-      <div class="profile-goal-btn-group">${goalButtonsHtml}</div>
-      <div class="profile-goal-progress">
-        <div class="profile-goal-progress-bar">
-          <div class="profile-goal-progress-fill" id="goal-progress-fill" style="width:0%;"></div>
-        </div>
-        <span id="goal-progress-current">00:00 / 10:00</span>
-        <span id="goal-check-badge" class="profile-goal-check" hidden title="Đã hoàn thành mục tiêu hôm nay">✓</span>
-      </div>
-      <div class="profile-goal-save-row">
-        <button id="save-goal-btn" class="profile-save-btn" type="button" disabled>Lưu</button>
-      </div>
+      <textarea id="profile-bio-input" class="profile-bio-textarea" maxlength="${USER_BIO_MAX_LENGTH}" placeholder="Mình là ai, mình đang học vì điều gì..."></textarea>
+      <div class="profile-bio-counter"><span id="profile-bio-count">0</span>/${USER_BIO_MAX_LENGTH}</div>
     </div>
   `;
 
@@ -180,40 +187,30 @@ function renderAuthWidget() {
     initGoogleAuth('google-signin-btn');
   }
 
-  // Bấm 10/20/30 phút chỉ CHỌN (chưa áp dụng) - phải bấm "Lưu" mới thật sự
-  // đổi goal, theo đúng yêu cầu có bước xác nhận rõ ràng thay vì áp dụng
-  // ngay lập tức.
-  const saveGoalBtn = document.getElementById('save-goal-btn');
-  area.querySelectorAll('.profile-goal-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      area.querySelectorAll('.profile-goal-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const minutes = parseInt(btn.getAttribute('data-minutes'), 10);
-      const isChanged = minutes !== goalMinutes;
-      if (saveGoalBtn) {
-        saveGoalBtn.disabled = !isChanged;
-        saveGoalBtn.textContent = 'Lưu';
-      }
-    });
-  });
+  // Tiểu sử: gán qua .value (không chèn thẳng vào chuỗi HTML) để nội dung
+  // người dùng tự viết không thể phá cấu trúc HTML. Lưu debounce khi gõ,
+  // giống pattern đổi tên hiển thị ở Home.
+  const bioInput = document.getElementById('profile-bio-input');
+  const bioCount = document.getElementById('profile-bio-count');
+  if (bioInput) {
+    bioInput.value = currentBio;
+    if (bioCount) bioCount.textContent = String(currentBio.length);
 
-  if (saveGoalBtn) {
-    saveGoalBtn.addEventListener('click', () => {
-      const activeBtn = area.querySelector('.profile-goal-btn.active');
-      if (!activeBtn) return;
-      const minutes = parseInt(activeBtn.getAttribute('data-minutes'), 10);
-      if (typeof setDailyGoalMinutes === 'function') setDailyGoalMinutes(minutes);
-      if (typeof updateStreakUI === 'function') updateStreakUI();
-      saveGoalBtn.disabled = true;
-      saveGoalBtn.textContent = 'Đã lưu ✓';
-      setTimeout(() => {
-        if (saveGoalBtn.textContent === 'Đã lưu ✓') saveGoalBtn.textContent = 'Lưu';
-      }, 1800);
+    let bioSaveTimer = null;
+    bioInput.addEventListener('input', () => {
+      if (bioCount) bioCount.textContent = String(bioInput.value.length);
+      clearTimeout(bioSaveTimer);
+      bioSaveTimer = setTimeout(() => setUserBio(bioInput.value), 500);
+    });
+    bioInput.addEventListener('blur', () => {
+      clearTimeout(bioSaveTimer);
+      setUserBio(bioInput.value);
     });
   }
 
-  // Cập nhật ngay lần đầu (không đợi tick tiếp theo của interval nền).
-  if (typeof updateStreakUI === 'function') updateStreakUI();
+  // Cập nhật tổng thời gian học ngay lần đầu (không đợi tick tiếp theo của
+  // interval nền - xem js/features/playtime.js).
+  if (typeof updatePlaytimeUI === 'function') updatePlaytimeUI();
 
   if (dangerZone) dangerZone.hidden = !session;
 }

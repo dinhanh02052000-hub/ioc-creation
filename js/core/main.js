@@ -17,9 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initInteractions();
 
-    // Khởi động streak timer toàn cục khi app load (chạy trên tất cả trang)
-    if (typeof startStreakTimer === 'function') {
-      startStreakTimer();
+    // Khởi động bộ đếm tổng thời gian học toàn cục khi app load (chạy trên
+    // tất cả trang, không dừng khi chuyển tab).
+    if (typeof startPlaytimeTimer === 'function') {
+      startPlaytimeTimer();
     }
   }
 });
@@ -28,11 +29,6 @@ function loadContent(target) {
   const contentArea = document.getElementById('main-content');
   if (!contentArea) return;
 
-  // Streak timer chạy toàn bộ website (không dừng khi rời Home)
-  // Chỉ dừng khi người dùng rời ứng dụng hoàn toàn
-  // if (typeof stopStreakTimer === 'function') {
-  //   stopStreakTimer();
-  // }
   if (typeof stopHomeDailyRefreshWatcher === 'function') {
     stopHomeDailyRefreshWatcher();
   }

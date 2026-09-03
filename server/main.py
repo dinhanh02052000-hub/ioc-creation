@@ -676,11 +676,6 @@ def load_progress_endpoint(user=Depends(get_current_user)):
 app.mount("/js", StaticFiles(directory=str(BASE_DIR / "js")), name="static-js")
 app.mount("/css", StaticFiles(directory=str(BASE_DIR / "css")), name="static-css")
 app.mount("/assets", StaticFiles(directory=str(BASE_DIR / "assets")), name="static-assets")
-app.mount(
-    "/world1iconbackground",
-    StaticFiles(directory=str(BASE_DIR / "world1iconbackground")),
-    name="static-world1iconbackground",
-)
 
 
 @app.get("/")
