@@ -177,7 +177,7 @@ function renderHome() {
 
           <div class="founder-row">
             <div class="founder-member">
-              <img src="${getDefaultAvatarDataUri()}" alt="Đinh Việt Anh" class="founder-avatar">
+              <img src="assets/images/founder-dinhanh.jpg" alt="Đinh Việt Anh" class="founder-avatar">
               <div class="founder-role">Trưởng nhóm</div>
               <div class="founder-name">Đinh Việt Anh</div>
             </div>
@@ -187,7 +187,7 @@ function renderHome() {
               <div class="founder-name">Nguyễn Minh Tuấn</div>
             </div>
             <div class="founder-member">
-              <img src="${getDefaultAvatarDataUri()}" alt="Hán Linh Linh" class="founder-avatar">
+              <img src="assets/images/founder-hanlinh.jpg" alt="Hán Linh Linh" class="founder-avatar">
               <div class="founder-role">Thành viên</div>
               <div class="founder-name">Hán Linh Linh</div>
             </div>
