@@ -318,9 +318,15 @@ function aiRenderLearningContent(groupTitle, content) {
 async function aiBeginRecognition() {
   aiRenderLoading('AI đang soạn 20 câu hỏi... (có thể mất 30–60 giây)');
   try {
-    const res = await gestureBeginRecognition(aiChat.sessionId);
+    const history = typeof loadRecognitionHistory === 'function'
+      ? loadRecognitionHistory(aiChat.worldId, aiChat.level)
+      : [];
+    const res = await gestureBeginRecognition(aiChat.sessionId, history);
     aiChat.questions = res.questions;
     aiChat.answers = {};
+    if (typeof appendRecognitionHistory === 'function') {
+      appendRecognitionHistory(aiChat.worldId, aiChat.level, res.questions.map(q => q.question));
+    }
     aiRenderMCQList();
   } catch (e) {
     aiRenderSessionAwareError(e, aiBeginRecognition);
@@ -427,7 +433,17 @@ function aiRenderConfidenceQuestion() {
 async function aiSubmitConfidence() {
   aiRenderLoading('Đang tạo câu hỏi vận dụng...');
   try {
-    const res = await gestureSubmitConfidence(aiChat.sessionId, aiChat.confidence);
+    const dHistory = typeof loadDistinctionHistory === 'function'
+      ? loadDistinctionHistory(aiChat.worldId, aiChat.level) : [];
+    const aHistory = typeof loadApplicationHistory === 'function'
+      ? loadApplicationHistory(aiChat.worldId, aiChat.level) : [];
+    const res = await gestureSubmitConfidence(aiChat.sessionId, aiChat.confidence, dHistory, aHistory);
+    if (typeof appendDistinctionHistory === 'function') {
+      appendDistinctionHistory(aiChat.worldId, aiChat.level, res.distinction_prompt);
+    }
+    if (typeof appendApplicationHistory === 'function') {
+      appendApplicationHistory(aiChat.worldId, aiChat.level, res.application_prompt);
+    }
     aiRenderOpenEnded(res.distinction_prompt, res.application_prompt);
   } catch (e) {
     aiRenderSessionAwareError(e, aiSubmitConfidence);
@@ -655,10 +671,19 @@ function aiRenderFinalReport(report) {
 async function aiBeginRemediation() {
   aiRenderLoading('Đang phân tích lỗi sai và soạn bài ôn tập trọng tâm...');
   try {
-    const res = await gestureBeginRemediation(aiChat.sessionId);
+    const rHistory = typeof loadRecognitionHistory === 'function'
+      ? loadRecognitionHistory(aiChat.worldId, aiChat.level) : [];
+    const dHistory = typeof loadDistinctionHistory === 'function'
+      ? loadDistinctionHistory(aiChat.worldId, aiChat.level) : [];
+    const aHistory = typeof loadApplicationHistory === 'function'
+      ? loadApplicationHistory(aiChat.worldId, aiChat.level) : [];
+    const res = await gestureBeginRemediation(aiChat.sessionId, rHistory, dHistory, aHistory);
     aiChat.remediationRecap = res.recap;
     aiChat.practiceQuestions = res.practice_questions;
     aiChat.practiceAnswers = {};
+    if (typeof appendRecognitionHistory === 'function') {
+      appendRecognitionHistory(aiChat.worldId, aiChat.level, res.practice_questions.map(q => q.question));
+    }
     aiRenderRemediationRecap();
   } catch (e) {
     aiRenderSessionAwareError(e, aiBeginRemediation);
@@ -724,6 +749,12 @@ async function aiSubmitRemediationMCQ() {
     aiChat.remediationCorrectionText = res.correction_text;
     aiChat.practiceDistinctionPrompt = res.distinction_prompt;
     aiChat.practiceApplicationPrompt = res.application_prompt;
+    if (typeof appendDistinctionHistory === 'function') {
+      appendDistinctionHistory(aiChat.worldId, aiChat.level, res.distinction_prompt);
+    }
+    if (typeof appendApplicationHistory === 'function') {
+      appendApplicationHistory(aiChat.worldId, aiChat.level, res.application_prompt);
+    }
     aiRenderRemediationCorrection();
   } catch (e) {
     aiRenderSessionAwareError(e, aiSubmitRemediationMCQ);

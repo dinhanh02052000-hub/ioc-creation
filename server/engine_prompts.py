@@ -1,13 +1,17 @@
 """Xây prompt cho từng bước AI.
 
-Bản đầu gửi nguyên JSON rule (database/engine/*.json) vào mỗi lời gọi -> có
-lượt tốn tới ~18K token. Bản nén quá tay sau đó (~5K token) lại làm nội dung
-sơ sài (thiếu ví dụ, câu hỏi rập khuôn, giải thích cụt lủn). Bản này cân bằng
-lại: mục tiêu ~6000-7000 token/lượt, ưu tiên chất lượng nội dung (đa dạng chủ
-đề, giải thích đầy đủ) hơn là ép sát 1 con số token cứng nhắc.
+Bản đầu gửi nguyên JSON rule (database/engine/*.json, đã xoá - xem lịch sử
+git nếu cần) vào mỗi lượt -> có lượt tốn tới ~18K token. Bản nén quá tay sau
+đó (~5K token) lại làm nội dung sơ sài (thiếu ví dụ, câu hỏi rập khuôn, giải
+thích cụt lủn). Bản này cân bằng lại: mục tiêu ~6000-7000 token/lượt, ưu tiên
+chất lượng nội dung (đa dạng chủ đề, giải thích đầy đủ) hơn là ép sát 1 con
+số token cứng nhắc.
 
-Các file JSON trong database/engine/ vẫn được giữ nguyên làm tài liệu tham
-chiếu đầy đủ, không dùng trực tiếp để build prompt.
+Hệ thống chống lặp câu hỏi (field database + logic database, xem README ở
+cuối file) được thêm để giải quyết tình trạng AI sinh câu hỏi/ý tưởng lặp lại
+hoặc chỉ paraphrase sát nhau giữa các lần làm bài (lần đầu/retest/ôn tập) của
+CÙNG 1 level - lịch sử câu hỏi đã sinh được lưu vĩnh viễn phía client (xem
+js/features/question-history.js) và gửi kèm mỗi lần gọi sinh câu hỏi mới.
 """
 
 import json
@@ -43,23 +47,61 @@ CORE_RULE = (
     "Knowledge Base bên dưới, không tự bịa nghĩa khác. Không tiết lộ đáp án khi chưa được yêu cầu."
 )
 
+# ==== FIELD DATABASE ====
 # Kéo chủ đề ra khỏi vùng an toàn quen thuộc của model (campaign, học sinh,
-# radiation leak...) bằng cách gợi ý ngẫu nhiên vài lĩnh vực mỗi lượt gọi. Chủ
-# đề càng hẹp, model càng dễ cạn ý và quay về việc chép/paraphrase sát ví dụ
-# có sẵn trong KB, hoặc viết câu hoàn chỉnh quên mất chỗ trống - danh sách này
-# cố tình rộng và đa dạng để giảm rủi ro đó.
-TOPIC_DOMAINS = [
-    "Psychology & Human Behavior", "Technology & Artificial Intelligence", "Environment & Climate Change",
-    "Education & Learning", "Work & Career", "Economics & Finance", "Politics & Society", "Law & Ethics",
-    "Science & Research", "Health & Medicine", "Social Media & Digital Life", "Media & Information",
-    "Globalization & International Relations", "Cities & Urban Life", "Culture & Identity",
-    "Relationships & Communication", "Art, Literature & Entertainment", "Future & Innovation",
-    "Travel & Adventure", "Everyday Life & Consumer Choices",
+# radiation leak...) bằng cách gán CỐ ĐỊNH 1 lĩnh vực/câu thay vì chỉ "gợi ý"
+# rồi để AI tự xoay vòng (cách cũ hay bị lờ đi, sinh ra cụm câu tụ lại vài chủ
+# đề quen thuộc). Danh sách rộng, đa lĩnh vực để 20 câu/lượt trải thật đa dạng
+# chủ thể/đối tượng, không chỉ đổi từ vựng mà giữ nguyên bối cảnh.
+FIELD_DATABASE = [
+    "Education & Learning", "Artificial Intelligence", "Technology & Innovation", "Social Media",
+    "Digital Communication", "Privacy & Data", "Cybersecurity", "Robotics & Automation",
+    "Future of Work", "Career & Employment", "Business & Entrepreneurship", "Economics",
+    "Personal Finance", "Consumer Behaviour", "Advertising", "Globalization",
+    "International Cooperation", "Leadership & Teamwork", "Productivity & Time Management",
+    "Innovation & Creativity", "Climate Change", "Environmental Protection", "Renewable Energy",
+    "Natural Resources", "Wildlife & Biodiversity", "Agriculture & Food Security",
+    "Water & Sustainability", "Waste & Recycling", "Urbanization", "Smart Cities",
+    "Health & Well-being", "Medicine & Medical Innovation", "Nutrition & Food",
+    "Sports & Competition", "Psychology & Human Behaviour", "Science & Scientific Discovery",
+    "Space Exploration", "Biotechnology", "Transportation & Mobility", "Disaster Preparedness",
+    "Culture & Identity", "Language & Communication", "Literature & Storytelling",
+    "Art & Creativity", "Music & Entertainment", "Film & Media", "Travel & Tourism",
+    "History & Social Change", "Law, Justice & Ethics", "Human Rights & Social Equality",
 ]
 
 
-def _sample_domains(k: int) -> str:
-    return ", ".join(random.sample(TOPIC_DOMAINS, k))
+def _sample_domains(k: int) -> list[str]:
+    """Trả về LIST (không phải chuỗi đã join) để caller tự quyết định dùng làm
+    prose (", ".join(...)) hay gán 1:1 theo thứ tự (đủ đa dạng chắc chắn hơn
+    để AI tự xoay vòng)."""
+    return random.sample(FIELD_DATABASE, min(k, len(FIELD_DATABASE)))
+
+
+# ==== LOGIC DATABASE (phần "tránh lặp") ====
+# Việc SO SÁNH câu mới với lịch sử (near-duplicate check bằng difflib) nằm ở
+# main.py (chạy code thuần, không tốn token) - hàm dưới đây chỉ lo phần build
+# PROMPT: nhét 1 đoạn "đã dùng rồi, đừng lặp" vào lời gọi sinh câu hỏi, để
+# chính AI né những ý đó ngay từ đầu thay vì phải sinh lại nhiều lần. History
+# truyền vào đây ĐÃ được main.py cắt bớt (chỉ N mục gần nhất) để đỡ tốn
+# token - phần so sánh triệt để (không giới hạn) vẫn nằm ở lớp code phía sau.
+def _history_avoidance_block(history: list[str] | None, label: str) -> str:
+    if not history:
+        return ""
+    joined = "\n".join(f"- {h}" for h in history)
+    return (
+        f"\n\nDANH SÁCH {label} ĐÃ DÙNG CHO LEVEL NÀY TỪ TRƯỚC (kể cả lần làm trước, retest, ôn tập) - "
+        f"TUYỆT ĐỐI KHÔNG được lặp lại Ý/LOGIC của bất kỳ mục nào dưới đây, kể cả khi diễn đạt/đổi từ khác "
+        f"đi (paraphrase) vẫn tính là lặp:\n{joined}"
+    )
+
+
+# Câu mẫu bắt buộc (được phép diễn đạt lại) kết thúc mỗi tình huống Application
+# - xem open_ended_generation_task() và remediation_task().
+APPLICATION_CLOSING_QUESTION_SAMPLE = (
+    "In a full sentence, use one word from the group to describe/explain the situation, and explicate "
+    "why it is the best choice over the others?"
+)
 
 
 def assemble(kb_text: str, task: str, extra: str = "") -> str:
@@ -79,7 +121,7 @@ def learning_content_task() -> str:
     )
 
 
-def recognition_task(n: int, is_retry: bool = False) -> str:
+def recognition_task(n: int, is_retry: bool = False, history: list[str] | None = None) -> str:
     if n == 2:
         coverage = "Cả 2 từ LUÔN có mặt trong 4 lựa chọn mỗi câu (1 đúng, 1 nhiễu nội bộ là từ còn lại, 2 nhiễu ngoài)."
     elif n == 3:
@@ -89,17 +131,24 @@ def recognition_task(n: int, is_retry: bool = False) -> str:
     else:
         coverage = "Mỗi câu chọn 4 trong các từ mục tiêu (1 đúng, 3 từ mục tiêu khác làm nhiễu), không dùng nhiễu ngoài."
 
-    domains = _sample_domains(5)
+    # FIELD DATABASE: gán CỐ ĐỊNH 1 lĩnh vực/câu (20 lĩnh vực khác nhau, không
+    # để AI tự xoay vòng) - đảm bảo đa dạng chủ đề/đối tượng thật sự, không
+    # phụ thuộc AI có tuân thủ gợi ý hay không.
+    domains = _sample_domains(20)
+    domain_lines = "\n".join(f"Câu {i + 1}: {d}" for i, d in enumerate(domains))
+
     retry_note = (
         "ĐÂY LÀ LẦN LÀM LẠI: bắt buộc sinh bộ câu HOÀN TOÀN MỚI, khác hẳn lần trước (đổi ngữ cảnh, chủ đề, "
         "cấu trúc câu). "
     ) if is_retry else ""
 
+    history_block = _history_avoidance_block(history, "CÂU HỎI")
+
     return (
         "Sinh đúng 20 câu MCQ điền từ vào chỗ trống, câu tự nhiên dài 8-16 từ (đa dạng độ dài, không phải câu "
         f"nào cũng cụt như nhau), mỗi câu 4 lựa chọn, đúng 1 đáp án đúng. {coverage} "
-        f"TRẢI CHỦ ĐỀ đa dạng qua các lĩnh vực sau (mỗi câu 1 chủ đề khác nhau, xoay vòng, KHÔNG lặp lại 1-2 "
-        f"chủ đề quen thuộc cho cả 20 câu): {domains}, và các lĩnh vực đời sống khác. "
+        f"MỖI câu PHẢI đúng chủ đề (field) đã gán sẵn sau đây theo thứ tự (câu 1 dùng field của câu 1, câu 2 "
+        f"dùng field của câu 2,...), KHÔNG được đổi field giữa các câu:\n{domain_lines}\n"
         "Đáp án đúng phải rải đều giữa các từ mục tiêu (chênh lệch số lần đúng tối đa 1). Vị trí đáp án đúng "
         "trong 4 lựa chọn phải ngẫu nhiên, không theo mẫu (không phải lúc nào cũng ở lựa chọn đầu/cuối). "
         "RÀNG BUỘC CHẤT LƯỢNG BẮT BUỘC: "
@@ -113,7 +162,15 @@ def recognition_task(n: int, is_retry: bool = False) -> str:
         "(2) TUYỆT ĐỐI không dùng lại chính từ mục tiêu (hoặc biến thể/động từ hoá của nó) ở phần câu hỏi "
         "(VD không viết 'influenced' trong câu hỏi nếu 'influence' là 1 lựa chọn). "
         "(3) 4 lựa chọn trong MỖI câu PHẢI khác nhau hoàn toàn, không được lặp lại 1 từ 2 lần trong cùng 1 câu. "
-        "(4) Không trùng câu hỏi, không trùng cấu trúc câu giữa các câu. "
+        "(4) Không trùng câu hỏi, không trùng cấu trúc câu, không trùng Ý/LOGIC giữa các câu (kể cả khi đổi "
+        "từ/chủ đề mà vẫn cùng 1 kiểu lập luận/tình huống thì vẫn coi là lặp) - ĐẶC BIỆT khi các từ mục tiêu là "
+        "từ gần nghĩa (vd cùng nhóm 'bằng cấp/chứng chỉ'), rất dễ sa vào việc chỉ đổi danh từ/tổ chức mà giữ "
+        "nguyên khung câu '[Ai đó] earned/received/obtained a ___...' cho cả 20 câu - đây VẪN LÀ LỖI LẶP dù chủ "
+        "đề bề ngoài khác nhau. Chủ động XEN KẼ nhiều KIỂU câu qua 20 câu, ví dụ: mệnh đề thời gian/điều kiện "
+        "đứng đầu ('After...', 'Before...', 'Once...', 'If...'), câu phủ định/thiếu điều kiện ('Without a "
+        "___, she could not...'), câu bị động, câu có mệnh đề quan hệ, câu hỏi, câu mô tả sự việc chung không "
+        "gắn tên riêng, câu kể lại hậu quả/hệ quả thay vì hành động đạt được. KHÔNG để quá 3 câu liên tiếp dùng "
+        "chung 1 khung ngữ pháp/động từ chính giống nhau. "
         "(5) TUYỆT ĐỐI không sao chép hoặc chỉ paraphrase sát các câu ví dụ đã có sẵn trong Knowledge Base ở "
         "trên - mỗi câu hỏi phải là tình huống hoàn toàn mới do bạn tự nghĩ ra, khác cả nội dung lẫn cấu trúc "
         "câu so với các ví dụ đó. "
@@ -122,11 +179,138 @@ def recognition_task(n: int, is_retry: bool = False) -> str:
         "lại, không đổi hoa/thường - của ĐÚNG 1 trong 4 lựa chọn đã viết ở vị trí 2-5 của chính câu đó. TUYỆT "
         "ĐỐI không dùng số thứ tự (0/1/2/3) hay chữ cái (A/B/C/D) ở đây - phải là text của đáp án. Trước khi trả "
         "kết quả, tự kiểm tra lại từng câu: đáp án đúng (phần tử 6) có xuất hiện y hệt trong danh sách 4 lựa "
-        "chọn (phần tử 2-5) của ĐÚNG câu đó không - nếu không khớp, sửa lại trước khi trả JSON. "
+        "chọn (phần tử 2-5) của ĐÚNG câu đó không - nếu không khớp, sửa lại trước khi trả JSON. Đồng thời tự "
+        "đối chiếu lại với phần \"Phân biệt\" (key_distinction) của từng từ trong KB để chắc chắn từ được chọn "
+        "làm đáp án đúng THỰC SỰ là lựa chọn phù hợp nhất trong ngữ cảnh câu đó, không phải chỉ là 1 lựa chọn "
+        "có vẻ hợp lý."
+        f"{history_block}\n\n"
         "CHỈ trả JSON, không chữ thừa, không markdown fence, đúng schema:\n"
         '{"q": [["câu hỏi có ___ ở chỗ trống", "optA", "optB", "optC", "optD", "optB (chép nguyên văn đáp án '
         'đúng, ở đây minh hoạ là optB nhưng thực tế phải khớp đúng lựa chọn nào là đáp án đúng của câu đó)"], '
         '... đủ 20 phần tử]}'
+    )
+
+
+def logic_duplicate_check_task(items: list[dict], history: list[str] | None = None) -> str:
+    """Lời gọi KIỂM TRA ĐỘC LẬP, rẻ (reasoning_effort="low") - CHỈ còn kiểm tra
+    LẶP Ý/LOGIC (paraphrase sâu, dùng từ vựng khác hẳn mà lớp difflib ở main.py
+    không bắt được). KHÔNG còn kiêm kiểm tra đáp án nữa - việc đó đã tách sang
+    hẳn 1 pipeline riêng, mạnh hơn (strong_answer_generation_task +
+    strong_answer_verification_task trong _determine_and_verify_answers ở
+    main.py) - để 1 câu không bị 2 cơ chế khác nhau cùng phán xét đáp án, vừa
+    tốn token thừa vừa dễ sinh false positive (huỷ oan cả batch) từ lớp cũ yếu
+    hơn trong khi lớp mới đã đủ mạnh để tự lo việc đó.
+    """
+    lines = [f'{it["id"]}. "{it["sentence"]}"' for it in items]
+    history_block = ""
+    if history:
+        joined = "\n".join(f"- {h}" for h in history)
+        history_block = f"\n\nCÁC CÂU ĐÃ SINH CHO LEVEL NÀY TỪ TRƯỚC:\n{joined}"
+    return (
+        "NHIỆM VỤ KIỂM TRA ĐỘC LẬP (KHÔNG sinh câu hỏi mới) - kiểm tra LẶP Ý/LOGIC: SO SÁNH nội dung/tình "
+        "huống/lập luận CỤ THỂ (không chỉ từ ngữ) của từng câu dưới đây với (a) các câu KHÁC trong CHÍNH danh "
+        "sách này, và (b) danh sách lịch sử đã sinh trước đó cho level này (nếu có, xem cuối prompt).\n\n"
+        "LƯU Ý QUAN TRỌNG để tránh báo lặp SAI (false positive khiến cả batch bị huỷ oan): các câu này đều test "
+        "CÙNG 1 nhóm từ gần nghĩa nên đương nhiên nhiều câu có thể chia sẻ chung 1 KHUNG ngữ pháp/quan hệ nhân-"
+        "quả (VD nhiều câu cùng dạng '[Chủ thể] ___ [đối tượng]' hay 'X dẫn đến Y') - CHỈ RIÊNG việc giống khung "
+        "câu/cấu trúc ngữ pháp KHÔNG tính là lặp Ý/LOGIC, đây là điều bình thường không tránh khỏi khi test 1 "
+        "nhóm từ gần nghĩa. CHỈ tính là LẶP khi tình huống CỤ THỂ (bối cảnh/nội dung câu chuyện) gần như có thể "
+        "hoán đổi cho nhau - tức là nếu chỉ đổi tên chủ thể/đối tượng thì 2 câu về cơ bản kể lại CÙNG 1 tình "
+        "huống/lập luận. Khác chủ thể + khác lĩnh vực (field) + khác chi tiết cụ thể = KHÔNG lặp, dù cùng khung "
+        "ngữ pháp.\n\n"
+        + "\n".join(lines) +
+        f"{history_block}"
+        '\n\nCHỈ trả JSON, không chữ thừa: {"duplicate_ids": [<id câu MỚI (trong danh sách trên) bị lặp Ý/LOGIC '
+        "với câu khác trong danh sách hoặc với lịch sử>]}"
+    )
+
+
+# ==== STRONG ANSWER PIPELINE (xác định + kiểm tra đáp án ĐỘC LẬP với generator) ====
+# Trước đây phần kiểm tra đáp án nằm chung 1 lượt rẻ với logic_duplicate_check_task
+# ở trên (chỉ hỏi "đáp án ĐÃ CHỌN có vẻ đúng không" - dễ thiên lệch vì đang xác
+# nhận lại chính lựa chọn của generator) - nay đã tách hẳn ra đây thành pipeline
+# riêng, mạnh hơn. 2 hàm dưới đây tạo thành 1 pipeline 2 lượt TÁCH BIỆT:
+# (1) 1 model KHÔNG được cho biết generator đã chọn gì, tự suy ra đáp án đúng
+# chỉ từ KB; (2) 1 lượt kiểm tra độc lập khác tự suy luận lại từ đầu rồi mới
+# đối chiếu với đáp án đề xuất ở bước (1) - xem server/main.py:
+# _determine_and_verify_answers() để biết cách 2 lượt này được nối với nhau và
+# cách code (không chỉ prompt) chặn việc validator "tin" mù quáng đáp án được
+# đưa vào.
+def strong_answer_generation_task(items: list[dict], feedback: dict[int, str] | None = None) -> str:
+    """items: [{"id":1,"sentence":"...","options":["optA","optB","optC","optD"]}, ...] -
+    CỐ Ý không kèm theo generator đã định chọn lựa chọn nào là đáp án đúng, để
+    lượt này phải tự suy ra hoàn toàn độc lập (nguyên tắc 2-model).
+    feedback: {id: lý do bị đánh giá SAI ở vòng trước} - chỉ có khi đây là vòng
+    sinh lại (regeneration) cho riêng những câu bị FAIL, giúp tránh lặp lại
+    đúng lỗi cũ thay vì đoán lại ngẫu nhiên."""
+    lines = []
+    for it in items:
+        opts = "; ".join(f'{letter}) "{opt}"' for letter, opt in zip("ABCD", it["options"]))
+        line = f'{it["id"]}. "{it["sentence"]}" -> Lựa chọn: {opts}'
+        if feedback and it["id"] in feedback:
+            line += f' [LƯU Ý: lượt trước bị đánh giá SAI vì: {feedback[it["id"]]} - xem xét lại từ đầu, đừng lặp lại lỗi này]'
+        lines.append(line)
+    return (
+        "NHIỆM VỤ: bạn là chuyên gia xác định đáp án đúng cho câu điền từ - KHÔNG PHẢI người soạn câu hỏi, và "
+        "KHÔNG được biết/đoán người soạn câu hỏi định chọn đáp án nào. Với MỖI câu dưới đây và 4 lựa chọn A/B/C/D, "
+        "hãy tự xác định HOÀN TOÀN ĐỘC LẬP - CHỈ dựa vào nghĩa/phân biệt (key_distinction) trong Knowledge Base ở "
+        "trên, không dùng kiến thức bên ngoài KB để đổi kết luận - lựa chọn nào là đáp án ĐÚNG NHẤT trong ngữ cảnh "
+        "câu đó. Nếu không tìm được bằng chứng đủ mạnh trong KB cho bất kỳ lựa chọn nào, vẫn phải chọn lựa chọn "
+        "hợp lý nhất nhưng ghi rõ trong 'evidence' rằng bằng chứng yếu. Suy luận kỹ trước khi chốt, nhưng phần "
+        "VIẾT RA phải NGẮN GỌN tối đa (đây chỉ là ghi chú nội bộ để lượt kiểm tra sau đối chiếu, không hiển thị "
+        "cho học sinh) - dùng cụm từ ngắn, KHÔNG viết câu văn đầy đủ, KHÔNG lặp lại nội dung câu hỏi.\n\n"
+        + "\n".join(lines) +
+        '\n\nCHỈ trả JSON, không chữ thừa, đúng schema: {"answers": [{"id": <id>, "correct_letter": "A|B|C|D", '
+        '"evidence": "cụm từ ngắn (tối đa 12 từ) trích ý KB hỗ trợ lựa chọn này", "explanation": "cụm từ ngắn '
+        '(tối đa 12 từ) vì sao đúng trong ngữ cảnh câu", "why_others_wrong": {"<letter>": "cụm từ ngắn (tối đa 8 '
+        'từ) vì sao KHÔNG phù hợp", ... đủ 3 lựa chọn còn lại}}, ... đủ mọi id được liệt kê ở trên]}'
+    )
+
+
+def strong_answer_verification_task(items: list[dict]) -> str:
+    """items: [{"id":1,"sentence":...,"options":[...],"proposed_letter":"B",
+    "evidence":...,"explanation":...}, ...] - lượt KIỂM TRA ĐỘC LẬP đáp án đề
+    xuất ở strong_answer_generation_task(), KHÔNG được mặc định tin là đúng."""
+    lines = []
+    for it in items:
+        opts = "; ".join(f'{letter}) "{opt}"' for letter, opt in zip("ABCD", it["options"]))
+        lines.append(
+            f'{it["id"]}. "{it["sentence"]}" -> Lựa chọn: {opts}\n'
+            f'   Đáp án ĐỀ XUẤT (cần kiểm tra, KHÔNG mặc định đúng): {it["proposed_letter"]}\n'
+            f'   Evidence đề xuất: {it["evidence"]}\n'
+            f'   Explanation đề xuất: {it["explanation"]}'
+        )
+    return (
+        "NHIỆM VỤ KIỂM TRA ĐỘC LẬP (validator) cho từng câu dưới đây. QUAN TRỌNG: KHÔNG được tự động đồng ý chỉ "
+        "vì đáp án/evidence/explanation đề xuất nghe có vẻ hợp lý - với MỖI câu, trước tiên PHẢI tự đọc lại "
+        "Knowledge Base và tự suy ra đáp án đúng nhất theo ý kiến ĐỘC LẬP của riêng bạn (không nhìn đề xuất), rồi "
+        "MỚI so sánh với đề xuất. Sau đó kiểm tra rõ từng điều kiện sau cho đề xuất:\n"
+        "LƯU Ý QUAN TRỌNG khi chấm single_best_answer/distractors_valid: nhóm từ trong bài học này VỐN LÀ các từ "
+        "gần nghĩa (near-synonyms) được thiết kế CHỦ ĐÍCH để dạy học sinh phân biệt - việc 1 lựa chọn khác 'nghe "
+        "cũng xuôi tai/cũng tạm chấp nhận được' theo cảm nhận tiếng Anh tự nhiên chung chung KHÔNG tính là vi "
+        "phạm, đó là bản chất của bài tập phân biệt từ gần nghĩa. CHỈ đánh giá dựa trên key_distinction cụ thể "
+        "của TỪNG từ trong KB: 1 lựa chọn chỉ coi là 'cũng đúng' nếu key_distinction của nó trong KB MÔ TẢ ĐÚNG "
+        "trọng tâm/ngữ cảnh của CHÍNH câu này (không phải chỉ vì nó chung nghĩa tổng quát với từ đúng).\n"
+        "- knowledge_grounding: đáp án đề xuất có thực sự được KB hỗ trợ không (không bịa/không lấy kiến thức "
+        "ngoài KB).\n"
+        "- single_best_answer: dựa THEO key_distinction của từng từ trong KB (xem lưu ý ở trên) - có lựa chọn "
+        "nào khác mà key_distinction của nó cũng khớp ĐÚNG trọng tâm câu này không? Chỉ false nếu KHÔNG.\n"
+        "- distractors_valid: key_distinction của 3 lựa chọn còn lại có rõ ràng LỆCH trọng tâm câu này không "
+        "(không cần chúng nghe sai ngữ pháp hay phi tự nhiên - chỉ cần trọng tâm nghĩa theo KB không khớp).\n"
+        "- explanation_consistent: explanation đề xuất có nhất quán, không tự mâu thuẫn với chính đáp án đề xuất "
+        "không.\n"
+        "- question_answer_alignment: đáp án có thực sự trả lời đúng điều câu hỏi/chỗ trống đang hỏi không.\n"
+        "- no_hallucination: evidence/explanation có bịa thêm thông tin không có trong KB và ảnh hưởng tới đáp "
+        "án không (có bịa -> false).\n"
+        "Suy luận kỹ trước khi chốt, nhưng phần VIẾT RA phải NGẮN GỌN (ghi chú nội bộ, không hiển thị cho học "
+        "sinh) - failure_reason (nếu có) chỉ cần cụm từ ngắn tối đa 15 từ, không viết đoạn văn dài.\n\n"
+        + "\n".join(lines) +
+        '\n\nCHỈ trả JSON, không chữ thừa, đúng schema: {"results": [{"id": <id>, "status": "PASS"|"FAIL", '
+        '"correct_answer": "A|B|C|D" (kết luận ĐỘC LẬP của riêng bạn, có thể khác lựa chọn đề xuất), "checks": '
+        '{"knowledge_grounding": true|false, "single_best_answer": true|false, "distractors_valid": true|false, '
+        '"explanation_consistent": true|false, "question_answer_alignment": true|false, "no_hallucination": '
+        'true|false}, "confidence": 0.0-1.0, "failure_reason": "cụm từ ngắn (tối đa 15 từ) nếu FAIL, null nếu '
+        'PASS"}, ... đủ mọi id được liệt kê ở trên]}'
     )
 
 
@@ -144,12 +328,27 @@ def correction_task(wrong_summary: str) -> str:
     )
 
 
-def remediation_task(missed_words_text: str, weak_area: str, d_fb: str, a_fb: str, n_practice: int) -> str:
+def remediation_task(
+    missed_words_text: str,
+    weak_area: str,
+    d_fb: str,
+    a_fb: str,
+    n_practice: int,
+    recognition_history: list[str] | None = None,
+    distinction_history: list[str] | None = None,
+    application_history: list[str] | None = None,
+) -> str:
     """Bộ ôn tập trọng tâm sau khi RETRY: phân tích lỗi sai của học sinh (từ hay
     nhầm ở phần Nhận diện + nhận xét Phân biệt/Vận dụng lần trước) để sinh 1 bài
     luyện tập nhỏ CHO CẢ 3 PHẦN trong 1 lời gọi AI duy nhất (đỡ tốn token)."""
-    domains = _sample_domains(4)
+    domains = _sample_domains(n_practice)
+    domain_lines = "\n".join(f"Câu {i + 1}: {d}" for i, d in enumerate(domains))
     missed_block = missed_words_text or "(không có từ nào sai ở phần Nhận diện - lỗi chủ yếu ở phần Phân biệt/Vận dụng)"
+
+    recognition_history_block = _history_avoidance_block(recognition_history, "CÂU HỎI TRẮC NGHIỆM")
+    distinction_history_block = _history_avoidance_block(distinction_history, "CÂU HỎI DISTINCTION")
+    application_history_block = _history_avoidance_block(application_history, "TÌNH HUỐNG APPLICATION")
+
     return (
         f"Học sinh vừa làm bài CHƯA ĐẠT. Các từ hay nhầm lẫn nhất ở phần Nhận diện: {missed_block}\n"
         f"Điểm yếu nhất tổng thể (so giữa 3 phần Nhận diện/Phân biệt/Vận dụng): {weak_area or '(không rõ)'}.\n"
@@ -165,18 +364,24 @@ def remediation_task(missed_words_text: str, weak_area: str, d_fb: str, a_fb: st
         "câu tự nhiên 8-16 từ, MỖI câu PHẢI có ĐÚNG 1 chỗ trống hiển thị bằng dấu '___' ngay tại vị trí từ mục "
         "tiêu (TUYỆT ĐỐI không viết thành câu đã hoàn chỉnh không có chỗ trống), 4 lựa chọn khác nhau hoàn "
         "toàn, nhiễu ngoài phải thực sự sai trong ngữ cảnh, không dùng lại chính từ mục tiêu ở phần câu hỏi, "
-        "không trùng câu hỏi/cấu trúc giữa các câu, không sao chép/paraphrase sát các câu ví dụ đã có trong "
-        "Knowledge Base, vị trí đáp án đúng trong 4 lựa chọn ngẫu nhiên. Phần tử thứ 6 của mỗi câu PHẢI là bản "
-        "chép NGUYÊN VĂN đáp án đúng (khớp y hệt 1 trong 4 lựa chọn vừa viết), TUYỆT ĐỐI không dùng số thứ tự "
-        "hay chữ cái - tự kiểm tra lại từng câu trước khi trả JSON. ƯU TIÊN xoáy sâu vào các từ hay nhầm lẫn liệt kê ở "
-        f"trên; nếu không có từ nào thì trải đều cả nhóm từ. Trải chủ đề đa dạng qua: {domains}, và các lĩnh "
-        "vực đời sống khác (mỗi câu 1 chủ đề khác nhau).\n"
+        "không trùng câu hỏi/cấu trúc/Ý-LOGIC giữa các câu - XEN KẼ nhiều kiểu câu (mệnh đề thời gian/điều kiện "
+        "đứng đầu, câu phủ định, câu bị động, câu hỏi...), KHÔNG để quá 3 câu liên tiếp dùng chung 1 khung ngữ "
+        "pháp/động từ chính giống nhau (lỗi hay gặp khi các từ mục tiêu gần nghĩa nhau), không sao chép/"
+        "paraphrase sát các câu ví dụ đã có "
+        "trong Knowledge Base, vị trí đáp án đúng trong 4 lựa chọn ngẫu nhiên. Phần tử thứ 6 của mỗi câu PHẢI "
+        "là bản chép NGUYÊN VĂN đáp án đúng (khớp y hệt 1 trong 4 lựa chọn vừa viết, đối chiếu lại với "
+        "key_distinction trong KB trước khi chốt), TUYỆT ĐỐI không dùng số thứ tự hay chữ cái - tự kiểm tra "
+        "lại từng câu trước khi trả JSON. ƯU TIÊN xoáy sâu vào các từ hay nhầm lẫn liệt kê ở trên; nếu không có "
+        f"từ nào thì trải đều cả nhóm từ. MỖI câu PHẢI đúng field đã gán sẵn theo thứ tự sau, KHÔNG đổi field "
+        f"giữa các câu:\n{domain_lines}\n"
         "3) 'd': 1 câu hỏi Distinction MỚI bằng tiếng Anh (cùng dạng câu Distinction chuẩn: viết 1 câu ví dụ MỚI "
         "- không sao chép ví dụ trong KB - rồi hỏi nếu đổi sang từ dễ nhầm khác thì trọng tâm/sắc thái nghĩa đổi "
         "thế nào), xoáy vào đúng điểm nhầm lẫn nêu trên nếu có nhận xét liên quan.\n"
         "4) 'a': 1 tình huống Application MỚI bằng tiếng Anh (cùng dạng tình huống Application chuẩn, không "
         "chứa sẵn từ mục tiêu, không sao chép ví dụ trong KB), xoáy vào điểm yếu nêu trên nếu có nhận xét liên "
-        "quan.\n\n"
+        "quan. Tình huống PHẢI kết thúc bằng 1 câu yêu cầu học sinh (tiếng Anh), nội dung tương đương câu mẫu "
+        f'sau (được phép diễn đạt lại, không cần y hệt): "{APPLICATION_CLOSING_QUESTION_SAMPLE}"\n'
+        f"{recognition_history_block}{distinction_history_block}{application_history_block}\n\n"
         "CHỈ trả JSON, không chữ thừa, không markdown fence, đúng schema:\n"
         '{"recap": "...", "q": [["câu hỏi có ___ ở chỗ trống","optA","optB","optC","optD","optB (chép nguyên '
         f'văn đáp án đúng của câu đó)"], ...đủ {n_practice} phần tử], "d": "distinction question in English", '
@@ -190,6 +395,8 @@ def remediation_task(missed_words_text: str, weak_area: str, d_fb: str, a_fb: st
 # open_ended_grading_task giữ nguyên câu hỏi gốc, đỡ tốn token lặp lại).
 # Cố định (không để AI tự viết lại mỗi lần) để đảm bảo học sinh LUÔN thấy
 # đúng 1 cấu trúc nhất quán, không phụ thuộc AI có tuân thủ hay không.
+# LƯU Ý: hiện KHÔNG được tự động nối vào response nữa (đã tạm bỏ theo yêu cầu
+# trước đó để chờ làm 1 nút riêng ở UI) - vẫn giữ nguyên ở đây, chưa dùng tới.
 DISTINCTION_ANSWER_FORMAT = (
     "\n\n**Cách trả lời (viết đúng 3 phần theo thứ tự, có thể viết bằng tiếng Việt - riêng câu ví dụ minh hoạ "
     "nếu có thì phải viết bằng tiếng Anh):**\n"
@@ -208,7 +415,11 @@ APPLICATION_ANSWER_FORMAT = (
 )
 
 
-def open_ended_generation_task(used_questions: list[str] | None = None) -> str:
+def open_ended_generation_task(
+    used_questions: list[str] | None = None,
+    distinction_history: list[str] | None = None,
+    application_history: list[str] | None = None,
+) -> str:
     used_block = ""
     if used_questions:
         joined = " | ".join(used_questions)
@@ -217,17 +428,21 @@ def open_ended_generation_task(used_questions: list[str] | None = None) -> str:
             f"câu này — phải là câu/tình huống hoàn toàn mới):\n{joined}"
         )
     domains = _sample_domains(4)
+    distinction_history_block = _history_avoidance_block(distinction_history, "CÂU HỎI DISTINCTION")
+    application_history_block = _history_avoidance_block(application_history, "TÌNH HUỐNG APPLICATION")
     return (
         "Sinh 1 câu hỏi Distinction và 1 tình huống Application, BẰNG TIẾNG ANH (đây là bài kiểm tra từ vựng "
         "tiếng Anh nên viết bằng tiếng Anh, giống văn phong 20 câu MCQ), MỖI CÁI thuộc 1 lĩnh vực KHÁC NHAU "
-        f"trong số: {domains} (không dùng lại chủ đề campaign/student nếu không nằm trong danh sách này).\n"
+        f"trong số: {', '.join(domains)} (không dùng lại chủ đề campaign/student nếu không nằm trong danh sách này).\n"
         "- Distinction: viết 1 câu tiếng Anh MỚI dùng đúng 1 từ mục tiêu, sau đó hỏi (bằng tiếng Anh) nếu thay "
         "từ đó bằng 1 từ dễ nhầm khác trong nhóm thì trọng tâm/sắc thái nghĩa của câu thay đổi thế nào.\n"
-        "- Application: viết 1 tình huống/kịch bản MỚI bằng tiếng Anh, KHÔNG chứa sẵn từ mục tiêu nào, yêu "
-        "cầu học sinh tự chọn 1 từ trong nhóm để mô tả tình huống và giải thích lý do chọn.\n"
+        "- Application: viết 1 tình huống/kịch bản MỚI bằng tiếng Anh, KHÔNG chứa sẵn từ mục tiêu nào, kết "
+        "thúc bằng 1 câu yêu cầu học sinh (tiếng Anh), nội dung tương đương câu mẫu sau (được phép diễn đạt "
+        f'lại, không cần y hệt): "{APPLICATION_CLOSING_QUESTION_SAMPLE}"\n'
         "TUYỆT ĐỐI không sao chép hoặc chỉ paraphrase sát các câu ví dụ đã có sẵn trong Knowledge Base ở trên - "
         "cả câu Distinction lẫn tình huống Application phải là nội dung hoàn toàn mới do bạn tự nghĩ ra."
-        f"{used_block}\n\nCHỈ trả JSON, không chữ thừa, không markdown fence:\n"
+        f"{used_block}{distinction_history_block}{application_history_block}\n\n"
+        "CHỈ trả JSON, không chữ thừa, không markdown fence:\n"
         '{"d": "distinction question in English", "a": "application scenario in English"}'
     )
 
@@ -235,9 +450,8 @@ def open_ended_generation_task(used_questions: list[str] | None = None) -> str:
 def open_ended_grading_task(context: str) -> str:
     return (
         f"{context}\n\n"
-        "Học sinh được yêu cầu trả lời theo cấu trúc bắt buộc sau (xem DISTINCTION_ANSWER_FORMAT/"
-        "APPLICATION_ANSWER_FORMAT ở engine_prompts.py) - chấm theo tiêu chí sau (bước 0.5), MỖI tiêu chí gắn "
-        "với ĐÚNG 1 phần bắt buộc; nếu học sinh bỏ hẳn 1 phần thì mọi tiêu chí thuộc phần đó = 0:\n"
+        "Chấm theo tiêu chí sau (bước 0.5), MỖI tiêu chí gắn với ĐÚNG 1 phần bắt buộc trong câu trả lời; nếu "
+        "học sinh bỏ hẳn 1 phần thì mọi tiêu chí thuộc phần đó = 0:\n"
         "Distinction - 5 tiêu chí, MỖI tiêu chí tối đa 2đ (tổng tối đa 10):\n"
         "  - hieu_goc (Phần 1 - Meaning): có giải thích ĐÚNG nghĩa của từ đã dùng trong câu không.\n"
         "  - ngu_canh (Phần 1 - Meaning): có nêu đúng vì sao từ đó phù hợp với NGỮ CẢNH câu này không.\n"

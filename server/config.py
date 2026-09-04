@@ -14,7 +14,6 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATABASE_DIR = BASE_DIR / "database"
-ENGINE_DIR = DATABASE_DIR / "engine"
 
 GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", "")
 

@@ -57,16 +57,26 @@ async function gestureGetVocab(worldId, level) {
   return res.json();
 }
 
-function gestureBeginRecognition(sessionId) {
-  return aiRequest('/api/chat/begin-recognition', { session_id: sessionId });
+// recognitionHistory: mảng text các câu đã sinh cho level này từ trước (mọi
+// lần: đầu tiên/retest/ôn tập) - server dùng để tránh sinh lại ý đã dùng.
+function gestureBeginRecognition(sessionId, recognitionHistory = []) {
+  return aiRequest('/api/chat/begin-recognition', {
+    session_id: sessionId,
+    recognition_history: recognitionHistory
+  });
 }
 
 function gestureSubmitRecognition(sessionId, answers) {
   return aiRequest('/api/chat/submit-recognition', { session_id: sessionId, answers });
 }
 
-function gestureSubmitConfidence(sessionId, confidence) {
-  return aiRequest('/api/chat/submit-confidence', { session_id: sessionId, confidence });
+function gestureSubmitConfidence(sessionId, confidence, distinctionHistory = [], applicationHistory = []) {
+  return aiRequest('/api/chat/submit-confidence', {
+    session_id: sessionId,
+    confidence,
+    distinction_history: distinctionHistory,
+    application_history: applicationHistory
+  });
 }
 
 function gestureSubmitOpenEnded(sessionId, distinctionAnswer, applicationAnswer) {
@@ -77,8 +87,13 @@ function gestureSubmitOpenEnded(sessionId, distinctionAnswer, applicationAnswer)
   });
 }
 
-function gestureBeginRemediation(sessionId) {
-  return aiRequest('/api/chat/begin-remediation', { session_id: sessionId });
+function gestureBeginRemediation(sessionId, recognitionHistory = [], distinctionHistory = [], applicationHistory = []) {
+  return aiRequest('/api/chat/begin-remediation', {
+    session_id: sessionId,
+    recognition_history: recognitionHistory,
+    distinction_history: distinctionHistory,
+    application_history: applicationHistory
+  });
 }
 
 function gestureSubmitRemediationMCQ(sessionId, answers) {

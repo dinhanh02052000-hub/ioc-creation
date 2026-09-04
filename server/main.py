@@ -25,6 +25,10 @@ Prompt được nén tối đa (xem engine_prompts.py) để 1 lượt đầy đ
 chỉ rơi vào khoảng 4000-5000 token thay vì ~18K như bản JSON-dump trước đó.
 """
 
+import os
+import re
+from difflib import SequenceMatcher
+
 from fastapi import Depends, FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
@@ -45,10 +49,13 @@ from engine_prompts import (
     correction_task,
     learning_content_task,
     load_knowledge_base,
+    logic_duplicate_check_task,
     open_ended_generation_task,
     open_ended_grading_task,
     recognition_task,
     remediation_task,
+    strong_answer_generation_task,
+    strong_answer_verification_task,
 )
 from session_store import create_session, get_session
 
@@ -156,6 +163,177 @@ def _parse_mcq_rows(rows: list, expected_n: int) -> list[dict]:
     return questions
 
 
+# ---------- "Logic database": chống lặp câu hỏi (an toàn, không tốn token) ----------
+# Lớp phòng thủ thứ 2 (lớp 1 là đoạn "KHÔNG lặp lại" nhét thẳng vào prompt -
+# xem engine_prompts._history_avoidance_block) - chạy code thuần bằng
+# difflib (thư viện chuẩn Python, không cần cài thêm) nên hoàn toàn miễn phí,
+# vì vậy được phép so sánh với TOÀN BỘ lịch sử (không giới hạn số lượng),
+# khác với đoạn nhét vào prompt phải cắt bớt để đỡ tốn token (xem
+# _bound_history bên dưới).
+
+_PUNCT_RE = re.compile(r"[^\w\s]")
+_WS_RE = re.compile(r"\s+")
+_DUPLICATE_SIMILARITY_THRESHOLD = 0.82
+
+
+def _normalize_for_similarity(text: str) -> str:
+    t = str(text).lower().replace("___", " ")
+    t = _PUNCT_RE.sub(" ", t)
+    return _WS_RE.sub(" ", t).strip()
+
+
+def _find_duplicate(new_texts: list[str], history: list[str]) -> str | None:
+    """So sánh (a) từng cặp trong chính batch mới, (b) từng câu mới với TOÀN
+    BỘ history - trả về câu mô tả vi phạm (tiếng Việt) nếu phát hiện 2 câu quá
+    giống nhau (ratio >= ngưỡng), hoặc None nếu sạch.
+
+    LƯU Ý: chỉ bắt được kiểu "chép sát, đổi 1-2 từ" (paraphrase nông) - 2 câu
+    cùng Ý/LOGIC nhưng dùng từ vựng/cấu trúc hoàn toàn khác nhau (paraphrase
+    sâu) sẽ KHÔNG bị bắt bởi cách so sánh văn bản thuần này. Lớp này chỉ là
+    tầng lọc MIỄN PHÍ đầu tiên - _check_logic_duplicates() bên dưới có thêm 1
+    lượt AI riêng, rẻ, để bắt tiếp phần paraphrase sâu mà tầng này bỏ sót."""
+    normed_new = [_normalize_for_similarity(t) for t in new_texts]
+    for i in range(len(normed_new)):
+        for j in range(i + 1, len(normed_new)):
+            if not normed_new[i] or not normed_new[j]:
+                continue
+            if SequenceMatcher(None, normed_new[i], normed_new[j]).ratio() >= _DUPLICATE_SIMILARITY_THRESHOLD:
+                return f"Câu {i + 1} và câu {j + 1} trong batch quá giống nhau"
+
+    normed_hist = [_normalize_for_similarity(h) for h in history]
+    for i, nq in enumerate(normed_new):
+        if not nq:
+            continue
+        for h in normed_hist:
+            if h and SequenceMatcher(None, nq, h).ratio() >= _DUPLICATE_SIMILARITY_THRESHOLD:
+                return f"Câu {i + 1} trùng ý với 1 câu đã sinh trước đó cho level này"
+    return None
+
+
+def _bound_history(history: list[str] | None, max_entries: int) -> list[str]:
+    """Cắt bớt history trước khi NHÉT VÀO PROMPT (tốn token) - chỉ lấy các mục
+    GẦN NHẤT. Việc so sánh chống trùng (_find_duplicate) vẫn dùng history đầy
+    đủ (không qua hàm này) vì phần đó miễn phí."""
+    if not history:
+        return []
+    return history[-max_entries:]
+
+
+def _check_logic_duplicates(kb: dict, questions: list[dict], history: list[str] | None = None) -> None:
+    """Lời gọi AI RIÊNG, rẻ (reasoning_effort=low) - CHỈ còn kiểm tra lặp Ý/
+    LOGIC sâu (paraphrase dùng từ vựng khác hẳn mà _find_duplicate/difflib
+    không bắt được). KHÔNG còn kiểm tra đáp án nữa (đã tách hẳn sang
+    _determine_and_verify_answers() bên dưới - pipeline riêng, độc lập với
+    generator, mạnh hơn nhiều so với lượt rẻ cũ) - tránh 2 cơ chế khác nhau
+    cùng phán xét đáp án (vừa tốn token thừa vừa dễ false-positive huỷ oan cả
+    batch). Chỉ chạy SAU KHI batch đã qua _parse_mcq_rows + _find_duplicate,
+    để không phí lượt gọi trên 1 batch đằng nào cũng bị huỷ vì lý do khác."""
+    items = [{"id": q["id"], "sentence": q["question"]} for q in questions]
+    prompt = assemble(compact_kb(kb), logic_duplicate_check_task(items, history))
+    raw = ask(prompt, reasoning_effort="low")
+    data = parse_ai_json(raw)
+    duplicate_ids = data.get("duplicate_ids") or []
+    if duplicate_ids:
+        raise HTTPException(status_code=502, detail=f"Phát hiện câu {duplicate_ids} lặp ý với câu khác, thử lại.")
+
+
+# ---------- Strong answer pipeline: xác định + kiểm tra đáp án ĐỘC LẬP ----------
+# Chạy SAU _check_logic_duplicates (đã lọc bớt batch rõ ràng lặp bằng lượt rẻ)
+# - đây là lớp thứ 2, đắt hơn nhưng ưu tiên độ chính xác: 1 model KHÔNG được
+# cho biết generator đã chọn gì tự suy ra đáp án từ KB, 1 lượt độc lập khác
+# kiểm tra lại, và code (không chỉ prompt) từ chối chấp nhận 1 "PASS" tự mâu
+# thuẫn (verifier tự kết luận đáp án khác nhưng vẫn báo PASS). Chỉ CÂU nào bị
+# FAIL mới được sinh lại đáp án (không sinh lại cả câu hỏi - Question Generator
+# không bị đụng tới) - hết lượt vẫn còn câu FAIL thì huỷ cả batch (dùng lại cơ
+# chế 502 -> retry sẵn có, sinh 1 bộ 20 câu hoàn toàn mới).
+_ANSWER_CONFIDENCE_THRESHOLD = 0.75
+_MAX_ANSWER_REGEN_ROUNDS = 2
+_LETTER_TO_INDEX = {"A": 0, "B": 1, "C": 2, "D": 3}
+
+
+def _determine_and_verify_answers(kb: dict, questions: list[dict]) -> None:
+    items_by_id = {q["id"]: q for q in questions}
+    pending_ids = list(items_by_id.keys())
+    feedback: dict[int, str] = {}
+    answer_model = os.environ.get("OPENAI_ANSWER_MODEL") or None
+
+    for _round in range(1 + _MAX_ANSWER_REGEN_ROUNDS):
+        if not pending_ids:
+            break
+
+        gen_items = [
+            {"id": qid, "sentence": items_by_id[qid]["question"], "options": items_by_id[qid]["options"]}
+            for qid in pending_ids
+        ]
+        gen_prompt = assemble(compact_kb(kb), strong_answer_generation_task(gen_items, feedback or None))
+        gen_data = parse_ai_json(ask(gen_prompt, reasoning_effort="low", model=answer_model))
+        proposals_by_id = {a["id"]: a for a in (gen_data.get("answers") or [])}
+
+        verify_items = []
+        for qid in pending_ids:
+            prop = proposals_by_id.get(qid)
+            if not prop or not prop.get("correct_letter"):
+                feedback[qid] = "Không nhận được đề xuất đáp án hợp lệ từ AI"
+                continue
+            verify_items.append({
+                "id": qid,
+                "sentence": items_by_id[qid]["question"],
+                "options": items_by_id[qid]["options"],
+                "proposed_letter": prop["correct_letter"],
+                "evidence": prop.get("evidence", ""),
+                "explanation": prop.get("explanation", ""),
+            })
+
+        if not verify_items:
+            continue  # tất cả đều thiếu đề xuất hợp lệ - thử sinh lại ở vòng sau
+
+        verify_prompt = assemble(compact_kb(kb), strong_answer_verification_task(verify_items))
+        verify_data = parse_ai_json(ask(verify_prompt, reasoning_effort="low", model=answer_model))
+        results_by_id = {r["id"]: r for r in (verify_data.get("results") or [])}
+
+        new_pending = []
+        for vi in verify_items:
+            qid = vi["id"]
+            result = results_by_id.get(qid)
+            if not result:
+                feedback[qid] = "Không nhận được kết quả kiểm tra hợp lệ từ AI"
+                new_pending.append(qid)
+                continue
+
+            status = result.get("status")
+            confidence = float(result.get("confidence") or 0)
+            verified_letter = result.get("correct_answer")
+            # Đối chiếu code-level: verifier tự kết luận khác đáp án đề xuất mà
+            # vẫn báo PASS là tự mâu thuẫn - KHÔNG được chấp nhận theo lời tự
+            # nhận PASS của nó (đây chính là phần chặn "validator tin mù quáng").
+            if verified_letter != vi["proposed_letter"]:
+                status = "FAIL"
+            if confidence < _ANSWER_CONFIDENCE_THRESHOLD:
+                status = "FAIL"
+
+            if status != "PASS":
+                feedback[qid] = result.get("failure_reason") or "Đáp án đề xuất không được xác nhận đủ tin cậy"
+                new_pending.append(qid)
+                continue
+
+            idx = _LETTER_TO_INDEX.get(str(vi["proposed_letter"]).strip().upper())
+            if idx is None or idx >= len(items_by_id[qid]["options"]):
+                feedback[qid] = "Chữ cái đáp án không hợp lệ"
+                new_pending.append(qid)
+                continue
+
+            items_by_id[qid]["correct_index"] = idx
+            feedback.pop(qid, None)
+
+        pending_ids = new_pending
+
+    if pending_ids:
+        raise HTTPException(
+            status_code=502,
+            detail=f"Không xác định chắc chắn đáp án đúng cho câu {sorted(pending_ids)}, thử lại.",
+        )
+
+
 def _grade_mcq_answers(answer_key: dict, questions_by_id: dict, answers: dict) -> tuple[int, list[dict], str]:
     """Chấm 1 bộ MCQ (dùng chung cho recognition chính thức và remediation
     practice). Trả về (số câu đúng, list câu sai chi tiết, summary text cho
@@ -224,6 +402,14 @@ class StartRequest(BaseModel):
 
 class SessionIdRequest(BaseModel):
     session_id: str
+    # Lịch sử câu hỏi đã sinh cho level này TỪ TRƯỚC (mọi lần: đầu tiên, retest,
+    # ôn tập) - lưu vĩnh viễn phía client (xem js/features/question-history.js),
+    # gửi kèm mỗi lần gọi sinh câu hỏi mới để tránh lặp. begin-recognition chỉ
+    # dùng recognition_history; begin-remediation dùng cả 3 (1 lời gọi sinh cả
+    # MCQ luyện tập lẫn Distinction/Application luyện tập).
+    recognition_history: list[str] = []
+    distinction_history: list[str] = []
+    application_history: list[str] = []
 
 
 class SubmitRecognitionRequest(BaseModel):
@@ -234,6 +420,8 @@ class SubmitRecognitionRequest(BaseModel):
 class SubmitConfidenceRequest(BaseModel):
     session_id: str
     confidence: float
+    distinction_history: list[str] = []
+    application_history: list[str] = []
 
 
 class SubmitOpenEndedRequest(BaseModel):
@@ -345,11 +533,21 @@ def begin_recognition(req: SessionIdRequest):
 
     kb = load_knowledge_base(session["world_id"], session["level"])
     n = len(kb["target_words"])
+    bounded_recognition_history = _bound_history(req.recognition_history, 60)
 
-    prompt = assemble(compact_kb(kb), recognition_task(n, session.get("is_retry", False)))
+    prompt = assemble(
+        compact_kb(kb),
+        recognition_task(n, session.get("is_retry", False), bounded_recognition_history),
+    )
     raw = ask(prompt)
     data = parse_ai_json(raw)
     questions = _parse_mcq_rows(data["q"], 20)
+
+    duplicate_violation = _find_duplicate([q["question"] for q in questions], req.recognition_history)
+    if duplicate_violation:
+        raise HTTPException(status_code=502, detail=f"{duplicate_violation}, thử lại.")
+    _check_logic_duplicates(kb, questions, bounded_recognition_history)
+    _determine_and_verify_answers(kb, questions)
 
     session["generated_questions"] = questions
     session["secure_answer_key"] = {str(q["id"]): q["correct_index"] for q in questions}
@@ -410,9 +608,23 @@ def submit_confidence(req: SubmitConfidenceRequest):
 
     kb = load_knowledge_base(session["world_id"], session["level"])
     used_questions = [q["question"] for q in (session.get("generated_questions") or [])]
-    prompt = assemble(compact_kb(kb), open_ended_generation_task(used_questions))
+    prompt = assemble(
+        compact_kb(kb),
+        open_ended_generation_task(
+            used_questions,
+            _bound_history(req.distinction_history, 30),
+            _bound_history(req.application_history, 30),
+        ),
+    )
     raw = ask(prompt)
     data = parse_ai_json(raw)
+
+    duplicate_violation = (
+        _find_duplicate([data["d"]], req.distinction_history)
+        or _find_duplicate([data["a"]], req.application_history)
+    )
+    if duplicate_violation:
+        raise HTTPException(status_code=502, detail=f"{duplicate_violation}, thử lại.")
 
     session["distinction_prompt"] = data["d"]
     session["application_prompt"] = data["a"]
@@ -501,6 +713,7 @@ def begin_remediation(req: SessionIdRequest):
     kb = load_knowledge_base(session["world_id"], session["level"])
     missed_words = _missed_words_text(session.get("wrong_questions"))
     n_practice = 10
+    bounded_recognition_history = _bound_history(req.recognition_history, 60)
 
     prompt = assemble(
         compact_kb(kb),
@@ -510,11 +723,24 @@ def begin_remediation(req: SessionIdRequest):
             session.get("distinction_feedback") or "",
             session.get("application_feedback") or "",
             n_practice,
+            bounded_recognition_history,
+            _bound_history(req.distinction_history, 30),
+            _bound_history(req.application_history, 30),
         ),
     )
     raw = ask(prompt)
     data = parse_ai_json(raw)
     questions = _parse_mcq_rows(data["q"], n_practice)
+
+    duplicate_violation = (
+        _find_duplicate([q["question"] for q in questions], req.recognition_history)
+        or _find_duplicate([data["d"]], req.distinction_history)
+        or _find_duplicate([data["a"]], req.application_history)
+    )
+    if duplicate_violation:
+        raise HTTPException(status_code=502, detail=f"{duplicate_violation}, thử lại.")
+    _check_logic_duplicates(kb, questions, bounded_recognition_history)
+    _determine_and_verify_answers(kb, questions)
 
     session["practice_questions"] = questions
     session["practice_secure_answer_key"] = {str(q["id"]): q["correct_index"] for q in questions}
