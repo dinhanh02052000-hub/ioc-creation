@@ -10,6 +10,11 @@ from pathlib import Path
 
 DB_PATH = Path(__file__).resolve().parent / "ioc_users.db"
 
+# Số key tặng khi 1 tài khoản Google đăng nhập LẦN ĐẦU TIÊN (xem upsert_user).
+# Cũng dùng làm giá trị migrate cho user đã có sẵn từ trước khi tính năng key
+# ra mắt - để không ai bị khoá AI đột ngột ngay sau khi cập nhật.
+INITIAL_KEYS = 15
+
 
 def get_conn() -> sqlite3.Connection:
     conn = sqlite3.connect(DB_PATH)
@@ -27,6 +32,7 @@ def init_db() -> None:
             email TEXT,
             name TEXT,
             picture TEXT,
+            keys INTEGER NOT NULL DEFAULT 0,
             created_at TEXT DEFAULT CURRENT_TIMESTAMP
         );
         CREATE TABLE IF NOT EXISTS sessions (
@@ -41,22 +47,63 @@ def init_db() -> None:
         );
         """
     )
+    # Migrate DB đã tồn tại từ trước khi có cột "keys" (CREATE TABLE IF NOT
+    # EXISTS ở trên là no-op với bảng đã có sẵn) - grandfathering: user cũ
+    # cũng được INITIAL_KEYS luôn, không bị khoá AI đột ngột sau khi cập nhật.
+    cols = {row["name"] for row in conn.execute("PRAGMA table_info(users)")}
+    if "keys" not in cols:
+        # SQLite không cho bind param trong DEFAULT của ALTER TABLE - INITIAL_KEYS
+        # là hằng số int cố định trong code (không phải input người dùng) nên
+        # nhét thẳng vào chuỗi SQL ở đây an toàn, không có rủi ro injection.
+        conn.execute(f"ALTER TABLE users ADD COLUMN keys INTEGER NOT NULL DEFAULT {INITIAL_KEYS}")
     conn.commit()
     conn.close()
 
 
 def upsert_user(google_sub: str, email: str, name: str, picture: str) -> sqlite3.Row:
+    """Tặng INITIAL_KEYS CHỈ khi đây là lần đăng nhập ĐẦU TIÊN (insert thật sự
+    thành công) - dùng INSERT trước, bắt IntegrityError để fallback sang
+    UPDATE (không đụng cột keys) thay vì kiểu "SELECT kiểm tra tồn tại rồi mới
+    quyết định" - tránh race khi 2 request đăng nhập gần như đồng thời (VD 2
+    tab) cùng tưởng là "chưa có" rồi tặng key 2 lần: ràng buộc UNIQUE(google_sub)
+    của SQLite đảm bảo chỉ 1 INSERT có thể thắng, request còn lại chắc chắn rơi
+    vào nhánh UPDATE."""
     conn = get_conn()
-    conn.execute(
-        """INSERT INTO users (google_sub, email, name, picture) VALUES (?, ?, ?, ?)
-           ON CONFLICT(google_sub) DO UPDATE SET
-             email = excluded.email, name = excluded.name, picture = excluded.picture""",
-        (google_sub, email, name, picture),
-    )
-    conn.commit()
+    try:
+        conn.execute(
+            "INSERT INTO users (google_sub, email, name, picture, keys) VALUES (?, ?, ?, ?, ?)",
+            (google_sub, email, name, picture, INITIAL_KEYS),
+        )
+        conn.commit()
+    except sqlite3.IntegrityError:
+        conn.execute(
+            "UPDATE users SET email = ?, name = ?, picture = ? WHERE google_sub = ?",
+            (email, name, picture, google_sub),
+        )
+        conn.commit()
     user = conn.execute("SELECT * FROM users WHERE google_sub = ?", (google_sub,)).fetchone()
     conn.close()
     return user
+
+
+def get_keys(user_id: int) -> int:
+    conn = get_conn()
+    row = conn.execute("SELECT keys FROM users WHERE id = ?", (user_id,)).fetchone()
+    conn.close()
+    return row["keys"] if row else 0
+
+
+def deduct_keys(user_id: int, amount: int) -> bool:
+    """Trừ key NGUYÊN TỬ: kiểm tra đủ số dư và trừ trong CÙNG 1 câu UPDATE
+    (WHERE keys >= amount) thay vì đọc số dư rồi ghi lại riêng - tránh race
+    khi 2 request gần như đồng thời cùng đọc thấy đủ key rồi cùng trừ. Trả về
+    False nếu không đủ (không có row nào khớp WHERE) - KHÔNG trừ gì cả."""
+    conn = get_conn()
+    cur = conn.execute("UPDATE users SET keys = keys - ? WHERE id = ? AND keys >= ?", (amount, user_id, amount))
+    conn.commit()
+    ok = cur.rowcount > 0
+    conn.close()
+    return ok
 
 
 def create_session(user_id: int) -> str:

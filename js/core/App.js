@@ -10,6 +10,13 @@ function App() {
             <span class="brand-title">IOC <span class="sub-title">ILLUSION OF COMPETENCE</span></span>
             <span class="brand-notice">Để kết quả được tối ưu, trong quá trình làm bài không dùng công cụ hoặc thiết bị hỗ trợ</span>
           </div>
+          <div class="header-key-area">
+            <div class="key-balance-pill" title="Số key còn lại (dùng để giới hạn tính năng AI)">
+              <span class="key-balance-value" id="header-key-value">000</span>
+              <span class="key-balance-icon"><img src="assets/images/key.png" alt="Key"></span>
+            </div>
+            <button type="button" class="key-topup-btn" title="Nạp thêm key (sắp ra mắt)">+</button>
+          </div>
         </div>
         <nav class="nav-links">
           <button class="nav-btn active" data-target="home">

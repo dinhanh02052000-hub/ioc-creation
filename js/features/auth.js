@@ -202,3 +202,30 @@ function authSignOut() {
   }
   window.location.reload();
 }
+
+// ==== Badge số key ở góc trên-phải header (chỉ tồn tại trên index.html - an
+// toàn khi gọi từ world1.html/world2.html vì #header-key-value không có nên
+// no-op) ====
+// Số key KHÔNG cache trong localStorage như session (token/name/email/picture)
+// - vì nó đổi phía server (mỗi lần dùng AI), cache lại dễ bị lệch/gây hiểu
+// nhầm. Luôn lấy trực tiếp từ /api/auth/me hoặc từ keys_remaining trả về sau
+// mỗi lượt gọi AI có trừ key.
+function setHeaderKeyDisplay(keys) {
+  const el = document.getElementById('header-key-value');
+  if (!el) return;
+  const n = Number.isFinite(keys) ? keys : 0;
+  el.textContent = String(Math.max(0, n)).padStart(3, '0');
+}
+
+async function initHeaderKeyBadge() {
+  if (!isLoggedIn()) {
+    setHeaderKeyDisplay(0);
+    return;
+  }
+  try {
+    const me = await authApiRequest('/api/auth/me', 'GET');
+    setHeaderKeyDisplay(me.keys);
+  } catch (e) {
+    // Không chặn UI vì lỗi phụ (VD backend tạm offline) - giữ nguyên "000".
+  }
+}

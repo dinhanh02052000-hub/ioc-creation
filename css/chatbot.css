@@ -151,6 +151,14 @@
     transform 0.12s ease, box-shadow 0.15s ease;
 }
 
+/* .ai-btn cũng được dùng trên thẻ <a> (VD nút "Đăng nhập với Google" ở lỗi
+   401/402) - reset lại style mặc định của link cho đồng nhất với <button>. */
+a.ai-btn,
+a.ai-btn-secondary {
+  text-decoration: none;
+  display: inline-block;
+}
+
 .ai-btn:hover:not(:disabled) {
   background: var(--accent);
   color: #fff;

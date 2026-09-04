@@ -6,11 +6,18 @@
 const AI_BACKEND_URL = 'http://localhost:8001';
 
 async function aiRequest(path, body) {
+  // Từ khi có tính năng "key" (giới hạn dùng AI theo tài khoản Google), mọi
+  // route AI ở backend đều yêu cầu đăng nhập -> gắn kèm Bearer token nếu có,
+  // giống hệt cách authApiRequest() ở auth.js đã làm cho progress save/load.
+  const session = typeof getAuthSession === 'function' ? getAuthSession() : null;
+  const headers = { 'Content-Type': 'application/json' };
+  if (session) headers['Authorization'] = `Bearer ${session.token}`;
+
   let res;
   try {
     res = await fetch(`${AI_BACKEND_URL}${path}`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify(body || {})
     });
   } catch (e) {
@@ -25,7 +32,12 @@ async function aiRequest(path, body) {
     } catch (e) {
       // response không phải JSON -> giữ nguyên statusText
     }
-    throw new Error(detail);
+    // Gắn status vào error để caller (chatbot.js) phân biệt được 401 (chưa
+    // đăng nhập) / 402 (hết key) với các lỗi khác - đáng tin cậy hơn nhiều so
+    // với so khớp chuỗi tiếng Việt.
+    const err = new Error(detail);
+    err.status = res.status;
+    throw err;
   }
 
   return res.json();

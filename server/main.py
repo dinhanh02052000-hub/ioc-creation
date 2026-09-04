@@ -464,9 +464,9 @@ class ProgressSaveRequest(BaseModel):
 
 
 def get_current_user(authorization: str | None = Header(default=None)):
-    """Dependency xác thực Bearer token cho các route cần đăng nhập
-    (progress save/load) - KHÔNG áp dụng cho các route chat AI (không cần
-    đăng nhập mới học được, đăng nhập chỉ để đồng bộ tiến độ)."""
+    """Dependency xác thực Bearer token - áp dụng cho progress save/load VÀ
+    (từ khi có tính năng key) toàn bộ 9 route chat AI, vì AI giờ giới hạn theo
+    key gắn với tài khoản Google (guest luôn có 0 key, không dùng được AI)."""
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Chưa đăng nhập.")
     token = authorization.removeprefix("Bearer ").strip()
@@ -474,6 +474,27 @@ def get_current_user(authorization: str | None = Header(default=None)):
     if not user:
         raise HTTPException(status_code=401, detail="Phiên đăng nhập không hợp lệ hoặc đã hết hạn.")
     return user
+
+
+# ---------- "key" currency: giới hạn dùng AI ----------
+# Chỉ 2 trong 9 route AI thật sự trừ key (begin-recognition: 2, begin-
+# remediation: 1) - 7 route còn lại chỉ cần đăng nhập (Depends(get_current_user)
+# ở trên), miễn phí vì đã tính vào chi phí của lượt begin- tương ứng rồi.
+def _require_keys(user, cost: int) -> None:
+    """Chặn SỚM, RẺ trước khi tốn AI - không phải bước trừ key thật (xem
+    _charge_keys), chỉ để tránh gọi AI vô ích khi rõ ràng không đủ key ngay
+    từ đầu request."""
+    if user["keys"] < cost:
+        raise HTTPException(status_code=402, detail="Bạn đã hết key.")
+
+
+def _charge_keys(user_id: int, cost: int) -> None:
+    """Trừ key THẬT - chỉ gọi ở CUỐI, SAU KHI toàn bộ việc AI của request đã
+    thành công (mọi lỗi ở giữa đều raise HTTPException và thoát hàm trước khi
+    tới được dòng gọi hàm này). db.deduct_keys atomic nên đủ chống race dù
+    _require_keys ở trên không atomic."""
+    if not db.deduct_keys(user_id, cost):
+        raise HTTPException(status_code=402, detail="Bạn đã hết key.")
 
 
 # ---------- endpoints ----------
@@ -495,7 +516,7 @@ def get_vocab(world_id: str, level: int):
 
 
 @app.post("/api/chat/start")
-def start_session(req: StartRequest):
+def start_session(req: StartRequest, user=Depends(get_current_user)):
     try:
         kb = load_knowledge_base(req.world_id, req.level)
     except (ValueError, FileNotFoundError) as e:
@@ -519,13 +540,14 @@ def start_session(req: StartRequest):
 
 
 @app.post("/api/chat/begin-recognition")
-def begin_recognition(req: SessionIdRequest):
+def begin_recognition(req: SessionIdRequest, user=Depends(get_current_user)):
     session = get_session(req.session_id)
     # Cho phép bắt đầu từ READY_FOR_RECOGNITION (lần đầu) HOẶC từ RETRY/
     # REMEDIATION_DONE (retest sau khi ôn tập, hoặc bỏ qua ôn tập retest thẳng)
     # - đây chính là nút "Kiểm tra lại" lặp lại từ đầu 20 câu MCQ.
     if session["current_state"] not in ("READY_FOR_RECOGNITION", "RETRY", "REMEDIATION_DONE"):
         raise HTTPException(status_code=409, detail=f"Sai trạng thái hiện tại: {session['current_state']}")
+    _require_keys(user, 2)
 
     is_retest = session["current_state"] in ("RETRY", "REMEDIATION_DONE")
     if is_retest:
@@ -548,6 +570,7 @@ def begin_recognition(req: SessionIdRequest):
         raise HTTPException(status_code=502, detail=f"{duplicate_violation}, thử lại.")
     _check_logic_duplicates(kb, questions, bounded_recognition_history)
     _determine_and_verify_answers(kb, questions)
+    _charge_keys(user["id"], 2)
 
     session["generated_questions"] = questions
     session["secure_answer_key"] = {str(q["id"]): q["correct_index"] for q in questions}
@@ -556,11 +579,12 @@ def begin_recognition(req: SessionIdRequest):
     return {
         "questions": [{"id": q["id"], "question": q["question"], "options": q["options"]} for q in questions],
         "is_retest": is_retest,
+        "keys_remaining": db.get_keys(user["id"]),
     }
 
 
 @app.post("/api/chat/submit-recognition")
-def submit_recognition(req: SubmitRecognitionRequest):
+def submit_recognition(req: SubmitRecognitionRequest, user=Depends(get_current_user)):
     session = get_session(req.session_id)
     if session["current_state"] != "WAITING_RECOGNITION_SUBMISSION":
         raise HTTPException(status_code=409, detail=f"Sai trạng thái hiện tại: {session['current_state']}")
@@ -596,7 +620,7 @@ def submit_recognition(req: SubmitRecognitionRequest):
 
 
 @app.post("/api/chat/submit-confidence")
-def submit_confidence(req: SubmitConfidenceRequest):
+def submit_confidence(req: SubmitConfidenceRequest, user=Depends(get_current_user)):
     session = get_session(req.session_id)
     if session["current_state"] != "WAITING_CONFIDENCE":
         raise HTTPException(status_code=409, detail=f"Sai trạng thái hiện tại: {session['current_state']}")
@@ -637,7 +661,7 @@ def submit_confidence(req: SubmitConfidenceRequest):
 
 
 @app.post("/api/chat/submit-open-ended")
-def submit_open_ended(req: SubmitOpenEndedRequest):
+def submit_open_ended(req: SubmitOpenEndedRequest, user=Depends(get_current_user)):
     session = get_session(req.session_id)
     if session["current_state"] != "WAITING_OPEN_ENDED_SUBMISSION":
         raise HTTPException(status_code=409, detail=f"Sai trạng thái hiện tại: {session['current_state']}")
@@ -705,10 +729,11 @@ def submit_open_ended(req: SubmitOpenEndedRequest):
 # ---------- luồng ôn tập trọng tâm (remediation) khi RETRY ----------
 
 @app.post("/api/chat/begin-remediation")
-def begin_remediation(req: SessionIdRequest):
+def begin_remediation(req: SessionIdRequest, user=Depends(get_current_user)):
     session = get_session(req.session_id)
     if session["current_state"] != "RETRY":
         raise HTTPException(status_code=409, detail=f"Sai trạng thái hiện tại: {session['current_state']}")
+    _require_keys(user, 1)
 
     kb = load_knowledge_base(session["world_id"], session["level"])
     missed_words = _missed_words_text(session.get("wrong_questions"))
@@ -741,6 +766,7 @@ def begin_remediation(req: SessionIdRequest):
         raise HTTPException(status_code=502, detail=f"{duplicate_violation}, thử lại.")
     _check_logic_duplicates(kb, questions, bounded_recognition_history)
     _determine_and_verify_answers(kb, questions)
+    _charge_keys(user["id"], 1)
 
     session["practice_questions"] = questions
     session["practice_secure_answer_key"] = {str(q["id"]): q["correct_index"] for q in questions}
@@ -751,11 +777,12 @@ def begin_remediation(req: SessionIdRequest):
     return {
         "recap": data.get("recap", ""),
         "practice_questions": [{"id": q["id"], "question": q["question"], "options": q["options"]} for q in questions],
+        "keys_remaining": db.get_keys(user["id"]),
     }
 
 
 @app.post("/api/chat/submit-remediation-mcq")
-def submit_remediation_mcq(req: RemediationMCQRequest):
+def submit_remediation_mcq(req: RemediationMCQRequest, user=Depends(get_current_user)):
     session = get_session(req.session_id)
     if session["current_state"] != "REMEDIATION_MCQ":
         raise HTTPException(status_code=409, detail=f"Sai trạng thái hiện tại: {session['current_state']}")
@@ -778,7 +805,7 @@ def submit_remediation_mcq(req: RemediationMCQRequest):
 
 
 @app.post("/api/chat/submit-remediation-open-ended")
-def submit_remediation_open_ended(req: RemediationOpenEndedRequest):
+def submit_remediation_open_ended(req: RemediationOpenEndedRequest, user=Depends(get_current_user)):
     session = get_session(req.session_id)
     if session["current_state"] != "REMEDIATION_OPEN_ENDED":
         raise HTTPException(status_code=409, detail=f"Sai trạng thái hiện tại: {session['current_state']}")
@@ -815,7 +842,7 @@ def submit_remediation_open_ended(req: RemediationOpenEndedRequest):
 # ---------- trang Analysis (độc lập, không qua session_store) ----------
 
 @app.post("/api/analysis/generate")
-def generate_analysis(req: AnalysisRequest):
+def generate_analysis(req: AnalysisRequest, user=Depends(get_current_user)):
     """Chỉ 1 lời gọi AI duy nhất, do FRONTEND chủ động gọi khi người dùng mở
     trang Analysis (đã tự cache theo chữ ký dữ liệu ở client, không gọi lặp
     lại). Không đụng tới session_store - không cần "phiên" nào cả, input là
@@ -870,7 +897,7 @@ def logout(authorization: str | None = Header(default=None)):
 
 @app.get("/api/auth/me")
 def get_me(user=Depends(get_current_user)):
-    return {"email": user["email"], "name": user["name"], "picture": user["picture"]}
+    return {"email": user["email"], "name": user["name"], "picture": user["picture"], "keys": user["keys"]}
 
 
 @app.delete("/api/auth/delete-account")

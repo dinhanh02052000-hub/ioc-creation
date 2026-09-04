@@ -167,6 +167,14 @@ function openAIChat(worldId, level, onComplete, isRetry = false) {
     if (e.target === overlay) aiHandleUserDismiss();
   });
 
+  // Guest chắc chắn sẽ bị backend chặn 401 ở lượt gọi AI đầu tiên (tính năng
+  // key) - báo ngay ở đây thay vì đợi 1 vòng network round-trip vô ích trước
+  // khi hiện đúng cái thông báo mà lẽ ra biết trước được.
+  if (typeof isLoggedIn === 'function' && !isLoggedIn()) {
+    aiRenderSessionAwareError({ status: 401 }, null);
+    return;
+  }
+
   if (saved && saved.stage) {
     aiResumeFromStage();
   } else {
@@ -238,6 +246,19 @@ function aiRenderError(message, onRetry) {
 // giữa chừng), việc "Thử lại" y hệt sẽ luôn thất bại vì session đã mất. Thay
 // vào đó cho người dùng lựa chọn bắt đầu lại từ đầu (session mới).
 function aiRenderSessionAwareError(e, onRetry) {
+  // 401/402 (từ tính năng "key" giới hạn dùng AI) không phải lỗi tạm thời -
+  // "Thử lại" y hệt sẽ luôn thất bại vì trạng thái chưa đăng nhập/hết key
+  // không tự đổi được, nên cho hành động khác thay vì nút retry vô nghĩa.
+  if (e && e.status === 401) {
+    aiSetBody(`<div class="ai-error">Bạn cần đăng nhập bằng Google để dùng tính năng AI. Đăng nhập lần đầu được tặng 15 key miễn phí.</div>`);
+    aiSetFooter(`<a href="index.html?page=profile" class="ai-btn">Đăng nhập với Google</a>`);
+    return;
+  }
+  if (e && e.status === 402) {
+    aiSetBody(`<div class="ai-error">Bạn đã dùng hết key. Hiện chưa hỗ trợ nạp thêm key.</div>`);
+    aiSetFooter(`<a href="index.html?page=profile" class="ai-btn ai-btn-secondary">Xem tài khoản</a>`);
+    return;
+  }
   const msg = e && e.message ? e.message : String(e);
   if (/không tồn tại hoặc đã hết hạn/i.test(msg)) {
     aiSetBody(`<div class="ai-error">Phiên làm bài đã hết hạn (có thể do server khởi động lại). Bạn cần bắt đầu lại từ đầu.</div>`);
@@ -326,6 +347,9 @@ async function aiBeginRecognition() {
     aiChat.answers = {};
     if (typeof appendRecognitionHistory === 'function') {
       appendRecognitionHistory(aiChat.worldId, aiChat.level, res.questions.map(q => q.question));
+    }
+    if (typeof setHeaderKeyDisplay === 'function') {
+      setHeaderKeyDisplay(res.keys_remaining);
     }
     aiRenderMCQList();
   } catch (e) {
@@ -683,6 +707,9 @@ async function aiBeginRemediation() {
     aiChat.practiceAnswers = {};
     if (typeof appendRecognitionHistory === 'function') {
       appendRecognitionHistory(aiChat.worldId, aiChat.level, res.practice_questions.map(q => q.question));
+    }
+    if (typeof setHeaderKeyDisplay === 'function') {
+      setHeaderKeyDisplay(res.keys_remaining);
     }
     aiRenderRemediationRecap();
   } catch (e) {

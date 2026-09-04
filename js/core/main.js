@@ -4,9 +4,12 @@ document.addEventListener('DOMContentLoaded', () => {
     root.innerHTML = App();
 
     // Quay lại từ world1.html/world2.html sẽ có ?page=course -> mở đúng tab
-    // Course thay vì luôn mặc định về Home.
+    // Course thay vì luôn mặc định về Home. ?page=profile dùng khi lỗi AI
+    // (chưa đăng nhập/hết key) điều hướng người dùng thẳng tới trang tài khoản.
     const params = new URLSearchParams(window.location.search);
-    const initialTarget = params.get('page') === 'course' ? 'course' : 'home';
+    const validTargets = new Set(['home', 'course', 'analysis', 'profile']);
+    const requestedTarget = params.get('page');
+    const initialTarget = validTargets.has(requestedTarget) ? requestedTarget : 'home';
 
     const navBtns = document.querySelectorAll('.nav-btn');
     navBtns.forEach(b => b.classList.remove('active'));
@@ -21,6 +24,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // tất cả trang, không dừng khi chuyển tab).
     if (typeof startPlaytimeTimer === 'function') {
       startPlaytimeTimer();
+    }
+
+    // Cập nhật số key hiển thị ở góc trên-phải header (guest luôn thấy 000).
+    if (typeof initHeaderKeyBadge === 'function') {
+      initHeaderKeyBadge();
     }
   }
 });
