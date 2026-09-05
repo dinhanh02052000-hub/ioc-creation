@@ -4,4 +4,5 @@ python-dotenv
 openai
 python-multipart
 google-auth
+requests
 psycopg[binary]
