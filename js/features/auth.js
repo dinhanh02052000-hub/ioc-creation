@@ -177,7 +177,7 @@ function initGoogleAuth(containerId, retriesLeft) {
     return;
   }
   google.accounts.id.initialize({
-    client_id: '290773416982-0cmegk2eirqj4reql0sd1io6c7s3p8e9.apps.googleusercontent.com',
+    client_id: '560912613294-ohckrbqk8hk8po63dd2hem52efo39emc.apps.googleusercontent.com',
     callback: handleGoogleCredentialResponse
   });
   const container = document.getElementById(containerId);
