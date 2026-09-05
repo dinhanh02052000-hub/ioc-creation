@@ -96,6 +96,7 @@ function App() {
         <input type="text" id="feedback-name" class="feedback-input" placeholder="Tên của bạn (không bắt buộc)">
         <textarea id="feedback-content" class="feedback-textarea" rows="3" placeholder="Nội dung góp ý..." required></textarea>
         <button type="submit" class="feedback-submit-btn">Gửi góp ý</button>
+        <p class="feedback-status" id="feedback-status" hidden></p>
       </form>
     </div>
 

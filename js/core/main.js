@@ -264,6 +264,8 @@ function initFeedbackWidget() {
   const openPanel = () => {
     panel.classList.add('open');
     document.getElementById('feedback-content').focus();
+    const statusEl = document.getElementById('feedback-status');
+    if (statusEl) statusEl.hidden = true;
   };
   const closePanel = () => panel.classList.remove('open');
 
@@ -275,7 +277,17 @@ function initFeedbackWidget() {
     closeBtn.addEventListener('click', closePanel);
   }
 
-  form.addEventListener('submit', (e) => {
+  const statusEl = document.getElementById('feedback-status');
+  const submitBtn = form.querySelector('.feedback-submit-btn');
+
+  const showStatus = (message, kind) => {
+    if (!statusEl) return;
+    statusEl.textContent = message;
+    statusEl.className = `feedback-status ${kind}`;
+    statusEl.hidden = false;
+  };
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const nameInput = document.getElementById('feedback-name');
@@ -288,19 +300,27 @@ function initFeedbackWidget() {
       return;
     }
 
-    const subject = `[IOC] Góp ý từ ${name || 'người dùng'}`;
-    const bodyLines = [];
-    if (name) bodyLines.push(`Tên: ${name}`);
-    bodyLines.push('');
-    bodyLines.push(content);
-
-    const mailtoUrl =
-      `mailto:dinhanh02052000@gmail.com` +
-      `?subject=${encodeURIComponent(subject)}` +
-      `&body=${encodeURIComponent(bodyLines.join('\n'))}`;
-
-    window.location.href = mailtoUrl;
-    form.reset();
-    closePanel();
+    // Lưu thẳng vào DB qua API thay vì mailto: - mailto chỉ mở sẵn 1 email
+    // nháp, KHÔNG tự gửi, nên im lặng không có gì xảy ra nếu máy người dùng
+    // chưa cấu hình ứng dụng mail mặc định (đây là lý do feedback "biến mất").
+    submitBtn.disabled = true;
+    const originalLabel = submitBtn.textContent;
+    submitBtn.textContent = 'Đang gửi...';
+    try {
+      const res = await fetch(`${AI_BACKEND_URL}/api/feedback`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, content })
+      });
+      if (!res.ok) throw new Error('Gửi thất bại');
+      showStatus('Đã gửi góp ý, cảm ơn bạn!', 'success');
+      form.reset();
+      setTimeout(closePanel, 1500);
+    } catch (e2) {
+      showStatus('Gửi không thành công, thử lại sau.', 'error');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalLabel;
+    }
   });
 }

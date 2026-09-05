@@ -1239,6 +1239,20 @@ body {
   transform: scale(0.97);
 }
 
+.feedback-status {
+  margin-top: 8px;
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+.feedback-status.success {
+  color: var(--accent-green, #3fb950);
+}
+
+.feedback-status.error {
+  color: #e5534b;
+}
+
 /* ==== Course / Vocabulary Journey ==== */
 
 .course-page {

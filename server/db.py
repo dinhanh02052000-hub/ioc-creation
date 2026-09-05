@@ -74,6 +74,16 @@ def init_db() -> None:
         )
         """
     )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS feedback (
+            id SERIAL PRIMARY KEY,
+            name TEXT,
+            content TEXT NOT NULL,
+            created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+        )
+        """
+    )
     # Postgres hỗ trợ thẳng "ADD COLUMN IF NOT EXISTS" - đơn giản hơn hẳn kiểu
     # tự kiểm tra PRAGMA table_info như SQLite trước đây. An toàn chạy lại
     # nhiều lần (no-op nếu cột đã có).
@@ -314,3 +324,13 @@ def load_progress(user_id: int) -> dict:
         return json.loads(row["data_json"])
     except (TypeError, ValueError):
         return {}
+
+
+def save_feedback(name: str, content: str) -> None:
+    """Lưu góp ý thẳng vào DB thay vì mailto: (mailto chỉ mở sẵn 1 email nháp,
+    KHÔNG tự gửi - im lặng không có gì xảy ra nếu máy người dùng chưa cấu hình
+    ứng dụng mail mặc định). Xem lại bằng hacker prompt/view_feedback.py."""
+    conn = get_conn()
+    conn.execute("INSERT INTO feedback (name, content) VALUES (%s, %s)", (name or None, content))
+    conn.commit()
+    conn.close()

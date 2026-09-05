@@ -483,6 +483,11 @@ class CreatePaymentRequest(BaseModel):
     package_index: int
 
 
+class FeedbackRequest(BaseModel):
+    name: str = ""
+    content: str
+
+
 def get_current_user(authorization: str | None = Header(default=None)):
     """Dependency xác thực Bearer token - áp dụng cho progress save/load VÀ
     (từ khi có tính năng key) toàn bộ 9 route chat AI, vì AI giờ giới hạn theo
@@ -1120,6 +1125,20 @@ def sepay_webhook(payload: SePayWebhookPayload, authorization: str | None = Head
             result["amount_credited"], result["user_id"], reference_code,
         )
     return {"success": True}
+
+
+# ---------- Feedback ----------
+# Trước đây dùng mailto: (chỉ mở sẵn email nháp, KHÔNG tự gửi - im lặng không
+# có gì xảy ra nếu máy người dùng chưa cấu hình app mail mặc định). Giờ lưu
+# thẳng vào DB, xem lại bằng hacker prompt/view_feedback.py. Không yêu cầu
+# đăng nhập - guest cũng góp ý được, giống hành vi cũ.
+@app.post("/api/feedback")
+def submit_feedback(req: FeedbackRequest):
+    content = req.content.strip()
+    if not content:
+        raise HTTPException(status_code=400, detail="Nội dung góp ý không được để trống.")
+    db.save_feedback(req.name.strip(), content)
+    return {"ok": True}
 
 
 # ---------- phục vụ frontend tĩnh cùng origin với API (Google Sign-In yêu
