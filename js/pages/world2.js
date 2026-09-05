@@ -18,6 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initVocabList(config.worldId);
   }
 
+  if (typeof initGradingGuide === 'function') {
+    initGradingGuide();
+  }
+
   // Tổng thời gian học phải chạy ở MỌI trang, không riêng gì Home.
   if (typeof startPlaytimeTimer === 'function') {
     startPlaytimeTimer();

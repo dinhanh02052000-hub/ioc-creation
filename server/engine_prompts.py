@@ -396,8 +396,8 @@ def remediation_task(
 # LƯU Ý: hiện KHÔNG được tự động nối vào response nữa (đã tạm bỏ theo yêu cầu
 # trước đó để chờ làm 1 nút riêng ở UI) - vẫn giữ nguyên ở đây, chưa dùng tới.
 DISTINCTION_ANSWER_FORMAT = (
-    "\n\n**Cách trả lời (viết đúng 3 phần theo thứ tự, có thể viết bằng tiếng Việt - riêng câu ví dụ minh hoạ "
-    "nếu có thì phải viết bằng tiếng Anh):**\n"
+    "\n\n**Cách trả lời (viết đúng 3 phần theo thứ tự, được viết hoàn toàn bằng tiếng Việt hoặc tiếng Anh, kể "
+    "cả câu ví dụ minh hoạ nếu có):**\n"
     "1) *Meaning* - giải thích từ trong câu trên nghĩa là gì và vì sao nó hợp với câu này (1-2 câu).\n"
     "2) *Compare* - chọn đúng 1 từ khác trong nhóm; nếu thay vào thì nghĩa/sắc thái câu đổi thế nào (2-3 câu).\n"
     "3) *Why it fits best* - 1 câu so sánh ngắn gọn nêu rõ vì sao từ ban đầu là lựa chọn đúng nhất.\n"
@@ -406,8 +406,10 @@ DISTINCTION_ANSWER_FORMAT = (
 )
 APPLICATION_ANSWER_FORMAT = (
     "\n\n**Cách trả lời (viết đúng 2 phần theo thứ tự):**\n"
-    "1) *Your sentence* - viết đúng 1 câu tiếng Anh hoàn chỉnh, dùng đúng 1 từ trong nhóm, phù hợp tình huống trên.\n"
-    "2) *Why* - 1-2 câu giải thích vì sao chọn từ này thay vì các từ còn lại trong nhóm.\n"
+    "1) *Your sentence* - viết đúng 1 câu TIẾNG ANH hoàn chỉnh (bắt buộc tiếng Anh, đây là bài đặt câu), dùng "
+    "đúng 1 từ trong nhóm, phù hợp tình huống trên.\n"
+    "2) *Why* - 1-2 câu giải thích vì sao chọn từ này thay vì (các) từ còn lại trong nhóm - có thể viết bằng "
+    "tiếng Việt hoặc tiếng Anh; nếu nhóm có nhiều từ dễ nhầm, chỉ cần so sánh với 2-3 từ dễ nhầm nhất.\n"
     "*Lưu ý:* phần Why viết thành đoạn văn hoàn chỉnh (câu có đầy đủ chủ ngữ - vị ngữ), không viết dạng gạch "
     "đầu dòng hay liệt kê từ khoá rời rạc."
 )
@@ -460,14 +462,18 @@ def open_ended_grading_task(context: str) -> str:
         "Application - 4 tiêu chí (tổng tối đa 10):\n"
         "  - chon_tu tối đa 2đ (Phần 1 - Your sentence): có chọn đúng từ phù hợp NHẤT trong nhóm cho tình "
         "huống này không.\n"
-        "  - dung_dung tối đa 3đ (Phần 1 - Your sentence): câu viết ra đúng ngữ pháp và đúng nghĩa từ đó không.\n"
+        "  - dung_dung tối đa 3đ (Phần 1 - Your sentence): câu viết ra đúng ngữ pháp và đúng nghĩa từ đó không "
+        "- PHẦN NÀY BẮT BUỘC phải viết bằng TIẾNG ANH (đây là bài đặt câu tiếng Anh); nếu học sinh viết câu "
+        "này bằng tiếng Việt (hoặc không viết thành 1 câu tiếng Anh cụ thể) thì tiêu chí này = 0.\n"
         "  - tinh_huong tối đa 2đ (Phần 1 - Your sentence): câu có thực sự khớp với tình huống/kịch bản đã cho "
         "không.\n"
         "  - giai_thich tối đa 3đ (Phần 2 - Why): lý do giải thích có cụ thể, hợp lý, đúng trọng tâm không "
         "(không chỉ nói chung chung).\n"
-        "Học sinh được phép trả lời phần giải thích bằng tiếng Việt hoặc tiếng Anh đều được - TUYỆT ĐỐI không "
-        "trừ điểm chỉ vì trả lời bằng tiếng Việt, chỉ chấm nội dung đúng/sai (riêng câu ví dụ minh hoạ nếu học "
-        "sinh có viết thì mới cần bằng tiếng Anh). Câu trả lời phải là đoạn văn hoàn chỉnh (câu có chủ ngữ - "
+        "Học sinh được phép trả lời TIẾNG VIỆT hoặc TIẾNG ANH cho MỌI phần khác (Distinction cả 3 phần, kể cả "
+        "câu ví dụ minh hoạ nếu có; Application phần 2 - Why) - TUYỆT ĐỐI không trừ điểm chỉ vì dùng tiếng "
+        "Việt ở những phần đó, chỉ chấm nội dung đúng/sai. CHỈ RIÊNG câu ở Phần 1 của Application (đặt câu, "
+        "tiêu chí dung_dung) mới bắt buộc tiếng Anh như nêu trên. Câu trả lời phải là đoạn văn hoàn chỉnh (câu "
+        "có chủ ngữ - "
         "vị ngữ đầy đủ) - nếu học sinh chỉ liệt kê từ khoá/gạch đầu dòng rời rạc thay vì viết câu hoàn chỉnh thì "
         "trừ điểm tiêu chí liên quan (dù nội dung đúng ý cũng không cho điểm tối đa). "
         "Bỏ trống/vô nghĩa/'không biết' = 0 hết các tiêu chí liên quan. Mỗi feedback (d_fb, a_fb) viết 2-3 câu "
