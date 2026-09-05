@@ -183,12 +183,8 @@ body {
 }
 
 .key-balance-icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  border: 2px solid var(--accent);
-  background: var(--bg);
-  overflow: hidden;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -198,7 +194,7 @@ body {
 .key-balance-icon img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .key-topup-btn {
@@ -222,6 +218,237 @@ body {
   color: var(--text);
   border-color: var(--accent);
   background: var(--bg);
+}
+
+/* ==== Key Shop (modal mở từ nút "+") - hiện chỉ là giao diện tĩnh, chưa nối
+   cổng thanh toán thật (xem initKeyShopWidget() ở main.js). ==== */
+.key-shop-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(4, 6, 10, 0.88);
+}
+
+.key-shop-overlay.open {
+  display: flex;
+}
+
+.key-shop-panel {
+  width: min(560px, 100%);
+  max-height: min(720px, 100%);
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
+  border-radius: 12px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.key-shop-header {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.key-shop-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.key-shop-close {
+  background: none;
+  border: none;
+  color: var(--text-faint);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 6px 9px;
+  border-radius: 6px;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.key-shop-close:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.key-shop-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.key-shop-notice {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  margin: 0 0 16px;
+}
+
+.key-shop-packages {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.key-shop-package {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+.key-shop-package-amount {
+  flex-shrink: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--accent-soft-border, var(--border));
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-radius: 999px;
+  padding: 6px 14px;
+}
+
+.key-shop-package-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.key-shop-package-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.key-shop-package-price {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  margin-left: auto;
+}
+
+.key-shop-pay-btn {
+  flex-shrink: 0;
+  background: var(--accent-soft-bg, var(--bg-card));
+  border: 1px solid var(--accent-soft-border, var(--border));
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.82rem;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.key-shop-pay-btn:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+.key-shop-purchase-count {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  font-size: 0.82rem;
+  color: var(--text-dim);
+}
+
+.key-shop-purchase-count-value {
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* View "đang chờ thanh toán" (QR) - thay thế view danh sách gói, xem
+   initKeyShopWidget() ở js/core/main.js */
+.key-shop-qr-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.key-shop-qr-img {
+  width: 220px;
+  height: 220px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #fff;
+  object-fit: contain;
+}
+
+.key-shop-qr-fallback {
+  width: 220px;
+  border-radius: 10px;
+  border: 1px dashed var(--border);
+  padding: 16px;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+  text-align: left;
+}
+
+.key-shop-payment-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.key-shop-payment-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+.key-shop-payment-row span:last-child {
+  font-weight: 700;
+  color: var(--text);
+  font-family: monospace;
+}
+
+.key-shop-payment-status {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.key-shop-cancel-btn {
+  display: block;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  font-weight: 600;
+  font-size: 0.85rem;
+  border-radius: 8px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.key-shop-cancel-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
 }
 
 .nav-links {

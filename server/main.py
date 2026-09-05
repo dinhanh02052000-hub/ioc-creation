@@ -25,10 +25,16 @@ Prompt được nén tối đa (xem engine_prompts.py) để 1 lượt đầy đ
 chỉ rơi vào khoảng 4000-5000 token thay vì ~18K như bản JSON-dump trước đó.
 """
 
+import hmac
+import logging
 import os
 import re
+import secrets
+import string
 from difflib import SequenceMatcher
+from urllib.parse import urlencode
 
+import psycopg
 from fastapi import Depends, FastAPI, Header, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
@@ -42,7 +48,15 @@ import scoring
 from ai_json import parse_ai_json
 from ai_client import AIProviderError, AIRateLimitError, ask
 from analysis_prompts import analysis_task
-from config import BASE_DIR, GOOGLE_CLIENT_ID
+from config import (
+    BANK_ACCOUNT_NAME,
+    BANK_ACCOUNT_NUMBER,
+    BANK_BIN,
+    BASE_DIR,
+    GOOGLE_CLIENT_ID,
+    SEPAY_API_KEY,
+    VIETQR_TEMPLATE,
+)
 from engine_prompts import (
     assemble,
     compact_kb,
@@ -58,6 +72,8 @@ from engine_prompts import (
     strong_answer_verification_task,
 )
 from session_store import create_session, get_session
+
+logger = logging.getLogger("ioc.payments")
 
 app = FastAPI(title="IOC AI Tutor Backend")
 db.init_db()
@@ -461,6 +477,10 @@ class GoogleAuthRequest(BaseModel):
 
 class ProgressSaveRequest(BaseModel):
     data: dict
+
+
+class CreatePaymentRequest(BaseModel):
+    package_index: int
 
 
 def get_current_user(authorization: str | None = Header(default=None)):
@@ -897,7 +917,13 @@ def logout(authorization: str | None = Header(default=None)):
 
 @app.get("/api/auth/me")
 def get_me(user=Depends(get_current_user)):
-    return {"email": user["email"], "name": user["name"], "picture": user["picture"], "keys": user["keys"]}
+    return {
+        "email": user["email"],
+        "name": user["name"],
+        "picture": user["picture"],
+        "keys": user["keys"],
+        "purchase_count": user["purchase_count"],
+    }
 
 
 @app.delete("/api/auth/delete-account")
@@ -917,6 +943,183 @@ def save_progress(req: ProgressSaveRequest, user=Depends(get_current_user)):
 @app.get("/api/progress/load")
 def load_progress_endpoint(user=Depends(get_current_user)):
     return {"data": db.load_progress(user["id"])}
+
+
+# ---------- Key Shop ----------
+
+# Phải khớp CHÍNH XÁC bảng KEY_SHOP_PACKAGES ở js/core/App.js (thứ tự +
+# giá trị) - server tự tính bonus theo purchase_count của CHÍNH tài khoản đó
+# (không tin số client gửi lên), nên đổi gói/bonus ở frontend thì nhớ đổi lại
+# tương ứng ở đây.
+_KEY_SHOP_PACKAGES = [
+    {"keys": 10, "bonus10": 1, "bonus20": 1, "bonus50": 1},
+    {"keys": 25, "bonus10": 1, "bonus20": 2, "bonus50": 2},
+    {"keys": 50, "bonus10": 2, "bonus20": 3, "bonus50": 5},
+    {"keys": 100, "bonus10": 3, "bonus20": 5, "bonus50": 8},
+    {"keys": 250, "bonus10": 5, "bonus20": 10, "bonus50": 15},
+    {"keys": 500, "bonus10": 10, "bonus20": 20, "bonus50": 30},
+]
+
+# VNĐ - CHỈ nguồn giá trị thật, client không được tự gửi số tiền lên (xem
+# create_payment). Phải khớp theo đúng thứ tự với _KEY_SHOP_PACKAGES ở trên.
+_KEY_SHOP_PRICES_VND = [10_000, 20_000, 35_000, 60_000, 135_000, 250_000]
+assert len(_KEY_SHOP_PRICES_VND) == len(_KEY_SHOP_PACKAGES)
+
+_REFERENCE_CODE_ALPHABET = string.ascii_uppercase + string.digits
+
+
+def _key_shop_bonus_for_count(pkg: dict, purchase_count: int) -> int:
+    if purchase_count >= 50:
+        return pkg["bonus50"]
+    if purchase_count >= 20:
+        return pkg["bonus20"]
+    if purchase_count >= 10:
+        return pkg["bonus10"]
+    return 0
+
+
+def _generate_reference_code() -> str:
+    """"IOC" + 8 ký tự ngẫu nhiên (secrets, không phải random - đây là tiền
+    thật). Độ dài CỐ ĐỊNH là chủ đích: đảm bảo không có mã hợp lệ nào là chuỗi
+    con của 1 mã hợp lệ khác, giúp việc đối chiếu nội dung chuyển khoản ở
+    webhook (kiểm tra "chứa" mã) không bao giờ bị nhập nhằng giữa 2 mã."""
+    suffix = "".join(secrets.choice(_REFERENCE_CODE_ALPHABET) for _ in range(8))
+    return f"IOC{suffix}"
+
+
+def _build_vietqr_url(amount_vnd: int, reference_code: str) -> str:
+    query = urlencode({"amount": amount_vnd, "addInfo": reference_code, "accountName": BANK_ACCOUNT_NAME})
+    return f"https://img.vietqr.io/image/{BANK_BIN}-{BANK_ACCOUNT_NUMBER}-{VIETQR_TEMPLATE}.png?{query}"
+
+
+def _verify_sepay_auth(authorization: str | None) -> bool:
+    """SEPAY_API_KEY để trống trong .env (chưa đăng ký SePay) PHẢI luôn bị từ
+    chối - không được coi là "chưa cấu hình nên cho qua", nếu không endpoint
+    này thành 1 cổng mở cộng key tuỳ ý không cần xác thực gì."""
+    if not SEPAY_API_KEY:
+        return False
+    if not authorization or not authorization.startswith("Apikey "):
+        return False
+    provided = authorization.removeprefix("Apikey ").strip()
+    if not provided:
+        return False
+    return hmac.compare_digest(provided, SEPAY_API_KEY)
+
+
+@app.post("/api/keys/create-payment")
+def create_payment(req: CreatePaymentRequest, user=Depends(get_current_user)):
+    if req.package_index < 0 or req.package_index >= len(_KEY_SHOP_PACKAGES):
+        raise HTTPException(status_code=400, detail="Gói key không hợp lệ.")
+
+    existing = db.get_active_pending_payment(user["id"], req.package_index)
+    if existing:
+        return {
+            "reference_code": existing["reference_code"],
+            "amount_vnd": existing["amount_vnd"],
+            "qr_url": _build_vietqr_url(existing["amount_vnd"], existing["reference_code"]),
+        }
+
+    amount_vnd = _KEY_SHOP_PRICES_VND[req.package_index]
+    for _ in range(5):
+        reference_code = _generate_reference_code()
+        try:
+            db.create_pending_payment(reference_code, user["id"], req.package_index, amount_vnd)
+            break
+        except psycopg.errors.UniqueViolation:
+            continue
+    else:
+        raise HTTPException(status_code=500, detail="Không tạo được mã thanh toán, thử lại.")
+
+    return {
+        "reference_code": reference_code,
+        "amount_vnd": amount_vnd,
+        "qr_url": _build_vietqr_url(amount_vnd, reference_code),
+    }
+
+
+@app.get("/api/keys/payment-status/{reference_code}")
+def get_payment_status(reference_code: str, user=Depends(get_current_user)):
+    payment = db.get_pending_payment(reference_code)
+    if not payment:
+        raise HTTPException(status_code=404, detail="Không tìm thấy giao dịch.")
+    if payment["user_id"] != user["id"]:
+        raise HTTPException(status_code=403, detail="Giao dịch không thuộc về bạn.")
+
+    if payment["status"] != "paid":
+        return {"status": "pending"}
+
+    return {"status": "paid", "keys": db.get_keys(user["id"]), "purchase_count": db.get_purchase_count(user["id"])}
+
+
+class SePayWebhookPayload(BaseModel):
+    id: int | str | None = None
+    gateway: str | None = None
+    transactionDate: str | None = None
+    accountNumber: str | None = None
+    code: str | None = None
+    content: str = ""
+    transferType: str | None = None
+    description: str = ""
+    transferAmount: float = 0
+    accumulated: float | None = None
+    referenceCode: str | None = None
+
+
+@app.post("/api/webhooks/sepay")
+def sepay_webhook(payload: SePayWebhookPayload, authorization: str | None = Header(default=None)):
+    if not _verify_sepay_auth(authorization):
+        raise HTTPException(status_code=401, detail="Không xác thực được webhook.")
+
+    # Từ đây trở đi là các nhánh KẾT QUẢ NGHIỆP VỤ (đã hiểu đúng request,
+    # nhưng quyết định không cộng key) - LUÔN trả success:true cho SePay theo
+    # đúng hợp đồng API của họ. TUYỆT ĐỐI không bọc try/except Exception ở
+    # ngoài rồi trả success:true cho lỗi hệ thống thật (DB lỗi, bug...) - làm
+    # vậy sẽ khiến SePay tưởng đã xử lý xong nên không gọi lại nữa, trong khi
+    # tiền thật đã vào mà key chưa được cộng, mất luôn không cách nào phát
+    # hiện lại được.
+    if payload.transferType != "in":
+        logger.info("SePay webhook: bỏ qua giao dịch không phải tiền vào (transferType=%s)", payload.transferType)
+        return {"success": True}
+    if BANK_ACCOUNT_NUMBER and payload.accountNumber != BANK_ACCOUNT_NUMBER:
+        logger.warning("SePay webhook: accountNumber lạ (%s), bỏ qua.", payload.accountNumber)
+        return {"success": True}
+
+    normalized = re.sub(r"[^A-Z0-9]", "", f"{payload.content} {payload.description}".upper())
+    candidates = db.list_pending_reference_codes()
+    matches = [code for code in candidates if code in normalized]
+
+    if len(matches) == 0:
+        logger.warning(
+            "SePay webhook: KHÔNG khớp mã tham chiếu nào (tiền đã vào, cần đối soát thủ công) - content=%r amount=%s",
+            payload.content, payload.transferAmount,
+        )
+        return {"success": True}
+    if len(matches) > 1:
+        logger.warning(
+            "SePay webhook: khớp NHIỀU mã tham chiếu (%s), cần đối soát thủ công - content=%r",
+            matches, payload.content,
+        )
+        return {"success": True}
+
+    reference_code = matches[0]
+    payment = db.get_pending_payment(reference_code)
+    if not payment or int(payload.transferAmount) != payment["amount_vnd"]:
+        logger.warning(
+            "SePay webhook: số tiền không khớp mã %s (nhận %s, cần %s) - cần đối soát thủ công",
+            reference_code, payload.transferAmount, payment["amount_vnd"] if payment else None,
+        )
+        return {"success": True}
+
+    package = _KEY_SHOP_PACKAGES[payment["package_index"]]
+    result = db.finalize_payment(reference_code, package, _key_shop_bonus_for_count)
+    if result is None:
+        logger.info("SePay webhook: mã %s đã được xử lý từ trước (webhook gọi lại), bỏ qua.", reference_code)
+    else:
+        logger.info(
+            "SePay webhook: đã cộng %s key cho user_id=%s (mã %s).",
+            result["amount_credited"], result["user_id"], reference_code,
+        )
+    return {"success": True}
 
 
 # ---------- phục vụ frontend tĩnh cùng origin với API (Google Sign-In yêu

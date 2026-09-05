@@ -17,6 +17,13 @@ DATABASE_DIR = BASE_DIR / "database"
 
 GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", "")
 
+# Key Shop - thanh toán thật qua VietQR + webhook SePay.
+BANK_ACCOUNT_NUMBER = os.environ.get("BANK_ACCOUNT_NUMBER", "")
+BANK_ACCOUNT_NAME = os.environ.get("BANK_ACCOUNT_NAME", "")
+BANK_BIN = os.environ.get("BANK_BIN", "")
+VIETQR_TEMPLATE = os.environ.get("VIETQR_TEMPLATE", "compact2")
+SEPAY_API_KEY = os.environ.get("SEPAY_API_KEY", "")
+
 WORLD_KB_CONFIG = {
     "world-1": {
         "prefix": "vocab-b2",

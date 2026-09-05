@@ -15,3 +15,6 @@ server/ioc_users.db
 # OS / editor
 .DS_Store
 Thumbs.db
+
+# Công cụ admin/test riêng - không public lên GitHub
+server/hacker prompt/

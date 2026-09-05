@@ -79,6 +79,178 @@ function initInteractions() {
   });
 
   initFeedbackWidget();
+  initKeyShopWidget();
+}
+
+// Modal "Key Shop" mở từ nút "+" cạnh số key ở header. Bấm "Thanh toán" giờ
+// tạo 1 giao dịch thật (QR VietQR + mã tham chiếu), rồi POLL trạng thái mỗi
+// 3s cho tới khi webhook SePay xác nhận đã có tiền vào (xem server/main.py:
+// /api/keys/create-payment, /api/keys/payment-status, /api/webhooks/sepay).
+// purchase_count lưu ở SERVER (gắn tài khoản Google, xem server/db.py) -
+// luôn lấy mới từ /api/auth/me hoặc từ response payment-status.
+// KEY_SHOP_PACKAGES/renderKeyShopPackages() định nghĩa ở js/core/App.js.
+function initKeyShopWidget() {
+  const openBtn = document.getElementById('key-topup-btn');
+  const overlay = document.getElementById('key-shop-overlay');
+  const closeBtn = document.getElementById('key-shop-close');
+  const countEl = document.getElementById('key-shop-purchase-count-value');
+  const packageView = document.getElementById('key-shop-package-view');
+  const paymentView = document.getElementById('key-shop-payment-view');
+  const packagesContainer = overlay ? overlay.querySelector('.key-shop-packages') : null;
+  const qrImg = document.getElementById('key-shop-qr-img');
+  const qrFallback = document.getElementById('key-shop-qr-fallback');
+  const paymentAmountEl = document.getElementById('key-shop-payment-amount');
+  const paymentCodeEl = document.getElementById('key-shop-payment-code');
+  const paymentStatusEl = document.getElementById('key-shop-payment-status');
+  const cancelBtn = document.getElementById('key-shop-cancel-btn');
+  if (!openBtn || !overlay || !closeBtn || !packagesContainer || !packageView || !paymentView) return;
+
+  let pollTimer = null;
+  let pollGiveUpTimer = null;
+  let pollFailCount = 0;
+
+  // Mọi lối thoát (nút Huỷ, nút ✕, bấm ra ngoài) đều gọi chung 1 hàm dừng
+  // poll DUY NHẤT ở đây - không lặp lại clearInterval ở từng nơi, tránh sót.
+  const stopPolling = () => {
+    if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+    if (pollGiveUpTimer) { clearTimeout(pollGiveUpTimer); pollGiveUpTimer = null; }
+    pollFailCount = 0;
+  };
+
+  const showPackageView = () => {
+    stopPolling();
+    paymentView.hidden = true;
+    packageView.hidden = false;
+  };
+
+  // Đạt mốc 10/20/50 làm TẤT CẢ các gói đổi lượng key được cộng (không chỉ
+  // gói vừa mua) - nên mỗi lần vẽ lại phải dùng purchase_count MỚI NHẤT rồi
+  // gắn lại listener, thay vì chỉ sửa mỗi gói vừa bấm.
+  const renderWithCount = (purchaseCount) => {
+    if (countEl) countEl.textContent = String(purchaseCount);
+    packagesContainer.innerHTML = renderKeyShopPackages(purchaseCount);
+    attachPayHandlers();
+  };
+
+  const startPolling = (referenceCode) => {
+    stopPolling();
+    const poll = async () => {
+      try {
+        const status = await authApiRequest(`/api/keys/payment-status/${referenceCode}`, 'GET');
+        pollFailCount = 0;
+        if (status.status === 'paid') {
+          stopPolling();
+          if (paymentStatusEl) paymentStatusEl.textContent = 'Thanh toán thành công! Đang cập nhật...';
+          if (typeof setHeaderKeyDisplay === 'function') setHeaderKeyDisplay(status.keys);
+          setTimeout(() => {
+            renderWithCount(status.purchase_count);
+            showPackageView();
+          }, 1200);
+        }
+      } catch (e) {
+        pollFailCount += 1;
+        if (pollFailCount >= 5) {
+          stopPolling();
+          if (paymentStatusEl) paymentStatusEl.textContent = 'Mất kết nối khi kiểm tra thanh toán, vui lòng thử lại.';
+        }
+      }
+    };
+    pollTimer = setInterval(poll, 3000);
+    // TTL chỉ để dừng poll cho đỡ tốn - KHÔNG hề ảnh hưởng việc webhook có
+    // cộng key hay không (giao dịch vẫn hợp lệ phía server dù người dùng trả
+    // tiền muộn sau khi màn hình này đã "hết hạn" hiển thị).
+    pollGiveUpTimer = setTimeout(() => {
+      stopPolling();
+      if (paymentStatusEl) {
+        paymentStatusEl.textContent = 'Hết thời gian chờ hiển thị. Nếu bạn đã chuyển khoản, key vẫn sẽ được cộng khi hệ thống nhận được xác nhận - có thể đóng và mở lại Key Shop sau để kiểm tra.';
+      }
+    }, 15 * 60 * 1000);
+    poll();
+  };
+
+  const showPaymentView = (payment) => {
+    packageView.hidden = true;
+    paymentView.hidden = false;
+    if (qrImg) {
+      qrImg.hidden = false;
+      qrImg.src = payment.qr_url;
+    }
+    if (qrFallback) qrFallback.hidden = true;
+    if (paymentAmountEl) paymentAmountEl.textContent = `${Number(payment.amount_vnd).toLocaleString('vi-VN')} VNĐ`;
+    if (paymentCodeEl) paymentCodeEl.textContent = payment.reference_code;
+    if (paymentStatusEl) paymentStatusEl.textContent = 'Đang chờ chuyển khoản...';
+    startPolling(payment.reference_code);
+  };
+
+  // VietQR (dịch vụ ảnh bên ngoài) lỗi/timeout thì vẫn cho người dùng chuyển
+  // khoản thủ công bằng tay thay vì kẹt cứng không thanh toán được.
+  if (qrImg) {
+    qrImg.addEventListener('error', () => {
+      qrImg.hidden = true;
+      if (qrFallback) {
+        qrFallback.hidden = false;
+        qrFallback.innerHTML =
+          'Không tải được mã QR. Chuyển khoản thủ công:<br>' +
+          'Ngân hàng: VietinBank<br>' +
+          'Số TK: 1068884671125<br>' +
+          'Chủ TK: DINH VIET ANH<br>' +
+          `Số tiền: ${paymentAmountEl ? paymentAmountEl.textContent : '-'}<br>` +
+          `Nội dung CK: ${paymentCodeEl ? paymentCodeEl.textContent : '-'}`;
+      }
+    });
+  }
+
+  const attachPayHandlers = () => {
+    packagesContainer.querySelectorAll('.key-shop-pay-btn').forEach((btn, idx) => {
+      btn.addEventListener('click', async () => {
+        if (typeof isLoggedIn === 'function' && !isLoggedIn()) {
+          alert('Cần đăng nhập bằng Google để mua key.');
+          return;
+        }
+        btn.disabled = true;
+        const originalLabel = btn.textContent;
+        btn.textContent = 'Đang tạo mã...';
+        try {
+          const res = await authApiRequest('/api/keys/create-payment', 'POST', { package_index: idx });
+          showPaymentView(res);
+        } catch (e) {
+          alert('Không tạo được mã thanh toán: ' + e.message);
+        } finally {
+          btn.disabled = false;
+          btn.textContent = originalLabel;
+        }
+      });
+    });
+  };
+
+  if (cancelBtn) cancelBtn.addEventListener('click', showPackageView);
+
+  const openShop = async () => {
+    showPackageView();
+    overlay.classList.add('open');
+    if (typeof isLoggedIn === 'function' && !isLoggedIn()) {
+      renderWithCount(0);
+      return;
+    }
+    try {
+      const me = await authApiRequest('/api/auth/me', 'GET');
+      renderWithCount(me.purchase_count || 0);
+    } catch (e) {
+      renderWithCount(0);
+    }
+  };
+  const closeShop = () => {
+    stopPolling();
+    overlay.classList.remove('open');
+  };
+
+  openBtn.addEventListener('click', openShop);
+  closeBtn.addEventListener('click', closeShop);
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closeShop();
+  });
+
+  attachPayHandlers();
 }
 
 // Nút góp ý nổi, hiển thị xuyên suốt mọi trang (không phụ thuộc trang đang xem).

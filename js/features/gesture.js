@@ -3,7 +3,11 @@
 // Toàn bộ logic chấm điểm/quyết định PASS-RETRY nằm ở backend (server/main.py),
 // file này chỉ là lớp gọi API mỏng.
 
-const AI_BACKEND_URL = 'http://localhost:8001';
+// FastAPI (server/main.py) tự phục vụ luôn cả frontend tĩnh (index.html,
+// world1.html, world2.html, js/, css/, assets/) VÀ API trên CÙNG 1 origin -
+// dùng window.location.origin thay vì hardcode localhost để chạy đúng cả khi
+// deploy lên domain thật (Render/Railway...), không cần đổi gì thêm.
+const AI_BACKEND_URL = window.location.origin;
 
 async function aiRequest(path, body) {
   // Từ khi có tính năng "key" (giới hạn dùng AI theo tài khoản Google), mọi
