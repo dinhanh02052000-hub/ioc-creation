@@ -59,7 +59,6 @@ from engine_prompts import (
     correction_task,
     learning_content_task,
     load_knowledge_base,
-    logic_duplicate_check_task,
     open_ended_generation_task,
     open_ended_grading_task,
     recognition_task,
@@ -201,9 +200,10 @@ def _find_duplicate(new_texts: list[str], history: list[str]) -> str | None:
 
     LƯU Ý: chỉ bắt được kiểu "chép sát, đổi 1-2 từ" (paraphrase nông) - 2 câu
     cùng Ý/LOGIC nhưng dùng từ vựng/cấu trúc hoàn toàn khác nhau (paraphrase
-    sâu) sẽ KHÔNG bị bắt bởi cách so sánh văn bản thuần này. Lớp này chỉ là
-    tầng lọc MIỄN PHÍ đầu tiên - _check_logic_duplicates() bên dưới có thêm 1
-    lượt AI riêng, rẻ, để bắt tiếp phần paraphrase sâu mà tầng này bỏ sót."""
+    sâu) sẽ KHÔNG bị bắt bởi cách so sánh văn bản thuần này. Đây là CHỦ ĐÍCH:
+    lớp kiểm tra "lặp ý sâu" bằng AI riêng đã bị bỏ (tốn token + chậm), nên
+    tầng này chỉ còn lo phần TUYỆT ĐỐI không cho 2 câu giống Y NGUYÊN, phần
+    đa dạng ý tưởng/cấu trúc dựa hẳn vào chất lượng prompt sinh câu."""
     normed_new = [_normalize_for_similarity(t) for t in new_texts]
     for i in range(len(normed_new)):
         for j in range(i + 1, len(normed_new)):
@@ -231,41 +231,19 @@ def _bound_history(history: list[str] | None, max_entries: int) -> list[str]:
     return history[-max_entries:]
 
 
-# Cho phép tối đa từng này câu bị AI báo lặp Ý/LOGIC trong 1 batch mà KHÔNG
-# huỷ/sinh lại - chỉ cần TUYỆT ĐỐI không có 2 câu giống Y NGUYÊN (việc đó do
-# _find_duplicate/difflib ở trên chặn, miễn phí). Trước đây bất kỳ id nào bị
-# báo lặp cũng huỷ cả batch -> quá khắt khe (các từ gần nghĩa vốn dễ chia sẻ
-# chung khung câu), khiến sinh lại liên tục, tốn token + người dùng phải chờ
-# lâu, nên nới ngưỡng theo yêu cầu thực tế: chấp nhận vài câu lặp ý/cách diễn
-# đạt, chỉ chặn khi lặp tràn lan (nhiều hơn ngưỡng này).
-_LOGIC_DUPLICATE_TOLERANCE = 3
-
-
-def _check_logic_duplicates(kb: dict, questions: list[dict], history: list[str] | None = None) -> None:
-    """Lời gọi AI RIÊNG, rẻ (reasoning_effort=low) - CHỈ còn kiểm tra lặp Ý/
-    LOGIC sâu (paraphrase dùng từ vựng khác hẳn mà _find_duplicate/difflib
-    không bắt được). KHÔNG còn kiểm tra đáp án nữa (đã tách hẳn sang
-    _determine_and_verify_answers() bên dưới - pipeline riêng, độc lập với
-    generator, mạnh hơn nhiều so với lượt rẻ cũ) - tránh 2 cơ chế khác nhau
-    cùng phán xét đáp án (vừa tốn token thừa vừa dễ false-positive huỷ oan cả
-    batch). Chỉ chạy SAU KHI batch đã qua _parse_mcq_rows + _find_duplicate,
-    để không phí lượt gọi trên 1 batch đằng nào cũng bị huỷ vì lý do khác.
-
-    CHỈ huỷ batch khi số câu bị báo lặp ý VƯỢT _LOGIC_DUPLICATE_TOLERANCE - vài
-    câu lặp ý/cách diễn đạt là chấp nhận được, không đáng để bắt sinh lại cả
-    batch (xem hằng số ở trên)."""
-    items = [{"id": q["id"], "sentence": q["question"]} for q in questions]
-    prompt = assemble(compact_kb(kb), logic_duplicate_check_task(items, history))
-    raw = ask(prompt, reasoning_effort="low")
-    data = parse_ai_json(raw)
-    duplicate_ids = data.get("duplicate_ids") or []
-    if len(duplicate_ids) > _LOGIC_DUPLICATE_TOLERANCE:
-        raise HTTPException(status_code=502, detail=f"Phát hiện câu {duplicate_ids} lặp ý với câu khác, thử lại.")
+# Đã BỎ HẲN lớp kiểm tra "lặp Ý/LOGIC" bằng AI riêng (lượt gọi AI thêm tốn
+# token, dù rẻ, vẫn phải sinh lại cả batch mỗi khi bị báo lặp -> chậm, tốn
+# kiên nhẫn người dùng và token) - xem lịch sử git nếu cần khôi phục. Thay vào
+# đó dồn lực cho việc PHÒNG NGỪA ngay từ prompt sinh câu (recognition_task/
+# remediation_task trong engine_prompts.py): bắt AI tự đa dạng hoá chủ đề +
+# kiểu câu/cấu trúc ngữ pháp thật mạnh để cố gắng ĐÚNG NGAY LẦN ĐẦU, không cần
+# vòng kiểm tra riêng. _find_duplicate/difflib ở trên vẫn là tuyến phòng thủ
+# DUY NHẤT còn lại - miễn phí, chỉ chặn tuyệt đối 2 câu giống Y NGUYÊN nhau.
 
 
 # ---------- Strong answer pipeline: xác định + kiểm tra đáp án ĐỘC LẬP ----------
-# Chạy SAU _check_logic_duplicates (đã lọc bớt batch rõ ràng lặp bằng lượt rẻ)
-# - đây là lớp thứ 2, đắt hơn nhưng ưu tiên độ chính xác: 1 model KHÔNG được
+# Chạy SAU _find_duplicate (đã lọc bớt batch có câu giống y nguyên) - đây là
+# lớp thứ 2, đắt hơn nhưng ưu tiên độ chính xác: 1 model KHÔNG được
 # cho biết generator đã chọn gì tự suy ra đáp án từ KB, 1 lượt độc lập khác
 # kiểm tra lại, và code (không chỉ prompt) từ chối chấp nhận 1 "PASS" tự mâu
 # thuẫn (verifier tự kết luận đáp án khác nhưng vẫn báo PASS). Chỉ CÂU nào bị
@@ -603,7 +581,6 @@ def begin_recognition(req: SessionIdRequest, user=Depends(get_current_user)):
     duplicate_violation = _find_duplicate([q["question"] for q in questions], req.recognition_history)
     if duplicate_violation:
         raise HTTPException(status_code=502, detail=f"{duplicate_violation}, thử lại.")
-    _check_logic_duplicates(kb, questions, bounded_recognition_history)
     _determine_and_verify_answers(kb, questions)
     _charge_keys(user["id"], 2)
 
@@ -799,7 +776,6 @@ def begin_remediation(req: SessionIdRequest, user=Depends(get_current_user)):
     )
     if duplicate_violation:
         raise HTTPException(status_code=502, detail=f"{duplicate_violation}, thử lại.")
-    _check_logic_duplicates(kb, questions, bounded_recognition_history)
     _determine_and_verify_answers(kb, questions)
     _charge_keys(user["id"], 1)
 

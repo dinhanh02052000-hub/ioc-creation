@@ -163,13 +163,25 @@ def recognition_task(n: int, is_retry: bool = False, history: list[str] | None =
         "(VD không viết 'influenced' trong câu hỏi nếu 'influence' là 1 lựa chọn). "
         "(3) 4 lựa chọn trong MỖI câu PHẢI khác nhau hoàn toàn, không được lặp lại 1 từ 2 lần trong cùng 1 câu. "
         "(4) TUYỆT ĐỐI KHÔNG được có 2 câu GIỐNG Y NGUYÊN nhau (trùng từng chữ) - đây là lỗi DUY NHẤT không "
-        "được phép xảy ra. Ngoài ra, cố gắng đa dạng cấu trúc/ý tưởng giữa các câu, nhưng việc vài câu (khoảng "
-        "2-3 câu trong 20 câu) lỡ chia sẻ chung ý/cách lập luận hoặc khung ngữ pháp là CHẤP NHẬN ĐƯỢC, không "
-        "cần cố tránh bằng mọi giá. Ưu tiên XEN KẼ nhiều KIỂU câu khi tự nhiên, ví dụ: mệnh đề thời gian/điều "
-        "kiện đứng đầu ('After...', 'Before...', 'Once...', 'If...'), câu phủ định/thiếu điều kiện ('Without a "
-        "___, she could not...'), câu bị động, câu có mệnh đề quan hệ, câu hỏi, câu mô tả sự việc chung không "
-        "gắn tên riêng, câu kể lại hậu quả/hệ quả thay vì hành động đạt được - nhưng đừng vì việc này mà sinh "
-        "chậm hoặc tự huỷ câu đã ổn. "
+        "được phép xảy ra (KHÔNG có vòng kiểm tra lại sau bước này - phải đúng ngay trong lượt sinh này). Để tự "
+        "đa dạng thật sự ngay từ đầu (không chỉ đổi field/chủ đề mà giữ nguyên khung câu), BẮT BUỘC luân phiên "
+        "qua ÍT NHẤT 8 KIỂU CẤU TRÚC câu khác nhau dưới đây, rải đều cho 20 câu (mỗi kiểu ~2-3 câu), KHÔNG được "
+        "dùng quá 2 câu LIÊN TIẾP cùng 1 kiểu:\n"
+        "  a) Mệnh đề thời gian/điều kiện đứng đầu ('After...', 'Before...', 'Once...', 'If...', 'When...')\n"
+        "  b) Câu phủ định/thiếu điều kiện ('Without a ___, she could not...')\n"
+        "  c) Câu bị động\n"
+        "  d) Câu có mệnh đề quan hệ (who/which/that...)\n"
+        "  e) Câu hỏi\n"
+        "  f) Câu mô tả hiện tượng/sự việc chung, không gắn tên riêng\n"
+        "  g) Câu kể hậu quả/hệ quả ('As a result...', '..., which led to...')\n"
+        "  h) Câu so sánh (more/less/compared to...)\n"
+        "  i) Câu ghép 2 mệnh đề bằng liên từ (although/because/since...)\n"
+        "  j) Câu mở đầu bằng cụm trạng ngữ (Despite..., In light of..., Given...)\n"
+        "Kết hợp CẢ 2 TRỤC độc lập - field/chủ đề (đã gán sẵn theo danh sách dưới đây) VÀ kiểu cấu trúc câu ở "
+        "trên - để không có 2 câu nào trùng cả nội dung lẫn hình thức. TRƯỚC KHI trả JSON, tự rà lại toàn bộ 20 "
+        "câu 1 lượt: nếu thấy quá nhiều câu liên tiếp dùng chung kiểu cấu trúc, hoặc 2 câu có tình huống/bối "
+        "cảnh gần như hoán đổi được cho nhau, hãy viết lại NGAY trong lượt này - không được để việc đó tồn tại "
+        "trong kết quả cuối cùng vì sẽ không có cơ hội sửa lại sau. "
         "(5) TUYỆT ĐỐI không sao chép hoặc chỉ paraphrase sát các câu ví dụ đã có sẵn trong Knowledge Base ở "
         "trên - mỗi câu hỏi phải là tình huống hoàn toàn mới do bạn tự nghĩ ra, khác cả nội dung lẫn cấu trúc "
         "câu so với các ví dụ đó. "
@@ -190,41 +202,16 @@ def recognition_task(n: int, is_retry: bool = False, history: list[str] | None =
     )
 
 
-def logic_duplicate_check_task(items: list[dict], history: list[str] | None = None) -> str:
-    """Lời gọi KIỂM TRA ĐỘC LẬP, rẻ (reasoning_effort="low") - CHỈ còn kiểm tra
-    LẶP Ý/LOGIC (paraphrase sâu, dùng từ vựng khác hẳn mà lớp difflib ở main.py
-    không bắt được). LƯU Ý: một vài câu lặp ý/cách diễn đạt là CHẤP NHẬN ĐƯỢC
-    (không phải lỗi cần chặn cả batch) - hàm gọi ở main.py (_check_logic_duplicates)
-    chỉ coi là lỗi thật khi SỐ LƯỢNG câu bị lặp vượt ngưỡng cho phép (2-3 câu/20
-    câu), nên prompt này chỉ cần liệt kê TRUNG THỰC các id bị lặp ý, không cần
-    tự ý nương tay hay quá khắt khe.
-    """
-    lines = [f'{it["id"]}. "{it["sentence"]}"' for it in items]
-    history_block = ""
-    if history:
-        joined = "\n".join(f"- {h}" for h in history)
-        history_block = f"\n\nCÁC CÂU ĐÃ SINH CHO LEVEL NÀY TỪ TRƯỚC:\n{joined}"
-    return (
-        "NHIỆM VỤ KIỂM TRA ĐỘC LẬP (KHÔNG sinh câu hỏi mới) - kiểm tra LẶP Ý/LOGIC: SO SÁNH nội dung/tình "
-        "huống/lập luận CỤ THỂ (không chỉ từ ngữ) của từng câu dưới đây với (a) các câu KHÁC trong CHÍNH danh "
-        "sách này, và (b) danh sách lịch sử đã sinh trước đó cho level này (nếu có, xem cuối prompt).\n\n"
-        "LƯU Ý QUAN TRỌNG để tránh báo lặp SAI (false positive): các câu này đều test CÙNG 1 nhóm từ gần nghĩa "
-        "nên đương nhiên nhiều câu có thể chia sẻ chung 1 KHUNG ngữ pháp/quan hệ nhân-quả (VD nhiều câu cùng "
-        "dạng '[Chủ thể] ___ [đối tượng]' hay 'X dẫn đến Y') - CHỈ RIÊNG việc giống khung câu/cấu trúc ngữ pháp "
-        "KHÔNG tính là lặp Ý/LOGIC, đây là điều bình thường không tránh khỏi khi test 1 nhóm từ gần nghĩa. CHỈ "
-        "tính là LẶP khi tình huống CỤ THỂ (bối cảnh/nội dung câu chuyện) gần như có thể hoán đổi cho nhau - tức "
-        "là nếu chỉ đổi tên chủ thể/đối tượng thì 2 câu về cơ bản kể lại CÙNG 1 tình huống/lập luận. Khác chủ "
-        "thể + khác lĩnh vực (field) + khác chi tiết cụ thể = KHÔNG lặp, dù cùng khung ngữ pháp. Cứ liệt kê "
-        "TRUNG THỰC mọi id bị lặp ý theo tiêu chí trên - việc quyết định có chấp nhận được hay không (tuỳ số "
-        "lượng) do phía code xử lý, không phải việc của bạn.\n\n"
-        + "\n".join(lines) +
-        f"{history_block}"
-        '\n\nCHỈ trả JSON, không chữ thừa: {"duplicate_ids": [<id câu MỚI (trong danh sách trên) bị lặp Ý/LOGIC '
-        "với câu khác trong danh sách hoặc với lịch sử>]}"
-    )
-
-
 # ==== STRONG ANSWER PIPELINE (xác định + kiểm tra đáp án ĐỘC LẬP với generator) ====
+# Đã BỎ HẲN lớp kiểm tra "lặp Ý/LOGIC" bằng 1 lời gọi AI riêng (logic_duplicate
+# _check_task cũ) - dù rẻ (reasoning_effort=low) vẫn tốn thêm 1 lượt gọi/batch
+# và mỗi lần bị báo lặp lại phải huỷ sinh lại CẢ batch, quá chậm + tốn token so
+# với lợi ích. Thay vào đó dồn lực cho việc PHÒNG NGỪA ngay từ prompt sinh câu
+# (xem constraint (4) trong recognition_task và phần tương ứng trong
+# remediation_task bên dưới) - ép AI tự đa dạng hoá chủ đề + kiểu câu/cấu trúc
+# thật mạnh ngay từ đầu để không cần vòng kiểm tra riêng nữa. _find_duplicate/
+# difflib ở main.py (miễn phí) là tuyến phòng thủ DUY NHẤT còn lại, chỉ chặn
+# tuyệt đối 2 câu giống Y NGUYÊN.
 # Phần kiểm tra đáp án ở trên (chỉ hỏi "đáp án ĐÃ CHỌN có vẻ đúng không" - dễ thiên lệch vì đang xác
 # nhận lại chính lựa chọn của generator) - nay đã tách hẳn ra đây thành pipeline
 # riêng, mạnh hơn. 2 hàm dưới đây tạo thành 1 pipeline 2 lượt TÁCH BIỆT:
@@ -363,9 +350,11 @@ def remediation_task(
         "tiêu (TUYỆT ĐỐI không viết thành câu đã hoàn chỉnh không có chỗ trống), 4 lựa chọn khác nhau hoàn "
         "toàn, nhiễu ngoài phải thực sự sai trong ngữ cảnh, không dùng lại chính từ mục tiêu ở phần câu hỏi, "
         "TUYỆT ĐỐI không được có 2 câu GIỐNG Y NGUYÊN nhau (trùng từng chữ) - đây là lỗi DUY NHẤT không được "
-        "phép; ngoài ra cố gắng XEN KẼ nhiều kiểu câu khi tự nhiên (mệnh đề thời gian/điều kiện đứng đầu, câu "
-        "phủ định, câu bị động, câu hỏi...) nhưng vài câu lỡ chia sẻ chung khung ngữ pháp/ý là chấp nhận được, "
-        "không sao chép/paraphrase sát các câu ví dụ đã có "
+        "phép (không có vòng kiểm tra lại sau, phải đúng ngay lượt này). BẮT BUỘC mỗi câu dùng 1 KIỂU cấu trúc "
+        "khác nhau trong số: mệnh đề thời gian/điều kiện đứng đầu, câu phủ định/thiếu điều kiện, câu bị động, "
+        "câu có mệnh đề quan hệ, câu hỏi, câu kể hậu quả/hệ quả, câu so sánh, câu ghép bằng liên từ - KHÔNG "
+        "dùng 2 câu liên tiếp cùng 1 kiểu cấu trúc hoặc cùng bối cảnh/tình huống gần như hoán đổi được cho "
+        "nhau. Tự rà lại trước khi trả JSON. Không sao chép/paraphrase sát các câu ví dụ đã có "
         "trong Knowledge Base, vị trí đáp án đúng trong 4 lựa chọn ngẫu nhiên. Phần tử thứ 6 của mỗi câu PHẢI "
         "là bản chép NGUYÊN VĂN đáp án đúng (khớp y hệt 1 trong 4 lựa chọn vừa viết, đối chiếu lại với "
         "key_distinction trong KB trước khi chốt), TUYỆT ĐỐI không dùng số thứ tự hay chữ cái - tự kiểm tra "
