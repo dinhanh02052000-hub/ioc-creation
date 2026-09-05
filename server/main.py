@@ -231,6 +231,16 @@ def _bound_history(history: list[str] | None, max_entries: int) -> list[str]:
     return history[-max_entries:]
 
 
+# Cho phép tối đa từng này câu bị AI báo lặp Ý/LOGIC trong 1 batch mà KHÔNG
+# huỷ/sinh lại - chỉ cần TUYỆT ĐỐI không có 2 câu giống Y NGUYÊN (việc đó do
+# _find_duplicate/difflib ở trên chặn, miễn phí). Trước đây bất kỳ id nào bị
+# báo lặp cũng huỷ cả batch -> quá khắt khe (các từ gần nghĩa vốn dễ chia sẻ
+# chung khung câu), khiến sinh lại liên tục, tốn token + người dùng phải chờ
+# lâu, nên nới ngưỡng theo yêu cầu thực tế: chấp nhận vài câu lặp ý/cách diễn
+# đạt, chỉ chặn khi lặp tràn lan (nhiều hơn ngưỡng này).
+_LOGIC_DUPLICATE_TOLERANCE = 3
+
+
 def _check_logic_duplicates(kb: dict, questions: list[dict], history: list[str] | None = None) -> None:
     """Lời gọi AI RIÊNG, rẻ (reasoning_effort=low) - CHỈ còn kiểm tra lặp Ý/
     LOGIC sâu (paraphrase dùng từ vựng khác hẳn mà _find_duplicate/difflib
@@ -239,13 +249,17 @@ def _check_logic_duplicates(kb: dict, questions: list[dict], history: list[str] 
     generator, mạnh hơn nhiều so với lượt rẻ cũ) - tránh 2 cơ chế khác nhau
     cùng phán xét đáp án (vừa tốn token thừa vừa dễ false-positive huỷ oan cả
     batch). Chỉ chạy SAU KHI batch đã qua _parse_mcq_rows + _find_duplicate,
-    để không phí lượt gọi trên 1 batch đằng nào cũng bị huỷ vì lý do khác."""
+    để không phí lượt gọi trên 1 batch đằng nào cũng bị huỷ vì lý do khác.
+
+    CHỈ huỷ batch khi số câu bị báo lặp ý VƯỢT _LOGIC_DUPLICATE_TOLERANCE - vài
+    câu lặp ý/cách diễn đạt là chấp nhận được, không đáng để bắt sinh lại cả
+    batch (xem hằng số ở trên)."""
     items = [{"id": q["id"], "sentence": q["question"]} for q in questions]
     prompt = assemble(compact_kb(kb), logic_duplicate_check_task(items, history))
     raw = ask(prompt, reasoning_effort="low")
     data = parse_ai_json(raw)
     duplicate_ids = data.get("duplicate_ids") or []
-    if duplicate_ids:
+    if len(duplicate_ids) > _LOGIC_DUPLICATE_TOLERANCE:
         raise HTTPException(status_code=502, detail=f"Phát hiện câu {duplicate_ids} lặp ý với câu khác, thử lại.")
 
 

@@ -162,15 +162,14 @@ def recognition_task(n: int, is_retry: bool = False, history: list[str] | None =
         "(2) TUYỆT ĐỐI không dùng lại chính từ mục tiêu (hoặc biến thể/động từ hoá của nó) ở phần câu hỏi "
         "(VD không viết 'influenced' trong câu hỏi nếu 'influence' là 1 lựa chọn). "
         "(3) 4 lựa chọn trong MỖI câu PHẢI khác nhau hoàn toàn, không được lặp lại 1 từ 2 lần trong cùng 1 câu. "
-        "(4) Không trùng câu hỏi, không trùng cấu trúc câu, không trùng Ý/LOGIC giữa các câu (kể cả khi đổi "
-        "từ/chủ đề mà vẫn cùng 1 kiểu lập luận/tình huống thì vẫn coi là lặp) - ĐẶC BIỆT khi các từ mục tiêu là "
-        "từ gần nghĩa (vd cùng nhóm 'bằng cấp/chứng chỉ'), rất dễ sa vào việc chỉ đổi danh từ/tổ chức mà giữ "
-        "nguyên khung câu '[Ai đó] earned/received/obtained a ___...' cho cả 20 câu - đây VẪN LÀ LỖI LẶP dù chủ "
-        "đề bề ngoài khác nhau. Chủ động XEN KẼ nhiều KIỂU câu qua 20 câu, ví dụ: mệnh đề thời gian/điều kiện "
-        "đứng đầu ('After...', 'Before...', 'Once...', 'If...'), câu phủ định/thiếu điều kiện ('Without a "
+        "(4) TUYỆT ĐỐI KHÔNG được có 2 câu GIỐNG Y NGUYÊN nhau (trùng từng chữ) - đây là lỗi DUY NHẤT không "
+        "được phép xảy ra. Ngoài ra, cố gắng đa dạng cấu trúc/ý tưởng giữa các câu, nhưng việc vài câu (khoảng "
+        "2-3 câu trong 20 câu) lỡ chia sẻ chung ý/cách lập luận hoặc khung ngữ pháp là CHẤP NHẬN ĐƯỢC, không "
+        "cần cố tránh bằng mọi giá. Ưu tiên XEN KẼ nhiều KIỂU câu khi tự nhiên, ví dụ: mệnh đề thời gian/điều "
+        "kiện đứng đầu ('After...', 'Before...', 'Once...', 'If...'), câu phủ định/thiếu điều kiện ('Without a "
         "___, she could not...'), câu bị động, câu có mệnh đề quan hệ, câu hỏi, câu mô tả sự việc chung không "
-        "gắn tên riêng, câu kể lại hậu quả/hệ quả thay vì hành động đạt được. KHÔNG để quá 3 câu liên tiếp dùng "
-        "chung 1 khung ngữ pháp/động từ chính giống nhau. "
+        "gắn tên riêng, câu kể lại hậu quả/hệ quả thay vì hành động đạt được - nhưng đừng vì việc này mà sinh "
+        "chậm hoặc tự huỷ câu đã ổn. "
         "(5) TUYỆT ĐỐI không sao chép hoặc chỉ paraphrase sát các câu ví dụ đã có sẵn trong Knowledge Base ở "
         "trên - mỗi câu hỏi phải là tình huống hoàn toàn mới do bạn tự nghĩ ra, khác cả nội dung lẫn cấu trúc "
         "câu so với các ví dụ đó. "
@@ -194,12 +193,11 @@ def recognition_task(n: int, is_retry: bool = False, history: list[str] | None =
 def logic_duplicate_check_task(items: list[dict], history: list[str] | None = None) -> str:
     """Lời gọi KIỂM TRA ĐỘC LẬP, rẻ (reasoning_effort="low") - CHỈ còn kiểm tra
     LẶP Ý/LOGIC (paraphrase sâu, dùng từ vựng khác hẳn mà lớp difflib ở main.py
-    không bắt được). KHÔNG còn kiêm kiểm tra đáp án nữa - việc đó đã tách sang
-    hẳn 1 pipeline riêng, mạnh hơn (strong_answer_generation_task +
-    strong_answer_verification_task trong _determine_and_verify_answers ở
-    main.py) - để 1 câu không bị 2 cơ chế khác nhau cùng phán xét đáp án, vừa
-    tốn token thừa vừa dễ sinh false positive (huỷ oan cả batch) từ lớp cũ yếu
-    hơn trong khi lớp mới đã đủ mạnh để tự lo việc đó.
+    không bắt được). LƯU Ý: một vài câu lặp ý/cách diễn đạt là CHẤP NHẬN ĐƯỢC
+    (không phải lỗi cần chặn cả batch) - hàm gọi ở main.py (_check_logic_duplicates)
+    chỉ coi là lỗi thật khi SỐ LƯỢNG câu bị lặp vượt ngưỡng cho phép (2-3 câu/20
+    câu), nên prompt này chỉ cần liệt kê TRUNG THỰC các id bị lặp ý, không cần
+    tự ý nương tay hay quá khắt khe.
     """
     lines = [f'{it["id"]}. "{it["sentence"]}"' for it in items]
     history_block = ""
@@ -210,14 +208,15 @@ def logic_duplicate_check_task(items: list[dict], history: list[str] | None = No
         "NHIỆM VỤ KIỂM TRA ĐỘC LẬP (KHÔNG sinh câu hỏi mới) - kiểm tra LẶP Ý/LOGIC: SO SÁNH nội dung/tình "
         "huống/lập luận CỤ THỂ (không chỉ từ ngữ) của từng câu dưới đây với (a) các câu KHÁC trong CHÍNH danh "
         "sách này, và (b) danh sách lịch sử đã sinh trước đó cho level này (nếu có, xem cuối prompt).\n\n"
-        "LƯU Ý QUAN TRỌNG để tránh báo lặp SAI (false positive khiến cả batch bị huỷ oan): các câu này đều test "
-        "CÙNG 1 nhóm từ gần nghĩa nên đương nhiên nhiều câu có thể chia sẻ chung 1 KHUNG ngữ pháp/quan hệ nhân-"
-        "quả (VD nhiều câu cùng dạng '[Chủ thể] ___ [đối tượng]' hay 'X dẫn đến Y') - CHỈ RIÊNG việc giống khung "
-        "câu/cấu trúc ngữ pháp KHÔNG tính là lặp Ý/LOGIC, đây là điều bình thường không tránh khỏi khi test 1 "
-        "nhóm từ gần nghĩa. CHỈ tính là LẶP khi tình huống CỤ THỂ (bối cảnh/nội dung câu chuyện) gần như có thể "
-        "hoán đổi cho nhau - tức là nếu chỉ đổi tên chủ thể/đối tượng thì 2 câu về cơ bản kể lại CÙNG 1 tình "
-        "huống/lập luận. Khác chủ thể + khác lĩnh vực (field) + khác chi tiết cụ thể = KHÔNG lặp, dù cùng khung "
-        "ngữ pháp.\n\n"
+        "LƯU Ý QUAN TRỌNG để tránh báo lặp SAI (false positive): các câu này đều test CÙNG 1 nhóm từ gần nghĩa "
+        "nên đương nhiên nhiều câu có thể chia sẻ chung 1 KHUNG ngữ pháp/quan hệ nhân-quả (VD nhiều câu cùng "
+        "dạng '[Chủ thể] ___ [đối tượng]' hay 'X dẫn đến Y') - CHỈ RIÊNG việc giống khung câu/cấu trúc ngữ pháp "
+        "KHÔNG tính là lặp Ý/LOGIC, đây là điều bình thường không tránh khỏi khi test 1 nhóm từ gần nghĩa. CHỈ "
+        "tính là LẶP khi tình huống CỤ THỂ (bối cảnh/nội dung câu chuyện) gần như có thể hoán đổi cho nhau - tức "
+        "là nếu chỉ đổi tên chủ thể/đối tượng thì 2 câu về cơ bản kể lại CÙNG 1 tình huống/lập luận. Khác chủ "
+        "thể + khác lĩnh vực (field) + khác chi tiết cụ thể = KHÔNG lặp, dù cùng khung ngữ pháp. Cứ liệt kê "
+        "TRUNG THỰC mọi id bị lặp ý theo tiêu chí trên - việc quyết định có chấp nhận được hay không (tuỳ số "
+        "lượng) do phía code xử lý, không phải việc của bạn.\n\n"
         + "\n".join(lines) +
         f"{history_block}"
         '\n\nCHỈ trả JSON, không chữ thừa: {"duplicate_ids": [<id câu MỚI (trong danh sách trên) bị lặp Ý/LOGIC '
@@ -226,8 +225,7 @@ def logic_duplicate_check_task(items: list[dict], history: list[str] | None = No
 
 
 # ==== STRONG ANSWER PIPELINE (xác định + kiểm tra đáp án ĐỘC LẬP với generator) ====
-# Trước đây phần kiểm tra đáp án nằm chung 1 lượt rẻ với logic_duplicate_check_task
-# ở trên (chỉ hỏi "đáp án ĐÃ CHỌN có vẻ đúng không" - dễ thiên lệch vì đang xác
+# Phần kiểm tra đáp án ở trên (chỉ hỏi "đáp án ĐÃ CHỌN có vẻ đúng không" - dễ thiên lệch vì đang xác
 # nhận lại chính lựa chọn của generator) - nay đã tách hẳn ra đây thành pipeline
 # riêng, mạnh hơn. 2 hàm dưới đây tạo thành 1 pipeline 2 lượt TÁCH BIỆT:
 # (1) 1 model KHÔNG được cho biết generator đã chọn gì, tự suy ra đáp án đúng
@@ -364,10 +362,10 @@ def remediation_task(
         "câu tự nhiên 8-16 từ, MỖI câu PHẢI có ĐÚNG 1 chỗ trống hiển thị bằng dấu '___' ngay tại vị trí từ mục "
         "tiêu (TUYỆT ĐỐI không viết thành câu đã hoàn chỉnh không có chỗ trống), 4 lựa chọn khác nhau hoàn "
         "toàn, nhiễu ngoài phải thực sự sai trong ngữ cảnh, không dùng lại chính từ mục tiêu ở phần câu hỏi, "
-        "không trùng câu hỏi/cấu trúc/Ý-LOGIC giữa các câu - XEN KẼ nhiều kiểu câu (mệnh đề thời gian/điều kiện "
-        "đứng đầu, câu phủ định, câu bị động, câu hỏi...), KHÔNG để quá 3 câu liên tiếp dùng chung 1 khung ngữ "
-        "pháp/động từ chính giống nhau (lỗi hay gặp khi các từ mục tiêu gần nghĩa nhau), không sao chép/"
-        "paraphrase sát các câu ví dụ đã có "
+        "TUYỆT ĐỐI không được có 2 câu GIỐNG Y NGUYÊN nhau (trùng từng chữ) - đây là lỗi DUY NHẤT không được "
+        "phép; ngoài ra cố gắng XEN KẼ nhiều kiểu câu khi tự nhiên (mệnh đề thời gian/điều kiện đứng đầu, câu "
+        "phủ định, câu bị động, câu hỏi...) nhưng vài câu lỡ chia sẻ chung khung ngữ pháp/ý là chấp nhận được, "
+        "không sao chép/paraphrase sát các câu ví dụ đã có "
         "trong Knowledge Base, vị trí đáp án đúng trong 4 lựa chọn ngẫu nhiên. Phần tử thứ 6 của mỗi câu PHẢI "
         "là bản chép NGUYÊN VĂN đáp án đúng (khớp y hệt 1 trong 4 lựa chọn vừa viết, đối chiếu lại với "
         "key_distinction trong KB trước khi chốt), TUYỆT ĐỐI không dùng số thứ tự hay chữ cái - tự kiểm tra "
