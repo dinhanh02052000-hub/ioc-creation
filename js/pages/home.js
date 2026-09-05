@@ -182,7 +182,7 @@ function renderHome() {
               <div class="founder-name">Đinh Việt Anh</div>
             </div>
             <div class="founder-member">
-              <img src="${getDefaultAvatarDataUri()}" alt="Nguyễn Minh Tuấn" class="founder-avatar">
+              <img src="assets/images/founder-tuan.jpg" alt="Nguyễn Minh Tuấn" class="founder-avatar">
               <div class="founder-role">Thành viên</div>
               <div class="founder-name">Nguyễn Minh Tuấn</div>
             </div>
