@@ -190,6 +190,20 @@ def list_pending_reference_codes() -> list[str]:
     return [r["reference_code"] for r in rows]
 
 
+def get_pending_payments_by_amount(amount_vnd: int) -> list[dict]:
+    """Lớp DỰ PHÒNG khi QR không nhúng được nội dung riêng từng giao dịch (VD
+    QR tĩnh tạo qua SePay, đặt sẵn số tiền nhưng dùng chung 1 nội dung cho mọi
+    lượt) - webhook đối chiếu theo ĐÚNG số tiền thay vì nội dung. Nếu có nhiều
+    hơn 1 kết quả (2 người đang cùng chờ thanh toán đúng gói/giá đó) thì main.py
+    KHÔNG được tự đoán, phải coi là mập mờ và chờ đối soát thủ công."""
+    conn = get_conn()
+    rows = conn.execute(
+        "SELECT * FROM pending_payments WHERE status = 'pending' AND amount_vnd = %s", (amount_vnd,)
+    ).fetchall()
+    conn.close()
+    return rows
+
+
 def finalize_payment(reference_code: str, package: dict, bonus_fn) -> dict | None:
     """Xác nhận 1 giao dịch ĐÃ THANH TOÁN THẬT (gọi từ webhook SePay sau khi
     đã đối chiếu nội dung + số tiền khớp) - đánh dấu paid + tăng purchase_count

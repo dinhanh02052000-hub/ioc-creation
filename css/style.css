@@ -425,6 +425,14 @@ body {
   font-family: monospace;
 }
 
+.key-shop-payment-hint {
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  text-align: center;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
 .key-shop-payment-status {
   text-align: center;
   font-size: 0.85rem;

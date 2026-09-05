@@ -32,7 +32,6 @@ import re
 import secrets
 import string
 from difflib import SequenceMatcher
-from urllib.parse import urlencode
 
 import psycopg
 from fastapi import Depends, FastAPI, Header, HTTPException, Request
@@ -49,13 +48,10 @@ from ai_json import parse_ai_json
 from ai_client import AIProviderError, AIRateLimitError, ask
 from analysis_prompts import analysis_task
 from config import (
-    BANK_ACCOUNT_NAME,
     BANK_ACCOUNT_NUMBER,
-    BANK_BIN,
     BASE_DIR,
     GOOGLE_CLIENT_ID,
     SEPAY_API_KEY,
-    VIETQR_TEMPLATE,
 )
 from engine_prompts import (
     assemble,
@@ -992,9 +988,12 @@ def _generate_reference_code() -> str:
     return f"IOC{suffix}"
 
 
-def _build_vietqr_url(amount_vnd: int, reference_code: str) -> str:
-    query = urlencode({"amount": amount_vnd, "addInfo": reference_code, "accountName": BANK_ACCOUNT_NAME})
-    return f"https://img.vietqr.io/image/{BANK_BIN}-{BANK_ACCOUNT_NUMBER}-{VIETQR_TEMPLATE}.png?{query}"
+def _static_qr_url(package_index: int) -> str:
+    """Ảnh QR TĨNH tự tạo qua công cụ "Tạo QR" của SePay cho từng gói (đặt sẵn
+    ngân hàng/STK/số tiền), KHÔNG có nội dung chuyển khoản riêng cho từng giao
+    dịch (khác với QR động qua img.vietqr.io lúc trước) - vì vậy webhook phải
+    có thêm lớp đối chiếu theo SỐ TIỀN làm dự phòng (xem sepay_webhook())."""
+    return f"assets/images/keyshop-qr-{package_index}.png"
 
 
 def _verify_sepay_auth(authorization: str | None) -> bool:
@@ -1021,7 +1020,7 @@ def create_payment(req: CreatePaymentRequest, user=Depends(get_current_user)):
         return {
             "reference_code": existing["reference_code"],
             "amount_vnd": existing["amount_vnd"],
-            "qr_url": _build_vietqr_url(existing["amount_vnd"], existing["reference_code"]),
+            "qr_url": _static_qr_url(req.package_index),
         }
 
     amount_vnd = _KEY_SHOP_PRICES_VND[req.package_index]
@@ -1038,7 +1037,7 @@ def create_payment(req: CreatePaymentRequest, user=Depends(get_current_user)):
     return {
         "reference_code": reference_code,
         "amount_vnd": amount_vnd,
-        "qr_url": _build_vietqr_url(amount_vnd, reference_code),
+        "qr_url": _static_qr_url(req.package_index),
     }
 
 
@@ -1089,29 +1088,49 @@ def sepay_webhook(payload: SePayWebhookPayload, authorization: str | None = Head
         logger.warning("SePay webhook: accountNumber lạ (%s), bỏ qua.", payload.accountNumber)
         return {"success": True}
 
+    # Lớp 1 (ưu tiên, chính xác tuyệt đối nếu có): đối chiếu mã tham chiếu
+    # trong nội dung chuyển khoản - chỉ hoạt động nếu app ngân hàng của khách
+    # cho sửa nội dung trước khi xác nhận (không bắt buộc, xem frontend).
     normalized = re.sub(r"[^A-Z0-9]", "", f"{payload.content} {payload.description}".upper())
     candidates = db.list_pending_reference_codes()
-    matches = [code for code in candidates if code in normalized]
+    content_matches = [code for code in candidates if code in normalized]
 
-    if len(matches) == 0:
+    payment = None
+    if len(content_matches) == 1:
+        payment = db.get_pending_payment(content_matches[0])
+    elif len(content_matches) > 1:
         logger.warning(
-            "SePay webhook: KHÔNG khớp mã tham chiếu nào (tiền đã vào, cần đối soát thủ công) - content=%r amount=%s",
-            payload.content, payload.transferAmount,
-        )
-        return {"success": True}
-    if len(matches) > 1:
-        logger.warning(
-            "SePay webhook: khớp NHIỀU mã tham chiếu (%s), cần đối soát thủ công - content=%r",
-            matches, payload.content,
+            "SePay webhook: khớp NHIỀU mã tham chiếu theo nội dung (%s), cần đối soát thủ công - content=%r",
+            content_matches, payload.content,
         )
         return {"success": True}
 
-    reference_code = matches[0]
-    payment = db.get_pending_payment(reference_code)
-    if not payment or int(payload.transferAmount) != payment["amount_vnd"]:
+    # Lớp 2 (dự phòng): QR tĩnh (tạo qua SePay) không nhúng nội dung riêng
+    # từng giao dịch - đối chiếu theo ĐÚNG số tiền. Chỉ nhận khi CHỈ CÓ ĐÚNG 1
+    # giao dịch đang chờ với đúng số tiền đó tại thời điểm này; nếu có từ 2
+    # trở lên (2 người đang cùng chờ mua đúng gói/giá đó) thì KHÔNG đoán bừa.
+    if payment is None:
+        amount_matches = db.get_pending_payments_by_amount(int(payload.transferAmount))
+        if len(amount_matches) == 0:
+            logger.warning(
+                "SePay webhook: KHÔNG khớp giao dịch nào theo nội dung lẫn số tiền (tiền đã vào, cần đối soát "
+                "thủ công) - content=%r amount=%s",
+                payload.content, payload.transferAmount,
+            )
+            return {"success": True}
+        if len(amount_matches) > 1:
+            logger.warning(
+                "SePay webhook: có %d giao dịch đang chờ CÙNG số tiền %s, không đoán được - cần đối soát thủ công",
+                len(amount_matches), payload.transferAmount,
+            )
+            return {"success": True}
+        payment = amount_matches[0]
+
+    reference_code = payment["reference_code"]
+    if int(payload.transferAmount) != payment["amount_vnd"]:
         logger.warning(
             "SePay webhook: số tiền không khớp mã %s (nhận %s, cần %s) - cần đối soát thủ công",
-            reference_code, payload.transferAmount, payment["amount_vnd"] if payment else None,
+            reference_code, payload.transferAmount, payment["amount_vnd"],
         )
         return {"success": True}
 
