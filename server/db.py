@@ -193,12 +193,16 @@ def list_pending_reference_codes() -> list[str]:
 def get_pending_payments_by_amount(amount_vnd: int) -> list[dict]:
     """Lớp DỰ PHÒNG khi QR không nhúng được nội dung riêng từng giao dịch (VD
     QR tĩnh tạo qua SePay, đặt sẵn số tiền nhưng dùng chung 1 nội dung cho mọi
-    lượt) - webhook đối chiếu theo ĐÚNG số tiền thay vì nội dung. Nếu có nhiều
-    hơn 1 kết quả (2 người đang cùng chờ thanh toán đúng gói/giá đó) thì main.py
-    KHÔNG được tự đoán, phải coi là mập mờ và chờ đối soát thủ công."""
+    lượt) - webhook đối chiếu theo ĐÚNG số tiền thay vì nội dung. Sắp xếp theo
+    created_at TĂNG DẦN (cũ nhất trước) - nếu có từ 2 giao dịch trở lên cùng
+    chờ đúng số tiền này, main.py sẽ khớp cho giao dịch ĐĂNG KÝ TRƯỚC (FIFO) để
+    hoàn toàn tự động, đổi lấy rủi ro nhỏ khớp nhầm người trong tình huống 2
+    người khác nhau cùng chờ mua đúng 1 giá cùng lúc (quyết định của người
+    dùng, ưu tiên tự động hơn là dừng lại chờ đối soát tay)."""
     conn = get_conn()
     rows = conn.execute(
-        "SELECT * FROM pending_payments WHERE status = 'pending' AND amount_vnd = %s", (amount_vnd,)
+        "SELECT * FROM pending_payments WHERE status = 'pending' AND amount_vnd = %s ORDER BY created_at ASC",
+        (amount_vnd,),
     ).fetchall()
     conn.close()
     return rows

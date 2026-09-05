@@ -1106,9 +1106,12 @@ def sepay_webhook(payload: SePayWebhookPayload, authorization: str | None = Head
         return {"success": True}
 
     # Lớp 2 (dự phòng): QR tĩnh (tạo qua SePay) không nhúng nội dung riêng
-    # từng giao dịch - đối chiếu theo ĐÚNG số tiền. Chỉ nhận khi CHỈ CÓ ĐÚNG 1
-    # giao dịch đang chờ với đúng số tiền đó tại thời điểm này; nếu có từ 2
-    # trở lên (2 người đang cùng chờ mua đúng gói/giá đó) thì KHÔNG đoán bừa.
+    # từng giao dịch - đối chiếu theo ĐÚNG số tiền. Nếu có từ 2 giao dịch trở
+    # lên đang chờ đúng số tiền này (2 người cùng chờ mua đúng gói/giá đó cùng
+    # lúc), khớp cho giao dịch ĐĂNG KÝ TRƯỚC (FIFO, get_pending_payments_by_amount
+    # đã sắp created_at tăng dần) để luôn tự động cộng key, không cần đối soát
+    # tay - đánh đổi lấy rủi ro nhỏ khớp nhầm người trong tình huống hiếm này
+    # (quyết định của chủ ứng dụng, ưu tiên tự động).
     if payment is None:
         amount_matches = db.get_pending_payments_by_amount(int(payload.transferAmount))
         if len(amount_matches) == 0:
@@ -1120,10 +1123,11 @@ def sepay_webhook(payload: SePayWebhookPayload, authorization: str | None = Head
             return {"success": True}
         if len(amount_matches) > 1:
             logger.warning(
-                "SePay webhook: có %d giao dịch đang chờ CÙNG số tiền %s, không đoán được - cần đối soát thủ công",
+                "SePay webhook: có %d giao dịch đang chờ CÙNG số tiền %s - tự động khớp giao dịch đăng ký "
+                "trước (mã %s, user_id=%s).",
                 len(amount_matches), payload.transferAmount,
+                amount_matches[0]["reference_code"], amount_matches[0]["user_id"],
             )
-            return {"success": True}
         payment = amount_matches[0]
 
     reference_code = payment["reference_code"]
