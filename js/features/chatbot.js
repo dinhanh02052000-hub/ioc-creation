@@ -260,8 +260,16 @@ function aiRenderSessionAwareError(e, onRetry) {
     return;
   }
   const msg = e && e.message ? e.message : String(e);
-  if (/không tồn tại hoặc đã hết hạn/i.test(msg)) {
-    aiSetBody(`<div class="ai-error">Phiên làm bài đã hết hạn (có thể do server khởi động lại). Bạn cần bắt đầu lại từ đầu.</div>`);
+  // 409 (sai trạng thái hiện tại của session) KHÔNG phải lỗi tạm thời - xảy
+  // ra khi tiến trình lưu ở máy (localStorage) bị lệch so với trạng thái THẬT
+  // trên server (VD: lần gọi begin-recognition trước đó thực ra ĐÃ thành
+  // công/đã đổi trạng thái server, nhưng trình duyệt bị đóng/mất mạng trước
+  // khi kịp lưu lại tiến trình mới ở máy - lúc mở lại, tiến trình cũ trên máy
+  // vẫn tưởng đang ở bước trước đó và gọi lại y hệt request đã dùng rồi).
+  // "Thử lại" y hệt sẽ luôn thất bại (server không tự lùi trạng thái), nên
+  // phải cho lựa chọn bắt đầu lại từ đầu giống hệt trường hợp session hết hạn.
+  if ((e && e.status === 409) || /không tồn tại hoặc đã hết hạn/i.test(msg)) {
+    aiSetBody(`<div class="ai-error">Tiến trình lưu ở máy không khớp với trạng thái hiện tại trên server (có thể do mất mạng/thoát giữa chừng ở bước trước). Bạn cần bắt đầu lại từ đầu.</div>`);
     aiSetFooter(`<button type="button" class="ai-btn" id="ai-restart-session-btn">Bắt đầu lại từ đầu</button>`);
     document.getElementById('ai-restart-session-btn').addEventListener('click', () => {
       aiClearProgress(aiChat.worldId, aiChat.level);
