@@ -146,6 +146,15 @@ function initKeyShopWidget() {
             renderWithCount(status.purchase_count);
             showPackageView();
           }, 1200);
+        } else if (status.status === 'expired') {
+          // Mã hết hạn sau vài phút không thấy tiền vào (xem server/db.py:
+          // PENDING_PAYMENT_TTL_MINUTES) - không tự cộng key được nữa cho mã
+          // này, phải bấm "Thanh toán" lại để lấy mã mới.
+          stopPolling();
+          if (paymentStatusEl) {
+            paymentStatusEl.textContent = 'Mã thanh toán đã hết hạn do quá lâu chưa thấy tiền vào. Vui lòng quay lại và bấm "Thanh toán" để lấy mã mới.';
+          }
+          setTimeout(showPackageView, 2500);
         }
       } catch (e) {
         pollFailCount += 1;
@@ -156,15 +165,17 @@ function initKeyShopWidget() {
       }
     };
     pollTimer = setInterval(poll, 3000);
-    // TTL chỉ để dừng poll cho đỡ tốn - KHÔNG hề ảnh hưởng việc webhook có
-    // cộng key hay không (giao dịch vẫn hợp lệ phía server dù người dùng trả
-    // tiền muộn sau khi màn hình này đã "hết hạn" hiển thị).
+    // Lưới an toàn dự phòng - bình thường nhánh 'expired' ở trên đã tự dừng
+    // poll trong vòng PENDING_PAYMENT_TTL_MINUTES (server/db.py, hiện 3 phút)
+    // + tối đa 3s trễ do chu kỳ poll. Timer này chỉ chạy nếu vì lý do gì đó
+    // (mất mạng, lỗi request) mà không nhận được trạng thái 'expired' đúng
+    // lúc - đặt hơi dài hơn TTL server 1 chút để không bao giờ chặn trước.
     pollGiveUpTimer = setTimeout(() => {
       stopPolling();
       if (paymentStatusEl) {
-        paymentStatusEl.textContent = 'Hết thời gian chờ hiển thị. Nếu bạn đã chuyển khoản, key vẫn sẽ được cộng khi hệ thống nhận được xác nhận - có thể đóng và mở lại Key Shop sau để kiểm tra.';
+        paymentStatusEl.textContent = 'Không nhận được xác nhận, mã có thể đã hết hạn. Vui lòng quay lại và bấm "Thanh toán" để lấy mã mới.';
       }
-    }, 15 * 60 * 1000);
+    }, 5 * 60 * 1000);
     poll();
   };
 
@@ -192,7 +203,7 @@ function initKeyShopWidget() {
         qrFallback.innerHTML =
           'Không tải được mã QR. Chuyển khoản thủ công:<br>' +
           'Ngân hàng: VietinBank<br>' +
-          'Số TK: 1068884671125<br>' +
+          'Số TK: 106884671125<br>' +
           'Chủ TK: DINH VIET ANH<br>' +
           `Số tiền: ${paymentAmountEl ? paymentAmountEl.textContent : '-'}<br>` +
           `Nội dung CK: ${paymentCodeEl ? paymentCodeEl.textContent : '-'}`;

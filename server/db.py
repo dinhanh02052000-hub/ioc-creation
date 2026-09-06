@@ -180,10 +180,39 @@ def get_active_pending_payment(user_id: int, package_index: int) -> dict | None:
     return row
 
 
+# Sau chừng này phút mà 1 giao dịch vẫn chưa được thanh toán thì coi là HẾT
+# HẠN (status='expired') - không còn được tính vào diện so khớp (cả theo nội
+# dung lẫn theo số tiền) nữa. Trước đây KHÔNG có hạn - hậu quả thực tế đã xảy
+# ra: 1 giao dịch test/leftover bị bỏ quên (VD bấm thử "Thanh toán" rồi không
+# trả tiền) nằm "pending" MÃI MÃI, và khi có khách thật chuyển đúng số tiền đó
+# nhiều giờ sau, lớp khớp theo số tiền (FIFO) chọn NHẦM giao dịch CŨ đó thay
+# vì giao dịch thật mới - tiền thật của khách bị cộng nhầm sang tài khoản
+# khác. Vài phút là đủ rộng cho 1 lượt quét QR + chuyển khoản bình thường
+# (webhook thường về sau vài giây), nếu khách trả chậm hơn thì chỉ cần bấm
+# "Thanh toán" lại để lấy mã mới - đổi lại loại bỏ hẳn nguy cơ rác cũ tồn tại
+# hàng giờ/hàng ngày gây khớp nhầm.
+PENDING_PAYMENT_TTL_MINUTES = 3
+
+
+def expire_stale_pending_payments() -> None:
+    """Quét lười (gọi ở đầu mỗi lượt xử lý webhook + mỗi lượt poll trạng thái
+    - KHÔNG cần cron/background job riêng): chuyển mọi giao dịch 'pending' đã
+    quá PENDING_PAYMENT_TTL_MINUTES phút thành 'expired'. Rẻ (1 câu UPDATE),
+    an toàn gọi nhiều lần (idempotent - chỉ đổi đúng những row còn 'pending')."""
+    conn = get_conn()
+    conn.execute(
+        "UPDATE pending_payments SET status = 'expired' "
+        "WHERE status = 'pending' AND created_at < NOW() - make_interval(mins => %s)",
+        (PENDING_PAYMENT_TTL_MINUTES,),
+    )
+    conn.commit()
+    conn.close()
+
+
 def list_pending_reference_codes() -> list[str]:
-    """Toàn bộ mã tham chiếu CHƯA thanh toán - webhook SePay dùng để đối
-    chiếu nội dung chuyển khoản. Scan toàn bảng chấp nhận được ở quy mô app
-    này (không cần index/phân trang)."""
+    """Toàn bộ mã tham chiếu CHƯA thanh toán và CHƯA hết hạn - webhook SePay
+    dùng để đối chiếu nội dung chuyển khoản. Scan toàn bảng chấp nhận được ở
+    quy mô app này (không cần index/phân trang)."""
     conn = get_conn()
     rows = conn.execute("SELECT reference_code FROM pending_payments WHERE status = 'pending'").fetchall()
     conn.close()
@@ -193,12 +222,15 @@ def list_pending_reference_codes() -> list[str]:
 def get_pending_payments_by_amount(amount_vnd: int) -> list[dict]:
     """Lớp DỰ PHÒNG khi QR không nhúng được nội dung riêng từng giao dịch (VD
     QR tĩnh tạo qua SePay, đặt sẵn số tiền nhưng dùng chung 1 nội dung cho mọi
-    lượt) - webhook đối chiếu theo ĐÚNG số tiền thay vì nội dung. Sắp xếp theo
-    created_at TĂNG DẦN (cũ nhất trước) - nếu có từ 2 giao dịch trở lên cùng
-    chờ đúng số tiền này, main.py sẽ khớp cho giao dịch ĐĂNG KÝ TRƯỚC (FIFO) để
-    hoàn toàn tự động, đổi lấy rủi ro nhỏ khớp nhầm người trong tình huống 2
-    người khác nhau cùng chờ mua đúng 1 giá cùng lúc (quyết định của người
-    dùng, ưu tiên tự động hơn là dừng lại chờ đối soát tay)."""
+    lượt) - webhook đối chiếu theo ĐÚNG số tiền thay vì nội dung. Chỉ còn thấy
+    giao dịch 'pending' CHƯA hết hạn (xem expire_stale_pending_payments - PHẢI
+    gọi hàm đó trước hàm này trong cùng 1 request để đảm bảo rác cũ đã được
+    dọn). Sắp xếp theo created_at TĂNG DẦN (cũ nhất trước) - nếu có từ 2 giao
+    dịch trở lên (còn hạn) cùng chờ đúng số tiền này, main.py sẽ khớp cho giao
+    dịch ĐĂNG KÝ TRƯỚC (FIFO) để hoàn toàn tự động, đổi lấy rủi ro nhỏ khớp
+    nhầm người trong tình huống 2 người khác nhau cùng chờ mua đúng 1 giá
+    trong cùng vài phút đó (quyết định của người dùng, ưu tiên tự động hơn là
+    dừng lại chờ đối soát tay)."""
     conn = get_conn()
     rows = conn.execute(
         "SELECT * FROM pending_payments WHERE status = 'pending' AND amount_vnd = %s ORDER BY created_at ASC",

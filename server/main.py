@@ -1005,6 +1005,11 @@ def create_payment(req: CreatePaymentRequest, user=Depends(get_current_user)):
     if req.package_index < 0 or req.package_index >= len(_KEY_SHOP_PACKAGES):
         raise HTTPException(status_code=400, detail="Gói key không hợp lệ.")
 
+    # Dọn giao dịch cũ đã hết hạn trước khi xét có nên tái sử dụng không -
+    # nếu không, 1 giao dịch pending nhưng đã quá hạn (chưa kịp bị quét ở đâu
+    # khác) sẽ bị trả về nhầm cho lượt bấm "Thanh toán" mới này.
+    db.expire_stale_pending_payments()
+
     existing = db.get_active_pending_payment(user["id"], req.package_index)
     if existing:
         return {
@@ -1033,12 +1038,20 @@ def create_payment(req: CreatePaymentRequest, user=Depends(get_current_user)):
 
 @app.get("/api/keys/payment-status/{reference_code}")
 def get_payment_status(reference_code: str, user=Depends(get_current_user)):
+    # Dọn hết hạn TRƯỚC khi đọc trạng thái - để 1 giao dịch vừa quá
+    # PENDING_PAYMENT_TTL_MINUTES phút được frontend thấy "expired" ngay ở lần
+    # poll tiếp theo, thay vì mãi hiện "pending" cho tới khi có request khác
+    # (webhook/create-payment) tình cờ chạy hàm quét.
+    db.expire_stale_pending_payments()
+
     payment = db.get_pending_payment(reference_code)
     if not payment:
         raise HTTPException(status_code=404, detail="Không tìm thấy giao dịch.")
     if payment["user_id"] != user["id"]:
         raise HTTPException(status_code=403, detail="Giao dịch không thuộc về bạn.")
 
+    if payment["status"] == "expired":
+        return {"status": "expired"}
     if payment["status"] != "paid":
         return {"status": "pending"}
 
@@ -1063,6 +1076,13 @@ class SePayWebhookPayload(BaseModel):
 def sepay_webhook(payload: SePayWebhookPayload, authorization: str | None = Header(default=None)):
     if not _verify_sepay_auth(authorization):
         raise HTTPException(status_code=401, detail="Không xác thực được webhook.")
+
+    # Dọn giao dịch hết hạn TRƯỚC khi so khớp - bắt buộc, đây là chỗ quyết
+    # định trực tiếp: nếu không quét ở đây, 1 giao dịch rác/test cũ còn nằm
+    # 'pending' quá lâu vẫn có thể bị FIFO chọn nhầm thay cho giao dịch thật
+    # (xem PENDING_PAYMENT_TTL_MINUTES trong db.py - đã từng gây cộng nhầm
+    # tiền thật của khách sang tài khoản khác trong thực tế).
+    db.expire_stale_pending_payments()
 
     # Từ đây trở đi là các nhánh KẾT QUẢ NGHIỆP VỤ (đã hiểu đúng request,
     # nhưng quyết định không cộng key) - LUÔN trả success:true cho SePay theo
