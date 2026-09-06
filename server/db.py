@@ -89,6 +89,7 @@ def init_db() -> None:
     # nhiều lần (no-op nếu cột đã có).
     conn.execute(f"ALTER TABLE users ADD COLUMN IF NOT EXISTS keys INTEGER NOT NULL DEFAULT {INITIAL_KEYS}")
     conn.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS purchase_count INTEGER NOT NULL DEFAULT 0")
+    conn.execute("ALTER TABLE pending_payments ADD COLUMN IF NOT EXISTS verified BOOLEAN NOT NULL DEFAULT FALSE")
     conn.commit()
     conn.close()
 
@@ -164,6 +165,23 @@ def get_pending_payment(reference_code: str) -> dict | None:
     return row
 
 
+def mark_payment_verified(reference_code: str) -> None:
+    """Đánh dấu 1 giao dịch pending là 'verified' - tức có BẰNG CHỨNG người
+    dùng thật đang thực sự đứng chờ màn hình QR này (gọi từ main.py mỗi lần
+    frontend poll payment-status, xem giải thích ở get_pending_payments_by_
+    amount bên dưới - đây là lớp phòng thủ THỨ 3 chống khớp nhầm, sau nội dung
+    và số tiền). KHÔNG dùng cho việc gì khác ngoài ưu tiên khớp FIFO - hoàn
+    toàn không ảnh hưởng tới việc cộng key có xảy ra hay không (finalize_
+    payment vẫn chỉ cần status='pending', không cần verified=true)."""
+    conn = get_conn()
+    conn.execute(
+        "UPDATE pending_payments SET verified = TRUE WHERE reference_code = %s AND status = 'pending'",
+        (reference_code,),
+    )
+    conn.commit()
+    conn.close()
+
+
 def get_active_pending_payment(user_id: int, package_index: int) -> dict | None:
     """Trả về giao dịch 'pending' GẦN NHẤT của đúng user + đúng gói này (nếu
     có) - dùng để TÁI SỬ DỤNG khi người dùng bấm "Thanh toán" nhiều lần cho
@@ -225,12 +243,20 @@ def get_pending_payments_by_amount(amount_vnd: int) -> list[dict]:
     lượt) - webhook đối chiếu theo ĐÚNG số tiền thay vì nội dung. Chỉ còn thấy
     giao dịch 'pending' CHƯA hết hạn (xem expire_stale_pending_payments - PHẢI
     gọi hàm đó trước hàm này trong cùng 1 request để đảm bảo rác cũ đã được
-    dọn). Sắp xếp theo created_at TĂNG DẦN (cũ nhất trước) - nếu có từ 2 giao
-    dịch trở lên (còn hạn) cùng chờ đúng số tiền này, main.py sẽ khớp cho giao
-    dịch ĐĂNG KÝ TRƯỚC (FIFO) để hoàn toàn tự động, đổi lấy rủi ro nhỏ khớp
-    nhầm người trong tình huống 2 người khác nhau cùng chờ mua đúng 1 giá
-    trong cùng vài phút đó (quyết định của người dùng, ưu tiên tự động hơn là
-    dừng lại chờ đối soát tay)."""
+    dọn). Sắp xếp theo created_at TĂNG DẦN (cũ nhất trước).
+
+    Trả về CẢ ứng viên chưa 'verified' (xem mark_payment_verified) - việc LỌC
+    chỉ chọn ứng viên đã verified là trách nhiệm của main.py (sepay_webhook),
+    không làm ở đây, để hàm này vẫn dùng được cho mục đích liệt kê/debug đầy
+    đủ nếu cần. Lý do cần thêm điều kiện 'verified' ở phía gọi: chỉ riêng
+    'pending + chưa hết hạn' KHÔNG đủ để chắc chắn đây là giao dịch thật đang
+    có người chờ - 1 giao dịch được tạo ra (VD do test/gọi API trực tiếp) mà
+    KHÔNG bao giờ có ai thực sự mở màn hình QR để poll trạng thái vẫn nằm
+    'pending' bình thường trong vài phút đó, và có thể bị FIFO chọn nhầm nếu
+    nó vô tình cũ hơn giao dịch thật. 'verified=true' (được đánh dấu ngay khi
+    frontend gọi payment-status lần đầu - bằng chứng có người thật đang chờ)
+    là điều kiện main.py dùng để ưu tiên/chỉ chọn đúng giao dịch có người
+    đang thực sự chờ, thay vì luôn máy móc lấy giao dịch CŨ NHẤT."""
     conn = get_conn()
     rows = conn.execute(
         "SELECT * FROM pending_payments WHERE status = 'pending' AND amount_vnd = %s ORDER BY created_at ASC",

@@ -102,18 +102,46 @@ function initKeyShopWidget() {
   const paymentAmountEl = document.getElementById('key-shop-payment-amount');
   const paymentCodeEl = document.getElementById('key-shop-payment-code');
   const paymentStatusEl = document.getElementById('key-shop-payment-status');
+  const paymentTimerEl = document.getElementById('key-shop-payment-timer');
   const cancelBtn = document.getElementById('key-shop-cancel-btn');
   if (!openBtn || !overlay || !closeBtn || !packagesContainer || !packageView || !paymentView) return;
 
   let pollTimer = null;
   let pollGiveUpTimer = null;
   let pollFailCount = 0;
+  let countdownTimer = null;
+
+  // Đếm ngược tới payment.expires_at (mốc THỜI GIAN TUYỆT ĐỐI do server tính
+  // sẵn, xem server/main.py: create_payment) - mỗi lần "tick" tự tính lại
+  // (mốc hết hạn - thời gian hiện tại), KHÔNG trừ dần 1 biến đếm. Nhờ vậy dù
+  // tab bị ẩn/throttle (trình duyệt tạm ngưng setInterval khi không active)
+  // thì lúc quay lại tab vẫn hiện đúng số giây thực còn lại, không bị lệch/
+  // chạy chậm hơn thực tế.
+  const startCountdown = (expiresAtIso) => {
+    if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
+    const expiresAtMs = new Date(expiresAtIso).getTime();
+    const tick = () => {
+      if (!paymentTimerEl) return;
+      const remainingSec = Math.round((expiresAtMs - Date.now()) / 1000);
+      if (remainingSec <= 0) {
+        paymentTimerEl.textContent = 'Hết hạn';
+        if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
+        return;
+      }
+      const mm = Math.floor(remainingSec / 60);
+      const ss = remainingSec % 60;
+      paymentTimerEl.textContent = `${mm}:${String(ss).padStart(2, '0')}`;
+    };
+    tick();
+    countdownTimer = setInterval(tick, 1000);
+  };
 
   // Mọi lối thoát (nút Huỷ, nút ✕, bấm ra ngoài) đều gọi chung 1 hàm dừng
   // poll DUY NHẤT ở đây - không lặp lại clearInterval ở từng nơi, tránh sót.
   const stopPolling = () => {
     if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
     if (pollGiveUpTimer) { clearTimeout(pollGiveUpTimer); pollGiveUpTimer = null; }
+    if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
     pollFailCount = 0;
   };
 
@@ -190,6 +218,7 @@ function initKeyShopWidget() {
     if (paymentAmountEl) paymentAmountEl.textContent = `${Number(payment.amount_vnd).toLocaleString('vi-VN')} VNĐ`;
     if (paymentCodeEl) paymentCodeEl.textContent = payment.reference_code;
     if (paymentStatusEl) paymentStatusEl.textContent = 'Đang chờ chuyển khoản...';
+    if (payment.expires_at) startCountdown(payment.expires_at);
     startPolling(payment.reference_code);
   };
 

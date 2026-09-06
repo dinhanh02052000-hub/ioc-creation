@@ -130,6 +130,10 @@ function App() {
                 <span>Mã đơn hàng</span>
                 <span id="key-shop-payment-code">-</span>
               </div>
+              <div class="key-shop-payment-row">
+                <span>Còn lại</span>
+                <span id="key-shop-payment-timer" class="key-shop-payment-timer">-</span>
+              </div>
             </div>
             <p class="key-shop-payment-hint">Quét mã QR và chuyển khoản đúng số tiền trên. Nếu ứng dụng ngân hàng cho phép sửa nội dung, thêm mã đơn hàng ở trên vào để xử lý nhanh hơn (không bắt buộc).</p>
             <p class="key-shop-payment-status" id="key-shop-payment-status">Đang chờ chuyển khoản...</p>

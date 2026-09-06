@@ -31,6 +31,7 @@ import os
 import re
 import secrets
 import string
+from datetime import timedelta
 from difflib import SequenceMatcher
 
 import psycopg
@@ -1016,13 +1017,14 @@ def create_payment(req: CreatePaymentRequest, user=Depends(get_current_user)):
             "reference_code": existing["reference_code"],
             "amount_vnd": existing["amount_vnd"],
             "qr_url": _static_qr_url(req.package_index),
+            "expires_at": (existing["created_at"] + timedelta(minutes=db.PENDING_PAYMENT_TTL_MINUTES)).isoformat(),
         }
 
     amount_vnd = _KEY_SHOP_PRICES_VND[req.package_index]
     for _ in range(5):
         reference_code = _generate_reference_code()
         try:
-            db.create_pending_payment(reference_code, user["id"], req.package_index, amount_vnd)
+            payment = db.create_pending_payment(reference_code, user["id"], req.package_index, amount_vnd)
             break
         except psycopg.errors.UniqueViolation:
             continue
@@ -1033,6 +1035,7 @@ def create_payment(req: CreatePaymentRequest, user=Depends(get_current_user)):
         "reference_code": reference_code,
         "amount_vnd": amount_vnd,
         "qr_url": _static_qr_url(req.package_index),
+        "expires_at": (payment["created_at"] + timedelta(minutes=db.PENDING_PAYMENT_TTL_MINUTES)).isoformat(),
     }
 
 
@@ -1053,6 +1056,12 @@ def get_payment_status(reference_code: str, user=Depends(get_current_user)):
     if payment["status"] == "expired":
         return {"status": "expired"}
     if payment["status"] != "paid":
+        # Frontend gọi endpoint này = bằng chứng có người dùng THẬT đang mở
+        # màn hình QR chờ giao dịch này (không phải rác/giao dịch tạo ra rồi
+        # bỏ quên) - đánh dấu verified để webhook ưu tiên khớp đúng giao dịch
+        # này thay vì lỡ chọn nhầm 1 giao dịch pending khác cũ hơn nhưng chưa
+        # từng được ai mở lên chờ (xem db.get_pending_payments_by_amount).
+        db.mark_payment_verified(reference_code)
         return {"status": "pending"}
 
     return {"status": "paid", "keys": db.get_keys(user["id"]), "purchase_count": db.get_purchase_count(user["id"])}
@@ -1116,12 +1125,17 @@ def sepay_webhook(payload: SePayWebhookPayload, authorization: str | None = Head
         return {"success": True}
 
     # Lớp 2 (dự phòng): QR tĩnh (tạo qua SePay) không nhúng nội dung riêng
-    # từng giao dịch - đối chiếu theo ĐÚNG số tiền. Nếu có từ 2 giao dịch trở
-    # lên đang chờ đúng số tiền này (2 người cùng chờ mua đúng gói/giá đó cùng
-    # lúc), khớp cho giao dịch ĐĂNG KÝ TRƯỚC (FIFO, get_pending_payments_by_amount
-    # đã sắp created_at tăng dần) để luôn tự động cộng key, không cần đối soát
-    # tay - đánh đổi lấy rủi ro nhỏ khớp nhầm người trong tình huống hiếm này
-    # (quyết định của chủ ứng dụng, ưu tiên tự động).
+    # từng giao dịch - đối chiếu theo ĐÚNG số tiền. CHỈ xét các giao dịch đã
+    # 'verified' (main.py: get_payment_status đánh dấu khi frontend thật sự
+    # poll màn hình QR đó - bằng chứng có người đang chờ) - loại thẳng các
+    # giao dịch pending nhưng CHƯA từng ai mở lên chờ (VD tạo do test/gọi API
+    # trực tiếp rồi bỏ quên), vì trên thực tế 1 giao dịch như vậy TỪNG bị FIFO
+    # (cũ nhất thắng) chọn nhầm thay cho giao dịch thật mới hơn, khiến tiền
+    # thật của khách bị cộng nhầm tài khoản. Trong số các giao dịch ĐÃ verified
+    # (nếu có nhiều), vẫn ưu tiên giao dịch ĐĂNG KÝ TRƯỚC (get_pending_payments_
+    # by_amount đã sắp created_at tăng dần) để tự động 100%, không cần đối
+    # soát tay - nhưng nếu KHÔNG giao dịch nào được verified thì THÀ không
+    # cộng còn hơn cộng nhầm, để lại cho đối soát thủ công.
     if payment is None:
         amount_matches = db.get_pending_payments_by_amount(int(payload.transferAmount))
         if len(amount_matches) == 0:
@@ -1131,14 +1145,22 @@ def sepay_webhook(payload: SePayWebhookPayload, authorization: str | None = Head
                 payload.content, payload.transferAmount,
             )
             return {"success": True}
-        if len(amount_matches) > 1:
+        verified_matches = [p for p in amount_matches if p["verified"]]
+        if not verified_matches:
             logger.warning(
-                "SePay webhook: có %d giao dịch đang chờ CÙNG số tiền %s - tự động khớp giao dịch đăng ký "
-                "trước (mã %s, user_id=%s).",
+                "SePay webhook: có %d giao dịch chờ đúng số tiền %s nhưng CHƯA giao dịch nào được xác thực "
+                "(chưa từng có ai mở màn hình QR chờ) - không đoán bừa, cần đối soát thủ công.",
                 len(amount_matches), payload.transferAmount,
-                amount_matches[0]["reference_code"], amount_matches[0]["user_id"],
             )
-        payment = amount_matches[0]
+            return {"success": True}
+        if len(verified_matches) > 1:
+            logger.warning(
+                "SePay webhook: có %d giao dịch ĐÃ xác thực cùng chờ số tiền %s - tự động khớp giao dịch đăng "
+                "ký trước trong số đó (mã %s, user_id=%s).",
+                len(verified_matches), payload.transferAmount,
+                verified_matches[0]["reference_code"], verified_matches[0]["user_id"],
+            )
+        payment = verified_matches[0]
 
     reference_code = payment["reference_code"]
     if int(payload.transferAmount) != payment["amount_vnd"]:

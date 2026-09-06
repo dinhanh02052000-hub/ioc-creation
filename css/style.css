@@ -425,6 +425,10 @@ body {
   font-family: monospace;
 }
 
+.key-shop-payment-timer {
+  color: #f87171 !important;
+}
+
 .key-shop-payment-hint {
   font-size: 0.75rem;
   color: var(--text-faint);
