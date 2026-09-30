@@ -1,10 +1,7 @@
 // ==== HIỆU ỨNG ÂM THANH KHI BẤM NÚT ====
-// Phát 1 tiếng "click" ngắn mỗi khi bấm bất kỳ <button> nào trên trang
-// (nav-btn, level node, nút trong Profile...) - dùng event delegation trên
-// document nên tự áp dụng cho MỌI nút, kể cả nút được render động sau này,
-// không cần gắn listener riêng lẻ từng nơi. Bật/tắt + chọn âm thanh nào +
-// âm lượng chỉnh ở trang Profile (index.html), lưu localStorage nên áp dụng
-// luôn cho world1.html/world2.html.
+// Event delegation trên document nên tự áp dụng cho mọi <button>, kể cả nút
+// render động sau này. Cấu hình (bật/tắt, âm lượng, chọn âm thanh) chỉnh ở
+// Profile, lưu localStorage nên áp dụng chung cho cả world1.html/world2.html.
 
 const SFX_MUTE_KEY = 'sfx_muted'; // sở thích riêng trình duyệt - KHÔNG prefix "ioc_", không đồng bộ tài khoản
 const SFX_VOLUME_KEY = 'sfx_volume'; // 0..1
@@ -87,8 +84,7 @@ function playSfx() {
 
 function playSfxPreview(id) {
   if (isSfxMuted()) {
-    // Vẫn cho nghe thử khi đang tắt (bấm nút preview ở Profile) - không thay
-    // đổi trạng thái muted, chỉ tạm phát để người dùng biết âm thanh ra sao.
+    // Cố tình không return: cho nghe thử ngay cả khi đang tắt SFX.
   }
   const choice = SFX_OPTIONS.find(opt => opt.id === id) || SFX_OPTIONS[0];
   try {

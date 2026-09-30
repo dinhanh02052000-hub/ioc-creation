@@ -44,18 +44,16 @@ function getWorldCompletedLevels(worldId) {
 }
 
 function setWorldCompletedLevels(worldId, count) {
-  // SET thẳng giá trị (có thể lùi) - dùng cho hành động CHỦ ĐỘNG của người
-  // dùng như "Chơi lại từ đầu" ở trang Course (reset hẳn về 0).
+  // Set thẳng giá trị (có thể lùi) - dùng cho hành động chủ động như "Chơi
+  // lại từ đầu".
   const data = loadCourseProgress();
   data[worldId] = Math.max(0, count);
   saveCourseProgress(data);
 }
 
 function advanceWorldCompletedLevels(worldId, count) {
-  // Chỉ TIẾN LÊN, không bao giờ lùi - dùng khi hoàn thành 1 level (PASS) tự
-  // động cập nhật tiến độ. Quan trọng cho tính năng "chơi lại 1 màn đã qua":
-  // nếu replay level 1 (đã có completed=5) và pass lại, không được để
-  // completed tụt về 1.
+  // Chỉ tiến lên, không bao giờ lùi: replay level 1 (đã có completed=5) và
+  // pass lại không được làm completed tụt về 1.
   const data = loadCourseProgress();
   const current = Number.isFinite(data[worldId]) ? data[worldId] : 0;
   data[worldId] = Math.max(current, count);
@@ -69,11 +67,9 @@ function getLevelResults(worldId, level) {
   return allResults[worldId][levelStr] || null;
 }
 
-// Lưu KẾT QUẢ LẦN LÀM BÀI GẦN NHẤT của 1 level - đè lên kết quả cũ (không
-// cộng dồn), dùng cho cả badge dưới node bản đồ (accuracy/illusion_status)
-// LẪN trang Analysis (recognition/distinction/application/overall/confidence/
-// gap/wrong_words/feedback...). Gộp chung 1 store duy nhất để resetWorldProgress()
-// xoá đồng thời cả 2 mục đích cùng lúc, không cần đồng bộ 2 nơi.
+// Lưu kết quả lần làm bài gần nhất của 1 level, đè lên kết quả cũ (không cộng
+// dồn). Dùng chung 1 store cho cả badge bản đồ lẫn trang Analysis để
+// resetWorldProgress() xoá đồng thời, không cần đồng bộ 2 nơi.
 function setLevelResults(worldId, level, results) {
   const allResults = loadLevelResults();
   const levelStr = String(level);
@@ -101,10 +97,9 @@ function setLevelResults(worldId, level, results) {
   saveLevelResults(allResults);
 }
 
-// Gom TOÀN BỘ kết quả level (lần gần nhất) của 1 hoặc cả 2 world thành 1 mảng
-// phẳng, kèm world_id/level - dùng cho trang Analysis (tính điểm trung bình +
-// chọn nhóm từ yếu nhất). Chỉ lấy bản ghi có đủ breakdown (recognition khác
-// null) - bản ghi cũ trước khi tính năng Analysis tồn tại sẽ tự bị bỏ qua.
+// Gom kết quả level của 1 hoặc cả 2 world thành 1 mảng phẳng cho trang
+// Analysis. Chỉ lấy bản ghi có đủ breakdown (recognition khác null) để tự
+// loại bản ghi cũ thiếu dữ liệu.
 function getAllLevelResultsFlat(worldIds) {
   const ids = worldIds || ['world-1', 'world-2'];
   const allResults = loadLevelResults();
@@ -134,9 +129,8 @@ function resetWorldProgress(worldId) {
 }
 
 // ==== TIẾN TRÌNH CHAT AI ĐANG DỞ (dùng cho tính năng resume) ====
-// Lưu lại toàn bộ state của 1 phiên chat AI đang làm dở (chưa đóng báo cáo
-// cuối) để nếu người dùng bấm ra rồi vào lại level đó, chatbot.js có thể dựng
-// lại đúng giai đoạn họ đang ở thay vì bắt đầu lại từ đầu.
+// Lưu state của phiên chat chưa đóng báo cáo cuối, để chatbot.js dựng lại
+// đúng giai đoạn nếu người dùng ra vào lại level đó.
 
 const AI_CHAT_PROGRESS_KEY = 'ioc_ai_chat_progress';
 
@@ -188,11 +182,8 @@ function clearAIChatProgressForWorld(worldId) {
 }
 
 // ==== TỪ VỰNG ĐÃ HỌC (vĩnh viễn, KHÔNG bị xoá bởi "Chơi lại từ đầu") ====
-// Ghi lại group_title + danh sách từ mục tiêu của MỖI level đã từng PASS ít
-// nhất 1 lần, lấy thẳng từ file KB (server/database) - đây là nhật ký thành
-// tích lâu dài, cố tình KHÔNG được resetWorldProgress() đụng tới (khác hẳn
-// completed-levels/level-results vốn có thể reset khi "Chơi lại từ đầu" ở
-// trang Course).
+// Ghi lại group_title + từ mục tiêu của mỗi level đã PASS ít nhất 1 lần. Là
+// nhật ký thành tích lâu dài, cố tình không bị resetWorldProgress() đụng tới.
 
 const VOCAB_LEARNED_KEY = 'ioc_vocab_learned'; // { "world-1": { "1": {group_title, words, timestamp} } }
 
@@ -229,7 +220,6 @@ function addVocabLearned(worldId, level, groupTitle, words) {
   saveVocabLearnedData(all);
 }
 
-// Trả về mảng các nhóm từ đã học của 1 world, sắp xếp theo level tăng dần.
 function getVocabLearnedList(worldId) {
   const all = loadVocabLearned();
   const worldData = all[worldId] || {};

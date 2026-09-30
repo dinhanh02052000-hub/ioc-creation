@@ -1,8 +1,7 @@
 // ==== TỪ VỰNG ĐÃ HỌC (nút góc dưới-trái world1.html / world2.html) ====
 // Hiện danh sách "tên nhóm: các từ trong nhóm" cho mọi level đã PASS ít nhất
-// 1 lần, lấy dữ liệu vĩnh viễn từ course-progress.js (ioc_vocab_learned) -
-// không tự fetch lại từ server ở đây, dữ liệu đã được ghi lúc PASS
-// (xem chatbot.js: aiCaptureVocabLearned).
+// 1 lần. Đọc thẳng dữ liệu đã lưu sẵn từ course-progress.js (ioc_vocab_learned),
+// không fetch lại server.
 
 function initVocabList(worldId) {
   const btn = document.createElement('button');

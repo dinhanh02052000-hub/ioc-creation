@@ -1,7 +1,6 @@
-"""PostgreSQL (Neon) lưu user đăng nhập Google + tiến độ học - persistent
-THẬT SỰ, khác với SQLite trước đây (bị xoá sạch mỗi lần server khởi động lại
-trên hosting free tier vì ổ đĩa ở đó chỉ tạm thời). Khác hẳn session_store.py
-(in-memory, chỉ sống trong 1 phiên chat AI đang làm dở)."""
+"""Lớp truy cập PostgreSQL (Neon): user đăng nhập Google, tiến độ học, key,
+thanh toán, session, feedback. Lưu trữ persistent lâu dài - khác với
+session_store.py (in-memory, chỉ sống trong 1 phiên chat AI đang làm dở)."""
 
 import json
 import os
@@ -11,15 +10,13 @@ import psycopg
 from dotenv import load_dotenv
 from psycopg.rows import dict_row
 
-# Gọi load_dotenv() ngay ở đây (không dựa vào config.py gọi trước) để module
-# này tự chạy đúng dù được import theo thứ tự nào.
+# Gọi trực tiếp ở đây để module tự chạy đúng dù được import theo thứ tự nào.
 load_dotenv()
 
 DATABASE_URL = os.environ.get("DATABASE_URL", "")
 
-# Số key tặng khi 1 tài khoản Google đăng nhập LẦN ĐẦU TIÊN (xem upsert_user).
-# Cũng dùng làm giá trị migrate cho user đã có sẵn từ trước khi tính năng key
-# ra mắt - để không ai bị khoá AI đột ngột ngay sau khi cập nhật.
+# Số key tặng khi tài khoản đăng nhập lần đầu (xem upsert_user); cũng là giá
+# trị migrate cho user cũ để không ai bị mất quyền dùng AI đột ngột.
 INITIAL_KEYS = 15
 
 
@@ -84,9 +81,6 @@ def init_db() -> None:
         )
         """
     )
-    # Postgres hỗ trợ thẳng "ADD COLUMN IF NOT EXISTS" - đơn giản hơn hẳn kiểu
-    # tự kiểm tra PRAGMA table_info như SQLite trước đây. An toàn chạy lại
-    # nhiều lần (no-op nếu cột đã có).
     conn.execute(f"ALTER TABLE users ADD COLUMN IF NOT EXISTS keys INTEGER NOT NULL DEFAULT {INITIAL_KEYS}")
     conn.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS purchase_count INTEGER NOT NULL DEFAULT 0")
     conn.execute("ALTER TABLE pending_payments ADD COLUMN IF NOT EXISTS verified BOOLEAN NOT NULL DEFAULT FALSE")
@@ -95,10 +89,8 @@ def init_db() -> None:
 
 
 def upsert_user(google_sub: str, email: str, name: str, picture: str) -> dict:
-    """UPSERT nguyên tử trong 1 câu lệnh (Postgres hỗ trợ thật, khác SQLite
-    trước đây phải né bằng try/except IntegrityError): tặng INITIAL_KEYS khi
-    đây là INSERT thật sự (lần đầu), KHÔNG đụng cột keys khi rơi vào nhánh
-    UPDATE (tài khoản đã tồn tại)."""
+    """Upsert nguyên tử: tặng INITIAL_KEYS khi là INSERT thật sự (lần đầu),
+    không đụng cột keys khi rơi vào nhánh UPDATE (tài khoản đã tồn tại)."""
     conn = get_conn()
     row = conn.execute(
         """
@@ -123,10 +115,9 @@ def get_keys(user_id: int) -> int:
 
 
 def deduct_keys(user_id: int, amount: int) -> bool:
-    """Trừ key NGUYÊN TỬ: kiểm tra đủ số dư và trừ trong CÙNG 1 câu UPDATE
-    (WHERE keys >= amount) thay vì đọc số dư rồi ghi lại riêng - tránh race
-    khi 2 request gần như đồng thời cùng đọc thấy đủ key rồi cùng trừ. Trả về
-    False nếu không đủ (không có row nào khớp WHERE) - KHÔNG trừ gì cả."""
+    """Trừ key nguyên tử: điều kiện đủ số dư nằm ngay trong WHERE của UPDATE
+    (không đọc rồi ghi riêng) để tránh race giữa 2 request đồng thời. Trả về
+    False nếu không đủ số dư, không trừ gì cả."""
     conn = get_conn()
     cur = conn.execute("UPDATE users SET keys = keys - %s WHERE id = %s AND keys >= %s", (amount, user_id, amount))
     conn.commit()
@@ -137,8 +128,7 @@ def deduct_keys(user_id: int, amount: int) -> bool:
 
 def create_pending_payment(reference_code: str, user_id: int, package_index: int, amount_vnd: int) -> dict:
     """Có thể raise psycopg.errors.UniqueViolation nếu reference_code trùng
-    (main.py tự retry với mã khác) - PHẢI đóng connection ở mọi nhánh kể cả
-    lỗi, nếu không aborted transaction sẽ rò rỉ connection."""
+    (main.py tự retry với mã khác)."""
     conn = get_conn()
     try:
         row = conn.execute(
@@ -166,13 +156,10 @@ def get_pending_payment(reference_code: str) -> dict | None:
 
 
 def mark_payment_verified(reference_code: str) -> None:
-    """Đánh dấu 1 giao dịch pending là 'verified' - tức có BẰNG CHỨNG người
-    dùng thật đang thực sự đứng chờ màn hình QR này (gọi từ main.py mỗi lần
-    frontend poll payment-status, xem giải thích ở get_pending_payments_by_
-    amount bên dưới - đây là lớp phòng thủ THỨ 3 chống khớp nhầm, sau nội dung
-    và số tiền). KHÔNG dùng cho việc gì khác ngoài ưu tiên khớp FIFO - hoàn
-    toàn không ảnh hưởng tới việc cộng key có xảy ra hay không (finalize_
-    payment vẫn chỉ cần status='pending', không cần verified=true)."""
+    """Đánh dấu giao dịch pending là 'verified' - bằng chứng có người dùng
+    thật đang chờ màn hình QR (gọi mỗi lần frontend poll payment-status).
+    Chỉ ảnh hưởng thứ tự ưu tiên khớp FIFO, không ảnh hưởng việc cộng key
+    (finalize_payment chỉ cần status='pending')."""
     conn = get_conn()
     conn.execute(
         "UPDATE pending_payments SET verified = TRUE WHERE reference_code = %s AND status = 'pending'",
@@ -183,10 +170,8 @@ def mark_payment_verified(reference_code: str) -> None:
 
 
 def get_active_pending_payment(user_id: int, package_index: int) -> dict | None:
-    """Trả về giao dịch 'pending' GẦN NHẤT của đúng user + đúng gói này (nếu
-    có) - dùng để TÁI SỬ DỤNG khi người dùng bấm "Thanh toán" nhiều lần cho
-    cùng 1 gói thay vì tạo mã mới mỗi lần (tránh bỏ rơi 1 giao dịch đang dở
-    dang - xem create-payment ở main.py)."""
+    """Giao dịch 'pending' gần nhất của đúng user + gói này, để tái sử dụng
+    khi người dùng bấm "Thanh toán" nhiều lần thay vì tạo mã mới mỗi lần."""
     conn = get_conn()
     row = conn.execute(
         """SELECT * FROM pending_payments
@@ -198,25 +183,18 @@ def get_active_pending_payment(user_id: int, package_index: int) -> dict | None:
     return row
 
 
-# Sau chừng này phút mà 1 giao dịch vẫn chưa được thanh toán thì coi là HẾT
-# HẠN (status='expired') - không còn được tính vào diện so khớp (cả theo nội
-# dung lẫn theo số tiền) nữa. Trước đây KHÔNG có hạn - hậu quả thực tế đã xảy
-# ra: 1 giao dịch test/leftover bị bỏ quên (VD bấm thử "Thanh toán" rồi không
-# trả tiền) nằm "pending" MÃI MÃI, và khi có khách thật chuyển đúng số tiền đó
-# nhiều giờ sau, lớp khớp theo số tiền (FIFO) chọn NHẦM giao dịch CŨ đó thay
-# vì giao dịch thật mới - tiền thật của khách bị cộng nhầm sang tài khoản
-# khác. Vài phút là đủ rộng cho 1 lượt quét QR + chuyển khoản bình thường
-# (webhook thường về sau vài giây), nếu khách trả chậm hơn thì chỉ cần bấm
-# "Thanh toán" lại để lấy mã mới - đổi lại loại bỏ hẳn nguy cơ rác cũ tồn tại
-# hàng giờ/hàng ngày gây khớp nhầm.
+# Giao dịch pending quá hạn này bị loại khỏi so khớp (nội dung lẫn số tiền).
+# Cần TTL để tránh 1 giao dịch pending bị bỏ quên (VD test rồi không trả
+# tiền) tồn tại mãi và bị khớp FIFO theo số tiền NHẦM với giao dịch thật đến
+# sau - khiến tiền khách bị cộng nhầm tài khoản. Vài phút là đủ cho 1 lượt
+# quét QR + chuyển khoản bình thường; khách trả chậm hơn chỉ cần lấy mã mới.
 PENDING_PAYMENT_TTL_MINUTES = 3
 
 
 def expire_stale_pending_payments() -> None:
-    """Quét lười (gọi ở đầu mỗi lượt xử lý webhook + mỗi lượt poll trạng thái
-    - KHÔNG cần cron/background job riêng): chuyển mọi giao dịch 'pending' đã
-    quá PENDING_PAYMENT_TTL_MINUTES phút thành 'expired'. Rẻ (1 câu UPDATE),
-    an toàn gọi nhiều lần (idempotent - chỉ đổi đúng những row còn 'pending')."""
+    """Chuyển mọi giao dịch 'pending' quá PENDING_PAYMENT_TTL_MINUTES phút
+    thành 'expired'. Gọi ở đầu mỗi lượt xử lý webhook/poll trạng thái thay vì
+    dùng cron riêng; idempotent nên an toàn gọi nhiều lần."""
     conn = get_conn()
     conn.execute(
         "UPDATE pending_payments SET status = 'expired' "
@@ -228,9 +206,8 @@ def expire_stale_pending_payments() -> None:
 
 
 def list_pending_reference_codes() -> list[str]:
-    """Toàn bộ mã tham chiếu CHƯA thanh toán và CHƯA hết hạn - webhook SePay
-    dùng để đối chiếu nội dung chuyển khoản. Scan toàn bảng chấp nhận được ở
-    quy mô app này (không cần index/phân trang)."""
+    """Mã tham chiếu của mọi giao dịch còn 'pending' - webhook SePay dùng để
+    đối chiếu nội dung chuyển khoản."""
     conn = get_conn()
     rows = conn.execute("SELECT reference_code FROM pending_payments WHERE status = 'pending'").fetchall()
     conn.close()
@@ -238,25 +215,17 @@ def list_pending_reference_codes() -> list[str]:
 
 
 def get_pending_payments_by_amount(amount_vnd: int) -> list[dict]:
-    """Lớp DỰ PHÒNG khi QR không nhúng được nội dung riêng từng giao dịch (VD
-    QR tĩnh tạo qua SePay, đặt sẵn số tiền nhưng dùng chung 1 nội dung cho mọi
-    lượt) - webhook đối chiếu theo ĐÚNG số tiền thay vì nội dung. Chỉ còn thấy
-    giao dịch 'pending' CHƯA hết hạn (xem expire_stale_pending_payments - PHẢI
-    gọi hàm đó trước hàm này trong cùng 1 request để đảm bảo rác cũ đã được
-    dọn). Sắp xếp theo created_at TĂNG DẦN (cũ nhất trước).
+    """Lớp dự phòng khi QR không nhúng được nội dung riêng từng giao dịch (QR
+    tĩnh dùng chung 1 nội dung cho mọi lượt) - webhook đối chiếu theo đúng số
+    tiền thay vì nội dung. Yêu cầu gọi expire_stale_pending_payments() trước
+    trong cùng request để loại rác cũ. Sắp xếp created_at tăng dần (cũ nhất
+    trước).
 
-    Trả về CẢ ứng viên chưa 'verified' (xem mark_payment_verified) - việc LỌC
-    chỉ chọn ứng viên đã verified là trách nhiệm của main.py (sepay_webhook),
-    không làm ở đây, để hàm này vẫn dùng được cho mục đích liệt kê/debug đầy
-    đủ nếu cần. Lý do cần thêm điều kiện 'verified' ở phía gọi: chỉ riêng
-    'pending + chưa hết hạn' KHÔNG đủ để chắc chắn đây là giao dịch thật đang
-    có người chờ - 1 giao dịch được tạo ra (VD do test/gọi API trực tiếp) mà
-    KHÔNG bao giờ có ai thực sự mở màn hình QR để poll trạng thái vẫn nằm
-    'pending' bình thường trong vài phút đó, và có thể bị FIFO chọn nhầm nếu
-    nó vô tình cũ hơn giao dịch thật. 'verified=true' (được đánh dấu ngay khi
-    frontend gọi payment-status lần đầu - bằng chứng có người thật đang chờ)
-    là điều kiện main.py dùng để ưu tiên/chỉ chọn đúng giao dịch có người
-    đang thực sự chờ, thay vì luôn máy móc lấy giao dịch CŨ NHẤT."""
+    Trả về cả ứng viên chưa 'verified'; lọc theo verified (xem
+    mark_payment_verified) là trách nhiệm của caller (main.py), vì chỉ riêng
+    'pending + chưa hết hạn' không đủ để chắc đây là giao dịch có người thật
+    đang chờ - caller cần verified=true để tránh FIFO chọn nhầm 1 giao dịch
+    cũ không ai theo dõi."""
     conn = get_conn()
     rows = conn.execute(
         "SELECT * FROM pending_payments WHERE status = 'pending' AND amount_vnd = %s ORDER BY created_at ASC",
@@ -267,16 +236,14 @@ def get_pending_payments_by_amount(amount_vnd: int) -> list[dict]:
 
 
 def finalize_payment(reference_code: str, package: dict, bonus_fn) -> dict | None:
-    """Xác nhận 1 giao dịch ĐÃ THANH TOÁN THẬT (gọi từ webhook SePay sau khi
-    đã đối chiếu nội dung + số tiền khớp) - đánh dấu paid + tăng purchase_count
-    + cộng key TRONG CÙNG 1 TRANSACTION (không tách 3 lượt get_conn() riêng)
-    để không bao giờ rơi vào tình huống "đã đánh dấu paid nhưng crash giữa
-    chừng trước khi cộng key" - lúc đó SePay đã nhận 200 nên sẽ không gọi lại,
-    tiền thật sẽ mất trắng không cộng được key nếu tách rời từng bước.
+    """Xác nhận 1 giao dịch đã thanh toán (gọi từ webhook SePay sau khi đối
+    chiếu nội dung + số tiền khớp): đánh dấu paid, tăng purchase_count và
+    cộng key trong CÙNG 1 transaction, để không rơi vào tình huống đã đánh
+    dấu paid nhưng crash trước khi cộng key (SePay không retry sau khi nhận
+    200 nên phần key sẽ mất trắng nếu tách rời từng bước).
 
-    Trả về None nếu reference_code không tồn tại HOẶC đã được xử lý từ trước
-    (status không còn là 'pending') - đây chính là cơ chế chống cộng 2 lần khi
-    SePay gọi lại webhook trùng (at-least-once delivery)."""
+    Trả về None nếu reference_code không tồn tại hoặc đã xử lý trước đó -
+    đây là cơ chế chống cộng 2 lần khi SePay gọi lại webhook trùng."""
     conn = get_conn()
     try:
         cur = conn.execute(
@@ -318,9 +285,8 @@ def get_purchase_count(user_id: int) -> int:
 
 
 def set_purchase_count(user_id: int, count: int) -> None:
-    """Đặt thẳng purchase_count - dùng cho công cụ admin (xem
-    hacker prompt/reset_purchase_count.py), không dùng trong luồng mua bình
-    thường (xem increment_purchase_count)."""
+    """Đặt thẳng purchase_count - dùng cho công cụ admin, không dùng trong
+    luồng mua bình thường (xem increment_purchase_count)."""
     conn = get_conn()
     conn.execute("UPDATE users SET purchase_count = %s WHERE id = %s", (count, user_id))
     conn.commit()
@@ -328,8 +294,8 @@ def set_purchase_count(user_id: int, count: int) -> None:
 
 
 def increment_purchase_count(user_id: int) -> int:
-    """Tăng purchase_count thêm 1 (1 lượt mua thành công) - trả về giá trị
-    MỚI để main.py tính bonus theo đúng mốc ngay lượt vừa chạm tới."""
+    """Tăng purchase_count thêm 1, trả về giá trị mới để caller tính bonus
+    theo đúng mốc vừa chạm tới."""
     conn = get_conn()
     conn.execute("UPDATE users SET purchase_count = purchase_count + 1 WHERE id = %s", (user_id,))
     row = conn.execute("SELECT purchase_count FROM users WHERE id = %s", (user_id,)).fetchone()
@@ -366,9 +332,8 @@ def delete_session(token: str) -> None:
 
 
 def delete_user(user_id: int) -> None:
-    """Xoá vĩnh viễn tài khoản: mọi phiên đăng nhập + tiến độ đã lưu + giao
-    dịch (đã/đang chờ thanh toán) của user này. Không có ràng buộc khoá ngoại/
-    cascade ở schema nên xoá thủ công từng bảng liên quan."""
+    """Xoá vĩnh viễn tài khoản và mọi dữ liệu liên quan (session, tiến độ,
+    giao dịch). Schema không có cascade nên phải xoá thủ công từng bảng."""
     conn = get_conn()
     conn.execute("DELETE FROM sessions WHERE user_id = %s", (user_id,))
     conn.execute("DELETE FROM progress WHERE user_id = %s", (user_id,))
@@ -403,9 +368,8 @@ def load_progress(user_id: int) -> dict:
 
 
 def save_feedback(name: str, content: str) -> None:
-    """Lưu góp ý thẳng vào DB thay vì mailto: (mailto chỉ mở sẵn 1 email nháp,
-    KHÔNG tự gửi - im lặng không có gì xảy ra nếu máy người dùng chưa cấu hình
-    ứng dụng mail mặc định). Xem lại bằng hacker prompt/view_feedback.py."""
+    """Lưu góp ý vào DB thay vì mailto: (mailto chỉ mở email nháp, không tự
+    gửi nếu máy người dùng chưa cấu hình ứng dụng mail mặc định)."""
     conn = get_conn()
     conn.execute("INSERT INTO feedback (name, content) VALUES (%s, %s)", (name or None, content))
     conn.commit()

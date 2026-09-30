@@ -1,20 +1,17 @@
-"""Prompt cho trang Analysis (js/pages/analysis.js). Chỉ gọi 1 LẦN DUY NHẤT khi
-người dùng mở trang Analysis (frontend tự cache theo "chữ ký" dữ liệu đầu vào,
-không gọi lặp lại nếu chưa có gì mới) - hoàn toàn tách biệt khỏi luồng chat AI
-per-level ở engine_prompts.py/main.py.
+"""Prompt cho trang Analysis (js/pages/analysis.js), tách biệt khỏi luồng chat
+AI per-level ở engine_prompts.py/main.py. Frontend tự cache theo chữ ký dữ
+liệu đầu vào nên chỉ gọi lại khi có dữ liệu mới.
 
-Input do FRONTEND tự chọn sẵn: 5 nhóm từ có điểm Overall thấp nhất trong số
-các level user đã làm (đọc từ localStorage), kèm cặp từ chọn-sai/đúng cụ thể
-từng câu - nhờ vậy prompt không cần kèm theo cả file KB, giữ token thấp
-(~5000-6000 cho cả input+output) mà vẫn đủ dữ liệu cụ thể để AI không "lệch
-khung" (bịa lỗi sai không có thật)."""
+Input (5 nhóm từ điểm Overall thấp nhất, kèm câu chọn-sai/đúng cụ thể) do
+frontend tự chọn sẵn từ localStorage, nhờ vậy không cần gửi kèm file KB mà
+vẫn đủ dữ liệu để AI không bịa lỗi sai ngoài thực tế."""
 
 
 def _format_group(g: dict) -> str:
     lines = [f"- Nhóm \"{g['group_title']}\" (World {g['world_id']} Level {g['level']}, Overall: {g['overall']}):"]
     wrong_words = g.get("wrong_words") or []
     if wrong_words:
-        for w in wrong_words[:8]:  # đủ để thấy xu hướng, tránh phình prompt nếu 1 nhóm sai quá nhiều câu
+        for w in wrong_words[:8]:  # giới hạn tránh phình prompt nếu 1 nhóm sai quá nhiều câu
             sel = w.get("selected") or "(bỏ trống)"
             lines.append(f"  + Câu \"{w.get('question', '')}\" - chọn \"{sel}\", đúng phải là \"{w.get('correct')}\"")
     else:

@@ -1,23 +1,15 @@
 // ==== AI CHATBOT UI ====
-// Điều khiển khung chat nổi lên khi bấm 1 level có bật AI. Chỉ lo phần hiển
-// thị + thu thập input người dùng; mọi gọi mạng đi qua gesture.js, mọi tính
-// điểm/PASS-RETRY do backend quyết định (xem server/main.py).
+// Khung chat nổi cho level có bật AI: chỉ lo hiển thị + thu thập input, mọi
+// gọi mạng đi qua gesture.js, điểm/PASS-RETRY do backend quyết định.
 //
-// aiChat.stage đánh dấu đúng giai đoạn UI hiện tại (LEARNING, RECOGNITION,
-// CORRECTION, CONFIDENCE, OPEN_ENDED, REPORT, REMEDIATION_RECAP,
-// REMEDIATION_MCQ, REMEDIATION_CORRECTION, REMEDIATION_OPEN_ENDED,
-// REMEDIATION_DONE). Toàn bộ aiChat được lưu vào localStorage (qua
-// course-progress.js) sau mỗi bước -> nếu người dùng đóng modal giữa chừng
-// rồi mở lại đúng level đó, ta dựng lại đúng giai đoạn đang dở thay vì bắt
-// đầu lại từ đầu.
+// aiChat.stage đánh dấu giai đoạn UI hiện tại và được lưu vào localStorage
+// (qua course-progress.js) sau mỗi bước, để đóng modal giữa chừng rồi mở lại
+// vẫn tiếp tục đúng chỗ thay vì phải làm lại từ đầu.
 
 const AI_CONFIDENCE_QUESTION =
   'Sau khi xem đáp án và lời giải, bạn tự đánh giá mức độ tự tin của mình trong việc phân biệt và sử dụng các từ này trong một ngữ cảnh mới là bao nhiêu trên thang điểm 10?';
 
-// Tên hiển thị của từng world, khớp với config.title/subtitle trong
-// js/pages/world1.js và world2.js - dùng để soạn lời chào mừng ngắn khi vào 1
-// level KHÔNG phải World 1 - Level 1 (level đó mới có hướng dẫn cách dùng đầy
-// đủ, các level còn lại chỉ cần 1 câu chào mừng phù hợp).
+// Phải khớp với config.title/subtitle trong js/pages/world1.js và world2.js.
 const AI_WORLD_META = {
   'world-1': { title: 'Sylvan Nightwood Realm', subtitle: 'Rừng Huyền Diệu' },
   'world-2': { title: 'Frost Glaciers Realm', subtitle: 'Tuyết Sơn Cực Quang' }
@@ -39,9 +31,8 @@ function aiEscapeHtml(str) {
   return div.innerHTML;
 }
 
-// AI hay trả lời kèm markdown nhẹ (####, **bold**, gạch đầu dòng). Escape
-// trước để chặn HTML lạ, sau đó mới "dịch" đúng các ký hiệu markdown mình hỗ
-// trợ thành thẻ HTML thật — không dùng innerHTML trực tiếp trên text gốc.
+// Escape HTML trước, rồi mới dịch markdown sang thẻ HTML — tránh chèn HTML
+// thô của AI trực tiếp vào DOM.
 function aiInlineMarkdown(text) {
   return text
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
@@ -167,9 +158,8 @@ function openAIChat(worldId, level, onComplete, isRetry = false) {
     if (e.target === overlay) aiHandleUserDismiss();
   });
 
-  // Guest chắc chắn sẽ bị backend chặn 401 ở lượt gọi AI đầu tiên (tính năng
-  // key) - báo ngay ở đây thay vì đợi 1 vòng network round-trip vô ích trước
-  // khi hiện đúng cái thông báo mà lẽ ra biết trước được.
+  // Guest chắc chắn bị backend chặn 401 (tính năng key) - báo ngay, khỏi tốn
+  // 1 round-trip network vô ích.
   if (typeof isLoggedIn === 'function' && !isLoggedIn()) {
     aiRenderSessionAwareError({ status: 401 }, null);
     return;
@@ -190,25 +180,17 @@ function closeAIChat() {
   aiChatEls = null;
 }
 
-// Điểm thoát DUY NHẤT khi người dùng chủ động rời khỏi modal (nút ✕ ở header,
-// bấm ra ngoài nền tối, và cả nút "Đóng" trong footer báo cáo). Trước đây nút
-// ✕/bấm ra ngoài gọi thẳng closeAIChat() nên nếu người dùng không bấm đúng
-// nút "Đóng" trong footer, kết quả không được lưu - giờ việc lưu đã tách khỏi
-// đây hoàn toàn (xem aiRenderFinalReport), hàm này chỉ lo dọn dẹp + đóng modal.
+// Điểm thoát duy nhất khi người dùng chủ động rời modal (nút ✕, bấm ra ngoài,
+// nút "Đóng"). Việc lưu kết quả đã xảy ra ở aiRenderFinalReport, nên đây chỉ
+// lo dọn tiến trình resume + đóng modal.
 function aiHandleUserDismiss() {
   if (!aiChat) { closeAIChat(); return; }
   const worldId = aiChat.worldId;
   const level = aiChat.level;
   const onComplete = aiChat.onComplete;
 
-  // Kết quả đã được lưu NGAY khi báo cáo hiển thị (xem aiRenderFinalReport),
-  // không đợi tới lúc đóng nữa. Chỉ XOÁ tiến trình resume khi báo cáo là PASS
-  // - vì lần bấm vào level đó sau này là để "chơi lại" (replay) 1 lượt hoàn
-  // toàn mới, không phải xem lại báo cáo cũ. Nếu là RETRY thì GIỮ NGUYÊN tiến
-  // trình: level đó chưa qua (vẫn là node "current"), nên bấm vào lại phải
-  // quay về đúng trang báo cáo vừa rồi, không được khởi động lại từ đầu. Mọi
-  // giai đoạn khác (kể cả các bước ôn tập) vẫn lưu liên tục qua
-  // aiPersistProgress() ở mỗi bước như bình thường.
+  // Chỉ xoá tiến trình resume khi PASS: lần bấm vào level sau đó là chơi lại
+  // từ đầu. Nếu RETRY, giữ nguyên để bấm vào lại quay về đúng trang báo cáo.
   if (aiChat.stage === 'REPORT' && aiChat.report && aiChat.report.final_result === 'PASS') {
     aiClearProgress(worldId, level);
   }
@@ -242,13 +224,10 @@ function aiRenderError(message, onRetry) {
   if (btn) btn.addEventListener('click', onRetry);
 }
 
-// Nếu backend báo phiên không tồn tại (thường do server bị khởi động lại
-// giữa chừng), việc "Thử lại" y hệt sẽ luôn thất bại vì session đã mất. Thay
-// vào đó cho người dùng lựa chọn bắt đầu lại từ đầu (session mới).
+// Một số lỗi không tự khỏi khi bấm "Thử lại" y hệt (session mất, chưa đăng
+// nhập, hết key) - trong các trường hợp đó phải đưa hành động khác thay vì
+// nút retry vô nghĩa.
 function aiRenderSessionAwareError(e, onRetry) {
-  // 401/402 (từ tính năng "key" giới hạn dùng AI) không phải lỗi tạm thời -
-  // "Thử lại" y hệt sẽ luôn thất bại vì trạng thái chưa đăng nhập/hết key
-  // không tự đổi được, nên cho hành động khác thay vì nút retry vô nghĩa.
   if (e && e.status === 401) {
     aiSetBody(`<div class="ai-error">Bạn cần đăng nhập bằng Google để dùng tính năng AI. Đăng nhập lần đầu được tặng 15 key miễn phí.</div>`);
     aiSetFooter(`<a href="index.html?page=profile" class="ai-btn">Đăng nhập với Google</a>`);
@@ -260,14 +239,9 @@ function aiRenderSessionAwareError(e, onRetry) {
     return;
   }
   const msg = e && e.message ? e.message : String(e);
-  // 409 (sai trạng thái hiện tại của session) KHÔNG phải lỗi tạm thời - xảy
-  // ra khi tiến trình lưu ở máy (localStorage) bị lệch so với trạng thái THẬT
-  // trên server (VD: lần gọi begin-recognition trước đó thực ra ĐÃ thành
-  // công/đã đổi trạng thái server, nhưng trình duyệt bị đóng/mất mạng trước
-  // khi kịp lưu lại tiến trình mới ở máy - lúc mở lại, tiến trình cũ trên máy
-  // vẫn tưởng đang ở bước trước đó và gọi lại y hệt request đã dùng rồi).
-  // "Thử lại" y hệt sẽ luôn thất bại (server không tự lùi trạng thái), nên
-  // phải cho lựa chọn bắt đầu lại từ đầu giống hệt trường hợp session hết hạn.
+  // 409: state lưu ở localStorage lệch với state thật trên server (VD: request
+  // trước đã thành công trên server nhưng máy mất mạng trước khi lưu lại tiến
+  // trình mới). Server không tự lùi trạng thái nên chỉ còn cách bắt đầu lại.
   if ((e && e.status === 409) || /không tồn tại hoặc đã hết hạn/i.test(msg)) {
     aiSetBody(`<div class="ai-error">Tiến trình lưu ở máy không khớp với trạng thái hiện tại trên server (có thể do mất mạng/thoát giữa chừng ở bước trước). Bạn cần bắt đầu lại từ đầu.</div>`);
     aiSetFooter(`<button type="button" class="ai-btn" id="ai-restart-session-btn">Bắt đầu lại từ đầu</button>`);
@@ -318,10 +292,8 @@ function aiRenderLearningContent(groupTitle, content) {
   aiChat.groupTitle = groupTitle;
   aiChat.learningContent = content;
 
-  // World 1 - Level 1 (lần đầu, không phải retry): hiện hướng dẫn cách dùng
-  // đầy đủ. MỌI level khác (kể cả replay/retry của chính level 1 đó): chỉ
-  // hiện 1 lời chào mừng ngắn theo đúng world/level - không lặp lại hướng dẫn
-  // cách dùng vốn chỉ cần đọc 1 lần duy nhất.
+  // Hướng dẫn đầy đủ chỉ hiện ở World 1 - Level 1 lần đầu; các lần/level khác
+  // chỉ cần lời chào ngắn.
   const onboardingBlock = aiChat.showOnboarding
     ? `<div class="ai-msg-system ai-msg-onboarding">
         👋 Chào bạn! Đây là trợ lý AI giúp bạn học và tự kiểm tra từ vựng.
@@ -416,9 +388,7 @@ async function aiSubmitRecognition() {
   aiRenderLoading('Đang chấm bài và soạn giải thích...');
   try {
     const res = await gestureSubmitRecognition(aiChat.sessionId, aiChat.answers);
-    // Lưu tạm cặp từ chọn-sai/đúng của LƯỢT NÀY - dùng khi lưu kết quả cuối
-    // cùng (saveThisAttemptResult) để trang Analysis có dữ liệu phân tích xu
-    // hướng nhầm lẫn từ vựng cụ thể, không cần gọi thêm AI.
+    // Giữ lại để saveThisAttemptResult đưa vào kết quả cho trang Analysis.
     aiChat.wrongWords = res.wrong_words || [];
     aiRenderCorrection(res.correction_text);
   } catch (e) {
@@ -566,19 +536,15 @@ function aiIllusionMeta(status) {
   return map[status] || { label: status, dot: 'red' };
 }
 
-// Lưu kết quả lượt vừa xong (accuracy = Overall + illusion status). Gọi NGAY
-// khi màn báo cáo hiện ra (xem aiRenderFinalReport) - không đợi người dùng
-// bấm nút nào, để không phụ thuộc vào việc họ thoát bằng cách nào (Đóng, Ôn
-// tập & Kiểm tra lại, ✕, bấm ra ngoài, hay đóng hẳn tab).
+// Gọi ngay khi báo cáo hiện ra (không đợi người dùng bấm gì), để không phụ
+// thuộc vào việc họ thoát bằng cách nào sau đó.
 function saveThisAttemptResult(report) {
   const isPass = report.final_result === 'PASS';
   if (isPass && typeof advanceWorldCompletedLevels === 'function') {
     advanceWorldCompletedLevels(aiChat.worldId, aiChat.level);
   }
   if (typeof setLevelResults === 'function') {
-    // Lưu ĐẦY ĐỦ breakdown (không chỉ accuracy/illusion_status) - trang
-    // Analysis cần recognition/distinction/application/overall/confidence/gap
-    // riêng biệt + wrong_words/feedback để phân tích xu hướng nhầm lẫn.
+    // Breakdown đầy đủ - trang Analysis cần từng phần riêng, không chỉ tổng.
     setLevelResults(aiChat.worldId, aiChat.level, {
       accuracy: report.accuracy,
       illusion_status: report.illusion_status,
@@ -599,10 +565,9 @@ function saveThisAttemptResult(report) {
   }
 }
 
-// Ghi lại nhóm từ đã học (vĩnh viễn, không bị "Chơi lại" xoá) - lấy thẳng từ
-// KB qua GET nhẹ, không phải AI call. Không chặn luồng chính nếu lỗi; thử lại
-// vài lần vì đây là lúc PASS duy nhất trong lượt này, bỏ lỡ thì phải đợi lần
-// pass sau (thường là replay) mới có cơ hội ghi lại.
+// Ghi nhóm từ đã học vĩnh viễn (không bị "Chơi lại" xoá). Không chặn luồng
+// chính nếu lỗi, nhưng thử lại vài lần vì bỏ lỡ lúc PASS này thì phải đợi
+// lần pass tiếp theo mới có cơ hội ghi lại.
 async function aiCaptureVocabLearned(worldId, level, attempt = 1) {
   if (typeof hasVocabLearned === 'function' && hasVocabLearned(worldId, level)) return;
   if (typeof gestureGetVocab !== 'function' || typeof addVocabLearned !== 'function') return;
@@ -620,10 +585,8 @@ function aiRenderFinalReport(report) {
   aiChat.stage = 'REPORT';
   aiChat.report = report;
 
-  // Lưu kết quả NGAY khi báo cáo hiện ra (không đợi người dùng bấm nút nào cả)
-  // - đảm bảo badge dưới level luôn được cập nhật dù người dùng thoát bằng
-  // cách nào sau đó: bấm "Đóng", bấm "Ôn tập & Kiểm tra lại", bấm ✕, bấm ra
-  // ngoài nền tối, hay thậm chí đóng thẳng tab/điều hướng sang trang khác.
+  // Lưu ngay để badge dưới level luôn cập nhật dù người dùng thoát kiểu gì
+  // sau đó (kể cả đóng tab).
   saveThisAttemptResult(report);
 
   const isPass = report.final_result === 'PASS';
@@ -697,8 +660,7 @@ function aiRenderFinalReport(report) {
 }
 
 // ---- Luồng ôn tập trọng tâm (remediation) khi RETRY ----
-// Phân tích câu sai (recognition) + điểm/nhận xét yếu (distinction/application)
-// để tạo 1 bài luyện tập nhỏ cho CẢ 3 PHẦN, rồi mới cho retest đầy đủ.
+// Phân tích lỗi sai của cả 3 phần để tạo bài luyện tập nhỏ trước khi retest.
 
 async function aiBeginRemediation() {
   aiRenderLoading('Đang phân tích lỗi sai và soạn bài ôn tập trọng tâm...');
@@ -873,9 +835,7 @@ function aiRenderRemediationDone() {
   `);
   aiSetFooter(`<button type="button" class="ai-btn" id="ai-retest-btn">Kiểm tra lại</button>`);
   document.getElementById('ai-retest-btn').addEventListener('click', () => {
-    // Retest = chạy lại đúng luồng chính (20 MCQ -> confidence -> 2 câu mở).
-    // Nếu vẫn RETRY, aiRenderFinalReport sẽ lại đưa ra nút "Ôn tập & Kiểm tra
-    // lại" -> chu kỳ ôn tập/retest tự lặp cho tới khi PASS.
+    // Chạy lại luồng chính đầy đủ; nếu vẫn RETRY, chu kỳ ôn tập lặp lại.
     aiChat.questions = null;
     aiChat.answers = {};
     aiBeginRecognition();

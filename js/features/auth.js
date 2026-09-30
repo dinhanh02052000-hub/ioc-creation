@@ -1,9 +1,8 @@
 // ==== ĐĂNG NHẬP GOOGLE + ĐỒNG BỘ TIẾN ĐỘ ====
-// File này load ở CẢ 3 trang (index.html, world1.html, world2.html) vì tiến
-// độ thực tế được ghi trong lúc chơi (world1/world2), không chỉ ở trang chủ.
-// Phần khởi tạo nút Google (initGoogleAuth) chỉ thực sự chạy khi có Google
-// Identity Services script + container - tức chỉ ở trang Profile (index.html),
-// nên các hàm liên quan tới `google.accounts` đều tự kiểm tra trước khi gọi.
+// Load ở cả 3 trang vì tiến độ được ghi trong lúc chơi (world1/world2), không
+// chỉ ở trang chủ. initGoogleAuth() chỉ thực sự chạy ở Profile (nơi có script
+// + container Google Identity Services) - các hàm dùng `google.accounts` đều
+// tự kiểm tra trước khi gọi.
 
 const AUTH_SESSION_KEY = 'ioc_auth_session'; // { token, name, email, picture }
 const AUTH_SYNC_KEYS_SKIP = new Set([AUTH_SESSION_KEY]);
@@ -37,10 +36,8 @@ function isLoggedIn() {
   return !!getAuthSession();
 }
 
-// Gom toàn bộ dữ liệu tiến độ (mọi key "ioc_*" trừ chính session đăng nhập)
-// thành 1 object phẳng để gửi lên server - tự động bao gồm cả những key mới
-// thêm sau này (course progress, level results, vocab learned, playtime, chat
-// đang dở...) mà không cần sửa lại chỗ này.
+// Gom mọi key "ioc_*" (trừ session đăng nhập) thành 1 object để gửi lên
+// server - tự động bao gồm cả key mới thêm sau này, không cần sửa lại đây.
 function collectLocalProgressData() {
   const data = {};
   for (let i = 0; i < localStorage.length; i++) {
@@ -55,11 +52,9 @@ function collectLocalProgressData() {
   return data;
 }
 
-// Xoá SẠCH mọi dữ liệu tiến độ cục bộ (playtime, course progress, level
-// results, từ vựng đã học, chat đang dở, cache analysis...) - dùng khi đăng
-// nhập vào 1 tài khoản (dữ liệu ẩn danh trước đó không được mang theo, tránh
-// lẫn dữ liệu giữa các tài khoản) VÀ khi đăng xuất (không để lộ tiến độ của
-// tài khoản vừa đăng xuất cho người dùng ẩn danh tiếp theo trên máy này).
+// Xoá sạch mọi dữ liệu tiến độ cục bộ - dùng khi đăng nhập (tránh mang theo
+// dữ liệu ẩn danh trước đó) và khi đăng xuất (không lộ tiến độ cho người dùng
+// tiếp theo trên máy này).
 function clearAllLocalProgressData() {
   const keysToRemove = [];
   for (let i = 0; i < localStorage.length; i++) {
@@ -114,10 +109,8 @@ async function authSyncPush() {
   }
 }
 
-// Gọi ngay sau khi đăng nhập + đã clearAllLocalProgressData(): nếu server đã
-// có dữ liệu (tài khoản này từng lưu trước đó) thì tải về; nếu server chưa
-// có gì (tài khoản mới) thì đẩy trạng thái rỗng hiện tại lên để "gieo" bản
-// ghi tiến độ ban đầu cho tài khoản.
+// Gọi sau khi đăng nhập + clearAllLocalProgressData(): tải dữ liệu server nếu
+// có, hoặc đẩy trạng thái rỗng lên để "gieo" bản ghi ban đầu cho tài khoản mới.
 async function authSyncPull() {
   if (!isLoggedIn()) return;
   try {
@@ -133,10 +126,9 @@ async function authSyncPull() {
   }
 }
 
-// Tự động đẩy dữ liệu lên server mỗi khi có bất kỳ key "ioc_*" nào được ghi
-// (course-progress.js, playtime.js... không cần biết gì về tính năng đăng nhập,
-// chỉ cần gọi localStorage.setItem như bình thường). Gộp nhiều lần ghi liên
-// tiếp (vd lưu xong 1 level ghi 2-3 key liền) thành 1 lần gọi API bằng debounce.
+// Tự động đẩy dữ liệu lên server mỗi khi có key "ioc_*" được ghi, để các
+// module khác không cần biết gì về đăng nhập. Debounce để gộp nhiều lần ghi
+// liên tiếp thành 1 lần gọi API.
 (function interceptLocalStorageForSync() {
   const originalSetItem = localStorage.setItem.bind(localStorage);
   let pushTimer = null;
@@ -155,12 +147,10 @@ async function handleGoogleCredentialResponse(response) {
   try {
     const result = await authApiRequest('/api/auth/google', 'POST', { credential: response.credential });
     saveAuthSession({ token: result.token, ...result.user });
-    // Dữ liệu ẩn danh trước khi đăng nhập KHÔNG được mang theo vào tài khoản -
-    // xoá sạch trước, rồi mới tải tiến độ thật của tài khoản này về (nếu có).
+    // Xoá dữ liệu ẩn danh trước khi tải tiến độ thật của tài khoản về.
     clearAllLocalProgressData();
     await authSyncPull();
-    // Reload để MỌI phần UI (đồng hồ tổng thời gian học, thanh tiến độ Course, cache
-    // Analysis...) đọc lại đúng dữ liệu vừa đổi thay vì phải tự dò từng nơi.
+    // Reload để mọi phần UI đọc lại đúng dữ liệu vừa đổi.
     window.location.reload();
   } catch (e) {
     if (typeof renderAuthError === 'function') renderAuthError(e.message);
@@ -168,9 +158,8 @@ async function handleGoogleCredentialResponse(response) {
 }
 
 function initGoogleAuth(containerId, retriesLeft) {
-  // Script accounts.google.com load async - nếu người dùng vào trang quá
-  // nhanh, "google" có thể chưa sẵn sàng -> thử lại vài lần thay vì bỏ qua
-  // im lặng (khiến nút đăng nhập không bao giờ hiện).
+  // Script accounts.google.com load async nên "google" có thể chưa sẵn sàng
+  // -> thử lại vài lần thay vì bỏ qua im lặng.
   if (typeof google === 'undefined' || !google.accounts || !google.accounts.id) {
     const left = retriesLeft === undefined ? 20 : retriesLeft;
     if (left > 0) setTimeout(() => initGoogleAuth(containerId, left - 1), 250);
@@ -187,15 +176,12 @@ function initGoogleAuth(containerId, retriesLeft) {
 }
 
 function authSignOut() {
-  // Gọi API logout TRƯỚC khi xoá session cục bộ (authApiRequest cần token
-  // còn trong localStorage để gắn header Authorization).
+  // Gọi logout trước khi xoá session cục bộ vì authApiRequest cần token còn
+  // trong localStorage để gắn header Authorization.
   if (isLoggedIn()) {
     authApiRequest('/api/auth/logout', 'POST').catch(() => {});
   }
   clearAuthSession();
-  // Đăng xuất -> tiến độ hiện trên máy cũng về 0 (không lộ dữ liệu tài khoản
-  // vừa đăng xuất). Đăng nhập lại đúng tài khoản đó sẽ tự tải lại đầy đủ từ
-  // server (xem handleGoogleCredentialResponse -> authSyncPull).
   clearAllLocalProgressData();
   if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
     google.accounts.id.disableAutoSelect();
@@ -203,13 +189,10 @@ function authSignOut() {
   window.location.reload();
 }
 
-// ==== Badge số key ở góc trên-phải header (chỉ tồn tại trên index.html - an
-// toàn khi gọi từ world1.html/world2.html vì #header-key-value không có nên
-// no-op) ====
-// Số key KHÔNG cache trong localStorage như session (token/name/email/picture)
-// - vì nó đổi phía server (mỗi lần dùng AI), cache lại dễ bị lệch/gây hiểu
-// nhầm. Luôn lấy trực tiếp từ /api/auth/me hoặc từ keys_remaining trả về sau
-// mỗi lượt gọi AI có trừ key.
+// ==== Badge số key ở góc trên-phải header (chỉ tồn tại trên index.html;
+// an toàn khi gọi từ world1/world2 vì #header-key-value không có nên no-op) ====
+// Không cache số key trong localStorage vì nó đổi phía server mỗi lần dùng AI
+// - luôn lấy trực tiếp từ /api/auth/me hoặc keys_remaining sau mỗi lượt gọi AI.
 function setHeaderKeyDisplay(keys) {
   const el = document.getElementById('header-key-value');
   if (!el) return;

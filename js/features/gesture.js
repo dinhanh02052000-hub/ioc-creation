@@ -3,16 +3,13 @@
 // Toàn bộ logic chấm điểm/quyết định PASS-RETRY nằm ở backend (server/main.py),
 // file này chỉ là lớp gọi API mỏng.
 
-// FastAPI (server/main.py) tự phục vụ luôn cả frontend tĩnh (index.html,
-// world1.html, world2.html, js/, css/, assets/) VÀ API trên CÙNG 1 origin -
-// dùng window.location.origin thay vì hardcode localhost để chạy đúng cả khi
-// deploy lên domain thật (Render/Railway...), không cần đổi gì thêm.
+// FastAPI phục vụ cả frontend tĩnh lẫn API trên cùng 1 origin - dùng
+// window.location.origin thay vì hardcode localhost để chạy đúng khi deploy.
 const AI_BACKEND_URL = window.location.origin;
 
 async function aiRequest(path, body) {
-  // Từ khi có tính năng "key" (giới hạn dùng AI theo tài khoản Google), mọi
-  // route AI ở backend đều yêu cầu đăng nhập -> gắn kèm Bearer token nếu có,
-  // giống hệt cách authApiRequest() ở auth.js đã làm cho progress save/load.
+  // Mọi route AI yêu cầu đăng nhập (giới hạn dùng theo tài khoản) -> gắn kèm
+  // Bearer token nếu có, giống authApiRequest() ở auth.js.
   const session = typeof getAuthSession === 'function' ? getAuthSession() : null;
   const headers = { 'Content-Type': 'application/json' };
   if (session) headers['Authorization'] = `Bearer ${session.token}`;
@@ -36,9 +33,8 @@ async function aiRequest(path, body) {
     } catch (e) {
       // response không phải JSON -> giữ nguyên statusText
     }
-    // Gắn status vào error để caller (chatbot.js) phân biệt được 401 (chưa
-    // đăng nhập) / 402 (hết key) với các lỗi khác - đáng tin cậy hơn nhiều so
-    // với so khớp chuỗi tiếng Việt.
+    // Gắn status để caller phân biệt 401 (chưa đăng nhập) / 402 (hết key)
+    // với lỗi khác, đáng tin cậy hơn so khớp chuỗi thông báo.
     const err = new Error(detail);
     err.status = res.status;
     throw err;
@@ -51,8 +47,7 @@ function gestureStartSession(worldId, level, isRetry = false) {
   return aiRequest('/api/chat/start', { world_id: worldId, level, is_retry: isRetry });
 }
 
-// GET thuần, không tốn AI - lấy group_title + danh sách từ mục tiêu thẳng từ
-// file KB (dùng cho tính năng "Từ vựng đã học").
+// GET thuần, không tốn AI - lấy group_title + danh sách từ mục tiêu từ file KB.
 async function gestureGetVocab(worldId, level) {
   let res;
   try {
@@ -73,8 +68,8 @@ async function gestureGetVocab(worldId, level) {
   return res.json();
 }
 
-// recognitionHistory: mảng text các câu đã sinh cho level này từ trước (mọi
-// lần: đầu tiên/retest/ôn tập) - server dùng để tránh sinh lại ý đã dùng.
+// recognitionHistory: câu đã sinh cho level này từ trước, server dùng để
+// tránh lặp ý.
 function gestureBeginRecognition(sessionId, recognitionHistory = []) {
   return aiRequest('/api/chat/begin-recognition', {
     session_id: sessionId,
@@ -124,8 +119,7 @@ function gestureSubmitRemediationOpenEnded(sessionId, distinctionAnswer, applica
   });
 }
 
-// Trang Analysis - 1 lời gọi AI duy nhất mỗi khi có dữ liệu mới, KHÔNG qua
-// session (xem server/main.py: /api/analysis/generate không đụng session_store).
+// Trang Analysis - lời gọi AI độc lập, không qua session_store.
 function gestureGenerateAnalysis(groups) {
   return aiRequest('/api/analysis/generate', { groups });
 }

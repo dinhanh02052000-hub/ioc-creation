@@ -1,7 +1,6 @@
 // ==== HƯỚNG DẪN LÀM BÀI (nút góc trên-trái world1.html / world2.html) ====
-// Nội dung tĩnh, giống hệt trên cả 2 world - chỉ hiển thị hướng dẫn cách làm
-// 2 câu hỏi mở (Distinction/Phân biệt và Application/Vận dụng), không liên
-// quan tới dữ liệu level nên không cần tham số worldId.
+// Nội dung tĩnh, giống hệt trên cả 2 world - hướng dẫn cách làm 2 câu hỏi mở
+// (Distinction và Application), không phụ thuộc worldId.
 
 function initGradingGuide() {
   const btn = document.createElement('button');

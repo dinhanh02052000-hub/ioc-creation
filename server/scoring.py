@@ -1,7 +1,6 @@
-"""Công thức tính điểm / PASS-RETRY / phát hiện illusion — chuyển nguyên văn từ
-score_model, understanding_classification, illusion_detection, passing_rules,
-weakness_detection trong ioc database.json sang code. Đây là logic xác định
-kết quả cuối cùng nên KHÔNG được để AI tự quyết, luôn tính bằng code thuần."""
+"""Công thức tính điểm, phân loại PASS/RETRY và phát hiện illusion. Đây là
+logic xác định kết quả cuối cùng nên luôn tính bằng code thuần, không để AI
+tự quyết."""
 
 
 def calc_recognition(correct_answers: int, total: int = 20) -> float:
@@ -35,11 +34,10 @@ def classify_illusion(gap: float) -> str:
 
 
 def determine_pass(overall: float, gap: float) -> str:
-    """PASS khi Overall >= 7.0 VÀ |gap| <= 1.0 (dùng trị tuyệt đối cho điều
-    kiện PASS - lệch quá 1.0 theo hướng nào cũng không đạt). classify_illusion()
-    ở trên mới dùng dấu +/- của gap để phân biệt DETECTED (quá tự tin) với
-    UNDERCONFIDENT (thiếu tự tin) cho mục đích HIỂN THỊ, không ảnh hưởng công
-    thức PASS này."""
+    """PASS khi Overall >= 7.0 và |gap| <= 1.0 (lệch quá 1.0 theo hướng nào cũng
+    không đạt). classify_illusion() dùng dấu +/- của gap để phân biệt
+    DETECTED/UNDERCONFIDENT chỉ cho mục đích hiển thị, không ảnh hưởng đến
+    điều kiện PASS này."""
     return "PASS" if overall >= 7.0 and abs(gap) <= 1.0 else "RETRY"
 
 

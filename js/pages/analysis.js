@@ -1,9 +1,6 @@
-// ==== TRANG ANALYSIS ====
-// Ô 1 (điểm trung bình + trạng thái năng lực) tính THUẦN CLIENT-SIDE từ dữ
-// liệu đã lưu (course-progress.js), không cần AI. Ô 2/3/4 gọi AI (server/
-// analysis_prompts.py) - CHỈ gọi khi người dùng mở trang này (không chạy nền
-// liên tục), và tự cache theo "chữ ký" dữ liệu đầu vào nên nếu chưa có level
-// nào mới hoàn thành thì không gọi lại API vô ích.
+// Ô 1 tính thuần client-side từ dữ liệu đã lưu, không cần AI. Ô 2/3/4 gọi AI
+// (server/analysis_prompts.py) khi mở trang, kết quả cache theo "chữ ký" dữ
+// liệu đầu vào để tránh gọi lại API khi chưa có level nào mới hoàn thành.
 
 const ANALYSIS_CACHE_KEY = 'ioc_analysis_cache'; // { signature, result: {weak_patterns, improvement_tips, encouragement} }
 const ANALYSIS_ILLUSION_META = {

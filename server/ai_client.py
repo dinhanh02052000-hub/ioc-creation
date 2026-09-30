@@ -1,6 +1,4 @@
-"""Bọc lại lời gọi OpenAI Responses API (client.responses.create) theo đúng
-mẫu code bạn cung cấp. Interface ask(prompt) -> str giữ nguyên như module cũ
-(gemini_client.py) nên main.py không cần sửa gì ngoài dòng import."""
+"""Wrapper gọi OpenAI Responses API. Interface chính: ask(prompt) -> str."""
 
 import os
 
@@ -28,15 +26,13 @@ def get_client():
 
 
 def ask(prompt: str, reasoning_effort: str = "low", model: str | None = None) -> str:
-    """reasoning_effort: 'none'|'low'|'medium'|'high'|'xhigh'|'max'. Model này có
-    reasoning token ẨN tính vào output (thấy rõ qua usage.output_tokens_details.
-    reasoning_tokens), dao động rất mạnh (vd 38 token cho việc đơn giản, hàng
-    nghìn token cho việc có nhiều ràng buộc như sinh 20 MCQ) nếu để mặc định.
-    'low' đủ để tuân thủ rule nhiều ràng buộc mà không suy luận tràn lan.
+    """reasoning_effort: 'none'|'low'|'medium'|'high'|'xhigh'|'max'. Model có
+    reasoning token ẩn tính vào output, dao động rất mạnh nếu để mặc định
+    (có thể tốn hàng nghìn token dù việc đơn giản); 'low' đủ để tuân thủ
+    rule nhiều ràng buộc mà không suy luận tràn lan.
 
-    model: override model mặc định (OPENAI_MODEL) cho riêng lượt gọi này - dùng
-    cho pipeline xác định đáp án (answer generation/verification) vốn cần model
-    mạnh hơn, ưu tiên độ chính xác hơn chi phí (xem OPENAI_ANSWER_MODEL)."""
+    model: override OPENAI_MODEL cho riêng lượt gọi này, dùng khi cần độ
+    chính xác cao hơn chi phí (vd xác định đáp án, xem OPENAI_ANSWER_MODEL)."""
     client = get_client()
     model = model or os.environ.get("OPENAI_MODEL", "gpt-5.6")
     try:

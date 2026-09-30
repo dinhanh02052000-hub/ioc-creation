@@ -1,8 +1,7 @@
 // ==== TỔNG THỜI GIAN HỌC ====
-// Thay cho tính năng Streak (đã bỏ) - chỉ còn đếm tổng thời gian học vĩnh
-// viễn, hiển thị ở trang Profile. KHÔNG reset theo ngày, chỉ mất khi đăng
-// xuất hoặc xoá tài khoản (clearAllLocalProgressData() ở auth.js quét mọi
-// key "ioc_*", key này cũng nằm trong đó nên tự động được xử lý đúng).
+// Đếm tổng thời gian học vĩnh viễn, hiển thị ở trang Profile. Không reset
+// theo ngày, chỉ mất khi đăng xuất/xoá tài khoản (nhờ prefix "ioc_" được
+// clearAllLocalProgressData() ở auth.js quét chung).
 
 const TOTAL_PLAYTIME_KEY = 'ioc_total_playtime_seconds';
 
@@ -26,7 +25,7 @@ function addTotalPlaytimeSeconds(deltaSeconds) {
   }
 }
 
-// Đơn vị GIỜ (số thập phân, vd "2.3h") cho tổng thời gian học.
+// Chỉ hiển thị giờ dạng thập phân (vd "2.3h"), không tách phút.
 function formatHoursMinutes(totalSeconds) {
   const safeSeconds = Math.max(0, totalSeconds);
   const hours = safeSeconds / 3600;

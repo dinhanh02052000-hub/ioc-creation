@@ -3,9 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (root) {
     root.innerHTML = App();
 
-    // Quay lại từ world1.html/world2.html sẽ có ?page=course -> mở đúng tab
-    // Course thay vì luôn mặc định về Home. ?page=profile dùng khi lỗi AI
-    // (chưa đăng nhập/hết key) điều hướng người dùng thẳng tới trang tài khoản.
+    // ?page=<tab> cho phép mở thẳng đúng tab (vd. quay lại từ world1/world2.html
+    // về Course, hoặc điều hướng tới Profile khi AI báo lỗi chưa đăng nhập/hết key).
     const params = new URLSearchParams(window.location.search);
     const validTargets = new Set(['home', 'course', 'analysis', 'profile']);
     const requestedTarget = params.get('page');
@@ -20,13 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initInteractions();
 
-    // Khởi động bộ đếm tổng thời gian học toàn cục khi app load (chạy trên
-    // tất cả trang, không dừng khi chuyển tab).
+    // Bộ đếm thời gian học chạy toàn cục, không dừng khi chuyển tab.
     if (typeof startPlaytimeTimer === 'function') {
       startPlaytimeTimer();
     }
 
-    // Cập nhật số key hiển thị ở góc trên-phải header (guest luôn thấy 000).
     if (typeof initHeaderKeyBadge === 'function') {
       initHeaderKeyBadge();
     }
@@ -82,13 +79,10 @@ function initInteractions() {
   initKeyShopWidget();
 }
 
-// Modal "Key Shop" mở từ nút "+" cạnh số key ở header. Bấm "Thanh toán" giờ
-// tạo 1 giao dịch thật (QR VietQR + mã tham chiếu), rồi POLL trạng thái mỗi
-// 3s cho tới khi webhook SePay xác nhận đã có tiền vào (xem server/main.py:
-// /api/keys/create-payment, /api/keys/payment-status, /api/webhooks/sepay).
-// purchase_count lưu ở SERVER (gắn tài khoản Google, xem server/db.py) -
-// luôn lấy mới từ /api/auth/me hoặc từ response payment-status.
-// KEY_SHOP_PACKAGES/renderKeyShopPackages() định nghĩa ở js/core/App.js.
+// Thanh toán tạo giao dịch VietQR thật (mã tham chiếu + QR), sau đó poll
+// /api/keys/payment-status mỗi 3s tới khi webhook SePay xác nhận tiền vào.
+// purchase_count là nguồn sự thật phía server, luôn lấy lại từ /api/auth/me
+// hoặc response payment-status thay vì tự tăng ở client.
 function initKeyShopWidget() {
   const openBtn = document.getElementById('key-topup-btn');
   const overlay = document.getElementById('key-shop-overlay');
@@ -111,12 +105,8 @@ function initKeyShopWidget() {
   let pollFailCount = 0;
   let countdownTimer = null;
 
-  // Đếm ngược tới payment.expires_at (mốc THỜI GIAN TUYỆT ĐỐI do server tính
-  // sẵn, xem server/main.py: create_payment) - mỗi lần "tick" tự tính lại
-  // (mốc hết hạn - thời gian hiện tại), KHÔNG trừ dần 1 biến đếm. Nhờ vậy dù
-  // tab bị ẩn/throttle (trình duyệt tạm ngưng setInterval khi không active)
-  // thì lúc quay lại tab vẫn hiện đúng số giây thực còn lại, không bị lệch/
-  // chạy chậm hơn thực tế.
+  // Tính lại (expires_at - now) mỗi tick thay vì trừ dần một biến đếm, để
+  // giá trị luôn đúng kể cả khi tab bị ẩn/throttle giữa chừng.
   const startCountdown = (expiresAtIso) => {
     if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
     const expiresAtMs = new Date(expiresAtIso).getTime();
@@ -136,8 +126,7 @@ function initKeyShopWidget() {
     countdownTimer = setInterval(tick, 1000);
   };
 
-  // Mọi lối thoát (nút Huỷ, nút ✕, bấm ra ngoài) đều gọi chung 1 hàm dừng
-  // poll DUY NHẤT ở đây - không lặp lại clearInterval ở từng nơi, tránh sót.
+  // Điểm dừng poll duy nhất, dùng chung cho mọi lối thoát (Huỷ, ✕, click ra ngoài).
   const stopPolling = () => {
     if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
     if (pollGiveUpTimer) { clearTimeout(pollGiveUpTimer); pollGiveUpTimer = null; }
@@ -151,9 +140,8 @@ function initKeyShopWidget() {
     packageView.hidden = false;
   };
 
-  // Đạt mốc 10/20/50 làm TẤT CẢ các gói đổi lượng key được cộng (không chỉ
-  // gói vừa mua) - nên mỗi lần vẽ lại phải dùng purchase_count MỚI NHẤT rồi
-  // gắn lại listener, thay vì chỉ sửa mỗi gói vừa bấm.
+  // Mốc 10/20/50 đổi bonus của TẤT CẢ các gói, không riêng gói vừa mua,
+  // nên phải vẽ lại toàn bộ danh sách với purchase_count mới nhất.
   const renderWithCount = (purchaseCount) => {
     if (countEl) countEl.textContent = String(purchaseCount);
     packagesContainer.innerHTML = renderKeyShopPackages(purchaseCount);
@@ -175,9 +163,7 @@ function initKeyShopWidget() {
             showPackageView();
           }, 1200);
         } else if (status.status === 'expired') {
-          // Mã hết hạn sau vài phút không thấy tiền vào (xem server/db.py:
-          // PENDING_PAYMENT_TTL_MINUTES) - không tự cộng key được nữa cho mã
-          // này, phải bấm "Thanh toán" lại để lấy mã mới.
+          // Mã đã hết hạn thì không thể cộng key cho nó nữa, cần lấy mã mới.
           stopPolling();
           if (paymentStatusEl) {
             paymentStatusEl.textContent = 'Mã thanh toán đã hết hạn do quá lâu chưa thấy tiền vào. Vui lòng quay lại và bấm "Thanh toán" để lấy mã mới.';
@@ -193,11 +179,8 @@ function initKeyShopWidget() {
       }
     };
     pollTimer = setInterval(poll, 3000);
-    // Lưới an toàn dự phòng - bình thường nhánh 'expired' ở trên đã tự dừng
-    // poll trong vòng PENDING_PAYMENT_TTL_MINUTES (server/db.py, hiện 3 phút)
-    // + tối đa 3s trễ do chu kỳ poll. Timer này chỉ chạy nếu vì lý do gì đó
-    // (mất mạng, lỗi request) mà không nhận được trạng thái 'expired' đúng
-    // lúc - đặt hơi dài hơn TTL server 1 chút để không bao giờ chặn trước.
+    // Lưới an toàn dự phòng nếu vì lý do nào đó (mất mạng, lỗi request)
+    // không nhận được trạng thái 'expired' đúng lúc từ server.
     pollGiveUpTimer = setTimeout(() => {
       stopPolling();
       if (paymentStatusEl) {
@@ -222,8 +205,7 @@ function initKeyShopWidget() {
     startPolling(payment.reference_code);
   };
 
-  // VietQR (dịch vụ ảnh bên ngoài) lỗi/timeout thì vẫn cho người dùng chuyển
-  // khoản thủ công bằng tay thay vì kẹt cứng không thanh toán được.
+  // Ảnh QR do dịch vụ ngoài render, lỗi/timeout vẫn phải có lối chuyển khoản thủ công.
   if (qrImg) {
     qrImg.addEventListener('error', () => {
       qrImg.hidden = true;
@@ -293,7 +275,6 @@ function initKeyShopWidget() {
   attachPayHandlers();
 }
 
-// Nút góp ý nổi, hiển thị xuyên suốt mọi trang (không phụ thuộc trang đang xem).
 function initFeedbackWidget() {
   const fab = document.getElementById('feedback-fab');
   const panel = document.getElementById('feedback-panel');
@@ -340,9 +321,8 @@ function initFeedbackWidget() {
       return;
     }
 
-    // Lưu thẳng vào DB qua API thay vì mailto: - mailto chỉ mở sẵn 1 email
-    // nháp, KHÔNG tự gửi, nên im lặng không có gì xảy ra nếu máy người dùng
-    // chưa cấu hình ứng dụng mail mặc định (đây là lý do feedback "biến mất").
+    // Gửi thẳng qua API thay vì mailto: - mailto chỉ mở email nháp chứ không
+    // tự gửi, dễ khiến feedback "biến mất" nếu máy chưa cấu hình mail mặc định.
     submitBtn.disabled = true;
     const originalLabel = submitBtn.textContent;
     submitBtn.textContent = 'Đang gửi...';

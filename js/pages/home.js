@@ -3,10 +3,9 @@ const DEFAULT_USER_NAME = 'Guest';
 
 function getUserName() {
   try {
-    // Lưu ý: PHẢI JSON.parse vì mọi key "ioc_*" được đồng bộ lên server đều
-    // giả định giá trị là JSON hợp lệ (xem collectLocalProgressData ở
-    // auth.js) - lưu chuỗi thô sẽ khiến JSON.parse ở đó lỗi và bị âm thầm bỏ
-    // qua, tên đặt sẽ không bao giờ đồng bộ được (đây từng là 1 lỗi thật).
+    // PHẢI JSON.parse: mọi key "ioc_*" được đồng bộ lên server giả định giá
+    // trị là JSON hợp lệ (xem collectLocalProgressData ở auth.js). Lưu chuỗi
+    // thô sẽ khiến parse ở đó lỗi và tên đặt không bao giờ đồng bộ được.
     const saved = JSON.parse(localStorage.getItem(USER_NAME_KEY));
     return typeof saved === 'string' && saved.trim() ? saved.trim() : DEFAULT_USER_NAME;
   } catch (e) {
@@ -23,8 +22,8 @@ function setUserName(name) {
   }
 }
 
-// Ảnh mặc định khi chưa đăng nhập (hoặc ảnh Google bị lỗi) - vẽ trực tiếp
-// bằng SVG (data URI) thay vì dùng file ảnh, luôn có sẵn không cần tải.
+// Vẽ SVG trực tiếp dưới dạng data URI thay vì dùng file ảnh nên luôn có sẵn,
+// không cần tải mạng.
 function getDefaultAvatarDataUri() {
   const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">'
     + '<circle cx="20" cy="20" r="20" fill="#1c2129"/>'
@@ -34,8 +33,6 @@ function getDefaultAvatarDataUri() {
   return `data:image/svg+xml,${encodeURIComponent(svg)}`;
 }
 
-// Ảnh Google của tài khoản đang đăng nhập (lấy mới mỗi lần đăng nhập, không
-// có ảnh riêng nào để tự đặt) - chưa đăng nhập thì dùng ảnh mặc định.
 function getEffectiveAvatarUrl() {
   if (typeof getAuthSession === 'function') {
     const session = getAuthSession();
@@ -52,9 +49,8 @@ function getDayOfYear() {
   return Math.floor(diff / oneDay);
 }
 
-// Ngày (theo giờ local) mà renderHome() đã dùng để chọn quote/tip lần gần nhất.
-// Dùng để phát hiện đã sang ngày mới khi trang Home vẫn đang mở (xem
-// refreshDailyContentIfDateChanged bên dưới).
+// Ngày (giờ local) dùng để chọn quote/tip lần gần nhất, để phát hiện sang
+// ngày mới khi trang Home vẫn đang mở.
 let homeRenderedDate = null;
 let homeDailyCheckIntervalId = null;
 
@@ -74,7 +70,7 @@ function renderHome() {
 
   return `
     <div class="home-dashboard">
-      <!-- Cột trái: mascot IOC (thay cho Streak đã bỏ) -->
+      <!-- Cột trái: mascot IOC -->
       <div class="left-column">
         <div class="card mascot-card">
           <div class="card-header">
@@ -122,7 +118,7 @@ function renderHome() {
         </div>
       </div>
 
-      <!-- Cột giữa: Quote & Tip tự động thay đổi theo ngày -->
+      <!-- Cột giữa: Quote & Tip -->
       <div class="middle-column">
         <div class="card quote-card">
           <div class="card-header">
@@ -214,10 +210,8 @@ function renderHome() {
   `;
 }
 
-// Gắn các sự kiện tương tác cho trang Home. Gọi hàm này SAU KHI renderHome()
-// đã được chèn vào DOM (main.js gọi hàm này trong loadContent()).
+// Phải gọi sau khi renderHome() đã chèn nội dung vào DOM.
 function initHomeInteractions() {
-  // --- Cho phép đổi tên hiển thị ở "WELCOME BACK" ---
   const nameDisplay = document.getElementById('user-name-display');
   const editBtn = document.getElementById('edit-name-btn');
 
@@ -245,8 +239,7 @@ function initHomeInteractions() {
     });
   }
 
-  // --- Ảnh đại diện: lấy trực tiếp ảnh Google của tài khoản đang đăng nhập,
-  // không có ảnh riêng thì hiện ảnh mặc định (không cho tự đặt link nữa). ---
+  // Dùng ảnh Google của tài khoản đang đăng nhập, mặc định nếu chưa đăng nhập.
   const avatarImg = document.getElementById('welcome-avatar-img');
   if (avatarImg) {
     avatarImg.src = getEffectiveAvatarUrl();
@@ -255,14 +248,11 @@ function initHomeInteractions() {
     });
   }
 
-  // --- Theo dõi để quote/tip tự cập nhật khi sang ngày mới mà trang Home
-  // vẫn đang mở (không cần bấm chuyển tab hoặc F5) ---
   startHomeDailyRefreshWatcher();
 }
 
-// Nếu ngày hiện tại (giờ local) khác với ngày lúc renderHome() chạy lần cuối,
-// nghĩa là đã qua 0h -> cập nhật lại quote/tip trên DOM mà không render lại
-// cả trang (tránh mất trạng thái đang sửa tên hiển thị).
+// Cập nhật quote/tip trực tiếp trên DOM thay vì render lại cả trang, để không
+// mất trạng thái đang sửa tên hiển thị.
 function refreshDailyContentIfDateChanged() {
   if (typeof getTodayDateString !== 'function') return;
   const today = getTodayDateString();

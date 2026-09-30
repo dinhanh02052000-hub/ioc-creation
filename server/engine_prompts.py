@@ -1,17 +1,13 @@
 """Xây prompt cho từng bước AI.
 
-Bản đầu gửi nguyên JSON rule (database/engine/*.json, đã xoá - xem lịch sử
-git nếu cần) vào mỗi lượt -> có lượt tốn tới ~18K token. Bản nén quá tay sau
-đó (~5K token) lại làm nội dung sơ sài (thiếu ví dụ, câu hỏi rập khuôn, giải
-thích cụt lủn). Bản này cân bằng lại: mục tiêu ~6000-7000 token/lượt, ưu tiên
-chất lượng nội dung (đa dạng chủ đề, giải thích đầy đủ) hơn là ép sát 1 con
-số token cứng nhắc.
+Mục tiêu ~6000-7000 token/lượt, ưu tiên chất lượng nội dung (đa dạng chủ đề,
+giải thích đầy đủ) hơn là ép sát 1 con số token cứng nhắc.
 
-Hệ thống chống lặp câu hỏi (field database + logic database, xem README ở
-cuối file) được thêm để giải quyết tình trạng AI sinh câu hỏi/ý tưởng lặp lại
-hoặc chỉ paraphrase sát nhau giữa các lần làm bài (lần đầu/retest/ôn tập) của
-CÙNG 1 level - lịch sử câu hỏi đã sinh được lưu vĩnh viễn phía client (xem
-js/features/question-history.js) và gửi kèm mỗi lần gọi sinh câu hỏi mới.
+Hệ thống chống lặp câu hỏi (field database + history block bên dưới) đảm bảo
+AI không sinh câu hỏi/ý tưởng trùng hoặc chỉ paraphrase sát nhau giữa các lần
+làm bài (lần đầu/retest/ôn tập) của cùng 1 level - lịch sử câu hỏi được lưu
+phía client (xem js/features/question-history.js) và gửi kèm mỗi lần gọi
+sinh câu hỏi mới.
 """
 
 import json
@@ -48,11 +44,9 @@ CORE_RULE = (
 )
 
 # ==== FIELD DATABASE ====
-# Kéo chủ đề ra khỏi vùng an toàn quen thuộc của model (campaign, học sinh,
-# radiation leak...) bằng cách gán CỐ ĐỊNH 1 lĩnh vực/câu thay vì chỉ "gợi ý"
-# rồi để AI tự xoay vòng (cách cũ hay bị lờ đi, sinh ra cụm câu tụ lại vài chủ
-# đề quen thuộc). Danh sách rộng, đa lĩnh vực để 20 câu/lượt trải thật đa dạng
-# chủ thể/đối tượng, không chỉ đổi từ vựng mà giữ nguyên bối cảnh.
+# Gán CỐ ĐỊNH 1 lĩnh vực/câu thay vì chỉ "gợi ý" rồi để AI tự xoay vòng - AI
+# có xu hướng lờ gợi ý và tụ lại vài chủ đề quen thuộc (campaign, học sinh...)
+# nếu không ép cứng.
 FIELD_DATABASE = [
     "Education & Learning", "Artificial Intelligence", "Technology & Innovation", "Social Media",
     "Digital Communication", "Privacy & Data", "Cybersecurity", "Robotics & Automation",
@@ -72,19 +66,14 @@ FIELD_DATABASE = [
 
 
 def _sample_domains(k: int) -> list[str]:
-    """Trả về LIST (không phải chuỗi đã join) để caller tự quyết định dùng làm
-    prose (", ".join(...)) hay gán 1:1 theo thứ tự (đủ đa dạng chắc chắn hơn
-    để AI tự xoay vòng)."""
+    """Trả về list (không join sẵn) để caller tự quyết định dùng làm prose
+    hay gán 1:1 theo thứ tự."""
     return random.sample(FIELD_DATABASE, min(k, len(FIELD_DATABASE)))
 
 
-# ==== LOGIC DATABASE (phần "tránh lặp") ====
-# Việc SO SÁNH câu mới với lịch sử (near-duplicate check bằng difflib) nằm ở
-# main.py (chạy code thuần, không tốn token) - hàm dưới đây chỉ lo phần build
-# PROMPT: nhét 1 đoạn "đã dùng rồi, đừng lặp" vào lời gọi sinh câu hỏi, để
-# chính AI né những ý đó ngay từ đầu thay vì phải sinh lại nhiều lần. History
-# truyền vào đây ĐÃ được main.py cắt bớt (chỉ N mục gần nhất) để đỡ tốn
-# token - phần so sánh triệt để (không giới hạn) vẫn nằm ở lớp code phía sau.
+# So sánh near-duplicate (difflib) nằm ở main.py; hàm này chỉ build đoạn
+# prompt "đã dùng rồi, đừng lặp" để AI tự né ngay từ đầu. History truyền vào
+# đã được main.py cắt bớt (N mục gần nhất) để đỡ tốn token.
 def _history_avoidance_block(history: list[str] | None, label: str) -> str:
     if not history:
         return ""
@@ -96,8 +85,7 @@ def _history_avoidance_block(history: list[str] | None, label: str) -> str:
     )
 
 
-# Câu mẫu bắt buộc (được phép diễn đạt lại) kết thúc mỗi tình huống Application
-# - xem open_ended_generation_task() và remediation_task().
+# Câu mẫu bắt buộc (được phép diễn đạt lại) kết thúc mỗi tình huống Application.
 APPLICATION_CLOSING_QUESTION_SAMPLE = (
     "In a full sentence, use one word from the group to describe/explain the situation, and explicate "
     "why it is the best choice over the others?"
@@ -131,9 +119,6 @@ def recognition_task(n: int, is_retry: bool = False, history: list[str] | None =
     else:
         coverage = "Mỗi câu chọn 4 trong các từ mục tiêu (1 đúng, 3 từ mục tiêu khác làm nhiễu), không dùng nhiễu ngoài."
 
-    # FIELD DATABASE: gán CỐ ĐỊNH 1 lĩnh vực/câu (20 lĩnh vực khác nhau, không
-    # để AI tự xoay vòng) - đảm bảo đa dạng chủ đề/đối tượng thật sự, không
-    # phụ thuộc AI có tuân thủ gợi ý hay không.
     domains = _sample_domains(20)
     domain_lines = "\n".join(f"Câu {i + 1}: {d}" for i, d in enumerate(domains))
 
@@ -202,32 +187,24 @@ def recognition_task(n: int, is_retry: bool = False, history: list[str] | None =
     )
 
 
-# ==== STRONG ANSWER PIPELINE (xác định + kiểm tra đáp án ĐỘC LẬP với generator) ====
-# Đã BỎ HẲN lớp kiểm tra "lặp Ý/LOGIC" bằng 1 lời gọi AI riêng (logic_duplicate
-# _check_task cũ) - dù rẻ (reasoning_effort=low) vẫn tốn thêm 1 lượt gọi/batch
-# và mỗi lần bị báo lặp lại phải huỷ sinh lại CẢ batch, quá chậm + tốn token so
-# với lợi ích. Thay vào đó dồn lực cho việc PHÒNG NGỪA ngay từ prompt sinh câu
-# (xem constraint (4) trong recognition_task và phần tương ứng trong
-# remediation_task bên dưới) - ép AI tự đa dạng hoá chủ đề + kiểu câu/cấu trúc
-# thật mạnh ngay từ đầu để không cần vòng kiểm tra riêng nữa. _find_duplicate/
-# difflib ở main.py (miễn phí) là tuyến phòng thủ DUY NHẤT còn lại, chỉ chặn
-# tuyệt đối 2 câu giống Y NGUYÊN.
-# Phần kiểm tra đáp án ở trên (chỉ hỏi "đáp án ĐÃ CHỌN có vẻ đúng không" - dễ thiên lệch vì đang xác
-# nhận lại chính lựa chọn của generator) - nay đã tách hẳn ra đây thành pipeline
-# riêng, mạnh hơn. 2 hàm dưới đây tạo thành 1 pipeline 2 lượt TÁCH BIỆT:
-# (1) 1 model KHÔNG được cho biết generator đã chọn gì, tự suy ra đáp án đúng
-# chỉ từ KB; (2) 1 lượt kiểm tra độc lập khác tự suy luận lại từ đầu rồi mới
-# đối chiếu với đáp án đề xuất ở bước (1) - xem server/main.py:
-# _determine_and_verify_answers() để biết cách 2 lượt này được nối với nhau và
-# cách code (không chỉ prompt) chặn việc validator "tin" mù quáng đáp án được
-# đưa vào.
+# ==== STRONG ANSWER PIPELINE (xác định + kiểm tra đáp án độc lập với generator) ====
+# Chống lặp ý/logic dựa vào việc ép đa dạng hoá ngay từ prompt sinh câu (xem
+# constraint (4) trong recognition_task), không dùng 1 lượt gọi AI riêng để
+# kiểm tra lặp - _find_duplicate/difflib ở main.py (miễn phí) là tuyến phòng
+# thủ còn lại, chỉ chặn 2 câu giống y nguyên.
+#
+# 2 hàm dưới đây tạo thành pipeline xác định đáp án 2 lượt tách biệt để tránh
+# thiên lệch do "tự xác nhận lại lựa chọn của chính generator":
+# (1) 1 model KHÔNG biết generator đã chọn gì, tự suy ra đáp án đúng chỉ từ
+# KB; (2) 1 lượt kiểm tra độc lập khác tự suy luận lại từ đầu rồi mới đối
+# chiếu với đề xuất ở bước (1). Xem server/main.py:
+# _determine_and_verify_answers() để biết cách nối 2 lượt và cách code chặn
+# validator "tin" mù quáng đáp án được đưa vào.
 def strong_answer_generation_task(items: list[dict], feedback: dict[int, str] | None = None) -> str:
     """items: [{"id":1,"sentence":"...","options":["optA","optB","optC","optD"]}, ...] -
-    CỐ Ý không kèm theo generator đã định chọn lựa chọn nào là đáp án đúng, để
-    lượt này phải tự suy ra hoàn toàn độc lập (nguyên tắc 2-model).
-    feedback: {id: lý do bị đánh giá SAI ở vòng trước} - chỉ có khi đây là vòng
-    sinh lại (regeneration) cho riêng những câu bị FAIL, giúp tránh lặp lại
-    đúng lỗi cũ thay vì đoán lại ngẫu nhiên."""
+    cố ý không kèm lựa chọn của generator, để lượt này tự suy ra độc lập.
+    feedback: {id: lý do bị đánh giá SAI ở vòng trước}, chỉ có khi đây là vòng
+    sinh lại cho riêng các câu FAIL."""
     lines = []
     for it in items:
         opts = "; ".join(f'{letter}) "{opt}"' for letter, opt in zip("ABCD", it["options"]))
@@ -254,8 +231,8 @@ def strong_answer_generation_task(items: list[dict], feedback: dict[int, str] | 
 
 def strong_answer_verification_task(items: list[dict]) -> str:
     """items: [{"id":1,"sentence":...,"options":[...],"proposed_letter":"B",
-    "evidence":...,"explanation":...}, ...] - lượt KIỂM TRA ĐỘC LẬP đáp án đề
-    xuất ở strong_answer_generation_task(), KHÔNG được mặc định tin là đúng."""
+    "evidence":...,"explanation":...}, ...] - kiểm tra độc lập đáp án đề xuất
+    ở strong_answer_generation_task(), không mặc định tin là đúng."""
     lines = []
     for it in items:
         opts = "; ".join(f'{letter}) "{opt}"' for letter, opt in zip("ABCD", it["options"]))
@@ -323,9 +300,9 @@ def remediation_task(
     distinction_history: list[str] | None = None,
     application_history: list[str] | None = None,
 ) -> str:
-    """Bộ ôn tập trọng tâm sau khi RETRY: phân tích lỗi sai của học sinh (từ hay
-    nhầm ở phần Nhận diện + nhận xét Phân biệt/Vận dụng lần trước) để sinh 1 bài
-    luyện tập nhỏ CHO CẢ 3 PHẦN trong 1 lời gọi AI duy nhất (đỡ tốn token)."""
+    """Bộ ôn tập trọng tâm sau khi retry: dựa vào lỗi sai của học sinh (từ hay
+    nhầm ở Nhận diện + nhận xét Phân biệt/Vận dụng lần trước) để sinh bài
+    luyện tập cho cả 3 phần trong 1 lời gọi AI duy nhất."""
     domains = _sample_domains(n_practice)
     domain_lines = "\n".join(f"Câu {i + 1}: {d}" for i, d in enumerate(domains))
     missed_block = missed_words_text or "(không có từ nào sai ở phần Nhận diện - lỗi chủ yếu ở phần Phân biệt/Vận dụng)"
@@ -376,14 +353,10 @@ def remediation_task(
     )
 
 
-# Hướng dẫn cấu trúc trả lời gắn CỐ ĐỊNH vào cuối câu hỏi hiển thị cho học
-# sinh (main.py nối vào sau khi nhận data["d"]/data["a"] từ AI, KHÔNG lưu vào
-# session["distinction_prompt"]/["application_prompt"] - context gửi cho
-# open_ended_grading_task giữ nguyên câu hỏi gốc, đỡ tốn token lặp lại).
-# Cố định (không để AI tự viết lại mỗi lần) để đảm bảo học sinh LUÔN thấy
-# đúng 1 cấu trúc nhất quán, không phụ thuộc AI có tuân thủ hay không.
-# LƯU Ý: hiện KHÔNG được tự động nối vào response nữa (đã tạm bỏ theo yêu cầu
-# trước đó để chờ làm 1 nút riêng ở UI) - vẫn giữ nguyên ở đây, chưa dùng tới.
+# Hướng dẫn cấu trúc trả lời cho học sinh, cố định (không để AI tự viết lại
+# mỗi lần) để đảm bảo cấu trúc nhất quán. Không lưu vào session - context gửi
+# cho open_ended_grading_task giữ nguyên câu hỏi gốc để đỡ tốn token lặp lại.
+# Hiện chưa được nối vào response nào; giữ lại để dùng cho 1 nút riêng ở UI.
 DISTINCTION_ANSWER_FORMAT = (
     "\n\n**Cách trả lời (viết đúng 3 phần theo thứ tự, được viết hoàn toàn bằng tiếng Việt hoặc tiếng Anh, kể "
     "cả câu ví dụ minh hoạ nếu có):**\n"

@@ -1,14 +1,9 @@
 // ==== NHẠC NỀN (xuyên suốt index.html, world1.html, world2.html) ====
-// Danh sách bản nhạc + chế độ "Mixed" (random) được chọn/chỉnh ở trang
-// Profile (index.html, xem js/pages/profile.js) - KHÔNG có nút bật/tắt nổi
-// trên trang theo yêu cầu trước đó. Vì đây là site nhiều trang tĩnh (chuyển
-// world1/world2 là tải lại toàn bộ trang, không phải SPA) nên KHÔNG THỂ giữ
-// tiếng nhạc liền mạch tuyệt đối qua các lần chuyển trang - mỗi trang tự
-// phát lại từ đầu bản nhạc đang chọn (hoặc random 1 bản khác nếu đang ở chế
-// độ Mixed). Trạng thái BẬT/TẮT + âm lượng + bản nhạc đang chọn lưu ở
-// localStorage nên xuyên suốt mọi trang không cần chỉnh lại. Trình duyệt
-// luôn chặn tự phát âm thanh khi trang vừa mở (chưa có tương tác) nên sẽ tự
-// phát ngay khi người dùng click/gõ phím lần đầu.
+// Site nhiều trang tĩnh (chuyển world1/world2 là tải lại toàn bộ trang,
+// không phải SPA) nên không thể giữ tiếng nhạc liền mạch qua các lần chuyển
+// trang - mỗi trang tự phát lại từ đầu theo lựa chọn lưu trong localStorage.
+// Trình duyệt chặn tự phát khi trang chưa có tương tác, nên phát bù ngay khi
+// người dùng click/gõ phím lần đầu.
 
 const BG_MUSIC_MUTE_KEY = 'bg_music_muted'; // sở thích riêng của trình duyệt - KHÔNG prefix "ioc_", không đồng bộ tài khoản
 const BG_MUSIC_VOLUME_KEY = 'bg_music_volume'; // 0..1
@@ -16,9 +11,8 @@ const BG_MUSIC_TRACK_KEY = 'bg_music_track_id'; // id trong BG_MUSIC_TRACKS, ho�
 const BG_MUSIC_DEFAULT_VOLUME = 0.35;
 const BG_MUSIC_MIXED_ID = 'mixed';
 
-// Danh sách bản nhạc nền thật - chọn ở trang Profile. "Mixed" không phải 1
-// file, mà là chế độ tự chọn ngẫu nhiên 1 bản khác mỗi khi bản hiện tại phát
-// hết (xem bgMusicHandleTrackEnded()).
+// "Mixed" không phải 1 file, mà là chế độ tự random bản khác mỗi khi bản
+// hiện tại phát hết (xem bgMusicHandleTrackEnded()).
 const BG_MUSIC_TRACKS = [
   { id: 'default', label: 'Chill mặc định', src: 'assets/audio/backgroundmusic.mp3', available: true },
   { id: 'am-beat', label: 'AM Beat - Martin', src: 'assets/audio/am-beat-martin.mp3', available: true },
@@ -93,9 +87,7 @@ function pickRandomTrack(excludeId) {
   return list[Math.floor(Math.random() * list.length)];
 }
 
-// Bản SẼ phát tiếp theo - nếu đang chọn 1 bản cụ thể thì luôn là bản đó, nếu
-// đang ở chế độ Mixed thì random 1 bản KHÁC bản vừa phát (đỡ lặp lại liên
-// tiếp cùng 1 bài).
+// Ở chế độ Mixed, loại trừ bản vừa phát để tránh lặp lại liên tiếp.
 function resolveTrackToPlay() {
   const selected = getSelectedTrackId();
   if (selected === BG_MUSIC_MIXED_ID) {
@@ -105,8 +97,7 @@ function resolveTrackToPlay() {
 }
 
 function bgMusicHandleTrackEnded() {
-  // Bản cụ thể (không phải Mixed) đã có audio.loop=true nên KHÔNG bao giờ
-  // bắn sự kiện 'ended' - hàm này chỉ thực sự chạy khi đang ở chế độ Mixed.
+  // audio.loop=true khi phát 1 bản cụ thể nên 'ended' chỉ bắn khi ở chế độ Mixed.
   bgMusicPlayResolvedTrack();
 }
 
@@ -126,9 +117,8 @@ function bgMusicPlayResolvedTrack() {
   audio.src = track.src;
   audio.loop = getSelectedTrackId() !== BG_MUSIC_MIXED_ID;
   audio.volume = getBgMusicVolume();
-  // play() trả về Promise, bị trình duyệt chặn (chưa có tương tác) sẽ
-  // reject - bỏ qua trong im lặng, initBgMusic() đã có fallback đợi click/
-  // phím đầu tiên để gọi lại.
+  // Bị trình duyệt chặn autoplay sẽ reject - bỏ qua, initBgMusic() đã có
+  // fallback đợi tương tác đầu tiên để gọi lại.
   audio.play().catch(() => {});
 }
 
@@ -146,8 +136,7 @@ function bgMusicStop() {
   if (bgMusicAudioEl) bgMusicAudioEl.pause();
 }
 
-// Gọi khi người dùng đổi lựa chọn bản nhạc/chế độ Mixed ở Profile - chuyển
-// NGAY sang bản mới thay vì đợi bản đang phát kết thúc.
+// Chuyển ngay sang bản mới thay vì đợi bản đang phát kết thúc.
 function bgMusicChangeTrack(id) {
   setSelectedTrackId(id);
   if (!isBgMusicMuted()) {

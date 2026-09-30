@@ -1,7 +1,5 @@
-// ==== COURSE / VOCABULARY JOURNEY ====
-// Danh sách "thế giới" từ vựng. Mỗi world có ảnh nền riêng, tổng số level,
-// và trang bản đồ riêng (world1.html/world2.html). Tiến trình học đọc/ghi qua
-// js/features/course-progress.js — dùng chung với chính các trang world đó.
+// Danh sách "thế giới" từ vựng dùng để render trang Course. Tiến trình đọc/ghi
+// qua js/features/course-progress.js, dùng chung với các trang world.
 
 const COURSE_WORLDS = [
   {

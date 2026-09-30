@@ -1,15 +1,11 @@
 // ==== LỊCH SỬ CÂU HỎI ĐÃ SINH (chống lặp giữa các lần làm) ====
-// Lưu VĨNH VIỄN theo (worldId, level) - không bị xoá khi rời level, "Chơi
-// lại từ đầu", hay pass/replay level đó (KHÔNG wire vào resetWorldProgress()
-// trong course-progress.js, cố tình). Chỉ mất khi đăng xuất (tạm, khôi phục
-// lại nếu đăng nhập đúng tài khoản đó) hoặc xoá tài khoản (vĩnh viễn) - tự
-// động nhờ prefix "ioc_" được auth.js quét chung, không cần thêm code riêng.
+// Lưu vĩnh viễn theo (worldId, level), cố tình KHÔNG wire vào
+// resetWorldProgress() - dữ liệu này không được xoá khi "Chơi lại từ đầu"
+// hay replay level.
 //
-// 3 bộ TÁCH RIÊNG (recognition/distinction/application) vì server dùng để
-// tránh lặp cho 3 LOẠI câu hỏi khác nhau. Bộ recognition dùng chung cho cả
-// lần đầu, retest, VÀ câu luyện tập ở phần ôn tập (remediation) - để 3 luồng
-// này không lặp ý của nhau. Cùng 1 pattern composite-key "worldId:level" như
-// ioc_ai_chat_progress ở course-progress.js.
+// 3 bộ tách riêng (recognition/distinction/application) vì server tránh lặp
+// theo từng loại câu hỏi. Bộ recognition dùng chung cho lần đầu, retest, và
+// remediation để 3 luồng đó không lặp ý của nhau.
 
 const RECOGNITION_HISTORY_KEY = 'ioc_recognition_history';
 const DISTINCTION_HISTORY_KEY = 'ioc_distinction_history';

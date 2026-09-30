@@ -1,7 +1,6 @@
 // ==== CHẾ ĐỘ SÁNG/TỐI ====
-// File này PHẢI load sớm trong <head> (trước khi render nội dung) và áp dụng
-// theme NGAY khi chạy (applyTheme(getTheme()) ở cuối file) để tránh hiện
-// tượng "chớp" sai theme lúc đầu (FOUC) - không đợi DOMContentLoaded.
+// Phải load sớm trong <head> và áp dụng theme ngay (applyTheme(getTheme())
+// ở cuối file), không đợi DOMContentLoaded, để tránh chớp sai theme (FOUC).
 
 const THEME_STORAGE_KEY = 'ui_theme'; // 'dark' | 'light' - sở thích riêng trình duyệt, không đồng bộ tài khoản
 

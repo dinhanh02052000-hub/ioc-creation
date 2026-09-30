@@ -1,6 +1,5 @@
-// Tuyết rơi nhẹ nhàng phía trên bản đồ World 2 (băng giá) - mật độ vừa phải,
-// tông trắng/xanh nhạt đồng bộ theme ice, không chặn click (pointer-events:
-// none ở CSS).
+// Tuyết rơi nhẹ trên bản đồ World 2 (theme ice). pointer-events: none ở CSS
+// nên không chặn click.
 (function () {
   function initSnow() {
     let canvas = document.getElementById('world2-particles-canvas');

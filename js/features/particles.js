@@ -1,7 +1,6 @@
-// Nền chuyển động nhẹ phía sau nội dung — chỉ để gợi không khí, mật độ thấp.
-// Dark mode: sao lấp lánh. Light mode: mây trôi dạt nhẹ nhàng. Tự đổi ngay
-// khi người dùng bấm nút Sáng/Tối ở trang Profile (đọc getTheme() mỗi khung
-// hình), không cần tải lại trang.
+// Nền chuyển động nhẹ phía sau nội dung. Dark mode: sao lấp lánh. Light mode:
+// mây trôi. Đọc getTheme() mỗi khung hình nên đổi ngay khi bấm Sáng/Tối, không
+// cần tải lại trang.
 (function () {
   function initParticles() {
     let canvas = document.getElementById('particles-canvas');
@@ -55,8 +54,7 @@
       });
     }
 
-    // ---- Light mode: mây trôi dạt (mỗi cụm mây = vài hình tròn chồng lên
-    // nhau tạo dáng bồng bềnh, thay vì 1 hình tròn đơn giản như sao) ----
+    // ---- Light mode: mây trôi dạt (mỗi cụm = vài hình tròn chồng lên nhau) ----
     const CLOUD_COUNT = 7;
     const CLOUD_PUFFS = [
       { dx: 0, dy: 0, r: 34 },
@@ -84,8 +82,7 @@
       return clouds;
     }
 
-    // Mặt trời buổi sáng mờ ảo, vẽ CỐ ĐỊNH góc trên - làm nền trước khi vẽ
-    // mây để mây trông như đang trôi trước mặt trời.
+    // Vẽ trước khi vẽ mây để mây trông như đang trôi trước mặt trời.
     function drawSun() {
       const sunX = width * 0.82;
       const sunY = height * 0.16;
@@ -116,8 +113,7 @@
 
         const bob = Math.sin(t * c.bobSpeed + c.bobPhase) * 6;
 
-        // Lớp bóng mờ (hơi lệch xuống-phải) tạo độ dày cho cụm mây trước khi
-        // phủ lớp trắng lên trên - nếu không mây sẽ trông phẳng như đốm tròn.
+        // Lớp bóng lệch dưới-phải trước khi phủ trắng lên, tạo độ dày cho mây.
         ctx.globalAlpha = c.baseAlpha * 0.35;
         ctx.fillStyle = '#c3d3e6';
         CLOUD_PUFFS.forEach(p => {
@@ -144,8 +140,7 @@
     function animate() {
       t += 1;
 
-      // Kiểm tra theme mỗi khung hình (hàm rẻ, không đáng lo hiệu năng) - đổi
-      // ngay lập tức nếu người dùng vừa bấm nút Sáng/Tối ở trang Profile.
+      // getTheme() rẻ nên kiểm tra mỗi khung hình để đổi theme ngay lập tức.
       const currentTheme = typeof getTheme === 'function' ? getTheme() : 'dark';
       if (currentTheme !== mode) {
         mode = currentTheme;

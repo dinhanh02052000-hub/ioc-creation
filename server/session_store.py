@@ -1,10 +1,8 @@
-"""Lưu session ngay trong RAM (dict) — đủ dùng cho demo 1 người dùng/1 máy.
-Nếu sau này cần nhiều người dùng cùng lúc thật, thay bằng DB (sqlite/redis)
-mà không phải sửa gì ở main.py, chỉ đổi implementation của module này.
+"""Lưu session trong RAM (dict) — phù hợp cho 1 tiến trình duy nhất; cần scale
+ra nhiều instance thì thay bằng DB (sqlite/redis) mà không cần sửa main.py.
 
-QUAN TRỌNG: secure_answer_key chỉ tồn tại ở đây, không bao giờ đi vào response
-trả cho frontend (xem main.py — mọi chỗ trả questions ra ngoài đều strip field
-này trước khi jsonify)."""
+QUAN TRỌNG: secure_answer_key chỉ tồn tại ở đây, không bao giờ trả ra frontend
+— main.py luôn strip field này trước khi trả questions ra ngoài."""
 
 import time
 import uuid
@@ -19,10 +17,10 @@ def create_session(world_id: str, level: int, is_retry: bool = False) -> dict[st
         "session_id": session_id,
         "world_id": world_id,
         "level": level,
-        "is_retry": is_retry,  # True nếu đây là lần retry
+        "is_retry": is_retry,
         "current_state": "IDLE",
-        "generated_questions": None,       # list câu hỏi đã gửi cho user (không có đáp án đúng)
-        "secure_answer_key": None,         # {question_id: correct_index} - KHÔNG trả ra ngoài
+        "generated_questions": None,  # không kèm đáp án đúng
+        "secure_answer_key": None,    # {question_id: correct_index} - KHÔNG trả ra ngoài
         "user_recognition_answers": None,
         "recognition": None,
         "accuracy": None,
@@ -34,9 +32,9 @@ def create_session(world_id: str, level: int, is_retry: bool = False) -> dict[st
         "overall": None,
         "gap": None,
         "final_result": None,
-        "wrong_questions": None,  # Lưu câu sai từ lần trước (dùng cho retest focused)
-        "d_scores": None,          # Điểm chi tiết từng tiêu chí Phân biệt (dùng phân tích ôn tập)
-        "a_scores": None,          # Điểm chi tiết từng tiêu chí Vận dụng (dùng phân tích ôn tập)
+        "wrong_questions": None,  # câu sai từ lần trước, dùng cho retest focused
+        "d_scores": None,         # điểm chi tiết từng tiêu chí Phân biệt, dùng cho phân tích ôn tập
+        "a_scores": None,         # điểm chi tiết từng tiêu chí Vận dụng, dùng cho phân tích ôn tập
         "distinction_feedback": None,
         "application_feedback": None,
         "weak_area": None,

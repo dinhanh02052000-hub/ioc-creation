@@ -1,17 +1,8 @@
-// ==== TRANG PROFILE ====
 // Không bắt buộc đăng nhập mới học được - đăng nhập chỉ để backup/đồng bộ
-// tiến độ (localStorage) lên server. Xem js/features/auth.js cho logic đăng
-// nhập + đồng bộ, js/features/playtime.js cho tổng thời gian học (timer chạy
-// toàn site, tự cập nhật #profile-total-playtime mỗi giây nếu đang mở trang
-// này), js/features/theme.js cho chế độ sáng/tối, js/features/bg-music.js
-// cho nhạc nền.
+// tiến độ lên server (xem js/features/auth.js).
 //
-// Gộp chung 1 ô "TÀI KHOẢN + CÀI ĐẶT" theo yêu cầu, dưới cùng là hàng Đăng
-// xuất + Xoá tài khoản (chỉ hiện khi đã đăng nhập).
-//
-// Tiểu sử ngắn do người học tự viết về bản thân - thay cho "Mục tiêu học mỗi
-// ngày" đã bỏ. Lưu debounce khi gõ (giống pattern chỉnh tên hiển thị ở Home),
-// đồng bộ tự động vì bắt đầu bằng "ioc_".
+// Key bắt đầu bằng "ioc_" nên tiểu sử tự động được đồng bộ cùng tiến độ khi
+// đăng nhập.
 const USER_BIO_KEY = 'ioc_user_bio';
 const USER_BIO_MAX_LENGTH = 200;
 
@@ -103,7 +94,7 @@ function renderProfile() {
   `;
 }
 
-// ---------- Tài khoản (avatar/tên/email/tổng thời gian/level/daily goal) ----------
+// ---------- Tài khoản ----------
 
 function profileTotalCompletedLevels() {
   if (typeof getWorldCompletedLevels !== 'function' || typeof COURSE_WORLDS === 'undefined') {
@@ -187,9 +178,8 @@ function renderAuthWidget() {
     initGoogleAuth('google-signin-btn');
   }
 
-  // Tiểu sử: gán qua .value (không chèn thẳng vào chuỗi HTML) để nội dung
-  // người dùng tự viết không thể phá cấu trúc HTML. Lưu debounce khi gõ,
-  // giống pattern đổi tên hiển thị ở Home.
+  // Gán qua .value thay vì chèn vào chuỗi HTML để nội dung người dùng tự viết
+  // không thể phá cấu trúc HTML.
   const bioInput = document.getElementById('profile-bio-input');
   const bioCount = document.getElementById('profile-bio-count');
   if (bioInput) {
@@ -208,8 +198,7 @@ function renderAuthWidget() {
     });
   }
 
-  // Cập nhật tổng thời gian học ngay lần đầu (không đợi tick tiếp theo của
-  // interval nền - xem js/features/playtime.js).
+  // Cập nhật ngay, không đợi tick tiếp theo của interval nền.
   if (typeof updatePlaytimeUI === 'function') updatePlaytimeUI();
 
   if (dangerZone) dangerZone.hidden = !session;
@@ -222,7 +211,7 @@ function renderAuthError(message) {
   area.textContent = message || 'Đăng nhập thất bại, thử lại sau.';
 }
 
-// ---------- Cài đặt (theme + nhạc nền + hiệu ứng âm thanh) ----------
+// ---------- Cài đặt ----------
 
 function profileUpdateThemeButton(btn) {
   const current = typeof getTheme === 'function' ? getTheme() : 'dark';
@@ -290,7 +279,7 @@ function initProfileSettings() {
     });
   }
 
-  // ---- Hiệu ứng âm thanh (xem js/features/sound-effects.js) ----
+  // ---- Hiệu ứng âm thanh ----
   const sfxBtn = document.getElementById('sfx-mute-toggle');
   if (sfxBtn) {
     profileUpdateSfxToggleButton(sfxBtn);
@@ -334,8 +323,8 @@ function initProfileSettings() {
 function initProfileDangerZone() {
   const logoutBtn = document.getElementById('auth-logout-btn');
   if (logoutBtn) {
-    // authSignOut() tự reload trang sau khi xoá session + tiến độ cục bộ
-    // (xem js/features/auth.js) nên không cần vẽ lại widget ở đây nữa.
+    // authSignOut() tự reload trang sau khi xoá session, nên không cần vẽ
+    // lại widget ở đây.
     logoutBtn.addEventListener('click', () => {
       if (typeof authSignOut === 'function') authSignOut();
     });

@@ -1,8 +1,5 @@
-// Bảng giá Key Shop + bonus theo mốc số lần đã mua (purchase count) - xem
-// giải thích mốc ở getKeyShopBonusForCount(). purchase_count giờ lưu ở server
-// (gắn với tài khoản Google, xem server/db.py) - PHẢI khớp CHÍNH XÁC với bảng
-// _KEY_SHOP_PACKAGES ở server/main.py (server tự tính lại bonus khi mua, chỉ
-// dùng bảng này để hiển thị đúng con số trước khi bấm mua).
+// Phải khớp chính xác với _KEY_SHOP_PACKAGES ở server/main.py, vốn là nguồn
+// tính bonus thật khi mua - bảng này chỉ dùng để hiển thị trước khi bấm mua.
 const KEY_SHOP_PACKAGES = [
   { label: 'Gói nhỏ', price: '10.000 VNĐ', keys: 10, bonus10: 1, bonus20: 1, bonus50: 1 },
   { label: 'Gói vừa', price: '20.000 VNĐ', keys: 25, bonus10: 1, bonus20: 2, bonus50: 2 },
@@ -12,8 +9,7 @@ const KEY_SHOP_PACKAGES = [
   { label: 'Gói 500', price: '250.000 VNĐ', keys: 500, bonus10: 10, bonus20: 20, bonus50: 30 },
 ];
 
-// Mốc ≥50 > ≥20 > ≥10 - đạt mốc nào cao nhất thì dùng bonus của mốc đó (KHÔNG
-// cộng dồn cả 3 mốc lại với nhau).
+// Dùng bonus của mốc cao nhất đạt được, không cộng dồn các mốc.
 function getKeyShopBonusForCount(pkg, purchaseCount) {
   if (purchaseCount >= 50) return pkg.bonus50;
   if (purchaseCount >= 20) return pkg.bonus20;
@@ -25,10 +21,8 @@ function getKeyShopEffectiveAmount(pkg, purchaseCount) {
   return pkg.keys + getKeyShopBonusForCount(pkg, purchaseCount);
 }
 
-// purchaseCount: lấy từ /api/auth/me (field purchase_count) - main.js truyền
-// vào mỗi khi mở Key Shop hoặc sau khi mua thành công. Mặc định 0 cho lần vẽ
-// tĩnh đầu tiên lúc App() khởi tạo (modal đang ẩn, main.js sẽ vẽ lại đúng số
-// thật ngay khi mở).
+// Mặc định 0 chỉ dùng cho lần vẽ tĩnh lúc App() khởi tạo (modal đang ẩn);
+// main.js sẽ vẽ lại với purchase_count thật ngay khi mở Key Shop.
 function renderKeyShopPackages(purchaseCount = 0) {
   return KEY_SHOP_PACKAGES.map(p => `
     <div class="key-shop-package">
@@ -75,8 +69,7 @@ function App() {
           </button>
         </nav>
       </header>
-      
-      <!-- Khu vực hiển thị nội dung động -->
+
       <main id="main-content" class="content-area"></main>
     </div>
 

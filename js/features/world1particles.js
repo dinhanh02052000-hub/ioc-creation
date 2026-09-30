@@ -1,7 +1,5 @@
-// Lá rơi nhẹ nhàng phía trên bản đồ World 1 (rừng huyền bí) - mật độ thấp,
-// tông xanh lá/nâu/vàng đồng bộ theme forest, không chặn click (pointer-events:
-// none ở CSS), tự dừng vẽ khi canvas không còn trên trang (world2 không load
-// file này nên không xung đột).
+// Lá rơi nhẹ trên bản đồ World 1 (theme forest). pointer-events: none ở CSS
+// nên không chặn click; animate() tự dừng khi canvas bị gỡ khỏi trang.
 (function () {
   function initLeaves() {
     let canvas = document.getElementById('world1-particles-canvas');

@@ -1,28 +1,22 @@
 """Backend cho tính năng chat AI của World Map.
 
-Luồng 1 lượt học (happy path, xem lại session_state trong session_store.py):
+Luồng 1 lượt học (xem session_state trong session_store.py):
   /start -> dạy nội dung (AI)
-  /begin-recognition -> sinh 20 MCQ (AI, JSON có đáp án - giữ ở server)
-  /submit-recognition -> chấm 20 câu (code, không AI) + sinh correction (AI)
+  /begin-recognition -> sinh 20 MCQ (AI, đáp án giữ ở server)
+  /submit-recognition -> chấm (code) + sinh correction (AI)
   /submit-confidence -> lưu điểm tự tin + sinh 2 câu hỏi mở (AI)
-  /submit-open-ended -> chấm 2 câu mở theo rubric chi tiết (AI) + tính
-                         Overall/Gap/PASS-RETRY (code)
+  /submit-open-ended -> chấm theo rubric (AI) + tính Overall/Gap/PASS-RETRY (code)
 
-Nếu RETRY, luôn trả về đầy đủ điểm + trạng thái illusion như PASS (yêu cầu
-luôn hiển thị dù pass hay không). Từ RETRY, frontend có thể gọi thêm luồng
-ôn tập trọng tâm (remediation), phân tích lỗi sai để luyện tập cả 3 phần
-trước khi retest:
-  /begin-remediation -> phân tích wrong_questions + điểm yếu -> sinh recap +
-                         bộ MCQ luyện tập nhỏ + 1 câu Distinction + 1 câu
-                         Application luyện tập (AI, 1 lời gọi)
-  /submit-remediation-mcq -> chấm MCQ luyện tập (code) + sinh correction (AI)
-  /submit-remediation-open-ended -> chấm 2 câu mở luyện tập (AI, chỉ để tham
-                         khảo, không tính vào kết quả chính thức)
-Sau đó /begin-recognition được gọi lại (retest đầy đủ 20 MCQ + 2 câu mở) -
-nếu vẫn RETRY, chu kỳ ôn tập -> retest lặp lại cho tới khi PASS.
+Nếu RETRY, trả đầy đủ điểm + trạng thái illusion như khi PASS. Frontend có thể
+gọi thêm luồng ôn tập trọng tâm trước khi retest:
+  /begin-remediation -> phân tích lỗi sai -> sinh recap + MCQ luyện tập + 1 câu
+                         Distinction + 1 câu Application luyện tập (AI)
+  /submit-remediation-mcq -> chấm (code) + sinh correction (AI)
+  /submit-remediation-open-ended -> chấm luyện tập (AI, chỉ để tham khảo)
+Sau đó /begin-recognition retest lại đầy đủ (20 MCQ + 2 câu mở) cho tới khi PASS.
 
-Prompt được nén tối đa (xem engine_prompts.py) để 1 lượt đầy đủ (5 lời gọi AI)
-chỉ rơi vào khoảng 4000-5000 token thay vì ~18K như bản JSON-dump trước đó.
+Prompt được nén tối đa (xem engine_prompts.py) để giữ chi phí token thấp cho
+1 lượt đầy đủ.
 """
 
 import hmac
@@ -76,7 +70,7 @@ db.init_db()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # demo local - siết lại origin cụ thể khi deploy thật
+    allow_origins=["*"],  # TODO: siết lại origin cụ thể khi deploy thật
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -135,16 +129,11 @@ def _rubric_rows(scores: dict, criteria: dict, labels: dict) -> list[dict]:
 
 
 def _parse_mcq_rows(rows: list, expected_n: int) -> list[dict]:
-    """Parse + validate JSON rows AI trả về thành list câu hỏi MCQ chuẩn. Dùng
-    chung cho cả recognition (20 câu) và remediation practice (ít câu hơn).
+    """Parse + validate JSON rows AI trả về thành list câu hỏi MCQ chuẩn.
 
-    Phần tử thứ 6 là NGUYÊN VĂN đáp án đúng (không phải số index) - AI chỉ cần
-    chép lại đúng 1 trong 4 lựa chọn đã viết ra, code tự đối chiếu để suy ra
-    index. Bắt AI tự đếm số thứ tự 0-3 (nhất là khi vị trí đáp án đúng bị yêu
-    cầu random mỗi câu) là nguồn lỗi phổ biến - AI đôi khi chọn đúng từ nhưng
-    khai sai index, khiến câu hỏi bị chấm/hiển thị nhầm đáp án. Đối chiếu text
-    loại bỏ hẳn kiểu lỗi này, đồng thời tự phát hiện (và bắt thử lại) nếu AI
-    khai đáp án không khớp bất kỳ lựa chọn nào."""
+    Phần tử thứ 6 là NGUYÊN VĂN đáp án đúng, không phải index: bắt AI tự đếm
+    số thứ tự 0-3 là nguồn lỗi phổ biến (chọn đúng từ nhưng khai sai index),
+    nên code đối chiếu text với 4 lựa chọn để tự suy ra index thay vì tin AI."""
     if len(rows) != expected_n:
         raise HTTPException(status_code=502, detail=f"AI trả về {len(rows)} câu thay vì {expected_n}, thử lại.")
 
@@ -175,13 +164,10 @@ def _parse_mcq_rows(rows: list, expected_n: int) -> list[dict]:
     return questions
 
 
-# ---------- "Logic database": chống lặp câu hỏi (an toàn, không tốn token) ----------
-# Lớp phòng thủ thứ 2 (lớp 1 là đoạn "KHÔNG lặp lại" nhét thẳng vào prompt -
-# xem engine_prompts._history_avoidance_block) - chạy code thuần bằng
-# difflib (thư viện chuẩn Python, không cần cài thêm) nên hoàn toàn miễn phí,
-# vì vậy được phép so sánh với TOÀN BỘ lịch sử (không giới hạn số lượng),
-# khác với đoạn nhét vào prompt phải cắt bớt để đỡ tốn token (xem
-# _bound_history bên dưới).
+# ---------- chống lặp câu hỏi ----------
+# Lớp phòng thủ thứ 2 (lớp 1 là hướng dẫn "không lặp lại" trong prompt, xem
+# engine_prompts._history_avoidance_block). Dùng difflib nên miễn phí, vì vậy
+# so sánh được với TOÀN BỘ lịch sử thay vì chỉ phần đã cắt gọn cho prompt.
 
 _PUNCT_RE = re.compile(r"[^\w\s]")
 _WS_RE = re.compile(r"\s+")
@@ -195,16 +181,12 @@ def _normalize_for_similarity(text: str) -> str:
 
 
 def _find_duplicate(new_texts: list[str], history: list[str]) -> str | None:
-    """So sánh (a) từng cặp trong chính batch mới, (b) từng câu mới với TOÀN
-    BỘ history - trả về câu mô tả vi phạm (tiếng Việt) nếu phát hiện 2 câu quá
-    giống nhau (ratio >= ngưỡng), hoặc None nếu sạch.
+    """So sánh từng cặp trong batch mới, và từng câu mới với toàn bộ history.
+    Trả về mô tả vi phạm nếu 2 câu quá giống nhau (ratio >= ngưỡng), hoặc None.
 
-    LƯU Ý: chỉ bắt được kiểu "chép sát, đổi 1-2 từ" (paraphrase nông) - 2 câu
-    cùng Ý/LOGIC nhưng dùng từ vựng/cấu trúc hoàn toàn khác nhau (paraphrase
-    sâu) sẽ KHÔNG bị bắt bởi cách so sánh văn bản thuần này. Đây là CHỦ ĐÍCH:
-    lớp kiểm tra "lặp ý sâu" bằng AI riêng đã bị bỏ (tốn token + chậm), nên
-    tầng này chỉ còn lo phần TUYỆT ĐỐI không cho 2 câu giống Y NGUYÊN, phần
-    đa dạng ý tưởng/cấu trúc dựa hẳn vào chất lượng prompt sinh câu."""
+    Chỉ bắt được kiểu chép sát/đổi vài từ (paraphrase nông) - có chủ đích:
+    đa dạng ý tưởng/cấu trúc sâu hơn dựa vào chất lượng prompt sinh câu, không
+    có lớp kiểm tra AI riêng cho việc đó (tốn token, chậm)."""
     normed_new = [_normalize_for_similarity(t) for t in new_texts]
     for i in range(len(normed_new)):
         for j in range(i + 1, len(normed_new)):
@@ -224,33 +206,18 @@ def _find_duplicate(new_texts: list[str], history: list[str]) -> str | None:
 
 
 def _bound_history(history: list[str] | None, max_entries: int) -> list[str]:
-    """Cắt bớt history trước khi NHÉT VÀO PROMPT (tốn token) - chỉ lấy các mục
-    GẦN NHẤT. Việc so sánh chống trùng (_find_duplicate) vẫn dùng history đầy
-    đủ (không qua hàm này) vì phần đó miễn phí."""
+    """Cắt history để nhét vào prompt (tốn token), chỉ giữ các mục gần nhất.
+    _find_duplicate dùng history đầy đủ, không qua hàm này, vì so sánh miễn phí."""
     if not history:
         return []
     return history[-max_entries:]
 
 
-# Đã BỎ HẲN lớp kiểm tra "lặp Ý/LOGIC" bằng AI riêng (lượt gọi AI thêm tốn
-# token, dù rẻ, vẫn phải sinh lại cả batch mỗi khi bị báo lặp -> chậm, tốn
-# kiên nhẫn người dùng và token) - xem lịch sử git nếu cần khôi phục. Thay vào
-# đó dồn lực cho việc PHÒNG NGỪA ngay từ prompt sinh câu (recognition_task/
-# remediation_task trong engine_prompts.py): bắt AI tự đa dạng hoá chủ đề +
-# kiểu câu/cấu trúc ngữ pháp thật mạnh để cố gắng ĐÚNG NGAY LẦN ĐẦU, không cần
-# vòng kiểm tra riêng. _find_duplicate/difflib ở trên vẫn là tuyến phòng thủ
-# DUY NHẤT còn lại - miễn phí, chỉ chặn tuyệt đối 2 câu giống Y NGUYÊN nhau.
-
-
-# ---------- Strong answer pipeline: xác định + kiểm tra đáp án ĐỘC LẬP ----------
-# Chạy SAU _find_duplicate (đã lọc bớt batch có câu giống y nguyên) - đây là
-# lớp thứ 2, đắt hơn nhưng ưu tiên độ chính xác: 1 model KHÔNG được
-# cho biết generator đã chọn gì tự suy ra đáp án từ KB, 1 lượt độc lập khác
-# kiểm tra lại, và code (không chỉ prompt) từ chối chấp nhận 1 "PASS" tự mâu
-# thuẫn (verifier tự kết luận đáp án khác nhưng vẫn báo PASS). Chỉ CÂU nào bị
-# FAIL mới được sinh lại đáp án (không sinh lại cả câu hỏi - Question Generator
-# không bị đụng tới) - hết lượt vẫn còn câu FAIL thì huỷ cả batch (dùng lại cơ
-# chế 502 -> retry sẵn có, sinh 1 bộ 20 câu hoàn toàn mới).
+# ---------- Strong answer pipeline: xác định + kiểm tra đáp án độc lập ----------
+# 1 model suy ra đáp án từ KB mà không biết generator đã chọn gì, 1 lượt độc
+# lập khác verify lại; code từ chối 1 "PASS" tự mâu thuẫn (verifier kết luận
+# đáp án khác nhưng vẫn báo PASS). Chỉ câu FAIL được sinh lại đáp án (câu hỏi
+# giữ nguyên); còn FAIL sau hết lượt thì huỷ cả batch qua cơ chế 502 -> retry.
 _ANSWER_CONFIDENCE_THRESHOLD = 0.75
 _MAX_ANSWER_REGEN_ROUNDS = 2
 _LETTER_TO_INDEX = {"A": 0, "B": 1, "C": 2, "D": 3}
@@ -308,9 +275,7 @@ def _determine_and_verify_answers(kb: dict, questions: list[dict]) -> None:
             status = result.get("status")
             confidence = float(result.get("confidence") or 0)
             verified_letter = result.get("correct_answer")
-            # Đối chiếu code-level: verifier tự kết luận khác đáp án đề xuất mà
-            # vẫn báo PASS là tự mâu thuẫn - KHÔNG được chấp nhận theo lời tự
-            # nhận PASS của nó (đây chính là phần chặn "validator tin mù quáng").
+            # Verifier tự kết luận đáp án khác mà vẫn báo PASS là tự mâu thuẫn - không tin PASS của nó trong trường hợp đó.
             if verified_letter != vi["proposed_letter"]:
                 status = "FAIL"
             if confidence < _ANSWER_CONFIDENCE_THRESHOLD:
@@ -407,11 +372,9 @@ class StartRequest(BaseModel):
 
 class SessionIdRequest(BaseModel):
     session_id: str
-    # Lịch sử câu hỏi đã sinh cho level này TỪ TRƯỚC (mọi lần: đầu tiên, retest,
-    # ôn tập) - lưu vĩnh viễn phía client (xem js/features/question-history.js),
-    # gửi kèm mỗi lần gọi sinh câu hỏi mới để tránh lặp. begin-recognition chỉ
-    # dùng recognition_history; begin-remediation dùng cả 3 (1 lời gọi sinh cả
-    # MCQ luyện tập lẫn Distinction/Application luyện tập).
+    # Lịch sử câu hỏi đã sinh cho level này, lưu phía client (xem
+    # js/features/question-history.js), gửi kèm để tránh lặp. begin-recognition
+    # chỉ dùng recognition_history; begin-remediation dùng cả 3.
     recognition_history: list[str] = []
     distinction_history: list[str] = []
     application_history: list[str] = []
@@ -478,9 +441,9 @@ class FeedbackRequest(BaseModel):
 
 
 def get_current_user(authorization: str | None = Header(default=None)):
-    """Dependency xác thực Bearer token - áp dụng cho progress save/load VÀ
-    (từ khi có tính năng key) toàn bộ 9 route chat AI, vì AI giờ giới hạn theo
-    key gắn với tài khoản Google (guest luôn có 0 key, không dùng được AI)."""
+    """Dependency xác thực Bearer token - áp dụng cho progress save/load và mọi
+    route chat AI, vì AI giới hạn theo key gắn với tài khoản Google (guest
+    luôn có 0 key, không dùng được AI)."""
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Chưa đăng nhập.")
     token = authorization.removeprefix("Bearer ").strip()
@@ -491,22 +454,17 @@ def get_current_user(authorization: str | None = Header(default=None)):
 
 
 # ---------- "key" currency: giới hạn dùng AI ----------
-# Chỉ 2 trong 9 route AI thật sự trừ key (begin-recognition: 2, begin-
-# remediation: 1) - 7 route còn lại chỉ cần đăng nhập (Depends(get_current_user)
-# ở trên), miễn phí vì đã tính vào chi phí của lượt begin- tương ứng rồi.
+# Chỉ begin-recognition (2) và begin-remediation (1) trừ key - các route khác
+# chỉ cần đăng nhập, chi phí AI của chúng đã tính vào lượt begin- tương ứng.
 def _require_keys(user, cost: int) -> None:
-    """Chặn SỚM, RẺ trước khi tốn AI - không phải bước trừ key thật (xem
-    _charge_keys), chỉ để tránh gọi AI vô ích khi rõ ràng không đủ key ngay
-    từ đầu request."""
+    """Chặn sớm trước khi tốn AI. Không phải bước trừ key thật (xem _charge_keys)."""
     if user["keys"] < cost:
         raise HTTPException(status_code=402, detail="Bạn đã hết key.")
 
 
 def _charge_keys(user_id: int, cost: int) -> None:
-    """Trừ key THẬT - chỉ gọi ở CUỐI, SAU KHI toàn bộ việc AI của request đã
-    thành công (mọi lỗi ở giữa đều raise HTTPException và thoát hàm trước khi
-    tới được dòng gọi hàm này). db.deduct_keys atomic nên đủ chống race dù
-    _require_keys ở trên không atomic."""
+    """Trừ key thật - chỉ gọi sau khi AI của request đã thành công. db.deduct_keys
+    atomic nên vẫn chống được race dù _require_keys ở trên không atomic."""
     if not db.deduct_keys(user_id, cost):
         raise HTTPException(status_code=402, detail="Bạn đã hết key.")
 
@@ -515,9 +473,9 @@ def _charge_keys(user_id: int, cost: int) -> None:
 
 @app.get("/api/vocab/{world_id}/{level}")
 def get_vocab(world_id: str, level: int):
-    """Trả về group_title + danh sách từ mục tiêu THẲNG TỪ FILE KB (không gọi
-    AI, không tốn token) - dùng cho tính năng "Từ vựng đã học" ở frontend, lấy
-    đúng dữ liệu gốc thay vì nội dung do AI diễn giải."""
+    """Trả về group_title + danh sách từ mục tiêu thẳng từ file KB (không gọi
+    AI) - dùng cho "Từ vựng đã học" ở frontend, cần dữ liệu gốc chứ không phải
+    nội dung AI diễn giải."""
     try:
         kb = load_knowledge_base(world_id, level)
     except (ValueError, FileNotFoundError) as e:
@@ -556,9 +514,8 @@ def start_session(req: StartRequest, user=Depends(get_current_user)):
 @app.post("/api/chat/begin-recognition")
 def begin_recognition(req: SessionIdRequest, user=Depends(get_current_user)):
     session = get_session(req.session_id)
-    # Cho phép bắt đầu từ READY_FOR_RECOGNITION (lần đầu) HOẶC từ RETRY/
-    # REMEDIATION_DONE (retest sau khi ôn tập, hoặc bỏ qua ôn tập retest thẳng)
-    # - đây chính là nút "Kiểm tra lại" lặp lại từ đầu 20 câu MCQ.
+    # RETRY/REMEDIATION_DONE = nút "Kiểm tra lại" (retest 20 câu, có hoặc
+    # không qua ôn tập trước đó).
     if session["current_state"] not in ("READY_FOR_RECOGNITION", "RETRY", "REMEDIATION_DONE"):
         raise HTTPException(status_code=409, detail=f"Sai trạng thái hiện tại: {session['current_state']}")
     _require_keys(user, 2)
@@ -605,7 +562,6 @@ def submit_recognition(req: SubmitRecognitionRequest, user=Depends(get_current_u
     answer_key = session["secure_answer_key"]
     questions = {str(q["id"]): q for q in session["generated_questions"]}
 
-    # gửi ĐỦ mọi câu sai cho correction - cap độ dài output đã nằm ở correction_task
     correct_count, wrong_questions, wrong_summary = _grade_mcq_answers(answer_key, questions, req.answers)
 
     recognition = scoring.calc_recognition(correct_count)
@@ -619,9 +575,7 @@ def submit_recognition(req: SubmitRecognitionRequest, user=Depends(get_current_u
 
     session["current_state"] = "WAITING_CONFIDENCE"
 
-    # Bài đã chấm xong (đáp án không còn là bí mật cần bảo vệ nữa) - trả kèm
-    # cặp từ (chọn sai / đúng) để frontend lưu lại phục vụ trang Analysis
-    # (phân tích xu hướng nhầm lẫn từ vựng), không cần gọi lại AI cho việc này.
+    # Trả kèm cặp từ (chọn sai/đúng) để frontend lưu cho trang Analysis, không cần gọi lại AI.
     wrong_words = [
         {"selected": (wq["options"][wq["selected_index"]] if wq["selected_index"] is not None else None),
          "correct": wq["options"][wq["correct_index"]],
@@ -855,10 +809,9 @@ def submit_remediation_open_ended(req: RemediationOpenEndedRequest, user=Depends
 
 @app.post("/api/analysis/generate")
 def generate_analysis(req: AnalysisRequest, user=Depends(get_current_user)):
-    """Chỉ 1 lời gọi AI duy nhất, do FRONTEND chủ động gọi khi người dùng mở
-    trang Analysis (đã tự cache theo chữ ký dữ liệu ở client, không gọi lặp
-    lại). Không đụng tới session_store - không cần "phiên" nào cả, input là
-    danh sách nhóm từ yếu nhất do frontend tự chọn sẵn từ localStorage."""
+    """1 lời gọi AI, do frontend gọi khi mở trang Analysis (đã tự cache ở
+    client). Không dùng session_store - input là nhóm từ yếu nhất frontend
+    tự chọn từ localStorage."""
     if not req.groups:
         raise HTTPException(status_code=422, detail="Chưa có dữ liệu level nào để phân tích.")
 
@@ -874,9 +827,8 @@ def generate_analysis(req: AnalysisRequest, user=Depends(get_current_user)):
     }
 
 
-# ---------- đăng nhập Google + đồng bộ tiến độ (không đụng session_store,
-# đăng nhập chỉ để backup/đồng bộ dữ liệu localStorage giữa các trình duyệt/
-# thiết bị, KHÔNG bắt buộc mới học được) ----------
+# ---------- đăng nhập Google + đồng bộ tiến độ (không bắt buộc, chỉ để backup
+# localStorage giữa các thiết bị) ----------
 
 @app.post("/api/auth/google")
 def google_login(req: GoogleAuthRequest):
@@ -939,10 +891,9 @@ def load_progress_endpoint(user=Depends(get_current_user)):
 
 # ---------- Key Shop ----------
 
-# Phải khớp CHÍNH XÁC bảng KEY_SHOP_PACKAGES ở js/core/App.js (thứ tự +
-# giá trị) - server tự tính bonus theo purchase_count của CHÍNH tài khoản đó
-# (không tin số client gửi lên), nên đổi gói/bonus ở frontend thì nhớ đổi lại
-# tương ứng ở đây.
+# Phải khớp chính xác bảng KEY_SHOP_PACKAGES ở js/core/App.js (thứ tự + giá
+# trị). Server tự tính bonus theo purchase_count của tài khoản, không tin số
+# client gửi lên.
 _KEY_SHOP_PACKAGES = [
     {"keys": 10, "bonus10": 1, "bonus20": 1, "bonus50": 1},
     {"keys": 25, "bonus10": 1, "bonus20": 2, "bonus50": 2},
@@ -952,8 +903,8 @@ _KEY_SHOP_PACKAGES = [
     {"keys": 500, "bonus10": 10, "bonus20": 20, "bonus50": 30},
 ]
 
-# VNĐ - CHỈ nguồn giá trị thật, client không được tự gửi số tiền lên (xem
-# create_payment). Phải khớp theo đúng thứ tự với _KEY_SHOP_PACKAGES ở trên.
+# VNĐ - nguồn giá trị thật duy nhất, client không tự gửi số tiền lên. Phải
+# khớp thứ tự với _KEY_SHOP_PACKAGES ở trên.
 _KEY_SHOP_PRICES_VND = [10_000, 20_000, 35_000, 60_000, 135_000, 250_000]
 assert len(_KEY_SHOP_PRICES_VND) == len(_KEY_SHOP_PACKAGES)
 
@@ -971,26 +922,23 @@ def _key_shop_bonus_for_count(pkg: dict, purchase_count: int) -> int:
 
 
 def _generate_reference_code() -> str:
-    """"IOC" + 8 ký tự ngẫu nhiên (secrets, không phải random - đây là tiền
-    thật). Độ dài CỐ ĐỊNH là chủ đích: đảm bảo không có mã hợp lệ nào là chuỗi
-    con của 1 mã hợp lệ khác, giúp việc đối chiếu nội dung chuyển khoản ở
-    webhook (kiểm tra "chứa" mã) không bao giờ bị nhập nhằng giữa 2 mã."""
+    """"IOC" + 8 ký tự ngẫu nhiên (secrets vì đây là tiền thật). Độ dài cố định
+    đảm bảo không mã nào là chuỗi con của mã khác, nên webhook đối chiếu theo
+    kiểu "chứa" không bị nhập nhằng."""
     suffix = "".join(secrets.choice(_REFERENCE_CODE_ALPHABET) for _ in range(8))
     return f"IOC{suffix}"
 
 
 def _static_qr_url(package_index: int) -> str:
-    """Ảnh QR TĨNH tự tạo qua công cụ "Tạo QR" của SePay cho từng gói (đặt sẵn
-    ngân hàng/STK/số tiền), KHÔNG có nội dung chuyển khoản riêng cho từng giao
-    dịch (khác với QR động qua img.vietqr.io lúc trước) - vì vậy webhook phải
-    có thêm lớp đối chiếu theo SỐ TIỀN làm dự phòng (xem sepay_webhook())."""
+    """Ảnh QR tĩnh (tạo qua SePay) cho từng gói, không mang nội dung chuyển
+    khoản riêng theo giao dịch - vì vậy webhook cần thêm lớp đối chiếu theo số
+    tiền làm dự phòng (xem sepay_webhook())."""
     return f"assets/images/keyshop-qr-{package_index}.png"
 
 
 def _verify_sepay_auth(authorization: str | None) -> bool:
-    """SEPAY_API_KEY để trống trong .env (chưa đăng ký SePay) PHẢI luôn bị từ
-    chối - không được coi là "chưa cấu hình nên cho qua", nếu không endpoint
-    này thành 1 cổng mở cộng key tuỳ ý không cần xác thực gì."""
+    """SEPAY_API_KEY trống phải luôn bị từ chối - không coi là "chưa cấu hình
+    nên cho qua", nếu không endpoint này thành cổng cộng key không cần xác thực."""
     if not SEPAY_API_KEY:
         return False
     if not authorization or not authorization.startswith("Apikey "):
@@ -1006,9 +954,7 @@ def create_payment(req: CreatePaymentRequest, user=Depends(get_current_user)):
     if req.package_index < 0 or req.package_index >= len(_KEY_SHOP_PACKAGES):
         raise HTTPException(status_code=400, detail="Gói key không hợp lệ.")
 
-    # Dọn giao dịch cũ đã hết hạn trước khi xét có nên tái sử dụng không -
-    # nếu không, 1 giao dịch pending nhưng đã quá hạn (chưa kịp bị quét ở đâu
-    # khác) sẽ bị trả về nhầm cho lượt bấm "Thanh toán" mới này.
+    # Dọn hết hạn trước khi xét tái sử dụng, tránh trả nhầm 1 giao dịch cũ đã quá hạn.
     db.expire_stale_pending_payments()
 
     existing = db.get_active_pending_payment(user["id"], req.package_index)
@@ -1041,10 +987,7 @@ def create_payment(req: CreatePaymentRequest, user=Depends(get_current_user)):
 
 @app.get("/api/keys/payment-status/{reference_code}")
 def get_payment_status(reference_code: str, user=Depends(get_current_user)):
-    # Dọn hết hạn TRƯỚC khi đọc trạng thái - để 1 giao dịch vừa quá
-    # PENDING_PAYMENT_TTL_MINUTES phút được frontend thấy "expired" ngay ở lần
-    # poll tiếp theo, thay vì mãi hiện "pending" cho tới khi có request khác
-    # (webhook/create-payment) tình cờ chạy hàm quét.
+    # Dọn hết hạn trước khi đọc trạng thái, để frontend thấy "expired" ngay ở lần poll tiếp theo.
     db.expire_stale_pending_payments()
 
     payment = db.get_pending_payment(reference_code)
@@ -1056,11 +999,9 @@ def get_payment_status(reference_code: str, user=Depends(get_current_user)):
     if payment["status"] == "expired":
         return {"status": "expired"}
     if payment["status"] != "paid":
-        # Frontend gọi endpoint này = bằng chứng có người dùng THẬT đang mở
-        # màn hình QR chờ giao dịch này (không phải rác/giao dịch tạo ra rồi
-        # bỏ quên) - đánh dấu verified để webhook ưu tiên khớp đúng giao dịch
-        # này thay vì lỡ chọn nhầm 1 giao dịch pending khác cũ hơn nhưng chưa
-        # từng được ai mở lên chờ (xem db.get_pending_payments_by_amount).
+        # Việc frontend poll endpoint này chứng minh có người đang thật sự chờ
+        # giao dịch - đánh dấu verified để webhook ưu tiên khớp đúng nó (xem
+        # db.get_pending_payments_by_amount).
         db.mark_payment_verified(reference_code)
         return {"status": "pending"}
 
@@ -1086,20 +1027,14 @@ def sepay_webhook(payload: SePayWebhookPayload, authorization: str | None = Head
     if not _verify_sepay_auth(authorization):
         raise HTTPException(status_code=401, detail="Không xác thực được webhook.")
 
-    # Dọn giao dịch hết hạn TRƯỚC khi so khớp - bắt buộc, đây là chỗ quyết
-    # định trực tiếp: nếu không quét ở đây, 1 giao dịch rác/test cũ còn nằm
-    # 'pending' quá lâu vẫn có thể bị FIFO chọn nhầm thay cho giao dịch thật
-    # (xem PENDING_PAYMENT_TTL_MINUTES trong db.py - đã từng gây cộng nhầm
-    # tiền thật của khách sang tài khoản khác trong thực tế).
+    # Bắt buộc dọn trước khi so khớp: 1 giao dịch cũ còn 'pending' quá lâu có
+    # thể bị FIFO chọn nhầm thay cho giao dịch thật (xem PENDING_PAYMENT_TTL_MINUTES trong db.py).
     db.expire_stale_pending_payments()
 
-    # Từ đây trở đi là các nhánh KẾT QUẢ NGHIỆP VỤ (đã hiểu đúng request,
-    # nhưng quyết định không cộng key) - LUÔN trả success:true cho SePay theo
-    # đúng hợp đồng API của họ. TUYỆT ĐỐI không bọc try/except Exception ở
-    # ngoài rồi trả success:true cho lỗi hệ thống thật (DB lỗi, bug...) - làm
-    # vậy sẽ khiến SePay tưởng đã xử lý xong nên không gọi lại nữa, trong khi
-    # tiền thật đã vào mà key chưa được cộng, mất luôn không cách nào phát
-    # hiện lại được.
+    # Từ đây là các nhánh quyết định KHÔNG cộng key - luôn trả success:true
+    # theo đúng hợp đồng API của SePay. Không bọc try/except Exception rồi trả
+    # success:true cho lỗi hệ thống thật: SePay sẽ không gọi lại, và tiền đã
+    # vào mà key chưa cộng sẽ không còn cách nào phát hiện lại.
     if payload.transferType != "in":
         logger.info("SePay webhook: bỏ qua giao dịch không phải tiền vào (transferType=%s)", payload.transferType)
         return {"success": True}
@@ -1107,9 +1042,8 @@ def sepay_webhook(payload: SePayWebhookPayload, authorization: str | None = Head
         logger.warning("SePay webhook: accountNumber lạ (%s), bỏ qua.", payload.accountNumber)
         return {"success": True}
 
-    # Lớp 1 (ưu tiên, chính xác tuyệt đối nếu có): đối chiếu mã tham chiếu
-    # trong nội dung chuyển khoản - chỉ hoạt động nếu app ngân hàng của khách
-    # cho sửa nội dung trước khi xác nhận (không bắt buộc, xem frontend).
+    # Lớp 1 (ưu tiên, chính xác tuyệt đối): đối chiếu mã tham chiếu trong nội
+    # dung chuyển khoản - chỉ hoạt động nếu khách sửa nội dung trước khi chuyển.
     normalized = re.sub(r"[^A-Z0-9]", "", f"{payload.content} {payload.description}".upper())
     candidates = db.list_pending_reference_codes()
     content_matches = [code for code in candidates if code in normalized]
@@ -1124,18 +1058,13 @@ def sepay_webhook(payload: SePayWebhookPayload, authorization: str | None = Head
         )
         return {"success": True}
 
-    # Lớp 2 (dự phòng): QR tĩnh (tạo qua SePay) không nhúng nội dung riêng
-    # từng giao dịch - đối chiếu theo ĐÚNG số tiền. CHỈ xét các giao dịch đã
-    # 'verified' (main.py: get_payment_status đánh dấu khi frontend thật sự
-    # poll màn hình QR đó - bằng chứng có người đang chờ) - loại thẳng các
-    # giao dịch pending nhưng CHƯA từng ai mở lên chờ (VD tạo do test/gọi API
-    # trực tiếp rồi bỏ quên), vì trên thực tế 1 giao dịch như vậy TỪNG bị FIFO
-    # (cũ nhất thắng) chọn nhầm thay cho giao dịch thật mới hơn, khiến tiền
-    # thật của khách bị cộng nhầm tài khoản. Trong số các giao dịch ĐÃ verified
-    # (nếu có nhiều), vẫn ưu tiên giao dịch ĐĂNG KÝ TRƯỚC (get_pending_payments_
-    # by_amount đã sắp created_at tăng dần) để tự động 100%, không cần đối
-    # soát tay - nhưng nếu KHÔNG giao dịch nào được verified thì THÀ không
-    # cộng còn hơn cộng nhầm, để lại cho đối soát thủ công.
+    # Lớp 2 (dự phòng): QR tĩnh không mang nội dung riêng theo giao dịch, nên
+    # đối chiếu theo số tiền. Chỉ xét giao dịch đã 'verified' (get_payment_status
+    # đánh dấu khi frontend thật sự poll màn hình QR - bằng chứng có người
+    # đang chờ): loại các giao dịch pending chưa từng ai mở lên chờ, để tránh
+    # FIFO chọn nhầm giao dịch rác/test thay cho giao dịch thật mới hơn. Nếu
+    # có nhiều verified, ưu tiên giao dịch đăng ký trước; nếu không giao dịch
+    # nào verified thì thà không cộng còn hơn cộng nhầm, để đối soát thủ công.
     if payment is None:
         amount_matches = db.get_pending_payments_by_amount(int(payload.transferAmount))
         if len(amount_matches) == 0:
@@ -1183,10 +1112,7 @@ def sepay_webhook(payload: SePayWebhookPayload, authorization: str | None = Head
 
 
 # ---------- Feedback ----------
-# Trước đây dùng mailto: (chỉ mở sẵn email nháp, KHÔNG tự gửi - im lặng không
-# có gì xảy ra nếu máy người dùng chưa cấu hình app mail mặc định). Giờ lưu
-# thẳng vào DB, xem lại bằng hacker prompt/view_feedback.py. Không yêu cầu
-# đăng nhập - guest cũng góp ý được, giống hành vi cũ.
+# Lưu thẳng vào DB, xem lại bằng prompt/view_feedback.py. Không yêu cầu đăng nhập.
 @app.post("/api/feedback")
 def submit_feedback(req: FeedbackRequest):
     content = req.content.strip()
@@ -1197,11 +1123,8 @@ def submit_feedback(req: FeedbackRequest):
 
 
 # ---------- phục vụ frontend tĩnh cùng origin với API (Google Sign-In yêu
-# cầu trang chạy ở origin http(s) đã đăng ký trên Google Cloud Console, không
-# hoạt động khi mở file:// trực tiếp). CHỈ mount đúng các thư mục tài nguyên
-# công khai (không mount cả BASE_DIR để tránh lộ server/.env). Đặt Ở CUỐI file
-# vì Mount("/") là catch-all, phải đăng ký sau mọi route /api/... để không
-# che mất chúng.
+# cầu origin http(s) đã đăng ký, không chạy được với file://). Chỉ mount các
+# thư mục công khai, không mount cả BASE_DIR (tránh lộ server/.env).
 
 app.mount("/js", StaticFiles(directory=str(BASE_DIR / "js")), name="static-js")
 app.mount("/css", StaticFiles(directory=str(BASE_DIR / "css")), name="static-css")

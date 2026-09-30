@@ -1,8 +1,8 @@
 // ==== WORLD MAP ENGINE ====
-// Dùng chung cho world1.html và world2.html. Sinh ra một con đường ngoằn
-// ngoèo NẰM NGANG (trục X là hướng đi chính, dao động lên/xuống theo hàm
-// sin) chứa N level, có thể cuộn ngang. world1.js / world2.js chỉ truyền
-// config riêng (ảnh nền, số level, theme) vào renderWorldMap()/initWorldMap().
+// Dùng chung cho world1.html và world2.html. Sinh con đường ngoằn ngoèo nằm
+// ngang (trục X là hướng đi chính, dao động theo hàm sin) chứa N level, có
+// thể cuộn ngang. world1.js/world2.js chỉ truyền config riêng vào
+// renderWorldMap()/initWorldMap().
 
 const WORLD_MAP_LEVEL_SPACING = 150; // khoảng cách ngang giữa 2 level liên tiếp
 const WORLD_MAP_AMPLITUDE = 115; // biên độ lượn sóng lên/xuống - to hơn để phủ kín màn hình theo chiều dọc
@@ -35,10 +35,6 @@ function worldMapBuildRoadPath(totalLevels) {
 }
 
 // ---- Icon trang trí quanh đường đi ----
-// World "ice" vẽ tay bằng SVG (nền trong suốt tự nhiên). World "forest" dùng
-// bộ 13 icon rừng/động vật trong assets/images/world1-decor (đổi từ bộ
-// sticker huyền bí cũ - xem world1iconbackground2.0 gốc, đã xoá sau khi copy
-// vào đây).
 const WORLD_MAP_DECOR_PATH = {
   forest: 'assets/images/world1-decor/',
   ice: 'assets/images/world2-decor/'
@@ -50,8 +46,6 @@ const WORLD_MAP_FOREST_ICONS = [
   'rock.png', 'temple.png', 'tree.png'
 ];
 
-// World 2 (ice) dùng bộ 10 icon băng tuyết/động vật trong assets/images/world2-decor
-// (đổi từ bộ sticker cũ - xem world2iconbackground2.0 gốc, đã xoá sau khi copy vào đây).
 const WORLD_MAP_ICE_ICONS = [
   'ice.png', 'mountain.png', 'penguin.png', 'pine-tree.png', 'polar-bear.png',
   'raccoon.png', 'reindeer.png', 'seal.png', 'snowflake.png'
@@ -119,11 +113,8 @@ function worldMapBuildNodes(totalLevels, completed, worldId) {
     // completed cũng bấm được để chơi lại - chỉ locked mới thực sự khoá.
     const disabledAttr = state === 'locked' ? 'disabled' : '';
 
-    // Badge kết quả (overall + trạng thái) - chỉ 1 khối duy nhất, canh giữa
-    // dưới node bằng flex, không còn 2 phần tử định vị tuyệt đối chồng nhau.
-    // Lấy kết quả cho cả node "current" (không chỉ "completed"): 1 lượt RETRY
-    // không làm level được coi là completed (chỉ PASS mới tiến level), nhưng
-    // kết quả vẫn phải hiển thị ngay dưới level đó dù pass hay không.
+    // Lấy kết quả cho cả node "current": 1 lượt RETRY không làm level thành
+    // completed, nhưng kết quả vẫn cần hiển thị dưới node đó dù pass hay không.
     const levelResults = state !== 'locked' ? worldMapGetLevelResults(worldId, level) : null;
     let badgeHtml = '';
     if (levelResults && levelResults.accuracy != null) {
@@ -152,7 +143,6 @@ function worldMapBuildNodes(totalLevels, completed, worldId) {
 }
 
 function worldMapGetLevelResults(worldId, level) {
-  // Lấy kết quả level từ localStorage (được lưu ở chatbot.js)
   if (typeof getLevelResults === 'function') {
     return getLevelResults(worldId, level);
   }
@@ -221,13 +211,8 @@ function initWorldMap(config) {
       const level = parseInt(btn.getAttribute('data-level'), 10);
       const isReplay = btn.classList.contains('world-map-node--completed');
 
-      // Chat AI đã bật cho toàn bộ level 2 world (trừ 3 level KB đang hỏng -
-      // xem WORLD_MAP_AI_ENABLED_LEVELS). Backend (server/main.py) tự map
-      // (worldId, level) -> đúng file KB tương ứng, không cần sửa gì thêm ở
-      // đây khi thêm/bớt level được bật.
       if (typeof openAIChat === 'function' && worldMapIsAIEnabled(config.worldId, level)) {
-        // isReplay=true -> truyền isRetry cho backend để sinh bộ câu hỏi mới,
-        // khác lần trước, thay vì lặp lại y hệt.
+        // isReplay=true -> báo backend sinh bộ câu hỏi mới thay vì lặp lại y hệt.
         openAIChat(config.worldId, level, () => {
           root.innerHTML = renderWorldMap(config);
           initWorldMap(config);
@@ -248,7 +233,6 @@ function initWorldMap(config) {
     });
   });
 
-  // Tự cuộn ngang tới level hiện tại mỗi khi (re)render.
   if (scrollEl) {
     const completed = getWorldCompletedLevels(config.worldId);
     const currentLevel = Math.min(config.totalLevels, completed + 1);
@@ -261,10 +245,7 @@ function worldMapRange(n) {
   return Array.from({ length: n }, (_, i) => i + 1);
 }
 
-// World 1: bật AI cho toàn bộ 97 level (KB: database/vocab b2 database/vocab-b2-001..097.json).
-// World 2: bật AI cho toàn bộ 121 level (KB: database/vocab c1 database/vocab-c1-001..121.json).
-// Level 87-89 trước đó có file KB hỏng (byte rỗng), đã được cập nhật lại nội dung mới và
-// validate sạch (xem database/vocab c1 database/vocab-c1-087/088/089.json).
+// Bật AI cho toàn bộ level của mỗi world (World 1: 97, World 2: 121).
 const WORLD_MAP_AI_ENABLED_LEVELS = {
   'world-1': worldMapRange(97),
   'world-2': worldMapRange(121),
