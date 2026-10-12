@@ -158,4 +158,3 @@ Mở `http://localhost:8000`.
 
 ---
 
-Thư mục `server/hacker prompt/` chứa các script quản trị nội bộ (xem/sửa key, đối soát thanh toán, xem feedback...) — được `.gitignore` loại khỏi repo, không xuất hiện trên GitHub.
