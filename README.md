@@ -1,160 +1,131 @@
 # Illusion of Competence (IOC)
 
-Ứng dụng học từ vựng tiếng Anh (bậc B2/C1) giúp người học phát hiện **"ảo tưởng về năng lực"** — cảm giác đã hiểu/nhớ một từ trong khi thực ra chưa vận dụng được. Thay vì chỉ chấm đúng/sai, hệ thống so sánh **mức độ tự tin do người học tự khai báo** với **năng lực thực tế đo được qua 3 vòng kiểm tra độ khó tăng dần**, rồi kết luận một trong ba trạng thái: `DETECTED` (ảo tưởng năng lực), `UNDERCONFIDENT` (tự ti quá mức), hoặc `CALIBRATED` (tự đánh giá đúng).
+Ứng dụng web học từ vựng tiếng Anh bậc B2/C1. Mỗi level kiểm tra người học qua 3 bước độ khó tăng dần (trắc nghiệm nhận diện, rồi 2 câu hỏi mở đòi phân biệt và vận dụng), đối chiếu với mức độ tự tin người học tự chấm trước khi biết điểm phần sau, rồi suy ra 1 trong 3 trạng thái: `DETECTED` (tự tin cao hơn năng lực đo được), `UNDERCONFIDENT` (tự tin thấp hơn), `CALIBRATED` (khớp nhau). Công thức tính nằm ở `server/scoring.py`, chạy bằng code thuần, không qua AI.
 
-Backend dùng AI (OpenAI) để soạn nội dung học/câu hỏi theo thời gian thực dựa trên một "Knowledge Base" (KB) từ vựng cố định cho từng level — AI không được tự bịa nghĩa từ, chỉ diễn đạt lại nội dung trong KB.
+## Stack
 
-## Mục lục
+- Frontend: HTML/CSS/JS thuần, không framework, không build step.
+- Backend: Python, FastAPI (`server/main.py`).
+- Database: PostgreSQL, qua `psycopg` (`server/db.py`).
+- AI: OpenAI Responses API (`server/ai_client.py`).
+- Đăng nhập: Google Identity Services ở client, xác thực lại token ở server bằng `google-auth`.
+- Thanh toán: ảnh QR tĩnh + webhook SePay xác nhận chuyển khoản.
 
-- [Kiến trúc tổng quan](#kiến-trúc-tổng-quan)
-- [Cấu trúc thư mục](#cấu-trúc-thư-mục)
-- [Luồng học & cơ chế phát hiện illusion](#luồng-học--cơ-chế-phát-hiện-illusion)
-- [Pipeline sinh nội dung bằng AI](#pipeline-sinh-nội-dung-bằng-ai)
-- [Tài khoản, "key" và Key Shop](#tài-khoản-key-và-key-shop)
-- [Bản đồ thế giới & tiến độ học](#bản-đồ-thế-giới--tiến-độ-học)
-- [API tham khảo](#api-tham-khảo)
-- [Lược đồ database](#lược-đồ-database)
-- [Chạy ở máy local](#chạy-ở-máy-local)
-- [Triển khai (deploy)](#triển-khai-deploy)
-
-## Kiến trúc tổng quan
-
-| Lớp | Công nghệ |
-|---|---|
-| Frontend | HTML + CSS + vanilla JavaScript thuần (không framework, không build step) |
-| Backend | Python, [FastAPI](https://fastapi.tiangolo.com/) (`server/main.py`), phục vụ luôn cả API lẫn file tĩnh |
-| Database | PostgreSQL (khuyến nghị [Neon](https://neon.tech) — free tier serverless) |
-| AI | OpenAI Responses API (model cấu hình qua biến môi trường) |
-| Đăng nhập | Google OAuth (Google Identity Services, phía client) |
-| Thanh toán | VietQR (ảnh QR tĩnh) + webhook [SePay](https://sepay.vn) xác nhận chuyển khoản tự động |
-
-Frontend và backend **chạy cùng 1 origin** (FastAPI tự serve `index.html`, `world1.html`, `world2.html`, `js/`, `css/`, `assets/`) — không cần cấu hình CORS phức tạp hay deploy 2 nơi riêng biệt.
+FastAPI vừa phục vụ API vừa phục vụ file tĩnh (`index.html`, `world1.html`, `world2.html`, `js/`, `css/`, `assets/`) trên cùng 1 origin. Các route trả file tĩnh nằm cuối `server/main.py` (`GET /`, `/index.html`, `/world1.html`, `/world2.html`).
 
 ## Cấu trúc thư mục
 
 ```
-index.html, world1.html, world2.html   # 3 trang chính (SPA-lite, mỗi world map là 1 file riêng)
-css/                                    # style theo từng khu vực (style.css, world-map.css, chatbot.css...)
+index.html, world1.html, world2.html
+css/
 js/
-  core/        # khung ứng dụng: App.js (khởi tạo), main.js (điều phối + Key Shop), data.js (dữ liệu tĩnh)
-  features/    # khối chức năng dùng lại được: auth, chatbot (luồng AI quiz), world-map, playtime,
-               # course-progress, gesture, particles, bg-music, sound-effects, question-history...
-  pages/       # mỗi file render 1 trang vào #main-content: home, course, analysis, profile, world1, world2
-assets/                                 # ảnh, âm thanh
+  core/      App.js, main.js, data.js
+  features/  auth.js, chatbot.js, world-map.js, playtime.js, course-progress.js,
+             gesture.js, particles.js, bg-music.js, sound-effects.js, question-history.js
+  pages/     home.js, course.js, analysis.js, profile.js, world1.js, world2.js
+assets/
 database/
-  vocab b2 database/   vocab-b2-001.json ... 097.json   # 97 level, World 1
-  vocab c1 database/   vocab-c1-001.json ... 121.json   # 121 level, World 2
+  vocab b2 database/   vocab-b2-001.json ... 097.json
+  vocab c1 database/   vocab-c1-001.json ... 121.json
 server/
-  main.py              # toàn bộ API (FastAPI) — điểm vào chính
-  db.py                # lớp truy cập Postgres (users, sessions, progress, pending_payments, feedback)
-  engine_prompts.py     # xây dựng prompt gửi cho AI (dạy nội dung, sinh câu hỏi, chấm điểm)
-  analysis_prompts.py   # prompt cho trang "Phân tích điểm yếu"
-  ai_client.py          # gọi OpenAI Responses API
-  ai_json.py            # parse JSON trả về từ AI (chịu lỗi định dạng)
-  scoring.py            # logic tính PASS/RETRY + DETECTED/UNDERCONFIDENT/CALIBRATED (code thuần, không AI)
-  session_store.py      # session tạm thời cho 1 lượt làm bài (in-memory)
-  config.py             # đường dẫn + biến môi trường dùng chung
+  main.py              toàn bộ route API
+  db.py                truy cập Postgres
+  engine_prompts.py     dựng prompt gửi cho AI
+  analysis_prompts.py   prompt cho trang phân tích điểm yếu
+  ai_client.py          gọi OpenAI Responses API
+  ai_json.py            parse JSON AI trả về
+  scoring.py            công thức PASS/RETRY, DETECTED/UNDERCONFIDENT/CALIBRATED
+  session_store.py      session tạm thời cho 1 lượt làm bài, lưu trong RAM
+  config.py             đường dẫn và biến môi trường dùng chung
   requirements.txt
-  hacker prompt/        # script quản trị nội bộ (gitignored, KHÔNG lên GitHub — xem bên dưới)
-Procfile                                # lệnh khởi động cho Render/Railway/Heroku-style hosting
-requirements.txt                        # trỏ sang server/requirements.txt
+Procfile
+requirements.txt
 ```
 
-## Luồng học & cơ chế phát hiện illusion
+## Luồng 1 lượt học
 
-Mỗi lượt học 1 level gồm các bước (trạng thái lưu trong `session_store.py`):
+Trạng thái 1 lượt học lưu trong `session_store.py` (dict trong RAM, không phải database), đi qua các bước:
 
-1. **Học nội dung** (`/api/chat/start`) — AI dạy nhóm từ của level đó bằng tiếng Việt, dựa trên KB.
-2. **Nhận diện (Recognition)** — 20 câu trắc nghiệm điền từ, chấm bằng code (không AI). Đây là phép đo "nhận diện mặt chữ", mức độ dễ nhất.
-3. **Tự đánh giá độ tự tin** — người học tự chấm điểm tự tin của bản thân trước khi biết kết quả phần Phân biệt/Vận dụng.
-4. **Phân biệt (Distinction) & Vận dụng (Application)** — 2 câu hỏi mở, khó hơn, đòi hỏi vận dụng thực sự chứ không chỉ nhận diện. AI chấm theo rubric chi tiết (nhiều tiêu chí điểm riêng).
-5. **Kết luận** (`scoring.py`, code thuần — **không để AI tự quyết định kết quả**):
-   - Tính `Overall` = tổng hợp điểm 3 phần.
-   - Tính `Gap` = độ tự tin tự khai − năng lực thực đo.
-   - `|Gap|` vượt ngưỡng → `RETRY`, ngược lại → `PASS`.
-   - Dấu của `Gap` quyết định nhãn hiển thị: `DETECTED` (quá tự tin) hay `UNDERCONFIDENT` (tự ti) — chỉ ảnh hưởng hiển thị, không ảnh hưởng PASS/RETRY.
-6. Nếu `RETRY`: có thể học thêm 1 vòng **ôn tập trọng tâm** (`/begin-remediation`) xoáy sâu vào đúng những từ hay nhầm, rồi làm lại từ bước 2 cho tới khi `PASS`.
+1. `POST /api/chat/start`: AI dạy nhóm từ của level, dựa đúng nội dung file KB tương ứng (`server/config.py`: `get_kb_path` map `world_id` + `level` sang đúng file JSON trong `database/`).
+2. `POST /api/chat/begin-recognition`: AI sinh 20 câu trắc nghiệm điền từ. Đáp án giữ trong session ở server, không gửi về client.
+3. `POST /api/chat/submit-recognition`: chấm 20 câu bằng code, đối chiếu với session, không qua AI.
+4. `POST /api/chat/submit-confidence`: lưu điểm tự tin người học tự khai, trước khi biết điểm 2 câu hỏi mở.
+5. `POST /api/chat/submit-open-ended`: AI chấm 2 câu hỏi mở (Distinction, Application) theo rubric nhiều tiêu chí, rồi `scoring.py` tính Overall/Gap/PASS-RETRY.
 
-## Pipeline sinh nội dung bằng AI
+Nếu RETRY, frontend có thể gọi thêm vòng ôn tập trước khi làm lại bước 2:
 
-Toàn bộ nội dung câu hỏi được sinh **thời gian thực theo từng lượt** (không có sẵn trong database), nhằm tránh học sinh học thuộc đáp án qua các lần làm lại. Một số nguyên tắc thiết kế:
+- `POST /api/chat/begin-remediation`: AI phân tích câu sai và điểm yếu, sinh bài ôn tập nhỏ.
+- `POST /api/chat/submit-remediation-mcq`, `submit-remediation-open-ended`: chấm bài ôn tập, không tính vào kết quả chính thức.
 
-- **Knowledge Base cố định**: mỗi file JSON trong `database/` định nghĩa 1 nhóm từ (nghĩa, cách phân biệt, ví dụ). AI chỉ được dùng đúng nội dung này, không tự bịa nghĩa.
-- **Chống lặp câu hỏi hai lớp**:
-  1. Nhét lịch sử câu đã sinh (lưu phía client, `js/features/question-history.js`) vào prompt để AI chủ động tránh lặp ý.
-  2. So khớp văn bản bằng `difflib` (code thuần, miễn phí) để chặn tuyệt đối 2 câu **giống y nguyên** — không dùng thêm 1 lượt gọi AI riêng để kiểm tra lặp ý (đã thử, tốn token và chậm mà lợi ích không tương xứng).
-- **Đa dạng chủ đề & cấu trúc câu bằng thiết kế, không bằng kiểm tra sau**: mỗi câu trong 20 câu MCQ được gán sẵn 1 lĩnh vực riêng (y tế, công nghệ, môi trường...) và được yêu cầu luân phiên qua nhiều kiểu cấu trúc ngữ pháp, để tự nhiên tránh lặp mà không cần sinh lại cả batch.
-- **Xác định đáp án đúng độc lập với việc sinh câu hỏi** (`_determine_and_verify_answers` trong `main.py`): một lượt AI tự suy luận đáp án chỉ từ KB (không biết AI sinh câu đã "định" chọn gì), rồi một lượt AI khác xác minh lại độc lập. Nếu 2 lượt mâu thuẫn hoặc độ tin cậy thấp, câu đó được sinh lại — tách biệt khỏi việc sinh câu hỏi để tránh 1 model tự tin xác nhận lại chính sai lầm của mình.
-- **Chấm điểm cuối cùng luôn là code thuần** (`scoring.py`) — AI chỉ chấm điểm thành phần theo rubric, không bao giờ tự quyết định PASS/RETRY hay nhãn illusion.
+Sau đó `/begin-recognition` được gọi lại cho 1 lượt test đầy đủ mới, lặp tới khi PASS.
 
-## Tài khoản, "key" và Key Shop
+## Sinh câu hỏi: tránh lặp, tránh AI tự bịa đáp án
 
-- Khách chưa đăng nhập dùng được các trang tĩnh nhưng **không dùng được tính năng AI** (0 key).
-- Đăng nhập Google lần đầu được tặng 15 key.
-- Mỗi lượt kiểm tra (`begin-recognition`) tốn 2 key, mỗi lượt ôn tập (`begin-remediation`) tốn 1 key; các endpoint AI khác miễn phí nhưng vẫn yêu cầu đăng nhập.
-- **Key Shop**: mua thêm key qua chuyển khoản ngân hàng thật, xác nhận **tự động hoàn toàn** (không qua thao tác tay của admin) nhờ webhook SePay:
-  - Mỗi gói key có sẵn 1 ảnh QR tĩnh (số tiền cố định, không có nội dung chuyển khoản riêng theo từng giao dịch).
-  - Webhook đối chiếu giao dịch theo 2 lớp: (1) nội dung chuyển khoản nếu khách có sửa được, (2) số tiền — ưu tiên khớp cho giao dịch đăng ký trước (FIFO) **trong số các giao dịch đã được xác minh** (`verified = true`, tức có bằng chứng người dùng thật đang mở màn hình QR chờ, không phải giao dịch rác/test bị bỏ quên).
-  - Giao dịch chưa thanh toán sau vài phút tự chuyển sang `expired`, loại khỏi diện so khớp — tránh tồn đọng rác gây khớp nhầm.
-  - Toàn bộ nguyên tắc: **không bao giờ mất giao dịch, không bao giờ cộng 2 lần, thà không tự cộng còn hơn cộng nhầm người**.
+- Mỗi file JSON trong `database/` chỉ định nghĩa nghĩa, điểm phân biệt, ví dụ cho 1 nhóm từ. Prompt gửi AI (`engine_prompts.py`) chỉ chứa đúng nội dung file đó.
+- Lịch sử câu đã sinh cho level đó lưu ở client (`js/features/question-history.js`), gửi kèm mỗi lần gọi `begin-recognition` để AI tránh lặp ý ngay từ lúc sinh.
+- Sau khi AI trả câu hỏi, server so khớp văn bản bằng `difflib` để chặn 2 câu giống hệt nhau (`server/main.py`, hàm `_find_duplicate`). Không có lượt gọi AI riêng để kiểm tra "lặp ý" vì tốn thêm 1 lượt gọi mỗi batch mà hiệu quả không tương xứng.
+- Đáp án đúng được xác định bằng 1 lượt AI riêng, không biết AI sinh câu đã định chọn đáp án nào (`server/main.py`, hàm `_determine_and_verify_answers`), rồi 1 lượt AI khác xác minh lại độc lập. Hai lượt mâu thuẫn hoặc độ tin cậy dưới ngưỡng thì sinh lại đáp án cho đúng câu đó.
 
-## Bản đồ thế giới & tiến độ học
+## Tài khoản và key
 
-- World 1 (`world1.html`, 97 level) và World 2 (`world2.html`, 121 level) dùng chung 1 engine vẽ bản đồ (`js/features/world-map.js`) — chỉ khác file cấu hình (`js/pages/world1.js` / `world2.js`).
-- Tiến độ (level đã qua, kết quả từng level, từ vựng đã học, tổng thời gian học...) được đồng bộ lên server theo tài khoản Google (`/api/progress/save`, `/api/progress/load`), đảm bảo không mất dữ liệu khi đổi thiết bị.
+- Chưa đăng nhập: dùng được trang tĩnh, không gọi được route AI (0 key).
+- Đăng nhập Google lần đầu được cấp 15 key (`server/db.py`, hàm `upsert_user`).
+- `begin-recognition` trừ 2 key, `begin-remediation` trừ 1 key (`server/main.py`, hàm `_require_keys` và `_charge_keys`). Các route AI khác yêu cầu đăng nhập nhưng không trừ key.
+- Mua thêm key qua `POST /api/keys/create-payment`, trả về URL ảnh QR tĩnh gắn sẵn số tiền cho từng gói.
 
-## API tham khảo
+## Xác nhận thanh toán qua webhook SePay
 
-Toàn bộ định nghĩa nằm trong `server/main.py`.
+QR tĩnh không gắn được nội dung chuyển khoản riêng cho từng giao dịch, nên `POST /api/webhooks/sepay` đối chiếu theo 2 lớp (`server/main.py`, hàm `sepay_webhook`):
+
+1. Nếu nội dung chuyển khoản chứa đúng 1 mã tham chiếu đang chờ, khớp theo mã đó.
+2. Nếu không, đối chiếu theo số tiền, chỉ xét các giao dịch đã `verified = true` (`server/db.py`, hàm `mark_payment_verified`, được set khi client gọi `GET /api/keys/payment-status` ít nhất 1 lần, tức có người đang mở QR chờ thật). Trong các giao dịch khớp số tiền và đã verified, ưu tiên giao dịch tạo trước (FIFO).
+
+Giao dịch pending quá 3 phút tự chuyển sang `expired` (`server/db.py`: `PENDING_PAYMENT_TTL_MINUTES`, hàm `expire_stale_pending_payments`) và không còn được xét ở 2 lớp trên.
+
+`finalize_payment` (`server/db.py`) đánh dấu `paid` và cộng key trong cùng 1 transaction, để không rơi vào trạng thái đã đánh dấu paid nhưng chưa cộng key nếu có lỗi giữa chừng. Webhook trả `{"success": true}` cho mọi trường hợp không khớp được giao dịch (đúng hợp đồng API của SePay, để họ không gọi lại vô ích), chỉ trả lỗi 500 khi có exception ngoài dự kiến.
+
+## Bản đồ level
+
+World 1 (`world1.html`) có 97 level ứng với 97 file trong `database/vocab b2 database/`. World 2 (`world2.html`) có 121 level ứng với `database/vocab c1 database/`. Cả 2 trang dùng chung engine vẽ bản đồ `js/features/world-map.js`, chỉ khác tham số khai ở `js/pages/world1.js` và `world2.js` (`worldId`, `totalLevels`, ảnh nền, theme màu).
+
+Tiến độ (level đã qua, kết quả từng level, từ vựng đã học, thời gian học) lưu ở client qua `localStorage`, đồng bộ lên server theo tài khoản Google qua `POST /api/progress/save` và `GET /api/progress/load` (`server/db.py`, bảng `progress`, cột `data_json`).
+
+## API
 
 | Nhóm | Endpoint |
 |---|---|
 | Đăng nhập | `POST /api/auth/google`, `POST /api/auth/logout`, `GET /api/auth/me` |
 | Luồng học 1 level | `POST /api/chat/start`, `begin-recognition`, `submit-recognition`, `submit-confidence`, `submit-open-ended` |
-| Ôn tập trọng tâm | `POST /api/chat/begin-remediation`, `submit-remediation-mcq`, `submit-remediation-open-ended` |
+| Ôn tập | `POST /api/chat/begin-remediation`, `submit-remediation-mcq`, `submit-remediation-open-ended` |
 | Từ vựng | `GET /api/vocab/{world_id}/{level}` |
 | Phân tích điểm yếu | `POST /api/analysis/generate` |
 | Tiến độ | `POST /api/progress/save`, `GET /api/progress/load` |
 | Key Shop | `POST /api/keys/create-payment`, `GET /api/keys/payment-status/{reference_code}`, `POST /api/webhooks/sepay` |
 | Góp ý | `POST /api/feedback` |
-| Trang tĩnh | `GET /`, `/index.html`, `/world1.html`, `/world2.html` |
 
-## Lược đồ database
+## Database
 
-PostgreSQL, 5 bảng chính (xem `server/db.py`):
+PostgreSQL, định nghĩa trong `server/db.py` (hàm `init_db`):
 
-- `users` — tài khoản Google, số key, số lần mua.
-- `sessions` — token đăng nhập.
-- `progress` — tiến độ học (JSON) theo từng user.
-- `pending_payments` — giao dịch Key Shop (`pending` / `paid` / `expired`).
-- `feedback` — góp ý người dùng gửi qua form.
+- `users`: tài khoản Google, số key, số lần mua.
+- `sessions`: token đăng nhập.
+- `progress`: tiến độ học dạng JSON, 1 dòng mỗi user.
+- `pending_payments`: giao dịch Key Shop, cột `status` nhận `pending`/`paid`/`expired`.
+- `feedback`: nội dung góp ý gửi qua `POST /api/feedback`.
 
-## Chạy ở máy local
+## Chạy local
 
-Yêu cầu: Python 3.11+, 1 database Postgres (VD tạo free tại Neon), 1 API key OpenAI.
+Cần Python 3.11+, 1 connection string Postgres, 1 API key OpenAI.
 
 ```bash
-# 1. Cài dependency
 pip install -r requirements.txt
-
-# 2. Tạo file server/.env (copy từ server/.env.example) và điền:
-#    OPENAI_API_KEY, GOOGLE_CLIENT_ID, DATABASE_URL (bắt buộc)
-#    Phần Key Shop (BANK_*, SEPAY_API_KEY) có thể để trống khi dev — webhook
-#    sẽ tự từ chối an toàn nếu SEPAY_API_KEY trống, không cần xoá code gì.
-
-# 3. Chạy server (cũng tự phục vụ luôn frontend tĩnh)
 cd server
+cp .env.example .env   # điền OPENAI_API_KEY, GOOGLE_CLIENT_ID, DATABASE_URL
 uvicorn main:app --reload --port 8000
 ```
 
-Mở `http://localhost:8000`.
+Mở `http://localhost:8000`. Phần Key Shop (`BANK_*`, `SEPAY_API_KEY`) để trống được khi phát triển cục bộ: thiếu `SEPAY_API_KEY` thì webhook tự từ chối mọi request, không cần tắt code.
 
-## Triển khai (deploy)
+## Deploy
 
-- `Procfile` đã cấu hình sẵn cho các nền tảng kiểu Render/Railway (`uvicorn main:app --host 0.0.0.0 --port $PORT`).
-- Bắt buộc dùng Postgres thật (VD Neon) khi deploy — ổ đĩa trên hosting free tier là tạm thời, SQLite sẽ mất sạch dữ liệu mỗi lần server khởi động lại.
-- Google OAuth cần khai báo đúng domain thật trong mục "Authorized JavaScript origins" của OAuth Client trên Google Cloud Console.
-- Webhook SePay cần trỏ về đúng domain thật (`https://<domain>/api/webhooks/sepay`) và cấu hình `Authorization: Apikey <SEPAY_API_KEY>` khớp với biến môi trường.
-
----
-
+`Procfile` chạy `uvicorn main:app --host 0.0.0.0 --port $PORT`, dùng được trên các nền tảng kiểu buildpack Python (Render, Railway). Cần `DATABASE_URL` trỏ tới Postgres thật vì ổ đĩa trên hosting free tier không giữ file SQLite qua các lần restart. Google OAuth Client cần khai domain thật trong mục Authorized JavaScript origins. Webhook SePay cần trỏ về `https://<domain>/api/webhooks/sepay`, header `Authorization: Apikey <SEPAY_API_KEY>` khớp biến môi trường.
