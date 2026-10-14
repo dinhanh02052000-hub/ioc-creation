@@ -43,7 +43,7 @@ function App() {
             <img src="assets/images/ioc-logo.jpg" alt="IOC Logo" class="logo-img">
           </div>
           <div class="brand-text">
-            <span class="brand-title">IOC <span class="sub-title">ILLUSION OF COMPETENCE</span></span>
+            <span class="brand-title">IOC <span class="sub-title">Illusion of competence</span></span>
             <span class="brand-notice">Để kết quả được tối ưu, trong quá trình làm bài không dùng công cụ hoặc thiết bị hỗ trợ</span>
           </div>
           <div class="header-key-area">
