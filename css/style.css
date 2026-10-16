@@ -523,36 +523,16 @@ body {
   gap: 20px;
   max-width: 1400px;
   margin: 0 auto;
-  align-items: start;
+  /* stretch (không phải start): 3 cột cao bằng nhau (bằng cột cao nhất) nên
+     mép dưới luôn thẳng hàng, dù số card hoặc độ dài nội dung mỗi cột khác
+     nhau - tránh cảnh cột ngắn cột dài lệch nhau ở cuối trang. */
+  align-items: stretch;
 }
 
 .left-column, .middle-column, .right-column {
   display: flex;
   flex-direction: column;
   gap: 20px;
-}
-
-.ai-disclaimer {
-  grid-column: 1 / -1;
-  justify-self: center;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--overlay-soft);
-  color: var(--text-dim);
-  font-size: 0.82rem;
-  line-height: 1.4;
-  max-width: 100%;
-}
-
-.ai-disclaimer svg {
-  flex-shrink: 0;
-  width: 18px;
-  height: 18px;
-  color: var(--accent-amber);
 }
 
 .card {
@@ -612,6 +592,7 @@ body {
 .tip-card { border-top-color: var(--accent-amber); }
 .welcome-card { border-top-color: var(--accent-teal); }
 .dev-card { border-top-color: var(--accent-green); }
+.ioc-index-card { border-top-color: #f87171; }
 
 .card-header {
   display: flex;

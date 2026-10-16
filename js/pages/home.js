@@ -116,6 +116,14 @@ function renderHome() {
             <p>Chào bạn! Mình là IOC — luôn sẵn sàng đồng hành cùng bạn chinh phục từ vựng mỗi ngày! 🚀</p>
           </div>
         </div>
+
+        <div class="card ioc-index-card">
+          <div class="card-header">
+            <span class="card-title">CHỈ SỐ IOC</span>
+            <span class="badge">Tổng hợp</span>
+          </div>
+          ${homeRenderIocIndexBody()}
+        </div>
       </div>
 
       <!-- Cột giữa: Quote & Tip -->
@@ -197,15 +205,27 @@ function renderHome() {
           </blockquote>
         </div>
       </div>
+    </div>
+  `;
+}
 
-      <div class="ai-disclaimer">
-        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="10" cy="10" r="7.5"/>
-          <line x1="10" y1="6.5" x2="10" y2="10.5"/>
-          <circle cx="10" cy="13.3" r="0.15" fill="currentColor" stroke-width="1.2"/>
-        </svg>
-        <span>Illusion of Competence Detector là AI và có thể mắc sai lầm. Hãy kiểm tra kĩ lại thông tin nếu phát hiện bất thường.</span>
-      </div>
+// Chỉ số IOC ở Home: cùng công thức/nguồn dữ liệu với trang Analysis (xem
+// analysisComputeAggregate() ở js/pages/analysis.js, đã load sẵn toàn site) -
+// không tính lại từ đầu để tránh 2 nơi lệch số liệu nhau.
+function homeRenderIocIndexBody() {
+  const agg = typeof analysisComputeAggregate === 'function' ? analysisComputeAggregate() : null;
+  if (!agg) {
+    return `<div class="analysis-empty">Hoàn thành ít nhất 1 level để xem chỉ số IOC của bạn.</div>`;
+  }
+  const meta = ANALYSIS_ILLUSION_META[agg.illusion_status] || { label: agg.illusion_status, dot: 'red' };
+  const gapSign = agg.gap > 0 ? '+' : '';
+  return `
+    ${analysisScoreRowHtml('Ảo tưởng', agg.confidence)}
+    ${analysisScoreRowHtml('Thực tế', agg.overall)}
+    <div class="analysis-illusion-row">
+      <span class="analysis-status-dot analysis-status-dot--${meta.dot}"></span>
+      <span>GAP: ${gapSign}${agg.gap.toFixed(1)}</span>
+      <span class="analysis-illusion-hint">${meta.label}</span>
     </div>
   `;
 }
