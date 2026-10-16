@@ -1,3 +1,8 @@
+// Khung ứng dụng: sidebar (máy tính/tablet) + topbar + thanh điều hướng đáy
+// (điện thoại). Thay cho header 2 hàng + 4 nút tab to trước đây. Logic mở/
+// đóng sidebar, điều hướng, nối key-shop/feedback nằm ở main.js - file này
+// chỉ lo phần render HTML tĩnh ban đầu.
+
 // Phải khớp chính xác với _KEY_SHOP_PACKAGES ở server/main.py, vốn là nguồn
 // tính bonus thật khi mua - bảng này chỉ dùng để hiển thị trước khi bấm mua.
 const KEY_SHOP_PACKAGES = [
@@ -34,46 +39,103 @@ function renderKeyShopPackages(purchaseCount = 0) {
   `).join('');
 }
 
-function App() {
+// Danh sách mục điều hướng DÙNG CHUNG cho sidebar và thanh đáy mobile (thanh
+// đáy chỉ lấy 4 mục đầu đánh dấu primary:true - xem initBottomNav ở main.js).
+const NAV_ITEMS = [
+  { target: 'home', label: 'Trang chủ', icon: 'home', primary: true },
+  { target: 'course', label: 'Lộ trình', icon: 'map', primary: true },
+  { target: 'analysis', label: 'Phân tích', icon: 'chartLine', primary: true },
+  { target: 'vocab', label: 'Từ đã học', icon: 'bookOpen', primary: false },
+  { target: 'about', label: 'Giới thiệu', icon: 'info', primary: false, group: 'secondary' },
+  { target: 'profile', label: 'Hồ sơ', icon: 'user', primary: true, group: 'secondary' },
+];
+
+function renderSidebarNavItem(item) {
   return `
-    <div class="app-container">
-      <header class="navbar">
-        <div class="brand">
-          <div class="logo-placeholder">
-            <img src="assets/images/ioc-logo.jpg" alt="IOC Logo" class="logo-img">
-          </div>
-          <div class="brand-text">
-            <span class="brand-title">IOC <span class="sub-title">Illusion of competence</span></span>
-            <span class="brand-notice">Để kết quả được tối ưu, trong quá trình làm bài không dùng công cụ hoặc thiết bị hỗ trợ</span>
-          </div>
-          <div class="header-key-area">
-            <div class="key-balance-pill" title="Số key còn lại (dùng để giới hạn tính năng AI)">
-              <span class="key-balance-value" id="header-key-value">000</span>
-              <span class="key-balance-icon"><img src="assets/images/key.png" alt="Key"></span>
-            </div>
-            <button type="button" class="key-topup-btn" id="key-topup-btn" title="Nạp thêm key">+</button>
+    <button type="button" class="sidebar-nav-item" data-target="${item.target}" title="${item.label}">
+      <span class="sidebar-nav-icon">${icon(item.icon, 20)}</span>
+      <span class="sidebar-nav-label">${item.label}</span>
+    </button>
+  `;
+}
+
+function renderSidebar() {
+  const mainItems = NAV_ITEMS.filter(i => i.group !== 'secondary').map(renderSidebarNavItem).join('');
+  const secondaryItems = NAV_ITEMS.filter(i => i.group === 'secondary').map(renderSidebarNavItem).join('');
+
+  return `
+    <aside class="sidebar" id="app-sidebar">
+      <div class="sidebar-top">
+        <div class="sidebar-logo">
+          <img src="assets/images/ioc-logo.jpg" alt="IOC Logo" class="sidebar-logo-img">
+          <span class="sidebar-logo-text">IOC</span>
+        </div>
+        <button type="button" class="sidebar-toggle-btn" id="sidebar-toggle-btn"
+          aria-label="Thu gọn thanh bên" aria-expanded="true" title="Thu gọn thanh bên (Ctrl/Cmd+B)">
+          ${icon('panelLeftClose', 18)}
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">${mainItems}</nav>
+      <div class="sidebar-spacer"></div>
+      <nav class="sidebar-nav sidebar-nav-secondary">${secondaryItems}</nav>
+    </aside>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  `;
+}
+
+function renderTopbar() {
+  return `
+    <header class="topbar">
+      <h1 class="topbar-title" id="topbar-title">Trang chủ</h1>
+      <div class="topbar-right">
+        <div class="key-balance-pill" id="header-key-pill" title="Key dùng để giới hạn số lượt dùng tính năng AI (sinh câu hỏi, chấm bài...)">
+          <span class="key-balance-icon"><img src="assets/images/key.png" alt="Key"></span>
+          <span class="key-balance-value" id="header-key-value">000</span>
+        </div>
+        <button type="button" class="key-topup-btn" id="key-topup-btn" title="Nạp thêm key">Nạp key</button>
+
+        <div class="topbar-avatar-wrap" id="topbar-avatar-wrap">
+          <button type="button" class="topbar-avatar-btn" id="topbar-avatar-btn" aria-haspopup="true" aria-expanded="false" aria-label="Menu tài khoản">
+            <img alt="Ảnh đại diện" class="topbar-avatar-img" id="topbar-avatar-img">
+          </button>
+          <div class="topbar-avatar-menu" id="topbar-avatar-menu" hidden>
+            <button type="button" class="topbar-avatar-menu-item" data-target="profile">${icon('user', 16)}<span>Hồ sơ</span></button>
+            <button type="button" class="topbar-avatar-menu-item" id="topbar-settings-btn" data-target="profile">${icon('settings', 16)}<span>Cài đặt</span></button>
+            <button type="button" class="topbar-avatar-menu-item" id="topbar-logout-btn">${icon('logOut', 16)}<span>Đăng xuất</span></button>
           </div>
         </div>
-        <nav class="nav-links">
-          <button class="nav-btn active" data-target="home">
-            <span class="title">HOME</span>
-          </button>
-          <button class="nav-btn" data-target="course">
-            <span class="title">COURSE</span>
-          </button>
-          <button class="nav-btn" data-target="analysis">
-            <span class="title">ANALYSIS</span>
-          </button>
-          <button class="nav-btn" data-target="profile">
-            <span class="title">PROFILE</span>
-          </button>
-        </nav>
-      </header>
+      </div>
+    </header>
+  `;
+}
 
-      <main id="main-content" class="content-area"></main>
+function renderBottomNav() {
+  const items = NAV_ITEMS.filter(i => i.primary).map(item => `
+    <button type="button" class="bottom-nav-item" data-target="${item.target}">
+      <span class="bottom-nav-icon">${icon(item.icon, 22)}</span>
+      <span class="bottom-nav-label">${item.label}</span>
+    </button>
+  `).join('');
+
+  return `<nav class="bottom-nav" id="bottom-nav">${items}</nav>`;
+}
+
+function App() {
+  return `
+    <div class="app-shell">
+      ${renderSidebar()}
+      <div class="app-main">
+        ${renderTopbar()}
+        <main id="main-content" class="content-area"></main>
+        <footer class="app-footer">
+          <span>Illusion of Competence Detector là AI và có thể mắc sai lầm. Hãy kiểm tra kĩ lại thông tin nếu phát hiện bất thường.</span>
+        </footer>
+      </div>
     </div>
+    ${renderBottomNav()}
 
-    <button id="feedback-fab" class="feedback-fab" type="button" title="Gửi góp ý">
+    <button id="feedback-fab" class="feedback-fab" type="button" title="Gửi góp ý" aria-label="Gửi góp ý">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M4 5h16v10H8l-4 4V5z"/>
       </svg>
@@ -82,7 +144,7 @@ function App() {
     <div id="feedback-panel" class="feedback-panel">
       <div class="feedback-panel-header">
         <span class="feedback-panel-title">Góp ý / Feedback</span>
-        <button id="feedback-close-btn" class="feedback-close-btn" type="button" aria-label="Đóng">✕</button>
+        <button id="feedback-close-btn" class="feedback-close-btn" type="button" aria-label="Đóng">${icon('x', 16)}</button>
       </div>
       <p class="feedback-desc">Bạn có góp ý, phát hiện lỗi hay muốn đề xuất tính năng mới? Gửi cho tụi mình nhé!</p>
       <form id="feedback-form" class="feedback-form">
@@ -97,7 +159,7 @@ function App() {
       <div class="key-shop-panel">
         <div class="key-shop-header">
           <span class="key-shop-title">Key Shop</span>
-          <button type="button" class="key-shop-close" id="key-shop-close" aria-label="Đóng">✕</button>
+          <button type="button" class="key-shop-close" id="key-shop-close" aria-label="Đóng">${icon('x', 16)}</button>
         </div>
         <div class="key-shop-body">
           <div id="key-shop-package-view">

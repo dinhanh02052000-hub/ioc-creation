@@ -290,6 +290,19 @@ def correction_task(wrong_summary: str) -> str:
     )
 
 
+def correction_per_question_task(wrong_summary: str) -> str:
+    """Giải thích RIÊNG từng câu sai (JSON) để frontend gắn ngay dưới đúng câu đó."""
+    nl = chr(10)
+    return (
+        "KẾT QUẢ CỦA HỌC SINH:" + nl + wrong_summary + nl + nl +
+        "Với MỖI câu sai/bỏ trống ở trên, viết 1 giải thích bằng tiếng Việt, 1-3 câu: vì sao đáp án học sinh chọn "
+        "KHÔNG phù hợp trong ngữ cảnh câu này, và vì sao đáp án đúng phù hợp hơn (dựa vào phân biệt nghĩa trong "
+        "KB). Không nhắc điểm số/tỷ lệ %. Có thể dùng **in đậm** cho từ mục tiêu. Dùng đúng số thứ tự câu đã cho "
+        "làm id. CHỈ trả JSON, không chữ thừa: "
+        '{"items": [{"id": <số câu>, "explanation": "..."}, ...]}'
+    )
+
+
 def remediation_task(
     missed_words_text: str,
     weak_area: str,

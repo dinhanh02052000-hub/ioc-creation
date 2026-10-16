@@ -16,11 +16,15 @@ const SFX_OPTIONS = [
   { id: 'pop', label: 'Pop', src: 'assets/audio/sfx/pop.mp3' },
 ];
 
+// Mặc định TẮT cho người dùng mới (chưa từng bấm công tắc, key chưa tồn tại
+// trong localStorage) - theo yêu cầu redesign mục 5.4. Chỉ khi key đã lưu rõ
+// ràng là '0' (người dùng tự bật) mới trả về false.
 function isSfxMuted() {
   try {
-    return localStorage.getItem(SFX_MUTE_KEY) === '1';
+    const saved = localStorage.getItem(SFX_MUTE_KEY);
+    return saved === null ? true : saved === '1';
   } catch (e) {
-    return false;
+    return true;
   }
 }
 

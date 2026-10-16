@@ -1,11 +1,15 @@
+// Trang chủ - bố cục bento 5 ô (xem mục 5.1 của yêu cầu redesign):
+// A. Tiếp tục học  B. Chỉ số IoC  C. Kết quả gần đây  D. Từ cần ôn  E. Mẹo hôm nay
+// Founders/Quote-Tip cũ đã chuyển sang trang Giới thiệu (about.js) và gộp
+// vào ô E - không xoá nội dung, chỉ đổi chỗ theo đúng yêu cầu.
+
 const USER_NAME_KEY = 'ioc_user_name';
 const DEFAULT_USER_NAME = 'Guest';
 
 function getUserName() {
   try {
     // PHẢI JSON.parse: mọi key "ioc_*" được đồng bộ lên server giả định giá
-    // trị là JSON hợp lệ (xem collectLocalProgressData ở auth.js). Lưu chuỗi
-    // thô sẽ khiến parse ở đó lỗi và tên đặt không bao giờ đồng bộ được.
+    // trị là JSON hợp lệ (xem collectLocalProgressData ở auth.js).
     const saved = JSON.parse(localStorage.getItem(USER_NAME_KEY));
     return typeof saved === 'string' && saved.trim() ? saved.trim() : DEFAULT_USER_NAME;
   } catch (e) {
@@ -22,8 +26,6 @@ function setUserName(name) {
   }
 }
 
-// Vẽ SVG trực tiếp dưới dạng data URI thay vì dùng file ảnh nên luôn có sẵn,
-// không cần tải mạng.
 function getDefaultAvatarDataUri() {
   const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">'
     + '<circle cx="20" cy="20" r="20" fill="#1c2129"/>'
@@ -49,215 +51,83 @@ function getDayOfYear() {
   return Math.floor(diff / oneDay);
 }
 
-// Ngày (giờ local) dùng để chọn quote/tip lần gần nhất, để phát hiện sang
-// ngày mới khi trang Home vẫn đang mở.
 let homeRenderedDate = null;
 let homeDailyCheckIntervalId = null;
 
-function renderHome() {
-  const dayOfYear = getDayOfYear();
+function homeEscapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str == null ? '' : String(str);
+  return div.innerHTML;
+}
 
-  const quoteIndex = (dayOfYear - 1) % QUOTES_LIST.length;
-  const tipIndex = (dayOfYear - 1) % TIPS_LIST.length;
+// ---- A. Tiếp tục học ----
 
-  const todayQuote = QUOTES_LIST[quoteIndex];
-  const todayTip = TIPS_LIST[tipIndex];
-  const userName = getUserName();
-
-  if (typeof getTodayDateString === 'function') {
-    homeRenderedDate = getTodayDateString();
+function homeGetContinueWorld() {
+  for (const w of COURSE_WORLDS) {
+    const completed = getWorldCompletedLevels(w.id);
+    if (completed < w.totalLevels) return { world: w, completed };
   }
+  const w = COURSE_WORLDS[COURSE_WORLDS.length - 1];
+  return { world: w, completed: getWorldCompletedLevels(w.id) };
+}
+
+function homeRenderContinueCard() {
+  const { world, completed } = homeGetContinueWorld();
+  const nextLevel = Math.min(world.totalLevels, completed + 1);
+  const percent = Math.min(100, Math.round((completed / world.totalLevels) * 100));
+  const isFirstEver = COURSE_WORLDS.every(w => getWorldCompletedLevels(w.id) === 0);
 
   return `
-    <div class="home-dashboard">
-      <!-- Cột trái: mascot IOC -->
-      <div class="left-column">
-        <div class="card mascot-card">
-          <div class="card-header">
-            <span class="card-title">MEET IOC</span>
+    <div class="card home-continue-card">
+      <p class="home-greeting">Chào ${homeEscapeHtml(getUserName())}</p>
+      <div class="home-continue-body">
+        <div class="home-continue-info">
+          <div class="home-continue-world">${world.name}</div>
+          <div class="home-continue-level" id="home-continue-level">Level ${nextLevel}${isFirstEver ? '' : ' · <span class="home-continue-topic">đang tải chủ đề...</span>'}</div>
+          <div class="home-continue-progress-row">
+            <div class="home-continue-bar"><div class="home-continue-bar-fill" style="width:${percent}%;"></div></div>
+            <span class="home-continue-progress-text">${completed}/${world.totalLevels} level</span>
           </div>
-          <p class="sub-text">TRỢ LÝ HỌC TẬP CỦA BẠN</p>
-
-          <div class="mascot-container">
-            <svg class="mascot-robot" viewBox="0 0 140 130" xmlns="http://www.w3.org/2000/svg">
-              <path class="mascot-cape" d="M46 76 Q28 96 32 120 L48 106 Q68 116 90 106 L106 120 Q110 96 92 76 Z" />
-
-              <line class="mascot-antenna" x1="68" y1="12" x2="68" y2="26" />
-              <circle class="mascot-antenna-dot" cx="68" cy="12" r="5" />
-
-              <rect class="mascot-shell" x="34" y="26" width="68" height="48" rx="17" />
-
-              <g class="mascot-cap">
-                <path class="mascot-cap-top" d="M68 4 L102 19 L68 34 L34 19 Z" />
-                <rect class="mascot-cap-band" x="50" y="19" width="36" height="9" rx="3" />
-                <line class="mascot-cap-string" x1="102" y1="19" x2="102" y2="33" />
-                <circle class="mascot-cap-tassel" cx="102" cy="35" r="3" />
-              </g>
-
-              <rect class="mascot-eye" x="51" y="45" width="9" height="13" rx="4.5" />
-              <path class="mascot-eye-wink" d="M76 51 q4.5 4 9 0" />
-              <path class="mascot-mouth" d="M54 64 q14 10 28 0" />
-
-              <rect class="mascot-shell" x="46" y="78" width="44" height="36" rx="15" />
-              <rect class="mascot-shell" x="22" y="90" width="15" height="24" rx="7" />
-
-              <g class="mascot-wave">
-                <path class="mascot-arm" d="M90 90 Q104 70 112 52" />
-                <path class="mascot-arm-fill" d="M90 90 Q104 70 112 52" />
-                <circle class="mascot-shell" cx="112" cy="52" r="8" />
-                <line class="mascot-finger" x1="106" y1="46" x2="101" y2="35" />
-                <line class="mascot-finger" x1="112" y1="43" x2="112" y2="30" />
-                <line class="mascot-finger" x1="118" y1="46" x2="123" y2="35" />
-              </g>
-            </svg>
-          </div>
-
-          <div class="mascot-speech-bubble">
-            <p>Chào bạn! Mình là IOC — luôn sẵn sàng đồng hành cùng bạn chinh phục từ vựng mỗi ngày! 🚀</p>
-          </div>
+          <button type="button" class="ai-btn home-continue-btn" data-world-id="${world.id}">
+            ${isFirstEver ? 'Bắt đầu hành trình' : 'Tiếp tục học'}
+          </button>
         </div>
-      </div>
-
-      <!-- Hàng dưới (cột trái): chỉ số IOC, cùng hàng với ô từ vựng -->
-      <div class="card ioc-index-card">
-        <div class="card-header">
-          <span class="card-title">CHỈ SỐ IOC</span>
-          <span class="badge">Tổng hợp</span>
-        </div>
-        ${homeRenderIocIndexBody()}
-      </div>
-
-      <!-- Cột giữa: Quote & Tip -->
-      <div class="middle-column">
-        <div class="card quote-card">
-          <div class="card-header">
-            <span class="card-title">QUOTE OF THE DAY</span>
-            <span class="badge">Daily Rotation</span>
-          </div>
-          <p class="quote-content">"${todayQuote.en}"</p>
-          <div class="card-footer">
-            <span class="tag">${todayQuote.vi}</span>
-            <span class="author">— ${todayQuote.author}</span>
-          </div>
-        </div>
-
-        <div class="card tip-card">
-          <div class="card-header">
-            <span class="card-title">TIP OF THE DAY</span>
-            <span class="badge">Daily Rotation</span>
-          </div>
-          <p class="tip-content">${todayTip.text}</p>
-          <div class="card-footer">
-            <span class="tip-id">Tip #${tipIndex + 1}</span>
-            <span class="tag">${todayTip.category}</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Cột phải: Welcome & Developer -->
-      <div class="right-column">
-        <div class="card welcome-card">
-          <div class="welcome-row">
-            <div class="welcome-avatar-wrap">
-              <img alt="Ảnh đại diện" class="welcome-avatar" id="welcome-avatar-img">
-            </div>
-            <div class="welcome-text">
-              <p class="welcome-subtitle">WELCOME BACK, LEARNER!</p>
-              <h2 class="welcome-title">
-                <span id="user-name-display" contenteditable="true" spellcheck="false">${userName}</span>
-                <button id="edit-name-btn" class="edit-name-btn" title="Đổi tên hiển thị" type="button">
-                  <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M13.5 3.5a1.5 1.5 0 0 1 2.12 0l0.88 0.88a1.5 1.5 0 0 1 0 2.12L6.5 16.5 3 17.5l1-3.5L13.5 3.5z"/>
-                  </svg>
-                </button>
-              </h2>
-            </div>
-          </div>
-        </div>
-
-        <div class="card dev-card">
-          <div class="card-header">
-            <span class="card-title">MEET THE FOUNDER</span>
-          </div>
-
-          <div class="founder-row">
-            <div class="founder-member">
-              <img src="assets/images/founder-dinhanh.jpg" alt="Đinh Việt Anh" class="founder-avatar">
-              <div class="founder-role">Trưởng nhóm</div>
-              <div class="founder-name">Đinh Việt Anh</div>
-            </div>
-            <div class="founder-member">
-              <img src="assets/images/founder-tuan.jpg" alt="Nguyễn Minh Tuấn" class="founder-avatar">
-              <div class="founder-role">Thành viên</div>
-              <div class="founder-name">Nguyễn Minh Tuấn</div>
-            </div>
-            <div class="founder-member">
-              <img src="assets/images/founder-hanlinh.jpg" alt="Hán Linh Linh" class="founder-avatar">
-              <div class="founder-role">Thành viên</div>
-              <div class="founder-name">Hán Linh Linh</div>
-            </div>
-          </div>
-
-          <div class="dev-divider"></div>
-
-          <blockquote class="dev-quote">
-            Cảm ơn bạn đã trải nghiệm IOC! Mong rằng hệ thống của chúng mình sẽ luôn là người bạn đồng hành đáng tin cậy, giúp bạn làm chủ kiến thức mỗi ngày.
-            <footer>— Lời nhắn từ tác giả <span class="motto">See you Beyond, Improve Truly.</span></footer>
-          </blockquote>
-        </div>
-      </div>
-
-      <!-- Hàng dưới (cột giữa + phải): từ vựng đã học theo từng world -->
-      <div class="card vocab-home-card">
-        <div class="card-header">
-          <span class="card-title">TỪ VỰNG ĐÃ HỌC</span>
-          <span class="badge">Cần nhớ</span>
-        </div>
-        <div class="vocab-home-split">
-          ${HOME_VOCAB_WORLDS.map(homeRenderVocabHalf).join('')}
-        </div>
+        <img class="home-continue-mascot" src="assets/images/ioc-bear.png" alt="Gấu IOC" draggable="false">
       </div>
     </div>
   `;
 }
 
-const HOME_VOCAB_WORLDS = [
-  { id: 'world-1', label: 'World 1', page: 'world1.html', accent: 'green' },
-  { id: 'world-2', label: 'World 2', page: 'world2.html', accent: 'blue' }
-];
-
-// Mỗi nửa ứng với 1 world: chưa PASS level nào -> lời nhắc + nút Start vào
-// thẳng world đó; đã có -> liệt kê từ của các nhóm đã học (đọc từ cùng nguồn
-// với nút "Từ vựng đã học" trong trang world).
-function homeRenderVocabHalf(world) {
-  const entries = typeof getVocabLearnedList === 'function' ? getVocabLearnedList(world.id) : [];
-  const escape = (v) => String(v == null ? '' : v)
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-  const bodyHtml = entries.length
-    ? `<div class="vocab-home-list">${entries.map(e => `
-        <div class="vocab-home-item">
-          <strong>${escape(e.group_title || 'Level ' + e.level)}</strong>:
-          ${e.words.map(escape).join(', ')}
-        </div>`).join('')}</div>`
-    : `<p class="vocab-home-locked">Hoàn thành 1 level của ${world.label} để mở khoá từ mới</p>`;
-
-  return `
-    <div class="vocab-home-half" data-accent="${world.accent}">
-      <div class="vocab-home-half-title">${world.label.toUpperCase()}</div>
-      ${bodyHtml}
-      <a class="vocab-home-start" href="${world.page}">${entries.length ? 'Tiếp tục' : 'Start'}</a>
-    </div>
-  `;
+async function homeLoadContinueTopic(worldId, level) {
+  const el = document.querySelector('#home-continue-level .home-continue-topic');
+  if (!el || typeof gestureGetVocab !== 'function') return;
+  try {
+    const data = await gestureGetVocab(worldId, level);
+    el.textContent = data.group_title || '';
+  } catch (e) {
+    el.textContent = '';
+  }
 }
 
-// Chỉ số IOC ở Home: cùng công thức/nguồn dữ liệu với trang Analysis (xem
-// analysisComputeAggregate() ở js/pages/analysis.js, đã load sẵn toàn site) -
-// không tính lại từ đầu để tránh 2 nơi lệch số liệu nhau.
+// ---- B. Chỉ số IoC ----
+// Cùng công thức/nguồn dữ liệu với trang Phân tích (analysisComputeAggregate
+// ở js/pages/analysis.js) - không tính lại từ đầu để tránh 2 nơi lệch số liệu.
 function homeRenderIocIndexBody() {
   const agg = typeof analysisComputeAggregate === 'function' ? analysisComputeAggregate() : null;
+
   if (!agg) {
-    return `<div class="analysis-empty">Hoàn thành ít nhất 1 level để xem chỉ số IOC của bạn.</div>`;
+    return `
+      <div class="home-iocindex-example">
+        <span class="badge">Ví dụ</span>
+        ${analysisScoreRowHtml('Ảo tưởng', 7.5)}
+        ${analysisScoreRowHtml('Thực tế', 5.8)}
+        <div class="analysis-illusion-row">
+          <span class="analysis-status-dot analysis-status-dot--red"></span>
+          <span>GAP: +1.7</span>
+          <span class="analysis-illusion-hint">Hoàn thành 1 level để xem số liệu thật</span>
+        </div>
+      </div>
+    `;
   }
   const meta = ANALYSIS_ILLUSION_META[agg.illusion_status] || { label: agg.illusion_status, dot: 'red' };
   const gapSign = agg.gap > 0 ? '+' : '';
@@ -272,49 +142,162 @@ function homeRenderIocIndexBody() {
   `;
 }
 
-// Phải gọi sau khi renderHome() đã chèn nội dung vào DOM.
+// ---- C. Kết quả gần đây ----
+
+const HOME_ILLUSION_LABELS = {
+  DETECTED: { text: 'Ảo tưởng', cls: 'illusion' },
+  UNDERCONFIDENT: { text: 'Tự ti', cls: 'under' },
+  CALIBRATED: { text: 'Cân bằng', cls: 'balanced' },
+};
+
+function homeRenderRecentResultsCard() {
+  const flat = typeof getAllLevelResultsFlat === 'function' ? getAllLevelResultsFlat() : [];
+  const recent = flat.slice().sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)).slice(0, 3);
+
+  const bodyHtml = recent.length
+    ? recent.map(r => {
+        const worldLabel = r.world_id === 'world-1' ? 'World 1' : 'World 2';
+        const status = HOME_ILLUSION_LABELS[r.illusion_status] || { text: r.illusion_status || '-', cls: 'balanced' };
+        const gapSign = r.gap > 0 ? '+' : '';
+        return `
+          <div class="home-recent-row">
+            <span class="home-recent-level">${worldLabel} · Level ${r.level}</span>
+            <span class="home-recent-overall">${(r.overall ?? 0).toFixed(1)}</span>
+            <span class="home-recent-gap">Gap ${gapSign}${(r.gap ?? 0).toFixed(1)}</span>
+            <span class="home-recent-status home-recent-status--${status.cls}">${status.text}</span>
+          </div>
+        `;
+      }).join('')
+    : `<div class="analysis-empty">Chưa có level nào hoàn thành.</div>`;
+
+  return `
+    <div class="card home-recent-card">
+      <div class="card-header">
+        <span class="card-title">Kết quả gần đây</span>
+      </div>
+      <div class="home-recent-list">${bodyHtml}</div>
+      <button type="button" class="home-card-link" data-target="analysis">Xem tất cả →</button>
+    </div>
+  `;
+}
+
+// ---- D. Từ cần ôn ----
+// LƯU Ý: dữ liệu hiện tại không lưu độ tự tin riêng theo TỪNG từ/câu (chỉ có
+// 1 điểm tự tin tổng cho cả level - xem results.confidence), nên không lọc
+// được đúng "ưu tiên câu tự chấm tự tin cao" như yêu cầu. Thay vào đó lấy
+// các từ sai GẦN NHẤT (ưu tiên level mới làm trước) - đã báo lại trong tóm
+// tắt gửi người dùng.
+function homeRenderReviewWordsCard() {
+  const flat = typeof getAllLevelResultsFlat === 'function' ? getAllLevelResultsFlat() : [];
+  const sorted = flat.slice().sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+  const seen = new Set();
+  const words = [];
+  for (const r of sorted) {
+    for (const w of (r.wrong_words || [])) {
+      const key = (w.correct || '').toLowerCase();
+      if (!key || seen.has(key)) continue;
+      seen.add(key);
+      words.push(w);
+      if (words.length >= 5) break;
+    }
+    if (words.length >= 5) break;
+  }
+
+  const bodyHtml = words.length
+    ? words.map(w => `
+        <div class="home-review-word">
+          <strong>${homeEscapeHtml(w.correct)}</strong>
+          ${w.selected ? `<span class="home-review-word-wrong">đã chọn nhầm: ${homeEscapeHtml(w.selected)}</span>` : ''}
+        </div>
+      `).join('')
+    : `<div class="analysis-empty">Chưa có từ nào cần ôn - cứ tiếp tục học nhé!</div>`;
+
+  return `
+    <div class="card home-review-card">
+      <div class="card-header">
+        <span class="card-title">Từ cần ôn</span>
+      </div>
+      <div class="home-review-list">${bodyHtml}</div>
+    </div>
+  `;
+}
+
+// ---- E. Mẹo hôm nay (gộp Quote + Tip cũ) ----
+
+function homeRenderDailyTipStrip(dayOfYear) {
+  const tipIndex = (dayOfYear - 1) % TIPS_LIST.length;
+  const todayTip = TIPS_LIST[tipIndex];
+  return `
+    <div class="card home-tip-strip" id="home-tip-strip">
+      <span class="home-tip-icon">${icon('lightbulb', 20)}</span>
+      <span class="home-tip-text" id="home-tip-text">${homeEscapeHtml(todayTip.text)}</span>
+      <span class="badge" id="home-tip-category">${homeEscapeHtml(todayTip.category)}</span>
+    </div>
+  `;
+}
+
+function renderHome() {
+  const dayOfYear = getDayOfYear();
+  if (typeof getTodayDateString === 'function') {
+    homeRenderedDate = getTodayDateString();
+  }
+
+  return `
+    <div class="home-bento">
+      <div class="home-cell home-cell-a">${homeRenderContinueCard()}</div>
+      <div class="home-cell home-cell-b">
+        <div class="card ioc-index-card">
+          <div class="card-header">
+            <span class="card-title">Chỉ số IoC</span>
+            <span class="badge">Tổng hợp</span>
+          </div>
+          ${homeRenderIocIndexBody()}
+        </div>
+      </div>
+      <div class="home-cell home-cell-c">${homeRenderRecentResultsCard()}</div>
+      <div class="home-cell home-cell-d">${homeRenderReviewWordsCard()}</div>
+      <div class="home-cell home-cell-e">${homeRenderDailyTipStrip(dayOfYear)}</div>
+    </div>
+  `;
+}
+
 function initHomeInteractions() {
-  const nameDisplay = document.getElementById('user-name-display');
-  const editBtn = document.getElementById('edit-name-btn');
-
-  if (nameDisplay) {
-    nameDisplay.addEventListener('blur', () => {
-      setUserName(nameDisplay.textContent);
-      nameDisplay.textContent = getUserName();
-    });
-    nameDisplay.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        nameDisplay.blur();
-      }
+  const continueBtn = document.querySelector('.home-continue-btn');
+  if (continueBtn) {
+    continueBtn.addEventListener('click', () => {
+      if (typeof goToWorldPage === 'function') goToWorldPage(continueBtn.getAttribute('data-world-id'));
     });
   }
 
-  if (editBtn && nameDisplay) {
-    editBtn.addEventListener('click', () => {
-      nameDisplay.focus();
-      const range = document.createRange();
-      range.selectNodeContents(nameDisplay);
-      const selection = window.getSelection();
-      selection.removeAllRanges();
-      selection.addRange(range);
+  const bear = document.querySelector('.home-continue-mascot');
+  if (bear) {
+    bear.addEventListener('click', () => {
+      bear.classList.remove('is-jumping');
+      void bear.offsetWidth;
+      bear.classList.add('is-jumping');
+    });
+    bear.addEventListener('animationend', (e) => {
+      if (e.animationName === 'bear-jump') bear.classList.remove('is-jumping');
     });
   }
 
-  // Dùng ảnh Google của tài khoản đang đăng nhập, mặc định nếu chưa đăng nhập.
-  const avatarImg = document.getElementById('welcome-avatar-img');
-  if (avatarImg) {
-    avatarImg.src = getEffectiveAvatarUrl();
-    avatarImg.addEventListener('error', () => {
-      avatarImg.src = getDefaultAvatarDataUri();
-    });
+  const { world, completed } = homeGetContinueWorld();
+  const isFirstEver = COURSE_WORLDS.every(w => getWorldCompletedLevels(w.id) === 0);
+  if (!isFirstEver) {
+    homeLoadContinueTopic(world.id, Math.min(world.totalLevels, completed + 1));
   }
+
+  document.querySelectorAll('.home-card-link[data-target]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (typeof navigateTo === 'function') navigateTo(btn.getAttribute('data-target'));
+    });
+  });
 
   startHomeDailyRefreshWatcher();
 }
 
-// Cập nhật quote/tip trực tiếp trên DOM thay vì render lại cả trang, để không
-// mất trạng thái đang sửa tên hiển thị.
+// Cập nhật tip trực tiếp trên DOM thay vì render lại cả trang.
 function refreshDailyContentIfDateChanged() {
   if (typeof getTodayDateString !== 'function') return;
   const today = getTodayDateString();
@@ -322,29 +305,17 @@ function refreshDailyContentIfDateChanged() {
   homeRenderedDate = today;
 
   const dayOfYear = getDayOfYear();
-  const quoteIndex = (dayOfYear - 1) % QUOTES_LIST.length;
   const tipIndex = (dayOfYear - 1) % TIPS_LIST.length;
-  const todayQuote = QUOTES_LIST[quoteIndex];
   const todayTip = TIPS_LIST[tipIndex];
 
-  const quoteContentEl = document.querySelector('.quote-card .quote-content');
-  const quoteTagEl = document.querySelector('.quote-card .tag');
-  const quoteAuthorEl = document.querySelector('.quote-card .author');
-  const tipContentEl = document.querySelector('.tip-card .tip-content');
-  const tipIdEl = document.querySelector('.tip-card .tip-id');
-  const tipTagEl = document.querySelector('.tip-card .tag');
-
-  if (quoteContentEl) quoteContentEl.textContent = `"${todayQuote.en}"`;
-  if (quoteTagEl) quoteTagEl.textContent = todayQuote.vi;
-  if (quoteAuthorEl) quoteAuthorEl.textContent = `— ${todayQuote.author}`;
-  if (tipContentEl) tipContentEl.textContent = todayTip.text;
-  if (tipIdEl) tipIdEl.textContent = `Tip #${tipIndex + 1}`;
-  if (tipTagEl) tipTagEl.textContent = todayTip.category;
+  const tipTextEl = document.getElementById('home-tip-text');
+  const tipCategoryEl = document.getElementById('home-tip-category');
+  if (tipTextEl) tipTextEl.textContent = todayTip.text;
+  if (tipCategoryEl) tipCategoryEl.textContent = todayTip.category;
 }
 
 function startHomeDailyRefreshWatcher() {
   stopHomeDailyRefreshWatcher();
-  // Kiểm tra mỗi 30s là đủ nhanh để cảm giác "tự động" mà không tốn tài nguyên.
   homeDailyCheckIntervalId = setInterval(refreshDailyContentIfDateChanged, 30000);
 }
 

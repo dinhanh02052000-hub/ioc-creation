@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: 10px;
   /* Không dùng backdrop-filter: blur ở đây nữa - overlay phủ toàn màn hình
      và phía sau có animation liên tục (node current pulse), kết hợp lại làm
      trình duyệt phải blur lại backdrop mỗi frame -> gõ chữ trong textarea bị
@@ -16,8 +16,9 @@
 }
 
 .ai-chat-panel {
-  width: min(680px, 100%);
-  max-height: min(760px, 100%);
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
   display: flex;
   flex-direction: column;
   background: var(--bg-card);
@@ -430,3 +431,144 @@ a.ai-btn-secondary {
   border-radius: 8px;
   padding: 12px 14px;
 }
+
+/* Thông báo "không dùng công cụ hỗ trợ" - chuyển từ header sang ngay trên
+   nút "Bắt đầu làm bài" (mục 3.2 của yêu cầu redesign). */
+.ai-start-notice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--overlay-soft);
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.ai-start-notice svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  color: var(--accent-amber);
+}
+
+
+/* ==== Giao diện làm bài trắc nghiệm (tham khảo bố cục aderesources) ==== */
+.ai-quiz {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 20px;
+  align-items: start;
+}
+.ai-quiz-main { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+
+.ai-q {
+  background: var(--overlay-soft);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  scroll-margin-top: 8px;
+}
+.ai-q--ok { border-color: rgba(34, 197, 94, 0.45); }
+.ai-q--bad { border-color: rgba(239, 68, 68, 0.45); }
+.ai-q-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.ai-q-num { font-size: 0.82rem; font-weight: 700; color: var(--accent); }
+.ai-q-status { font-size: 0.72rem; font-weight: 700; padding: 2px 10px; border-radius: 999px; }
+.ai-q-status.ok { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+.ai-q-status.bad { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+.ai-q-text { font-size: 1.05rem; font-weight: 600; line-height: 1.6; color: var(--text); margin-bottom: 14px; }
+.ai-q-blank { display: inline-block; min-width: 90px; border-bottom: 2px solid var(--text-dim); margin: 0 4px; }
+
+.ai-q-options { display: flex; flex-direction: column; gap: 10px; }
+.ai-q-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-card);
+  font-size: 0.95rem;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.ai-q-option:hover { border-color: var(--accent-soft-border); }
+.ai-q-option input { position: absolute; opacity: 0; pointer-events: none; }
+.ai-q-radio {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--text-faint);
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+.ai-q-option:has(input:checked) { border-color: var(--accent); background: var(--accent-soft-bg); }
+.ai-q-option:has(input:checked) .ai-q-radio { border-color: var(--accent); background: var(--accent); box-shadow: inset 0 0 0 3px var(--bg-card); }
+.ai-q-option-text b { margin-right: 4px; }
+
+.ai-q-option--review { cursor: default; }
+.ai-q-option--review:hover { border-color: var(--border); }
+.ai-q-option.is-correct { border-color: #22c55e; background: rgba(34, 197, 94, 0.12); }
+.ai-q-option.is-correct .ai-q-radio { border-color: #22c55e; background: #22c55e; box-shadow: inset 0 0 0 3px var(--bg-card); }
+.ai-q-option.is-wrong { border-color: #ef4444; background: rgba(239, 68, 68, 0.12); }
+.ai-q-option.is-wrong .ai-q-radio { border-color: #ef4444; background: #ef4444; box-shadow: inset 0 0 0 3px var(--bg-card); }
+.ai-q-tag { margin-left: auto; font-size: 0.75rem; font-weight: 700; white-space: nowrap; }
+.ai-q-tag.ok { color: #22c55e; }
+.ai-q-tag.bad { color: #ef4444; }
+.ai-q-feedback { margin-top: 12px; font-size: 0.88rem; font-weight: 600; }
+.ai-q-feedback.ok { color: #22c55e; }
+
+.ai-quiz-nav {
+  position: sticky;
+  top: 0;
+  background: var(--overlay-soft);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+.ai-quiz-nav-head { display: flex; justify-content: space-between; font-size: 0.88rem; color: var(--text-dim); margin-bottom: 8px; }
+.ai-quiz-nav-head strong { color: var(--text); }
+.ai-quiz-nav-bar { height: 6px; border-radius: 999px; background: var(--overlay-strong); overflow: hidden; margin-bottom: 14px; }
+.ai-quiz-nav-bar-fill { height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width 0.25s ease; }
+.ai-quiz-nav-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.ai-quiz-nav-btn {
+  height: 38px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-dim);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.ai-quiz-nav-btn:hover { border-color: var(--accent); color: var(--text); }
+.ai-quiz-nav-btn.answered { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.ai-review-summary { font-size: 1rem; color: var(--text); padding: 4px 2px; }
+.ai-review-list { display: flex; flex-direction: column; gap: 16px; }
+.ai-q-explain { border-color: var(--accent-soft-border); }
+
+@media (max-width: 860px) {
+  .ai-quiz { grid-template-columns: 1fr; }
+  .ai-quiz-nav { position: static; order: -1; }
+  .ai-quiz-nav-grid { grid-template-columns: repeat(10, 1fr); }
+  .ai-chat-body { padding: 14px; }
+}
+
+.ai-q-feedback.bad {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.08);
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text);
+}
+.ai-q-feedback.bad p { margin: 0; }

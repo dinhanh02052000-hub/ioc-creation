@@ -26,69 +26,90 @@ function setUserBio(bio) {
 
 function renderProfile() {
   return `
-    <div class="placeholder-page profile-page">
-      <h1 class="analysis-heading">Tài khoản của bạn</h1>
-      <p class="profile-desc">
-        Hãy đăng nhập vào Google để lưu tiến trình học của bạn. Ở dạng ẩn danh, tiến độ học sẽ
-        không được lưu và sau này khi đăng nhập tiến độ cũng sẽ bị mất.
-      </p>
+    <div class="profile-page">
+      <h1 class="analysis-heading">Hồ sơ</h1>
 
-      <div class="card profile-single-card">
-        <div class="card-header"><span class="card-title">TÀI KHOẢN</span></div>
-        <div id="auth-widget-area"></div>
-        <div id="auth-error-area" class="ai-error" hidden></div>
-
-        <div class="profile-section-divider"></div>
-
-        <div class="card-header"><span class="card-title">CÀI ĐẶT</span></div>
-
-        <div class="profile-setting-row">
-          <div class="profile-setting-label">
-            <span>Chế độ hiển thị</span>
-            <span class="profile-setting-hint">Sáng / Tối</span>
-          </div>
-          <button id="theme-toggle-btn" class="profile-toggle-btn" type="button"></button>
+      <div class="profile-grid">
+        <div class="profile-col-left">
+          <div id="auth-widget-area"></div>
+          <div id="auth-error-area" class="ai-error" hidden></div>
         </div>
 
-        <div class="profile-setting-row">
-          <div class="profile-setting-label">
-            <span>Nhạc nền</span>
-            <span class="profile-setting-hint">Bật/tắt và chỉnh âm lượng</span>
-          </div>
-          <button id="music-mute-toggle" class="profile-toggle-btn" type="button"></button>
-        </div>
-        <div class="profile-setting-sub">
-          <label for="music-volume-slider">Âm lượng nhạc nền</label>
-          <input type="range" id="music-volume-slider" min="0" max="100" step="5">
-        </div>
-        <div class="profile-setting-sub">
-          <label for="music-track-select">Bản nhạc nền</label>
-          <select id="music-track-select"></select>
-        </div>
+        <div class="profile-col-right">
+          <div class="card profile-settings-card">
+            <div class="profile-settings-group">
+              <div class="profile-settings-group-title">Hiển thị</div>
+              <div class="profile-setting-row">
+                <div class="profile-setting-label">
+                  <span>Chế độ hiển thị</span>
+                  <span class="profile-setting-hint">Sáng / Tối</span>
+                </div>
+                <button id="theme-toggle-btn" class="switch" type="button" role="switch"></button>
+              </div>
+            </div>
 
-        <div class="profile-setting-row">
-          <div class="profile-setting-label">
-            <span>Hiệu ứng âm thanh</span>
-            <span class="profile-setting-hint">Phát khi bấm bất kỳ nút nào trên trang</span>
-          </div>
-          <button id="sfx-mute-toggle" class="profile-toggle-btn" type="button"></button>
-        </div>
-        <div class="profile-setting-sub">
-          <label for="sfx-volume-slider">Âm lượng hiệu ứng</label>
-          <input type="range" id="sfx-volume-slider" min="0" max="100" step="5">
-        </div>
-        <div class="profile-setting-sub">
-          <label for="sfx-track-select">Âm thanh khi bấm nút</label>
-          <div class="profile-inline-row">
-            <select id="sfx-track-select"></select>
-            <button id="sfx-preview-btn" class="profile-preview-btn" type="button" title="Nghe thử">▶</button>
+            <div class="profile-settings-group">
+              <div class="profile-settings-group-title">Âm thanh</div>
+              <div class="profile-setting-row">
+                <div class="profile-setting-label">
+                  <span>Nhạc nền</span>
+                  <span class="profile-setting-hint">Bật/tắt và chỉnh âm lượng</span>
+                </div>
+                <button id="music-mute-toggle" class="switch" type="button" role="switch"></button>
+              </div>
+              <div class="profile-setting-sub">
+                <label for="music-volume-slider">Âm lượng nhạc nền</label>
+                <input type="range" id="music-volume-slider" min="0" max="100" step="5">
+              </div>
+              <div class="profile-setting-sub">
+                <label for="music-track-select">Bản nhạc nền</label>
+                <select id="music-track-select"></select>
+              </div>
+
+              <div class="profile-setting-row">
+                <div class="profile-setting-label">
+                  <span>Hiệu ứng âm thanh</span>
+                  <span class="profile-setting-hint">Phát khi bấm bất kỳ nút nào trên trang</span>
+                </div>
+                <button id="sfx-mute-toggle" class="switch" type="button" role="switch"></button>
+              </div>
+              <div class="profile-setting-sub">
+                <label for="sfx-volume-slider">Âm lượng hiệu ứng</label>
+                <input type="range" id="sfx-volume-slider" min="0" max="100" step="5">
+              </div>
+              <div class="profile-setting-sub">
+                <label for="sfx-track-select">Âm thanh khi bấm nút</label>
+                <div class="profile-inline-row">
+                  <select id="sfx-track-select"></select>
+                  <button id="sfx-preview-btn" class="profile-preview-btn" type="button" title="Nghe thử">▶</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="profile-settings-group" id="profile-account-group" hidden>
+              <div class="profile-settings-group-title">Tài khoản</div>
+              <button id="auth-logout-btn" class="ai-btn ai-btn-secondary profile-full-btn" type="button">Đăng xuất</button>
+            </div>
+
+            <div class="profile-settings-group" id="profile-danger-zone" hidden>
+              <div class="profile-settings-group-title profile-danger-title">Vùng nguy hiểm</div>
+              <p class="profile-setting-hint">Xoá tài khoản sẽ xoá vĩnh viễn toàn bộ tiến độ đã lưu trên server, không thể khôi phục.</p>
+              <button id="delete-account-btn" class="profile-delete-btn profile-full-btn" type="button">Xoá tài khoản</button>
+            </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <div id="profile-danger-zone" class="profile-danger-zone" hidden>
-        <button id="auth-logout-btn" class="ai-btn" type="button">Đăng xuất</button>
-        <button id="delete-account-btn" class="profile-delete-btn" type="button">Xoá tài khoản</button>
+    <div id="delete-confirm-overlay" class="delete-confirm-overlay" hidden>
+      <div class="delete-confirm-panel">
+        <h3>Xoá tài khoản</h3>
+        <p>Hành động này xoá VĨNH VIỄN toàn bộ tiến độ đã lưu trên server, không thể khôi phục. Gõ <strong>XOÁ</strong> vào ô dưới để xác nhận.</p>
+        <input type="text" id="delete-confirm-input" class="delete-confirm-input" autocomplete="off" placeholder="Gõ XOÁ để xác nhận">
+        <div class="delete-confirm-actions">
+          <button type="button" class="ai-btn ai-btn-secondary" id="delete-confirm-cancel">Huỷ</button>
+          <button type="button" class="profile-delete-btn" id="delete-confirm-ok" disabled>Xoá vĩnh viễn</button>
+        </div>
       </div>
     </div>
   `;
@@ -98,15 +119,18 @@ function renderProfile() {
 
 function profileTotalCompletedLevels() {
   if (typeof getWorldCompletedLevels !== 'function' || typeof COURSE_WORLDS === 'undefined') {
-    return { completed: 0, total: 0 };
+    return { completed: 0, total: 0, worldsStarted: 0 };
   }
   let completed = 0;
   let total = 0;
+  let worldsStarted = 0;
   COURSE_WORLDS.forEach(world => {
-    completed += getWorldCompletedLevels(world.id);
+    const c = getWorldCompletedLevels(world.id);
+    completed += c;
     total += world.totalLevels;
+    if (c > 0) worldsStarted++;
   });
-  return { completed, total };
+  return { completed, total, worldsStarted };
 }
 
 function renderAuthWidget() {
@@ -114,57 +138,70 @@ function renderAuthWidget() {
   if (!area) return;
 
   const session = typeof getAuthSession === 'function' ? getAuthSession() : null;
-  const { completed, total } = profileTotalCompletedLevels();
+  const { completed, total, worldsStarted } = profileTotalCompletedLevels();
+  const accountGroup = document.getElementById('profile-account-group');
   const dangerZone = document.getElementById('profile-danger-zone');
 
-  const identityHtml = session
-    ? `
+  const loginPromptHtml = session ? '' : `
+    <div class="card profile-login-card">
+      <div class="card-header"><span class="card-title">Đăng nhập Google để lưu tiến trình</span></div>
+      <p class="profile-setting-hint">Không bắt buộc đăng nhập mới học được - đăng nhập chỉ để backup/đồng bộ tiến độ nếu bạn đổi thiết bị.</p>
+      <div id="google-signin-btn" class="profile-signin-btn-area"></div>
+    </div>
+  `;
+
+  const userName = typeof getUserName === 'function' ? getUserName() : (session && session.name) || 'Người dùng';
+
+  area.innerHTML = `
+    ${loginPromptHtml}
+    <div class="card profile-account-card">
       <div class="profile-logged-in">
         <img alt="Avatar" class="profile-avatar" id="profile-avatar-img">
         <div class="profile-info">
-          <div class="profile-name">${session.name || 'Người dùng'}</div>
-          <div class="profile-email">${session.email || ''}</div>
+          <div class="profile-name-row">
+            <span id="user-name-display" contenteditable="${session ? 'true' : 'false'}" spellcheck="false" class="profile-name">${session ? userName : 'Guest'}</span>
+            ${session ? `
+              <button id="edit-name-btn" class="edit-name-btn" title="Đổi tên hiển thị" type="button">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M13.5 3.5a1.5 1.5 0 0 1 2.12 0l0.88 0.88a1.5 1.5 0 0 1 0 2.12L6.5 16.5 3 17.5l1-3.5L13.5 3.5z"/>
+                </svg>
+              </button>
+            ` : ''}
+          </div>
+          <div class="profile-email">${session ? (session.email || '') : 'Chưa đăng nhập'}</div>
         </div>
       </div>
-    `
-    : `
-      <div class="profile-logged-in profile-logged-out">
-        <img alt="Avatar" class="profile-avatar" id="profile-avatar-img">
-        <div class="profile-info">
-          <div class="profile-name">Guest</div>
-          <div class="profile-email">Chưa đăng nhập</div>
+
+      <div class="profile-stat-grid">
+        <div class="profile-stat-tile">
+          <span class="profile-stat-tile-label">Thời gian học</span>
+          <span class="profile-stat-tile-value" id="profile-total-playtime">0.0h</span>
+        </div>
+        <div class="profile-stat-tile">
+          <span class="profile-stat-tile-label">Level hoàn thành</span>
+          <span class="profile-stat-tile-value">${completed} / ${total}</span>
+        </div>
+        <div class="profile-stat-tile">
+          <span class="profile-stat-tile-label">World đã mở</span>
+          <span class="profile-stat-tile-value">${worldsStarted} / ${typeof COURSE_WORLDS !== 'undefined' ? COURSE_WORLDS.length : 0}</span>
+        </div>
+        <div class="profile-stat-tile">
+          <span class="profile-stat-tile-label">Tài khoản Google</span>
+          <span class="profile-stat-tile-value ${session ? 'linked' : 'unlinked'}">${session ? 'Đã liên kết' : 'Chưa liên kết'}</span>
         </div>
       </div>
-      <div id="google-signin-btn" class="profile-signin-btn-area"></div>
-    `;
-
-  const currentBio = getUserBio();
-
-  area.innerHTML = `
-    ${identityHtml}
-    <div class="profile-playtime-row">
-      <span>Tổng thời gian học</span>
-      <span class="profile-playtime-value" id="profile-total-playtime">0.0h</span>
     </div>
-    <div class="profile-stat-list">
-      <div class="profile-stat-row">
-        <span>Level đã hoàn thành</span>
-        <span class="profile-stat-value">${completed} / ${total}</span>
-      </div>
-      <div class="profile-stat-row">
-        <span>Tài khoản Google</span>
-        <span class="profile-stat-value ${session ? 'linked' : 'unlinked'}">${session ? 'Đã liên kết' : 'Chưa liên kết'}</span>
-      </div>
-    </div>
-    <div class="profile-bio-block">
-      <div class="profile-setting-label">
-        <span>Tiểu sử</span>
-        <span class="profile-setting-hint">Viết vài dòng về bản thân bạn</span>
-      </div>
+
+    <div class="card profile-bio-card">
+      <div class="card-header"><span class="card-title">Tiểu sử</span></div>
+      <p class="profile-setting-hint">Viết vài dòng về bản thân bạn</p>
       <textarea id="profile-bio-input" class="profile-bio-textarea" maxlength="${USER_BIO_MAX_LENGTH}" placeholder="Mình là ai, mình đang học vì điều gì..."></textarea>
       <div class="profile-bio-counter"><span id="profile-bio-count">0</span>/${USER_BIO_MAX_LENGTH}</div>
     </div>
   `;
+
+  if (accountGroup) accountGroup.hidden = !session;
+  if (dangerZone) dangerZone.hidden = !session;
 
   const avatarImg = document.getElementById('profile-avatar-img');
   if (avatarImg) {
@@ -178,11 +215,39 @@ function renderAuthWidget() {
     initGoogleAuth('google-signin-btn');
   }
 
+  // Đổi tên hiển thị - chuyển từ Home sang đây (vẫn dùng chung getUserName/
+  // setUserName định nghĩa ở home.js).
+  const nameDisplay = document.getElementById('user-name-display');
+  const editBtn = document.getElementById('edit-name-btn');
+  if (nameDisplay && session) {
+    nameDisplay.addEventListener('blur', () => {
+      if (typeof setUserName === 'function') setUserName(nameDisplay.textContent);
+      nameDisplay.textContent = typeof getUserName === 'function' ? getUserName() : nameDisplay.textContent;
+    });
+    nameDisplay.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        nameDisplay.blur();
+      }
+    });
+  }
+  if (editBtn && nameDisplay) {
+    editBtn.addEventListener('click', () => {
+      nameDisplay.focus();
+      const range = document.createRange();
+      range.selectNodeContents(nameDisplay);
+      const selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+    });
+  }
+
   // Gán qua .value thay vì chèn vào chuỗi HTML để nội dung người dùng tự viết
   // không thể phá cấu trúc HTML.
   const bioInput = document.getElementById('profile-bio-input');
   const bioCount = document.getElementById('profile-bio-count');
   if (bioInput) {
+    const currentBio = getUserBio();
     bioInput.value = currentBio;
     if (bioCount) bioCount.textContent = String(currentBio.length);
 
@@ -198,10 +263,7 @@ function renderAuthWidget() {
     });
   }
 
-  // Cập nhật ngay, không đợi tick tiếp theo của interval nền.
   if (typeof updatePlaytimeUI === 'function') updatePlaytimeUI();
-
-  if (dangerZone) dangerZone.hidden = !session;
 }
 
 function renderAuthError(message) {
@@ -215,19 +277,19 @@ function renderAuthError(message) {
 
 function profileUpdateThemeButton(btn) {
   const current = typeof getTheme === 'function' ? getTheme() : 'dark';
-  btn.textContent = current === 'light' ? 'Sáng' : 'Tối';
+  btn.setAttribute('aria-checked', String(current === 'light'));
   btn.classList.toggle('is-on', current === 'light');
 }
 
 function profileUpdateMusicToggleButton(btn) {
   const muted = typeof isBgMusicMuted === 'function' ? isBgMusicMuted() : true;
-  btn.textContent = muted ? 'Đang tắt' : 'Đang bật';
+  btn.setAttribute('aria-checked', String(!muted));
   btn.classList.toggle('is-on', !muted);
 }
 
 function profileUpdateSfxToggleButton(btn) {
   const muted = typeof isSfxMuted === 'function' ? isSfxMuted() : true;
-  btn.textContent = muted ? 'Đang tắt' : 'Đang bật';
+  btn.setAttribute('aria-checked', String(!muted));
   btn.classList.toggle('is-on', !muted);
 }
 
@@ -331,28 +393,43 @@ function initProfileDangerZone() {
   }
 
   const deleteBtn = document.getElementById('delete-account-btn');
-  if (deleteBtn) {
-    deleteBtn.addEventListener('click', async () => {
-      const confirmed = window.confirm(
-        'Xoá tài khoản sẽ xoá VĨNH VIỄN toàn bộ tiến độ đã lưu trên server (không thể khôi phục). '
-        + 'Bạn có chắc chắn muốn xoá tài khoản này không?'
-      );
-      if (!confirmed) return;
+  const overlay = document.getElementById('delete-confirm-overlay');
+  const input = document.getElementById('delete-confirm-input');
+  const okBtn = document.getElementById('delete-confirm-ok');
+  const cancelBtn = document.getElementById('delete-confirm-cancel');
+  if (!deleteBtn || !overlay || !input || !okBtn || !cancelBtn) return;
 
-      deleteBtn.disabled = true;
-      deleteBtn.textContent = 'Đang xoá...';
-      try {
-        await authApiRequest('/api/auth/delete-account', 'DELETE');
-        if (typeof clearAuthSession === 'function') clearAuthSession();
-        if (typeof clearAllLocalProgressData === 'function') clearAllLocalProgressData();
-        window.location.reload();
-      } catch (e) {
-        deleteBtn.disabled = false;
-        deleteBtn.textContent = 'Xoá tài khoản';
-        if (typeof renderAuthError === 'function') renderAuthError(e.message);
-      }
-    });
-  }
+  const closeOverlay = () => {
+    overlay.hidden = true;
+    input.value = '';
+    okBtn.disabled = true;
+  };
+
+  deleteBtn.addEventListener('click', () => {
+    overlay.hidden = false;
+    input.focus();
+  });
+  cancelBtn.addEventListener('click', closeOverlay);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeOverlay(); });
+  input.addEventListener('input', () => {
+    okBtn.disabled = input.value.trim() !== 'XOÁ';
+  });
+
+  okBtn.addEventListener('click', async () => {
+    okBtn.disabled = true;
+    okBtn.textContent = 'Đang xoá...';
+    try {
+      await authApiRequest('/api/auth/delete-account', 'DELETE');
+      if (typeof clearAuthSession === 'function') clearAuthSession();
+      if (typeof clearAllLocalProgressData === 'function') clearAllLocalProgressData();
+      window.location.reload();
+    } catch (e) {
+      okBtn.disabled = false;
+      okBtn.textContent = 'Xoá vĩnh viễn';
+      closeOverlay();
+      if (typeof renderAuthError === 'function') renderAuthError(e.message);
+    }
+  });
 }
 
 function initProfileInteractions() {

@@ -4,35 +4,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Illusion of Competence</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/chatbot.css">
-  <script src="js/features/theme.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css?v=20261016a">
+  <link rel="stylesheet" href="css/chatbot.css?v=20261016a">
+  <script src="js/features/theme.js?v=20261016a"></script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
   <div id="root"></div>
 
   <!-- Core: khung ứng dụng, dữ liệu tĩnh, điều hướng -->
-  <script src="js/core/App.js"></script>
-  <script src="js/core/data.js"></script>
+  <script src="js/core/icons.js?v=20261016a"></script>
+  <script src="js/core/App.js?v=20261016a"></script>
+  <script src="js/core/data.js?v=20261016a"></script>
 
   <!-- Features: các khối chức năng độc lập, dùng lại được ở nhiều trang -->
-  <script src="js/features/playtime.js"></script>
-  <script src="js/features/course-progress.js"></script>
-  <script src="js/features/gesture.js"></script>
-  <script src="js/features/auth.js"></script>
+  <script src="js/features/playtime.js?v=20261016a"></script>
+  <script src="js/features/course-progress.js?v=20261016a"></script>
+  <script src="js/features/gesture.js?v=20261016a"></script>
+  <script src="js/features/auth.js?v=20261016a"></script>
 
   <!-- Pages: mỗi file render một trang trong #main-content -->
-  <script src="js/pages/home.js"></script>
-  <script src="js/pages/course.js"></script>
-  <script src="js/pages/analysis.js"></script>
-  <script src="js/pages/profile.js"></script>
+  <script src="js/pages/home.js?v=20261016a"></script>
+  <script src="js/pages/course.js?v=20261016a"></script>
+  <script src="js/pages/analysis.js?v=20261016a"></script>
+  <script src="js/pages/profile.js?v=20261016a"></script>
+  <script src="js/pages/vocab.js?v=20261016a"></script>
+  <script src="js/pages/about.js?v=20261016a"></script>
 
   <!-- main.js phải load sau cùng trong nhóm logic vì nó gọi các hàm render ở trên -->
-  <script src="js/core/main.js"></script>
+  <script src="js/core/main.js?v=20261016a"></script>
 
-  <script src="js/features/particles.js"></script>
-  <script src="js/features/bg-music.js"></script>
-  <script src="js/features/sound-effects.js"></script>
+  <script src="js/features/particles.js?v=20261016a"></script>
+  <script src="js/features/bg-music.js?v=20261016a"></script>
+  <script src="js/features/sound-effects.js?v=20261016a"></script>
 </body>
 </html>
