@@ -278,7 +278,10 @@ function aiResumeFromStage() {
 async function aiStartFlow() {
   aiRenderLoading('Đang chuẩn bị bài học...');
   try {
-    const res = await gestureStartSession(aiChat.worldId, aiChat.level, aiChat.isRetry);
+    const history = typeof loadRecognitionHistory === 'function'
+      ? loadRecognitionHistory(aiChat.worldId, aiChat.level)
+      : [];
+    const res = await gestureStartSession(aiChat.worldId, aiChat.level, aiChat.isRetry, history);
     aiChat.sessionId = res.session_id;
     aiChat.showOnboarding = res.show_onboarding;
     aiRenderLearningContent(res.group_title, res.learning_content);
@@ -325,7 +328,7 @@ function aiRenderLearningContent(groupTitle, content) {
 // ---- Bước 2: sinh 20 MCQ ----
 
 async function aiBeginRecognition() {
-  aiRenderLoading('AI đang soạn 20 câu hỏi... (có thể mất 30–60 giây)');
+  aiRenderLoading('Đang chuẩn bị 20 câu hỏi...');
   try {
     const history = typeof loadRecognitionHistory === 'function'
       ? loadRecognitionHistory(aiChat.worldId, aiChat.level)
@@ -429,10 +432,15 @@ function aiUpdateMCQProgress() {
 async function aiSubmitRecognition() {
   aiRenderLoading('Đang chấm bài và soạn giải thích...');
   try {
-    const res = await gestureSubmitRecognition(aiChat.sessionId, aiChat.answers);
+    const dHistory = typeof loadDistinctionHistory === 'function'
+      ? loadDistinctionHistory(aiChat.worldId, aiChat.level) : [];
+    const aHistory = typeof loadApplicationHistory === 'function'
+      ? loadApplicationHistory(aiChat.worldId, aiChat.level) : [];
+    const res = await gestureSubmitRecognition(aiChat.sessionId, aiChat.answers, dHistory, aHistory);
     // Giữ lại để saveThisAttemptResult đưa vào kết quả cho trang Analysis.
     aiChat.wrongWords = res.wrong_words || [];
     aiChat.explanations = res.explanations || {};
+    aiChat.quality = res.quality || {};
     aiRenderCorrection(res.correction_text);
   } catch (e) {
     aiRenderSessionAwareError(e, aiSubmitRecognition);
@@ -458,6 +466,7 @@ function aiRenderCorrection(correctionText) {
     const isCorrect = !wrong;
     if (!isCorrect) wrongCount += 1;
     const explanation = (aiChat.explanations || {})[String(q.id)];
+    const quality = (aiChat.quality || {})[String(q.id)];
 
     const optionsHtml = q.options.map((opt, i) => {
       let cls = '';
@@ -475,12 +484,15 @@ function aiRenderCorrection(correctionText) {
         <div class="ai-q-head">
           <span class="ai-q-num">Câu ${qIndex + 1}</span>
           <span class="ai-q-status ${isCorrect ? 'ok' : 'bad'}">${isCorrect ? 'Đúng' : 'Sai'}</span>
+          ${aiQualityBadgeHtml(quality)}
         </div>
         <p class="ai-q-text">${aiQuestionHtml(q.question)}</p>
         <div class="ai-q-options">${optionsHtml}</div>
         ${isCorrect
           ? '<div class="ai-q-feedback ok">Bạn đã trả lời chính xác!</div>'
-          : (explanation ? `<div class="ai-q-feedback bad">${aiMarkdownToHtml(explanation)}</div>` : '')}
+            : (explanation ? `<div class="ai-q-feedback bad">${aiMarkdownToHtml(explanation)}</div>` : '')}
+        <button type="button" class="ai-report-btn" data-report="recognition" data-qid="${q.id}">Báo cáo đáp án</button>
+        <div class="ai-report-slot"></div>
       </section>
     `;
   }).join('');
@@ -501,9 +513,85 @@ function aiRenderCorrection(correctionText) {
     <div class="ai-review-list">${reviewHtml}</div>
     ${explainHtml}
   `);
+  aiBindReportButtons();
   aiSetFooter(`<button type="button" class="ai-btn" id="ai-to-confidence-btn">Tiếp tục</button>`);
   document.getElementById('ai-to-confidence-btn').addEventListener('click', aiRenderConfidenceQuestion);
   aiPersistProgress();
+}
+
+// ---- Chỉ số tin cậy + báo cáo của người dùng ----
+
+function aiQualityBadgeHtml(q) {
+  if (!q) return '';
+  const parts = [`Đáp án tin cậy ${q.answer_conf}%`];
+  if (q.question_ok != null) parts.push(`Câu hỏi đạt ${q.question_ok}%`);
+  return `<span class="ai-q-quality ${q.needs_check ? 'warn' : 'good'}" title="Do AI kiểm tra độc lập tính toán">
+    ${q.needs_check ? 'Nên kiểm tra · ' : ''}${parts.join(' · ')}</span>`;
+}
+
+function aiSpreadHtml(spread, kind) {
+  const v = spread && spread[kind];
+  if (v == null) return '';
+  const warn = v >= spread.flag_threshold;
+  return `<div class="ai-spread ${warn ? 'warn' : 'good'}">
+    Chênh lệch giữa 2 lần AI chấm: <strong>${v.toFixed(1)} điểm</strong>${warn ? ' · nên xem lại kỹ' : ''}</div>`;
+}
+
+function aiBindReportButtons() {
+  aiChatEls.body.querySelectorAll('.ai-report-btn').forEach(btn => {
+    btn.addEventListener('click', () => aiOpenReportForm(btn));
+  });
+}
+
+function aiOpenReportForm(btn) {
+  const slot = btn.nextElementSibling;
+  if (slot.innerHTML) { slot.innerHTML = ''; return; }
+  const kind = btn.dataset.report;
+  let pickHtml = '';
+  if (kind === 'recognition') {
+    const q = (aiChat.questions || []).find(x => String(x.id) === btn.dataset.qid);
+    const labels = ['A', 'B', 'C', 'D'];
+    pickHtml = `<div class="ai-report-label">Theo bạn đáp án đúng là:</div>` + q.options.map((o, i) =>
+      `<label class="ai-report-opt"><input type="radio" name="rp-${q.id}" value="${i}"> <b>${labels[i]}.</b> ${aiEscapeHtml(o)}</label>`
+    ).join('');
+  } else {
+    pickHtml = `<div class="ai-report-label">Theo bạn điểm/nhận xét nên thế nào? (không bắt buộc)</div>
+      <input type="text" class="ai-report-note" maxlength="300" placeholder="Ví dụ: nên được 8/10 vì...">`;
+  }
+  slot.innerHTML = `<div class="ai-report-form">${pickHtml}
+    <div class="ai-report-label">Giải thích của bạn (dựa trên nội dung bài học):</div>
+    <textarea class="ai-report-text" rows="3" maxlength="1200"></textarea>
+    <div class="ai-report-actions"><button type="button" class="ai-btn ai-report-send">Gửi báo cáo</button>
+    <span class="ai-report-status"></span></div></div>`;
+  slot.querySelector('.ai-report-send').addEventListener('click', () => aiSendReport(btn, slot));
+}
+
+async function aiSendReport(btn, slot) {
+  const kind = btn.dataset.report;
+  const status = slot.querySelector('.ai-report-status');
+  const explanation = slot.querySelector('.ai-report-text').value.trim();
+  const payload = { session_id: aiChat.sessionId, kind, explanation };
+  if (kind === 'recognition') {
+    const picked = slot.querySelector('input[type=radio]:checked');
+    if (!picked) { status.textContent = 'Hãy chọn đáp án bạn cho là đúng.'; return; }
+    payload.question_id = Number(btn.dataset.qid);
+    payload.suggested_index = Number(picked.value);
+  } else {
+    payload.suggested_note = slot.querySelector('.ai-report-note').value.trim();
+  }
+  if (explanation.length < 10) { status.textContent = 'Giải thích cần ít nhất 10 ký tự.'; return; }
+  status.textContent = 'AI đang thẩm định...';
+  slot.querySelector('.ai-report-send').disabled = true;
+  try {
+    const res = await gestureSubmitReport(payload);
+    slot.innerHTML = `<div class="ai-report-result ${res.accepted ? 'good' : 'warn'}">${res.accepted
+      ? 'Cảm ơn bạn! Báo cáo hợp lý và đã được ghi nhận để AI học dần.'
+      : 'Báo cáo chưa được chấp nhận: ' + aiEscapeHtml(res.reason || 'không đủ căn cứ trong bài học.')}</div>`;
+    btn.disabled = true;
+  } catch (e) {
+    status.textContent = e.message;
+    slot.querySelector('.ai-report-send').disabled = false;
+  }
 }
 
 // ---- Bước 4: tự đánh giá tự tin ----
@@ -729,18 +817,26 @@ function aiRenderFinalReport(report) {
 
       <div class="ai-feedback-block">
         <div class="ai-open-ended-label">Rubric Phân biệt (${report.distinction_score.toFixed(1)}/10)</div>
+        ${aiSpreadHtml(report.grading_spread, 'distinction')}
         ${aiRubricTableHtml(report.distinction_rubric)}
         ${aiMarkdownToHtml(report.distinction_feedback)}
+        <button type="button" class="ai-report-btn" data-report="distinction">Báo cáo điểm / nhận xét</button>
+        <div class="ai-report-slot"></div>
       </div>
       <div class="ai-feedback-block">
         <div class="ai-open-ended-label">Rubric Vận dụng (${report.application_score.toFixed(1)}/10)</div>
+        ${aiSpreadHtml(report.grading_spread, 'application')}
         ${aiRubricTableHtml(report.application_rubric)}
         ${aiMarkdownToHtml(report.application_feedback)}
+        <button type="button" class="ai-report-btn" data-report="application">Báo cáo điểm / nhận xét</button>
+        <div class="ai-report-slot"></div>
       </div>
 
       ${retryNoteHtml}
     </div>
   `);
+
+  aiBindReportButtons();
 
   const footerHtml = isPass
     ? `<button type="button" class="ai-btn" id="ai-close-report-btn">Đóng</button>`

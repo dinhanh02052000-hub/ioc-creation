@@ -81,8 +81,41 @@ def init_db() -> None:
         )
         """
     )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS user_reports (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER NOT NULL,
+            world_id TEXT NOT NULL,
+            level INTEGER NOT NULL,
+            kind TEXT NOT NULL,
+            item_ref TEXT NOT NULL,
+            question TEXT,
+            current_answer TEXT,
+            suggested_answer TEXT,
+            user_explanation TEXT,
+            verdict TEXT NOT NULL,
+            lesson TEXT,
+            judge_reason TEXT,
+            created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE (user_id, world_id, level, kind, item_ref, question)
+        )
+        """
+    )
     conn.execute(f"ALTER TABLE users ADD COLUMN IF NOT EXISTS keys INTEGER NOT NULL DEFAULT {INITIAL_KEYS}")
     conn.execute("ALTER TABLE users ADD COLUMN IF NOT EXISTS purchase_count INTEGER NOT NULL DEFAULT 0")
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS question_sets (
+            user_id INTEGER NOT NULL,
+            world_id TEXT NOT NULL,
+            level INTEGER NOT NULL,
+            payload TEXT NOT NULL,
+            updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (user_id, world_id, level)
+        )
+        """
+    )
     conn.execute("ALTER TABLE pending_payments ADD COLUMN IF NOT EXISTS verified BOOLEAN NOT NULL DEFAULT FALSE")
     conn.commit()
     conn.close()
@@ -374,3 +407,82 @@ def save_feedback(name: str, content: str) -> None:
     conn.execute("INSERT INTO feedback (name, content) VALUES (%s, %s)", (name or None, content))
     conn.commit()
     conn.close()
+
+
+def save_question_set(user_id: int, world_id: str, level: int, payload: dict) -> None:
+    """Lưu bộ 20 câu recognition đã sinh + xác minh xong (kèm đáp án đúng, chỉ ở server) để
+    người dùng thoát ra vào lại vẫn thấy đúng bộ câu đó, không phải sinh lại hay trừ key lần nữa."""
+    conn = get_conn()
+    conn.execute(
+        """INSERT INTO question_sets (user_id, world_id, level, payload) VALUES (%s, %s, %s, %s)
+           ON CONFLICT (user_id, world_id, level)
+           DO UPDATE SET payload = EXCLUDED.payload, updated_at = CURRENT_TIMESTAMP""",
+        (user_id, world_id, level, json.dumps(payload, ensure_ascii=False)),
+    )
+    conn.commit()
+    conn.close()
+
+
+def load_question_set(user_id: int, world_id: str, level: int) -> dict | None:
+    conn = get_conn()
+    row = conn.execute(
+        "SELECT payload FROM question_sets WHERE user_id = %s AND world_id = %s AND level = %s",
+        (user_id, world_id, level),
+    ).fetchone()
+    conn.close()
+    return json.loads(row["payload"]) if row else None
+
+
+def delete_question_set(user_id: int, world_id: str, level: int) -> None:
+    conn = get_conn()
+    conn.execute(
+        "DELETE FROM question_sets WHERE user_id = %s AND world_id = %s AND level = %s",
+        (user_id, world_id, level),
+    )
+    conn.commit()
+    conn.close()
+
+
+def save_report(user_id: int, world_id: str, level: int, kind: str, item_ref: str, question: str,
+                current_answer: str, suggested_answer: str, user_explanation: str,
+                verdict: str, lesson: str, judge_reason: str) -> bool:
+    """Lưu 1 báo cáo của người dùng cùng kết luận của AI lọc ('accepted'/'rejected').
+    Trả False nếu người này đã báo cáo đúng câu đó rồi (chống gửi lặp)."""
+    conn = get_conn()
+    cur = conn.execute(
+        """INSERT INTO user_reports (user_id, world_id, level, kind, item_ref, question, current_answer,
+               suggested_answer, user_explanation, verdict, lesson, judge_reason)
+           VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+           ON CONFLICT DO NOTHING""",
+        (user_id, world_id, level, kind, item_ref, question, current_answer,
+         suggested_answer, user_explanation, verdict, lesson, judge_reason),
+    )
+    inserted = cur.rowcount > 0
+    conn.commit()
+    conn.close()
+    return inserted
+
+
+def count_reports_today(user_id: int) -> int:
+    conn = get_conn()
+    row = conn.execute(
+        "SELECT COUNT(*) AS n FROM user_reports WHERE user_id = %s AND created_at > NOW() - INTERVAL '1 day'",
+        (user_id,),
+    ).fetchone()
+    conn.close()
+    return int(row["n"])
+
+
+def load_accepted_lessons(world_id: str, level: int, kind_group: str, limit: int = 8) -> list[str]:
+    """Các bài học đã được AI lọc duyệt, dùng làm 'knowledge base người dùng' cho level này.
+    kind_group: 'recognition' hoặc 'open' (distinction + application)."""
+    kinds = ("recognition",) if kind_group == "recognition" else ("distinction", "application")
+    conn = get_conn()
+    rows = conn.execute(
+        """SELECT lesson FROM user_reports
+           WHERE world_id = %s AND level = %s AND verdict = 'accepted' AND kind = ANY(%s) AND lesson IS NOT NULL
+           ORDER BY id DESC LIMIT %s""",
+        (world_id, level, list(kinds), limit),
+    ).fetchall()
+    conn.close()
+    return [r["lesson"] for r in rows]

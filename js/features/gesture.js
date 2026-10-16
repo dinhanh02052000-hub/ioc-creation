@@ -43,8 +43,10 @@ async function aiRequest(path, body) {
   return res.json();
 }
 
-function gestureStartSession(worldId, level, isRetry = false) {
-  return aiRequest('/api/chat/start', { world_id: worldId, level, is_retry: isRetry });
+function gestureStartSession(worldId, level, isRetry = false, recognitionHistory = []) {
+  return aiRequest('/api/chat/start', {
+    world_id: worldId, level, is_retry: isRetry, recognition_history: recognitionHistory
+  });
 }
 
 // GET thuần, không tốn AI - lấy group_title + danh sách từ mục tiêu từ file KB.
@@ -77,8 +79,13 @@ function gestureBeginRecognition(sessionId, recognitionHistory = []) {
   });
 }
 
-function gestureSubmitRecognition(sessionId, answers) {
-  return aiRequest('/api/chat/submit-recognition', { session_id: sessionId, answers });
+function gestureSubmitRecognition(sessionId, answers, distinctionHistory = [], applicationHistory = []) {
+  return aiRequest('/api/chat/submit-recognition', {
+    session_id: sessionId,
+    answers,
+    distinction_history: distinctionHistory,
+    application_history: applicationHistory
+  });
 }
 
 function gestureSubmitConfidence(sessionId, confidence, distinctionHistory = [], applicationHistory = []) {
@@ -122,4 +129,8 @@ function gestureSubmitRemediationOpenEnded(sessionId, distinctionAnswer, applica
 // Trang Analysis - lời gọi AI độc lập, không qua session_store.
 function gestureGenerateAnalysis(groups) {
   return aiRequest('/api/analysis/generate', { groups });
+}
+
+function gestureSubmitReport(payload) {
+  return aiRequest('/api/report', payload);
 }

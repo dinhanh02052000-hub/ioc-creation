@@ -1,0 +1,277 @@
+{
+  "_huong_dan": "Bài mẫu chấm chuẩn để AI neo thang điểm. muc_do 1-10 (tổng điểm xấp xỉ mức độ). Application lấy impact làm đáp án mục tiêu nhưng effect/influence vẫn được chấp nhận nếu lập luận thuyết phục.",
+  "distinction": [
+    {
+      "muc_do": 1,
+      "question": "The new gene-editing therapy had a lasting effect on patients' recovery time. If \"effect\" were replaced with \"influence\" or \"impact,\" how would the sentence's focus or nuance change?",
+      "answer": "Effect means something happens. Influence and impact are similar. Effect is good here.",
+      "scores": {
+        "hieu_goc": 1,
+        "ngu_canh": 0,
+        "doi_nghia": 0,
+        "phan_biet": 0,
+        "so_sanh": 0
+      },
+      "tong_diem": 1,
+      "note": "Rất yếu: giải thích nghĩa rất mơ hồ, không phân biệt được hai từ thay thế, không có lý do phù hợp ngữ cảnh y tế."
+    },
+    {
+      "muc_do": 2,
+      "question": "The new gene-editing therapy had a lasting effect on patients' recovery time. If \"effect\" were replaced with \"influence\" or \"impact,\" how would the sentence's focus or nuance change?",
+      "answer": "Effect means a result. Influence means to change something, and impact means an effect. Effect is better because it sounds right.",
+      "scores": {
+        "hieu_goc": 1,
+        "ngu_canh": 0,
+        "doi_nghia": 0.5,
+        "phan_biet": 0,
+        "so_sanh": 0.5
+      },
+      "tong_diem": 2.0,
+      "note": "Yếu: hiểu sơ bộ effect nhưng giải thích hai từ còn lại thiếu chính xác; lý do chọn chỉ dựa vào cảm giác."
+    },
+    {
+      "muc_do": 3,
+      "question": "The new gene-editing therapy had a lasting effect on patients' recovery time. If \"effect\" were replaced with \"influence\" or \"impact,\" how would the sentence's focus or nuance change?",
+      "answer": "Effect means the result of the therapy. Influence means affecting someone, while impact means a strong effect. Effect is better because the sentence talks about recovery time.",
+      "scores": {
+        "hieu_goc": 1,
+        "ngu_canh": 0.5,
+        "doi_nghia": 0.5,
+        "phan_biet": 0.5,
+        "so_sanh": 0.5
+      },
+      "tong_diem": 3.0,
+      "note": "Dưới trung bình: xác định được kết quả của liệu pháp, có liên hệ thời gian hồi phục nhưng chưa nêu rõ khác biệt sắc thái khi thay từ."
+    },
+    {
+      "muc_do": 4,
+      "question": "The new gene-editing therapy had a lasting effect on patients' recovery time. If \"effect\" were replaced with \"influence\" or \"impact,\" how would the sentence's focus or nuance change?",
+      "answer": "Effect refers to the result of the gene-editing therapy, so it fits the sentence about patients' recovery time. Influence usually means the power to affect something, while impact emphasizes a strong effect. Effect is more suitable because it describes the result directly.",
+      "scores": {
+        "hieu_goc": 1.5,
+        "ngu_canh": 1,
+        "doi_nghia": 0.5,
+        "phan_biet": 0.5,
+        "so_sanh": 0.5
+      },
+      "tong_diem": 4.0,
+      "note": "Cơ bản: nghĩa cơ bản đúng, có giải thích lựa chọn nhưng phần so sánh còn chung chung."
+    },
+    {
+      "muc_do": 5,
+      "question": "The new gene-editing therapy had a lasting effect on patients' recovery time. If \"effect\" were replaced with \"influence\" or \"impact,\" how would the sentence's focus or nuance change?",
+      "answer": "Effect means a result produced by something, which fits the therapy's result on patients' recovery time. Influence would focus more on how the therapy affects recovery, while impact would emphasize the strength of the change. Therefore, effect is appropriate because the sentence focuses on the result of the treatment.",
+      "scores": {
+        "hieu_goc": 1.5,
+        "ngu_canh": 1,
+        "doi_nghia": 1,
+        "phan_biet": 1,
+        "so_sanh": 0.5
+      },
+      "tong_diem": 5.0,
+      "note": "Trung bình: phân biệt được kết quả, tác động và cường độ nhưng phân tích influence chưa sắc nét, chưa đề cập sắc thái lasting."
+    },
+    {
+      "muc_do": 6,
+      "question": "The new gene-editing therapy had a lasting effect on patients' recovery time. If \"effect\" were replaced with \"influence\" or \"impact,\" how would the sentence's focus or nuance change?",
+      "answer": "Effect refers to a result caused by the gene-editing therapy, making it suitable for describing a change in patients' recovery time. Influence would emphasize the therapy's role in shaping recovery rather than the resulting outcome itself. Impact would highlight the strength or significance of the change. Effect is the best choice because it describes the treatment's outcome clearly without adding an unnecessary emphasis on how powerful the change was.",
+      "scores": {
+        "hieu_goc": 1.5,
+        "ngu_canh": 1.5,
+        "doi_nghia": 1,
+        "phan_biet": 1,
+        "so_sanh": 1
+      },
+      "tong_diem": 6.0,
+      "note": "Khá: phân biệt trọng tâm ngữ nghĩa ba từ, lập luận so sánh rõ; chưa phân tích sâu liên hệ effect với kết quả quan sát/đo lường."
+    },
+    {
+      "muc_do": 7,
+      "question": "The new gene-editing therapy had a lasting effect on patients' recovery time. If \"effect\" were replaced with \"influence\" or \"impact,\" how would the sentence's focus or nuance change?",
+      "answer": "Effect refers to the outcome produced by the gene-editing therapy, so it directly describes the change in patients' recovery time. Influence would place more emphasis on the therapy's role in affecting the recovery process, potentially suggesting a less direct relationship. Impact would make the result sound particularly strong or significant. Therefore, effect is the most precise choice because the sentence reports a lasting treatment outcome rather than emphasizing the mechanism or magnitude of the change.",
+      "scores": {
+        "hieu_goc": 2,
+        "ngu_canh": 1.5,
+        "doi_nghia": 1.5,
+        "phan_biet": 1,
+        "so_sanh": 1
+      },
+      "tong_diem": 7.0,
+      "note": "Tốt: phân tích trọng tâm và sắc thái từng từ, lập luận bám sát ngữ cảnh; một số diễn giải về influence còn mang tính xu hướng."
+    },
+    {
+      "muc_do": 8,
+      "question": "The new gene-editing therapy had a lasting effect on patients' recovery time. If \"effect\" were replaced with \"influence\" or \"impact,\" how would the sentence's focus or nuance change?",
+      "answer": "Effect denotes the result of a cause, making it a natural choice for describing how the gene-editing therapy changed patients' recovery time. Replacing it with influence would shift attention toward the therapy's capacity to affect the recovery process, rather than the outcome being reported. Impact would place greater emphasis on the magnitude or significance of that outcome. Effect is therefore the most neutral and precise option: it communicates the treatment's lasting result without implying a particular degree of intensity.",
+      "scores": {
+        "hieu_goc": 2,
+        "ngu_canh": 1.5,
+        "doi_nghia": 1.5,
+        "phan_biet": 1.5,
+        "so_sanh": 1.5
+      },
+      "tong_diem": 8.0,
+      "note": "Rất tốt: phân biệt rõ nghĩa, trọng tâm và sắc thái đánh giá; giải thích vì sao từ gốc phù hợp mà không khẳng định quá mức các từ còn lại sai."
+    },
+    {
+      "muc_do": 9,
+      "question": "The new gene-editing therapy had a lasting effect on patients' recovery time. If \"effect\" were replaced with \"influence\" or \"impact,\" how would the sentence's focus or nuance change?",
+      "answer": "Effect refers to an outcome attributable to a cause, which makes it well suited to describing the lasting change in patients' recovery time following the gene-editing therapy. Influence would foreground the therapy's role in shaping the recovery process, a broader notion that does not identify the resulting outcome as directly. Impact would foreground the magnitude or significance of the change and may sound more emphatic. Effect is the strongest choice because the sentence primarily reports a treatment outcome, while 'lasting' already conveys its duration without requiring additional emphasis on its intensity.",
+      "scores": {
+        "hieu_goc": 2,
+        "ngu_canh": 2,
+        "doi_nghia": 2,
+        "phan_biet": 1.5,
+        "so_sanh": 1.5
+      },
+      "tong_diem": 9.0,
+      "note": "Xuất sắc: phân tích cả tác dụng của từ trong câu lẫn sự phối hợp với lasting; lập luận chặt chẽ, tránh đánh đồng sắc thái với nghĩa cố định."
+    },
+    {
+      "muc_do": 10,
+      "question": "The new gene-editing therapy had a lasting effect on patients' recovery time. If \"effect\" were replaced with \"influence\" or \"impact,\" how would the sentence's focus or nuance change?",
+      "answer": "Effect is the most appropriate choice because it foregrounds the outcome of the gene-editing therapy, namely the lasting change in patients' recovery time. Although influence can describe a causal contribution, it tends to emphasize the process or capacity through which something shapes an outcome, making it less direct in this result-focused statement. Impact is also possible, but it often carries a stronger emphasis on the magnitude or significance of a change, which the sentence does not explicitly establish. Effect therefore offers the clearest and most measured description: it identifies the treatment-related outcome while allowing 'lasting' to communicate its duration. Neither alternative is inherently incorrect, but each would subtly redirect the reader's attention.",
+      "scores": {
+        "hieu_goc": 2,
+        "ngu_canh": 2,
+        "doi_nghia": 2,
+        "phan_biet": 2,
+        "so_sanh": 2
+      },
+      "tong_diem": 10,
+      "note": "Chuẩn mực: đầy đủ nghĩa từ gốc, ngữ cảnh, thay đổi trọng tâm khi thay từ và lý do chọn tối ưu; nhận ra influence/impact vẫn có thể đúng nhưng kém phù hợp hơn."
+    }
+  ],
+  "application": [
+    {
+      "muc_do": 1,
+      "question": "After a short-video platform introduced an algorithm that recommended videos based on users' viewing habits, average viewing time rose sharply and many users began sharing videos with friends. In a full sentence, choose one word from the group to describe this situation and explain why it is the best choice over the other two.",
+      "answer": "Impact. It is good.",
+      "scores": {
+        "chon_tu": 1,
+        "dung_dung": 0,
+        "tinh_huong": 0,
+        "giai_thich": 0
+      },
+      "tong_diem": 1,
+      "note": "Rất yếu: không thành câu tiếng Anh hoàn chỉnh, không giải thích lý do chọn từ. dung_dung = 0."
+    },
+    {
+      "muc_do": 2,
+      "question": "After a short-video platform introduced an algorithm that recommended videos based on users' viewing habits, average viewing time rose sharply and many users began sharing videos with friends. In a full sentence, choose one word from the group to describe this situation and explain why it is the best choice over the other two.",
+      "answer": "The algorithm impact users. Impact is better because it is strong.",
+      "scores": {
+        "chon_tu": 1,
+        "dung_dung": 1,
+        "tinh_huong": 0,
+        "giai_thich": 0
+      },
+      "tong_diem": 2,
+      "note": "Yếu: có câu tiếng Anh nhưng sai ngữ pháp (impact cần chia thành impacts); lý do chỉ lặp lại sắc thái của từ, chưa liên hệ dữ kiện."
+    },
+    {
+      "muc_do": 3,
+      "question": "After a short-video platform introduced an algorithm that recommended videos based on users' viewing habits, average viewing time rose sharply and many users began sharing videos with friends. In a full sentence, choose one word from the group to describe this situation and explain why it is the best choice over the other two.",
+      "answer": "The algorithm had an impact on users. Impact is better because users watched more videos. Effect and influence are not as good.",
+      "scores": {
+        "chon_tu": 1,
+        "dung_dung": 1.5,
+        "tinh_huong": 0.5,
+        "giai_thich": 0
+      },
+      "tong_diem": 3.0,
+      "note": "Dưới trung bình: câu đúng ngữ pháp, có liên hệ tình huống nhưng chưa thể hiện mức độ thay đổi; so sánh hai từ còn lại thiếu lý do cụ thể."
+    },
+    {
+      "muc_do": 4,
+      "question": "After a short-video platform introduced an algorithm that recommended videos based on users' viewing habits, average viewing time rose sharply and many users began sharing videos with friends. In a full sentence, choose one word from the group to describe this situation and explain why it is the best choice over the other two.",
+      "answer": "The new algorithm had a strong impact on users' viewing habits. Impact is suitable because viewing time increased sharply. Effect is more general, while influence focuses on affecting people.",
+      "scores": {
+        "chon_tu": 1.5,
+        "dung_dung": 1.5,
+        "tinh_huong": 0.5,
+        "giai_thich": 0.5
+      },
+      "tong_diem": 4.0,
+      "note": "Cơ bản: dùng từ đúng trong câu hoàn chỉnh, dựa vào dữ kiện tăng thời gian xem; phân biệt influence còn mơ hồ, chưa đề cập chia sẻ video."
+    },
+    {
+      "muc_do": 5,
+      "question": "After a short-video platform introduced an algorithm that recommended videos based on users' viewing habits, average viewing time rose sharply and many users began sharing videos with friends. In a full sentence, choose one word from the group to describe this situation and explain why it is the best choice over the other two.",
+      "answer": "The new recommendation algorithm had a significant impact on user engagement, as average viewing time increased sharply and more users shared videos with friends. Impact is appropriate because the changes are noticeable. Effect is a more general term for a result, while influence emphasizes the act of affecting behavior.",
+      "scores": {
+        "chon_tu": 1.5,
+        "dung_dung": 2,
+        "tinh_huong": 1,
+        "giai_thich": 0.5
+      },
+      "tong_diem": 5.0,
+      "note": "Trung bình: câu phù hợp kịch bản, giải thích có căn cứ, so sánh được hai từ còn lại; lập luận chủ yếu mô tả thay đổi, chưa làm rõ vì sao impact thể hiện tốt hơn mức độ đáng kể."
+    },
+    {
+      "muc_do": 6,
+      "question": "After a short-video platform introduced an algorithm that recommended videos based on users' viewing habits, average viewing time rose sharply and many users began sharing videos with friends. In a full sentence, choose one word from the group to describe this situation and explain why it is the best choice over the other two.",
+      "answer": "The new algorithm had a substantial impact on user engagement, as average viewing time rose sharply and users increasingly shared videos with friends. Impact is the best choice because it emphasizes the noticeable change in user behavior. Effect could describe the result more neutrally, while influence would focus more broadly on how the algorithm shaped users' viewing and sharing habits.",
+      "scores": {
+        "chon_tu": 2,
+        "dung_dung": 2,
+        "tinh_huong": 1,
+        "giai_thich": 1
+      },
+      "tong_diem": 6,
+      "note": "Khá: chọn từ hợp lý, câu đúng ngữ pháp, phân biệt được mức độ nhấn mạnh của ba từ."
+    },
+    {
+      "muc_do": 7,
+      "question": "After a short-video platform introduced an algorithm that recommended videos based on users' viewing habits, average viewing time rose sharply and many users began sharing videos with friends. In a full sentence, choose one word from the group to describe this situation and explain why it is the best choice over the other two.",
+      "answer": "The recommendation algorithm had a significant impact on user engagement, demonstrated by the sharp rise in viewing time and the increase in video sharing. Impact is more suitable than effect because it highlights the magnitude of the observed change rather than merely naming a result. Influence could describe the algorithm's role in shaping users' habits, but impact better captures the marked behavioral shift presented in the scenario.",
+      "scores": {
+        "chon_tu": 2,
+        "dung_dung": 2.5,
+        "tinh_huong": 1,
+        "giai_thich": 1.5
+      },
+      "tong_diem": 7.0,
+      "note": "Tốt: có bằng chứng cụ thể, so sánh trực tiếp, liên hệ nghĩa từ với dụng ý mô tả tình huống."
+    },
+    {
+      "muc_do": 8,
+      "question": "After a short-video platform introduced an algorithm that recommended videos based on users' viewing habits, average viewing time rose sharply and many users began sharing videos with friends. In a full sentence, choose one word from the group to describe this situation and explain why it is the best choice over the other two.",
+      "answer": "The new recommendation algorithm had a considerable impact on user engagement, as shown by the sharp increase in average viewing time and the growing tendency to share videos with friends. Impact is the strongest choice because it foregrounds the scale and significance of these observable behavioral changes. Effect would accurately describe the resulting change but would remain more neutral, while influence would emphasize the algorithm's role in shaping behavior rather than the pronounced outcome itself.",
+      "scores": {
+        "chon_tu": 2,
+        "dung_dung": 3,
+        "tinh_huong": 1,
+        "giai_thich": 2
+      },
+      "tong_diem": 8,
+      "note": "Rất tốt: kết hợp hai bằng chứng trong đề, diễn giải sắc thái chính xác, chỉ ra khác biệt trọng tâm giữa các từ."
+    },
+    {
+      "muc_do": 9,
+      "question": "After a short-video platform introduced an algorithm that recommended videos based on users' viewing habits, average viewing time rose sharply and many users began sharing videos with friends. In a full sentence, choose one word from the group to describe this situation and explain why it is the best choice over the other two.",
+      "answer": "The new recommendation algorithm had a substantial impact on user engagement, reflected in the sharp rise in average viewing time and the increased sharing of videos among users. Impact is preferable because it emphasizes the magnitude of the behavioral shift evidenced by both measures. Effect would also be valid, but it would present the changes more neutrally as outcomes of the algorithm. Influence would be appropriate when discussing how recommendations shape viewing habits over time, whereas impact more directly conveys the pronounced change described in this scenario.",
+      "scores": {
+        "chon_tu": 2,
+        "dung_dung": 3,
+        "tinh_huong": 1.5,
+        "giai_thich": 2.5
+      },
+      "tong_diem": 9.0,
+      "note": "Xuất sắc: lập luận dựa trên hai dấu hiệu cụ thể, phân biệt sắc thái có điều kiện, thừa nhận lựa chọn thay thế vẫn có thể đúng ở ngữ cảnh khác."
+    },
+    {
+      "muc_do": 10,
+      "question": "After a short-video platform introduced an algorithm that recommended videos based on users' viewing habits, average viewing time rose sharply and many users began sharing videos with friends. In a full sentence, choose one word from the group to describe this situation and explain why it is the best choice over the other two.",
+      "answer": "The new recommendation algorithm had a pronounced impact on user engagement, as evidenced by the sharp increase in average viewing time and the greater tendency to share videos with friends. Impact is the most fitting choice because it highlights the scale and significance of the behavioral change, supported by two observable indicators. Effect would accurately refer to the outcomes of the algorithm but would not convey the same degree of emphasis. Influence, in contrast, would direct attention toward the algorithm's capacity to shape users' preferences and habits, potentially over time. Since the scenario foregrounds a marked rise in engagement rather than the underlying process of behavioral change, impact communicates its central point most effectively.",
+      "scores": {
+        "chon_tu": 2,
+        "dung_dung": 3,
+        "tinh_huong": 2,
+        "giai_thich": 3
+      },
+      "tong_diem": 10,
+      "note": "Chuẩn mực: câu hoàn chỉnh, chính xác, bám sát kịch bản; phân biệt được kết quả, quá trình tác động và cường độ thay đổi."
+    }
+  ]
+}

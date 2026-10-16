@@ -25,6 +25,7 @@ import os
 import re
 import secrets
 import string
+import threading
 from datetime import timedelta
 from difflib import SequenceMatcher
 
@@ -49,6 +50,8 @@ from config import (
     SEPAY_API_KEY,
 )
 from engine_prompts import (
+    lessons_block,
+    report_judge_task,
     assemble,
     compact_kb,
     correction_per_question_task,
@@ -56,6 +59,7 @@ from engine_prompts import (
     learning_content_task,
     load_knowledge_base,
     open_ended_generation_task,
+    open_ended_grading_prompt,
     open_ended_grading_task,
     recognition_task,
     remediation_task,
@@ -224,11 +228,34 @@ _MAX_ANSWER_REGEN_ROUNDS = 2
 _LETTER_TO_INDEX = {"A": 0, "B": 1, "C": 2, "D": 3}
 
 
-def _determine_and_verify_answers(kb: dict, questions: list[dict]) -> None:
+_QUALITY_CHECK_KEYS = (
+    "knowledge_grounding", "single_best_answer", "distractors_valid",
+    "explanation_consistent", "question_answer_alignment", "no_hallucination",
+)
+_NEEDS_CHECK_ANSWER_CONF = 85
+_NEEDS_CHECK_QUESTION_OK = 83
+
+
+def _answer_quality(checks, confidence: float, regen_rounds: int) -> dict:
+    """Chỉ số hiển thị cho học sinh: question_ok = % tiêu chí câu hỏi mà verifier xác nhận đạt,
+    answer_conf = độ tin cậy đáp án (trừ điểm nếu phải sinh lại đáp án). needs_check đánh dấu
+    câu nên được xem kỹ."""
+    checks = checks if isinstance(checks, dict) else {}
+    passed = sum(1 for k in _QUALITY_CHECK_KEYS if checks.get(k) is True)
+    question_ok = round(100 * passed / len(_QUALITY_CHECK_KEYS)) if checks else None
+    answer_conf = max(0, round(confidence * 100) - 10 * regen_rounds)
+    needs_check = answer_conf < _NEEDS_CHECK_ANSWER_CONF or (
+        question_ok is not None and question_ok < _NEEDS_CHECK_QUESTION_OK
+    )
+    return {"answer_conf": answer_conf, "question_ok": question_ok, "needs_check": needs_check}
+
+
+def _determine_and_verify_answers(kb: dict, questions: list[dict], lessons: list[str] | None = None) -> None:
     items_by_id = {q["id"]: q for q in questions}
     pending_ids = list(items_by_id.keys())
     feedback: dict[int, str] = {}
     answer_model = os.environ.get("OPENAI_ANSWER_MODEL") or None
+    extra = lessons_block(lessons)
 
     for _round in range(1 + _MAX_ANSWER_REGEN_ROUNDS):
         if not pending_ids:
@@ -238,7 +265,7 @@ def _determine_and_verify_answers(kb: dict, questions: list[dict]) -> None:
             {"id": qid, "sentence": items_by_id[qid]["question"], "options": items_by_id[qid]["options"]}
             for qid in pending_ids
         ]
-        gen_prompt = assemble(compact_kb(kb), strong_answer_generation_task(gen_items, feedback or None))
+        gen_prompt = assemble(compact_kb(kb), strong_answer_generation_task(gen_items, feedback or None), extra)
         gen_data = parse_ai_json(ask(gen_prompt, reasoning_effort="low", model=answer_model))
         proposals_by_id = {a["id"]: a for a in (gen_data.get("answers") or [])}
 
@@ -260,7 +287,7 @@ def _determine_and_verify_answers(kb: dict, questions: list[dict]) -> None:
         if not verify_items:
             continue  # tất cả đều thiếu đề xuất hợp lệ - thử sinh lại ở vòng sau
 
-        verify_prompt = assemble(compact_kb(kb), strong_answer_verification_task(verify_items))
+        verify_prompt = assemble(compact_kb(kb), strong_answer_verification_task(verify_items), extra)
         verify_data = parse_ai_json(ask(verify_prompt, reasoning_effort="low", model=answer_model))
         results_by_id = {r["id"]: r for r in (verify_data.get("results") or [])}
 
@@ -294,6 +321,7 @@ def _determine_and_verify_answers(kb: dict, questions: list[dict]) -> None:
                 continue
 
             items_by_id[qid]["correct_index"] = idx
+            items_by_id[qid]["quality"] = _answer_quality(result.get("checks"), confidence, _round)
             feedback.pop(qid, None)
 
         pending_ids = new_pending
@@ -303,6 +331,107 @@ def _determine_and_verify_answers(kb: dict, questions: list[dict]) -> None:
             status_code=502,
             detail=f"Không xác định chắc chắn đáp án đúng cho câu {sorted(pending_ids)}, thử lại.",
         )
+
+
+# ---------- Sinh sẵn câu hỏi ở nền (prefetch) ----------
+# Bộ 20 câu recognition được sinh + kiểm tra đáp án ngay khi học sinh còn đọc
+# bài (/start), 2 câu mở được sinh trong lúc học sinh đọc kết quả recognition.
+# Mọi lỗi (JSON hỏng, câu thiếu chỗ trống, trùng câu, đáp án không xác nhận được)
+# đều bị bắt ở đây và sinh lại, nên thứ học sinh nhìn thấy luôn là bản đã qua
+# kiểm tra.
+
+_PREP_MAX_ATTEMPTS = 3
+_PREP_WAIT_SECONDS = 150
+
+
+def _generate_verified_recognition_set(kb: dict, is_retry: bool, full_history: list[str], lessons: list[str] | None = None) -> list[dict]:
+    n = len(kb["target_words"])
+    bounded = _bound_history(full_history, 60)
+    last_error: Exception | None = None
+    for _ in range(_PREP_MAX_ATTEMPTS):
+        try:
+            prompt = assemble(compact_kb(kb), recognition_task(n, is_retry, bounded), lessons_block(lessons))
+            data = parse_ai_json(ask(prompt))
+            questions = _parse_mcq_rows(data["q"], 20)
+            violation = _find_duplicate([q["question"] for q in questions], full_history)
+            if violation:
+                raise HTTPException(status_code=502, detail=violation)
+            _determine_and_verify_answers(kb, questions, lessons)
+            return questions
+        except AIRateLimitError:
+            raise
+        except (HTTPException, AIProviderError, KeyError, ValueError, TypeError) as e:
+            last_error = e
+    raise last_error  # type: ignore[misc]
+
+
+def _safe_lessons(world_id: str, level: int, group: str) -> list[str]:
+    try:
+        return db.load_accepted_lessons(world_id, level, group)
+    except Exception:  # noqa: BLE001
+        logger.exception("Không đọc được ghi chú người dùng đã duyệt")
+        return []
+
+
+def _start_recognition_prep(session: dict, user_id: int, is_retry: bool, full_history: list[str]) -> None:
+    prep = {"status": "pending", "questions": None, "charged": False, "event": threading.Event()}
+    session["prep"] = prep
+
+    def work():
+        try:
+            kb = load_knowledge_base(session["world_id"], session["level"])
+            questions = _generate_verified_recognition_set(
+                kb, is_retry, full_history, _safe_lessons(session["world_id"], session["level"], "recognition")
+            )
+            prep["questions"] = questions
+            prep["status"] = "ready"
+            db.save_question_set(
+                user_id, session["world_id"], session["level"], {"questions": questions, "charged": False}
+            )
+        except Exception:  # noqa: BLE001
+            logger.exception("Sinh sẵn bộ recognition thất bại (sẽ sinh lại khi học sinh bấm bắt đầu)")
+            prep["status"] = "failed"
+        finally:
+            prep["event"].set()
+
+    threading.Thread(target=work, daemon=True).start()
+
+
+def _start_open_ended_prep(session: dict, distinction_history: list[str], application_history: list[str]) -> None:
+    prep = {"status": "pending", "d": None, "a": None, "event": threading.Event()}
+    session["open_prep"] = prep
+
+    def work():
+        try:
+            kb = load_knowledge_base(session["world_id"], session["level"])
+            used_questions = [q["question"] for q in (session.get("generated_questions") or [])]
+            for _ in range(2):
+                prompt = assemble(
+                    compact_kb(kb),
+                    open_ended_generation_task(
+                        used_questions,
+                        _bound_history(distinction_history, 30),
+                        _bound_history(application_history, 30),
+                    ),
+                )
+                data = parse_ai_json(ask(prompt))
+                if (
+                    isinstance(data.get("d"), str) and isinstance(data.get("a"), str)
+                    and not _find_duplicate([data["d"]], distinction_history)
+                    and not _find_duplicate([data["a"]], application_history)
+                ):
+                    prep["d"], prep["a"] = data["d"], data["a"]
+                    prep["status"] = "ready"
+                    return
+            prep["status"] = "failed"
+        except Exception:  # noqa: BLE001
+            logger.exception("Sinh sẵn 2 câu mở thất bại (sẽ sinh lại khi học sinh nhập điểm tự tin)")
+            prep["status"] = "failed"
+        finally:
+            prep["event"].set()
+
+    threading.Thread(target=work, daemon=True).start()
+
 
 
 def _grade_mcq_answers(answer_key: dict, questions_by_id: dict, answers: dict) -> tuple[int, list[dict], str]:
@@ -368,6 +497,7 @@ def _missed_words_text(wrong_questions: list[dict] | None) -> str:
 class StartRequest(BaseModel):
     world_id: str
     level: int
+    recognition_history: list[str] = []  # câu đã sinh trước đó của level này, để sinh sẵn bộ mới không trùng
     is_retry: bool = False  # True nếu đây là lần retry sau khi RETRY
 
 
@@ -384,6 +514,8 @@ class SessionIdRequest(BaseModel):
 class SubmitRecognitionRequest(BaseModel):
     session_id: str
     answers: dict[str, int]  # {"1": 2, "2": 0, ...} id câu hỏi (string) -> index đáp án chọn
+    distinction_history: list[str] = []  # để sinh sẵn 2 câu mở trong lúc học sinh đọc kết quả
+    application_history: list[str] = []
 
 
 class SubmitConfidenceRequest(BaseModel):
@@ -397,6 +529,15 @@ class SubmitOpenEndedRequest(BaseModel):
     session_id: str
     distinction_answer: str
     application_answer: str
+
+
+class ReportRequest(BaseModel):
+    session_id: str
+    kind: str  # recognition | distinction | application
+    question_id: int | None = None  # chỉ với recognition
+    suggested_index: int | None = None  # recognition: lựa chọn người dùng cho là đúng
+    explanation: str
+    suggested_note: str = ""  # distinction/application: điểm/nhận xét người dùng cho là hợp lý
 
 
 class RemediationMCQRequest(BaseModel):
@@ -496,6 +637,19 @@ def start_session(req: StartRequest, user=Depends(get_current_user)):
         raise HTTPException(status_code=404, detail=str(e))
 
     session = create_session(req.world_id, req.level, req.is_retry)
+    session["recognition_history"] = list(req.recognition_history)
+
+    # Có bộ câu đã sinh từ lần vào trước (chưa nộp) thì dùng lại, không sinh/trừ key lần nữa.
+    stored = db.load_question_set(user["id"], req.world_id, req.level)
+    if stored and stored.get("questions"):
+        done = threading.Event()
+        done.set()
+        session["prep"] = {
+            "status": "ready", "questions": stored["questions"],
+            "charged": bool(stored.get("charged")), "event": done,
+        }
+    else:
+        _start_recognition_prep(session, user["id"], req.is_retry, session["recognition_history"])
 
     prompt = assemble(compact_kb(kb), learning_content_task())
     learning_content = ask(prompt)
@@ -519,29 +673,35 @@ def begin_recognition(req: SessionIdRequest, user=Depends(get_current_user)):
     # không qua ôn tập trước đó).
     if session["current_state"] not in ("READY_FOR_RECOGNITION", "RETRY", "REMEDIATION_DONE"):
         raise HTTPException(status_code=409, detail=f"Sai trạng thái hiện tại: {session['current_state']}")
-    _require_keys(user, 2)
+    prep = session.get("prep")
+    already_charged = bool(prep and prep.get("charged"))
+    if not already_charged:
+        _require_keys(user, 2)
 
     is_retest = session["current_state"] in ("RETRY", "REMEDIATION_DONE")
     if is_retest:
         session["is_retry"] = True
 
     kb = load_knowledge_base(session["world_id"], session["level"])
-    n = len(kb["target_words"])
-    bounded_recognition_history = _bound_history(req.recognition_history, 60)
+    full_history = list(dict.fromkeys((session.get("recognition_history") or []) + list(req.recognition_history)))
 
-    prompt = assemble(
-        compact_kb(kb),
-        recognition_task(n, session.get("is_retry", False), bounded_recognition_history),
-    )
-    raw = ask(prompt)
-    data = parse_ai_json(raw)
-    questions = _parse_mcq_rows(data["q"], 20)
+    questions = None
+    if prep is not None:
+        prep["event"].wait(timeout=_PREP_WAIT_SECONDS)
+        if prep["status"] == "ready":
+            questions = prep["questions"]
+    if questions is None:
+        # Chưa có bộ sinh sẵn (hoặc sinh sẵn thất bại): sinh ngay, vẫn qua đủ bước kiểm tra.
+        questions = _generate_verified_recognition_set(
+            kb, session.get("is_retry", False), full_history,
+            _safe_lessons(session["world_id"], session["level"], "recognition"),
+        )
 
-    duplicate_violation = _find_duplicate([q["question"] for q in questions], req.recognition_history)
-    if duplicate_violation:
-        raise HTTPException(status_code=502, detail=f"{duplicate_violation}, thử lại.")
-    _determine_and_verify_answers(kb, questions)
-    _charge_keys(user["id"], 2)
+    if not already_charged:
+        _charge_keys(user["id"], 2)
+    db.save_question_set(user["id"], session["world_id"], session["level"], {"questions": questions, "charged": True})
+    session["prep"] = None
+    session["recognition_history"] = full_history + [q["question"] for q in questions]
 
     session["generated_questions"] = questions
     session["secure_answer_key"] = {str(q["id"]): q["correct_index"] for q in questions}
@@ -584,6 +744,11 @@ def submit_recognition(req: SubmitRecognitionRequest, user=Depends(get_current_u
 
     session["current_state"] = "WAITING_CONFIDENCE"
 
+    # Đã nộp: bộ câu này không còn dùng lại khi vào lại level.
+    db.delete_question_set(user["id"], session["world_id"], session["level"])
+    # Sinh sẵn 2 câu mở ngay bây giờ, trong lúc học sinh đọc kết quả recognition.
+    _start_open_ended_prep(session, req.distinction_history, req.application_history)
+
     # Trả kèm cặp từ (chọn sai/đúng) để frontend lưu cho trang Analysis, không cần gọi lại AI.
     wrong_words = [
         {"selected": (wq["options"][wq["selected_index"]] if wq["selected_index"] is not None else None),
@@ -592,7 +757,12 @@ def submit_recognition(req: SubmitRecognitionRequest, user=Depends(get_current_u
         for wq in wrong_questions
     ]
 
-    return {"correction_text": correction_text, "explanations": explanations, "wrong_words": wrong_words}
+    quality = {str(q["id"]): q["quality"] for q in session["generated_questions"] if q.get("quality")}
+    return {
+        "correction_text": correction_text, "explanations": explanations, "wrong_words": wrong_words,
+        "quality": quality,
+        "correct_answers": {str(q["id"]): q["options"][q["correct_index"]] for q in session["generated_questions"]},
+    }
 
 
 @app.post("/api/chat/submit-confidence")
@@ -606,25 +776,34 @@ def submit_confidence(req: SubmitConfidenceRequest, user=Depends(get_current_use
 
     session["confidence"] = req.confidence
 
-    kb = load_knowledge_base(session["world_id"], session["level"])
-    used_questions = [q["question"] for q in (session.get("generated_questions") or [])]
-    prompt = assemble(
-        compact_kb(kb),
-        open_ended_generation_task(
-            used_questions,
-            _bound_history(req.distinction_history, 30),
-            _bound_history(req.application_history, 30),
-        ),
-    )
-    raw = ask(prompt)
-    data = parse_ai_json(raw)
+    prep = session.get("open_prep")
+    data = None
+    if prep is not None:
+        prep["event"].wait(timeout=_PREP_WAIT_SECONDS)
+        if prep["status"] == "ready":
+            data = {"d": prep["d"], "a": prep["a"]}
+    session["open_prep"] = None
 
-    duplicate_violation = (
-        _find_duplicate([data["d"]], req.distinction_history)
-        or _find_duplicate([data["a"]], req.application_history)
-    )
-    if duplicate_violation:
-        raise HTTPException(status_code=502, detail=f"{duplicate_violation}, thử lại.")
+    if data is None:
+        # Không có bản sinh sẵn (hoặc thất bại): sinh ngay như cũ.
+        kb = load_knowledge_base(session["world_id"], session["level"])
+        used_questions = [q["question"] for q in (session.get("generated_questions") or [])]
+        prompt = assemble(
+            compact_kb(kb),
+            open_ended_generation_task(
+                used_questions,
+                _bound_history(req.distinction_history, 30),
+                _bound_history(req.application_history, 30),
+            ),
+        )
+        data = parse_ai_json(ask(prompt))
+
+        duplicate_violation = (
+            _find_duplicate([data["d"]], req.distinction_history)
+            or _find_duplicate([data["a"]], req.application_history)
+        )
+        if duplicate_violation:
+            raise HTTPException(status_code=502, detail=f"{duplicate_violation}, thử lại.")
 
     session["distinction_prompt"] = data["d"]
     session["application_prompt"] = data["a"]
@@ -633,6 +812,54 @@ def submit_confidence(req: SubmitConfidenceRequest, user=Depends(get_current_use
     return {
         "distinction_prompt": data["d"],
         "application_prompt": data["a"],
+    }
+
+
+_SPREAD_FLAG = 2.0  # chênh >= 2 điểm (trên thang 10) giữa 2 lượt chấm => nên xem lại
+
+
+def _grade_open_ended_twice(prompt: str) -> dict:
+    """Chấm 2 lượt AI độc lập (chạy song song nên không chậm gấp đôi) rồi lấy
+    TRUNG BÌNH CỘNG điểm từng tiêu chí. Nhận xét lấy từ lượt có tổng điểm gần
+    điểm trung bình nhất để lời nhận xét khớp với điểm hiển thị. Nếu 1 lượt
+    lỗi (JSON hỏng, lỗi mạng) thì dùng lượt còn lại; cả 2 lỗi mới báo lỗi."""
+    from concurrent.futures import ThreadPoolExecutor
+
+    def one_pass(_):
+        data = parse_ai_json(ask(prompt))
+        return {
+            "d": _clamp_scores(data.get("d_scores", {}), DISTINCTION_CRITERIA),
+            "a": _clamp_scores(data.get("a_scores", {}), APPLICATION_CRITERIA),
+            "d_fb": data.get("d_fb", ""),
+            "a_fb": data.get("a_fb", ""),
+        }
+
+    results, errors = [], []
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        futures = [pool.submit(one_pass, i) for i in range(2)]
+        for f in futures:
+            try:
+                results.append(f.result())
+            except Exception as e:  # noqa: BLE001
+                errors.append(e)
+    if not results:
+        raise errors[0]
+
+    def mean(kind: str, key: str) -> float:
+        return sum(r[kind][key] for r in results) / len(results)
+
+    d_avg = {k: mean("d", k) for k in DISTINCTION_CRITERIA}
+    a_avg = {k: mean("a", k) for k in APPLICATION_CRITERIA}
+    d_total, a_total = sum(d_avg.values()), sum(a_avg.values())
+    d_pick = min(results, key=lambda r: abs(sum(r["d"].values()) - d_total))
+    a_pick = min(results, key=lambda r: abs(sum(r["a"].values()) - a_total))
+    d_spread = a_spread = None
+    if len(results) == 2:
+        d_spread = round(abs(sum(results[0]["d"].values()) - sum(results[1]["d"].values())), 1)
+        a_spread = round(abs(sum(results[0]["a"].values()) - sum(results[1]["a"].values())), 1)
+    return {
+        "d_scores": d_avg, "a_scores": a_avg, "d_fb": d_pick["d_fb"], "a_fb": a_pick["a_fb"],
+        "d_spread": d_spread, "a_spread": a_spread,
     }
 
 
@@ -649,9 +876,10 @@ def submit_open_ended(req: SubmitOpenEndedRequest, user=Depends(get_current_user
         f"Tình huống Application: {session['application_prompt']}\n"
         f"Trả lời học sinh: {req.application_answer}"
     )
-    prompt = assemble(compact_kb(kb), open_ended_grading_task(context))
-    raw = ask(prompt)
-    data = parse_ai_json(raw)
+    prompt = open_ended_grading_prompt(
+        compact_kb(kb), context, _safe_lessons(session["world_id"], session["level"], "open")
+    )
+    data = _grade_open_ended_twice(prompt)
 
     d_scores = _clamp_scores(data.get("d_scores", {}), DISTINCTION_CRITERIA)
     a_scores = _clamp_scores(data.get("a_scores", {}), APPLICATION_CRITERIA)
@@ -679,6 +907,9 @@ def submit_open_ended(req: SubmitOpenEndedRequest, user=Depends(get_current_user
         "weak_area": weak_area,
     })
     session["current_state"] = "LEVEL_COMPLETED" if final_result == "PASS" else "RETRY"
+    if final_result != "PASS":
+        # Sinh sẵn bộ 20 câu cho lần kiểm tra lại, trong lúc học sinh đọc báo cáo/ôn tập.
+        _start_recognition_prep(session, user["id"], True, session.get("recognition_history") or [])
 
     return {
         "recognition": session["recognition"],
@@ -689,6 +920,10 @@ def submit_open_ended(req: SubmitOpenEndedRequest, user=Depends(get_current_user
         "application_score": application_score,
         "application_feedback": data.get("a_fb", ""),
         "application_rubric": _rubric_rows(a_scores, APPLICATION_CRITERIA, APPLICATION_LABELS),
+        "grading_spread": {
+            "distinction": data.get("d_spread"), "application": data.get("a_spread"),
+            "flag_threshold": _SPREAD_FLAG,
+        },
         "overall": overall,
         "confidence": session["confidence"],
         "gap": gap,
@@ -700,6 +935,65 @@ def submit_open_ended(req: SubmitOpenEndedRequest, user=Depends(get_current_user
             "Chưa đạt yêu cầu (Overall >= 7.0 và |Gap| <= 1.0). Hãy ôn tập trọng tâm rồi kiểm tra lại."
         ),
     }
+
+
+# ---------- báo cáo của người dùng + AI lọc ----------
+# Mỗi báo cáo được AI thẩm định độc lập dựa trên KB; chỉ báo cáo ACCEPT mới được
+# lưu thành "lesson" (câu do AI tự viết lại, không chép nguyên văn người dùng) và
+# nạp vào prompt sinh câu/chấm điểm của chính level đó ở các lần sau.
+_MAX_REPORTS_PER_DAY = 20
+
+
+@app.post("/api/report")
+def submit_report(req: ReportRequest, user=Depends(get_current_user)):
+    session = get_session(req.session_id)
+    explanation = req.explanation.strip()
+    if len(explanation) < 10 or len(explanation) > 1200:
+        raise HTTPException(status_code=422, detail="Giải thích cần từ 10 đến 1200 ký tự.")
+    if db.count_reports_today(user["id"]) >= _MAX_REPORTS_PER_DAY:
+        raise HTTPException(status_code=429, detail="Bạn đã gửi quá nhiều báo cáo hôm nay.")
+
+    kb = load_knowledge_base(session["world_id"], session["level"])
+    extra = ""
+    if req.kind == "recognition":
+        q = next((x for x in (session.get("generated_questions") or []) if x["id"] == req.question_id), None)
+        if q is None or req.suggested_index is None or not (0 <= req.suggested_index < len(q["options"])):
+            raise HTTPException(status_code=422, detail="Câu hỏi hoặc đáp án đề xuất không hợp lệ.")
+        question = q["question"]
+        item_ref = str(q["id"])
+        current = q["options"][q["correct_index"]]
+        suggested = q["options"][req.suggested_index]
+        extra = "Các lựa chọn: " + " | ".join(q["options"])
+        if req.suggested_index == q["correct_index"]:
+            raise HTTPException(status_code=422, detail="Đáp án đề xuất trùng với đáp án hiện tại.")
+    elif req.kind in ("distinction", "application"):
+        if "distinction_prompt" not in session:
+            raise HTTPException(status_code=409, detail="Chưa có câu hỏi mở để báo cáo.")
+        is_d = req.kind == "distinction"
+        question = session["distinction_prompt"] if is_d else session["application_prompt"]
+        item_ref = req.kind
+        score = session.get("distinction_score" if is_d else "application_score")
+        fb = session.get("distinction_feedback" if is_d else "application_feedback")
+        current = f"điểm {score}/10; nhận xét: {fb}"
+        suggested = req.suggested_note.strip()[:300] or "(không nêu)"
+    else:
+        raise HTTPException(status_code=422, detail="Loại báo cáo không hợp lệ.")
+
+    prompt = assemble(compact_kb(kb), report_judge_task(req.kind, question, current, suggested, explanation, extra))
+    try:
+        data = parse_ai_json(ask(prompt))
+    except AIRateLimitError:
+        raise
+    accepted = str(data.get("verdict", "")).upper() == "ACCEPT" and bool(data.get("lesson"))
+    lesson = str(data["lesson"])[:300] if accepted else None
+    inserted = db.save_report(
+        user["id"], session["world_id"], session["level"], req.kind, item_ref, question,
+        current, suggested, explanation, "accepted" if accepted else "rejected", lesson,
+        str(data.get("reason", ""))[:300],
+    )
+    if not inserted:
+        raise HTTPException(status_code=409, detail="Bạn đã báo cáo mục này rồi.")
+    return {"accepted": accepted, "reason": str(data.get("reason", ""))}
 
 
 # ---------- luồng ôn tập trọng tâm (remediation) khi RETRY ----------
