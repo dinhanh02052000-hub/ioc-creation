@@ -196,6 +196,15 @@ function renderWorldMap(config) {
           ${nodesHtml}
         </div>
       </div>
+
+      <div class="world-map-disclaimer">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="10" cy="10" r="7.5"/>
+          <line x1="10" y1="6.5" x2="10" y2="10.5"/>
+          <circle cx="10" cy="13.3" r="0.15" fill="currentColor" stroke-width="1.2"/>
+        </svg>
+        <span>Illusion of Competence Detector là AI và có thể mắc sai lầm. Hãy kiểm tra kĩ lại thông tin nếu phát hiện bất thường.</span>
+      </div>
     </div>
   `;
 }

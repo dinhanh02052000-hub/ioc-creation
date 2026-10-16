@@ -625,3 +625,28 @@
   border-radius: 8px;
   padding: 8px 12px;
 }
+
+/* Cảnh báo AI ở cuối trang world, nằm giữa 2 nút góc dưới (từ vựng / chat). */
+.world-map-disclaimer {
+  position: relative;
+  z-index: 2;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(640px, calc(100% - 420px));
+  margin-bottom: 20px;
+  padding: 10px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(13, 17, 23, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+.world-map-disclaimer svg { flex: none; width: 18px; height: 18px; color: var(--accent-amber); }
+@media (max-width: 900px) {
+  .world-map-disclaimer { max-width: calc(100% - 32px); margin-bottom: 76px; }
+}

@@ -116,14 +116,15 @@ function renderHome() {
             <p>Chào bạn! Mình là IOC — luôn sẵn sàng đồng hành cùng bạn chinh phục từ vựng mỗi ngày! 🚀</p>
           </div>
         </div>
+      </div>
 
-        <div class="card ioc-index-card">
-          <div class="card-header">
-            <span class="card-title">CHỈ SỐ IOC</span>
-            <span class="badge">Tổng hợp</span>
-          </div>
-          ${homeRenderIocIndexBody()}
+      <!-- Hàng dưới (cột trái): chỉ số IOC, cùng hàng với ô từ vựng -->
+      <div class="card ioc-index-card">
+        <div class="card-header">
+          <span class="card-title">CHỈ SỐ IOC</span>
+          <span class="badge">Tổng hợp</span>
         </div>
+        ${homeRenderIocIndexBody()}
       </div>
 
       <!-- Cột giữa: Quote & Tip -->
@@ -205,6 +206,47 @@ function renderHome() {
           </blockquote>
         </div>
       </div>
+
+      <!-- Hàng dưới (cột giữa + phải): từ vựng đã học theo từng world -->
+      <div class="card vocab-home-card">
+        <div class="card-header">
+          <span class="card-title">TỪ VỰNG ĐÃ HỌC</span>
+          <span class="badge">Cần nhớ</span>
+        </div>
+        <div class="vocab-home-split">
+          ${HOME_VOCAB_WORLDS.map(homeRenderVocabHalf).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+const HOME_VOCAB_WORLDS = [
+  { id: 'world-1', label: 'World 1', page: 'world1.html', accent: 'green' },
+  { id: 'world-2', label: 'World 2', page: 'world2.html', accent: 'blue' }
+];
+
+// Mỗi nửa ứng với 1 world: chưa PASS level nào -> lời nhắc + nút Start vào
+// thẳng world đó; đã có -> liệt kê từ của các nhóm đã học (đọc từ cùng nguồn
+// với nút "Từ vựng đã học" trong trang world).
+function homeRenderVocabHalf(world) {
+  const entries = typeof getVocabLearnedList === 'function' ? getVocabLearnedList(world.id) : [];
+  const escape = (v) => String(v == null ? '' : v)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  const bodyHtml = entries.length
+    ? `<div class="vocab-home-list">${entries.map(e => `
+        <div class="vocab-home-item">
+          <strong>${escape(e.group_title || 'Level ' + e.level)}</strong>:
+          ${e.words.map(escape).join(', ')}
+        </div>`).join('')}</div>`
+    : `<p class="vocab-home-locked">Hoàn thành 1 level của ${world.label} để mở khoá từ mới</p>`;
+
+  return `
+    <div class="vocab-home-half" data-accent="${world.accent}">
+      <div class="vocab-home-half-title">${world.label.toUpperCase()}</div>
+      ${bodyHtml}
+      <a class="vocab-home-start" href="${world.page}">${entries.length ? 'Tiếp tục' : 'Start'}</a>
     </div>
   `;
 }

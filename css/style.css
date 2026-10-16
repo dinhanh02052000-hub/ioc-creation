@@ -529,6 +529,62 @@ body {
   align-items: stretch;
 }
 
+/* Hàng dưới: ô chỉ số IOC (cột trái) và ô từ vựng (giữa + phải) cùng hàng nên
+   cao bằng nhau, thẳng mép trên và mép dưới. */
+.home-dashboard {
+  grid-template-areas:
+    "left middle right"
+    "ioc vocab vocab";
+}
+.left-column { grid-area: left; }
+.ioc-index-card { grid-area: ioc; }
+.middle-column { grid-area: middle; }
+.right-column { grid-area: right; }
+.vocab-home-card { grid-area: vocab; border-top-color: var(--accent-purple); display: flex; flex-direction: column; }
+
+.vocab-home-split {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.vocab-home-half {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px;
+  min-height: 110px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--overlay-soft);
+  text-align: center;
+  --vocab-accent: var(--accent-green);
+}
+.vocab-home-half[data-accent="blue"] { --vocab-accent: var(--accent); }
+.vocab-home-half-title { font-size: 0.72rem; letter-spacing: 0.08em; color: var(--vocab-accent); font-weight: 700; }
+.vocab-home-locked { margin: 0; font-size: 0.85rem; color: var(--text-dim); line-height: 1.5; }
+.vocab-home-list { width: 100%; max-height: 120px; overflow-y: auto; text-align: left; font-size: 0.82rem; color: var(--text-dim); }
+.vocab-home-item { margin-bottom: 6px; line-height: 1.45; }
+.vocab-home-item strong { color: var(--text); }
+.vocab-home-start {
+  padding: 7px 22px;
+  border-radius: 6px;
+  border: 1px solid var(--vocab-accent);
+  color: var(--vocab-accent);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.vocab-home-start:hover { background: var(--vocab-accent); color: #fff; }
+
+@media (max-width: 900px) {
+  .home-dashboard { grid-template-columns: 1fr; grid-template-areas: "left" "middle" "right" "ioc" "vocab"; }
+  .vocab-home-split { grid-template-columns: 1fr; }
+}
+
 .left-column, .middle-column, .right-column {
   display: flex;
   flex-direction: column;
