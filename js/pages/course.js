@@ -29,13 +29,8 @@ function renderCourse() {
 
   return `
     <div class="course-page">
-      <div class="course-header">
-        <h1 class="course-title">VOCABULARY <span class="course-title-accent">JOURNEY</span></h1>
-        <p class="course-subtitle">
-          Hành trình chinh phục từ vựng tiếng Anh qua ${COURSE_WORLDS.length} thế giới
-          <span class="course-hint">• Nhấp vào thẻ để bắt đầu hành trình</span>
-        </p>
-      </div>
+      <h1 class="analysis-heading">Lộ trình học</h1>
+      <p class="page-desc">Từ vựng tiếng Anh theo trường nghĩa</p>
       <div class="world-grid">
         ${worldCardsHtml}
       </div>
@@ -52,42 +47,35 @@ function renderWorldCard(world) {
       <div class="world-art" style="background-image: url('${world.image}');">
         <div class="world-art-top">
           <span class="world-badge-pill">${world.label}</span>
-          <span class="world-levels-pill">${world.totalLevels} Levels</span>
-        </div>
-        <div class="world-art-info">
-          <h2 class="world-name">${world.name}</h2>
-          <p class="world-subtitle-text">${world.subtitle}</p>
+          <span class="world-levels-pill">${world.totalLevels} level</span>
+          <div class="world-menu-wrap">
+            <button type="button" class="world-menu-btn" data-world-id="${world.id}" aria-haspopup="true" aria-expanded="false" aria-label="Thêm tuỳ chọn">
+              ${icon('moreHorizontal', 18)}
+            </button>
+            <div class="world-menu" hidden>
+              <button type="button" class="world-replay-btn" data-world-id="${world.id}">
+                ${icon('x', 14)}<span>Chơi lại từ đầu</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="world-panel">
-        <div class="world-progress-header">
-          <span>TIẾN TRÌNH HOÀN THÀNH</span>
-          <span class="world-progress-level" id="world-level-${world.id}">Level ${completed} / ${world.totalLevels}</span>
-        </div>
+        <h2 class="world-name">${world.name}</h2>
+        <p class="world-subtitle-text">${world.subtitle}</p>
+
         <div class="world-progress-bar">
           <div class="world-progress-fill" id="world-fill-${world.id}" style="width: ${percent}%;"></div>
         </div>
         <div class="world-progress-footer">
-          <span id="world-passed-${world.id}">Đã qua ${completed} màn</span>
-          <span id="world-percent-${world.id}">${percent}% Hoàn thành</span>
+          <span id="world-passed-${world.id}">${completed}/${world.totalLevels} level</span>
+          <span id="world-percent-${world.id}">${percent}%</span>
         </div>
 
-        <div class="world-actions">
-          <button type="button" class="world-continue-btn" data-world-id="${world.id}">
-            <span>Tiếp tục</span>
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M6 3l5 5-5 5" />
-            </svg>
-          </button>
-          <button type="button" class="world-replay-btn" data-world-id="${world.id}" title="Chơi lại từ đầu">
-            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 10a7 7 0 0 1 12-4.95M17 10a7 7 0 0 1-12 4.95" />
-              <path d="M15 2v4h-4M5 18v-4h4" />
-            </svg>
-            <span>Chơi lại</span>
-          </button>
-        </div>
+        <button type="button" class="ai-btn world-continue-btn" data-world-id="${world.id}">
+          Tiếp tục
+        </button>
       </div>
     </div>
   `;
@@ -97,15 +85,13 @@ function updateWorldProgressUI(world) {
   const completed = getWorldCompletedLevels(world.id);
   const percent = Math.min(100, Math.round((completed / world.totalLevels) * 100));
 
-  const levelEl = document.getElementById(`world-level-${world.id}`);
   const fillEl = document.getElementById(`world-fill-${world.id}`);
   const passedEl = document.getElementById(`world-passed-${world.id}`);
   const percentEl = document.getElementById(`world-percent-${world.id}`);
 
-  if (levelEl) levelEl.textContent = `Level ${completed} / ${world.totalLevels}`;
   if (fillEl) fillEl.style.width = `${percent}%`;
-  if (passedEl) passedEl.textContent = `Đã qua ${completed} màn`;
-  if (percentEl) percentEl.textContent = `${percent}% Hoàn thành`;
+  if (passedEl) passedEl.textContent = `${completed}/${world.totalLevels} level`;
+  if (percentEl) percentEl.textContent = `${percent}%`;
 }
 
 function goToWorldPage(worldId) {
@@ -115,10 +101,30 @@ function goToWorldPage(worldId) {
   }
 }
 
+function closeAllWorldMenus() {
+  document.querySelectorAll('.world-menu').forEach(m => { m.hidden = true; });
+  document.querySelectorAll('.world-menu-btn').forEach(b => b.setAttribute('aria-expanded', 'false'));
+}
+
 function initCourseInteractions() {
+  document.querySelectorAll('.world-menu-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const menu = btn.nextElementSibling;
+      const wasHidden = menu.hidden;
+      closeAllWorldMenus();
+      if (wasHidden) {
+        menu.hidden = false;
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+  document.addEventListener('click', closeAllWorldMenus);
+
   document.querySelectorAll('.world-replay-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
+      closeAllWorldMenus();
       const worldId = btn.getAttribute('data-world-id');
       const world = COURSE_WORLDS.find(w => w.id === worldId);
       if (!world) return;
@@ -140,7 +146,7 @@ function initCourseInteractions() {
 
   document.querySelectorAll('.world-card').forEach(card => {
     card.addEventListener('click', (e) => {
-      if (e.target.closest('.world-replay-btn') || e.target.closest('.world-continue-btn')) return;
+      if (e.target.closest('.world-menu-wrap') || e.target.closest('.world-continue-btn')) return;
       goToWorldPage(card.getAttribute('data-world-id'));
     });
   });

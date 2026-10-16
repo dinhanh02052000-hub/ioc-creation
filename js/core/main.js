@@ -1,23 +1,31 @@
+// Nhãn hiển thị ở tiêu đề topbar + title cho từng mục - dùng chung giữa
+// sidebar, thanh đáy và topbar nên khai báo 1 chỗ.
+const PAGE_TITLES = {
+  home: 'Trang chủ',
+  course: 'Lộ trình',
+  analysis: 'Phân tích',
+  vocab: 'Từ đã học',
+  about: 'Giới thiệu',
+  profile: 'Hồ sơ',
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   const root = document.getElementById('root');
   if (root) {
     root.innerHTML = App();
 
     // ?page=<tab> cho phép mở thẳng đúng tab (vd. quay lại từ world1/world2.html
-    // về Course, hoặc điều hướng tới Profile khi AI báo lỗi chưa đăng nhập/hết key).
+    // về Lộ trình, hoặc điều hướng tới Hồ sơ khi AI báo lỗi chưa đăng nhập/hết key).
     const params = new URLSearchParams(window.location.search);
-    const validTargets = new Set(['home', 'course', 'analysis', 'profile']);
+    const validTargets = new Set(Object.keys(PAGE_TITLES));
     const requestedTarget = params.get('page');
     const initialTarget = validTargets.has(requestedTarget) ? requestedTarget : 'home';
 
-    const navBtns = document.querySelectorAll('.nav-btn');
-    navBtns.forEach(b => b.classList.remove('active'));
-    const initialBtn = document.querySelector(`.nav-btn[data-target="${initialTarget}"]`);
-    if (initialBtn) initialBtn.classList.add('active');
-
+    setActiveNavTarget(initialTarget);
     loadContent(initialTarget);
 
     initInteractions();
+    initSidebar();
 
     // Bộ đếm thời gian học chạy toàn cục, không dừng khi chuyển tab.
     if (typeof startPlaytimeTimer === 'function') {
@@ -29,6 +37,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 });
+
+function setActiveNavTarget(target) {
+  document.querySelectorAll('.sidebar-nav-item, .bottom-nav-item').forEach(el => {
+    el.classList.toggle('active', el.getAttribute('data-target') === target);
+  });
+  const titleEl = document.getElementById('topbar-title');
+  if (titleEl) titleEl.textContent = PAGE_TITLES[target] || '';
+  document.body.dataset.page = target;
+}
 
 function loadContent(target) {
   const contentArea = document.getElementById('main-content');
@@ -53,30 +70,181 @@ function loadContent(target) {
     if (typeof initAnalysisInteractions === 'function') {
       initAnalysisInteractions();
     }
+  } else if (target === 'vocab' && typeof renderVocab === 'function') {
+    contentArea.innerHTML = renderVocab();
+    if (typeof initVocabInteractions === 'function') {
+      initVocabInteractions();
+    }
+  } else if (target === 'about' && typeof renderAbout === 'function') {
+    contentArea.innerHTML = renderAbout();
   } else if (target === 'profile' && typeof renderProfile === 'function') {
     contentArea.innerHTML = renderProfile();
     if (typeof initProfileInteractions === 'function') {
       initProfileInteractions();
     }
   } else {
-    contentArea.innerHTML = `<div class="placeholder-page"><h2>Trang ${target.toUpperCase()} đang phát triển...</h2></div>`;
+    contentArea.innerHTML = `<div class="placeholder-page"><h2>Trang ${target} đang phát triển...</h2></div>`;
   }
+
+  contentArea.scrollTo(0, 0);
+}
+
+function navigateTo(target) {
+  setActiveNavTarget(target);
+  loadContent(target);
+  closeMobileSidebar();
+  closeAvatarMenu();
 }
 
 function initInteractions() {
-  const navBtns = document.querySelectorAll('.nav-btn');
-  navBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      navBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      const target = btn.getAttribute('data-target');
-      loadContent(target);
-    });
+  document.querySelectorAll('.sidebar-nav-item, .bottom-nav-item').forEach(btn => {
+    btn.addEventListener('click', () => navigateTo(btn.getAttribute('data-target')));
   });
 
   initFeedbackWidget();
   initKeyShopWidget();
+  initAvatarMenu();
+}
+
+// ==== Sidebar: thu gọn/mở rộng + overlay mobile ====
+// Trạng thái lưu localStorage nên giữ nguyên qua lần tải trang sau - khoá
+// KHÔNG prefix "ioc_" vì đây là sở thích hiển thị riêng trình duyệt, không
+// cần đồng bộ lên tài khoản (giống sfx_muted ở sound-effects.js).
+const SIDEBAR_STATE_KEY = 'ioc.sidebar';
+
+function getSidebarState() {
+  try {
+    const v = localStorage.getItem(SIDEBAR_STATE_KEY);
+    return v === 'collapsed' ? 'collapsed' : 'expanded';
+  } catch (e) {
+    return 'expanded';
+  }
+}
+
+function setSidebarState(state) {
+  try {
+    localStorage.setItem(SIDEBAR_STATE_KEY, state);
+  } catch (e) {
+    // localStorage không khả dụng -> chỉ áp dụng cho phiên hiện tại
+  }
+}
+
+function applySidebarState(state) {
+  const sidebar = document.getElementById('app-sidebar');
+  const toggleBtn = document.getElementById('sidebar-toggle-btn');
+  const shell = document.querySelector('.app-shell');
+  if (!sidebar || !toggleBtn || !shell) return;
+
+  const collapsed = state === 'collapsed';
+  shell.classList.toggle('sidebar-collapsed', collapsed);
+  toggleBtn.innerHTML = icon(collapsed ? 'panelLeftOpen' : 'panelLeftClose', 18);
+  toggleBtn.setAttribute('aria-expanded', String(!collapsed));
+  toggleBtn.setAttribute('aria-label', collapsed ? 'Mở rộng thanh bên' : 'Thu gọn thanh bên');
+  toggleBtn.title = (collapsed ? 'Mở rộng thanh bên' : 'Thu gọn thanh bên') + ' (Ctrl/Cmd+B)';
+}
+
+function toggleSidebar() {
+  const next = getSidebarState() === 'collapsed' ? 'expanded' : 'collapsed';
+  setSidebarState(next);
+  applySidebarState(next);
+}
+
+function openMobileSidebar() {
+  document.querySelector('.app-shell')?.classList.add('sidebar-mobile-open');
+}
+
+function closeMobileSidebar() {
+  document.querySelector('.app-shell')?.classList.remove('sidebar-mobile-open');
+}
+
+function initSidebar() {
+  applySidebarState(getSidebarState());
+
+  const toggleBtn = document.getElementById('sidebar-toggle-btn');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      // Dưới 1024px, sidebar luôn ở dạng overlay (CSS tự ẩn) - nút toggle lúc
+      // đó chỉ có tác dụng mở/đóng overlay, không đổi trạng thái lưu lại.
+      if (window.innerWidth < 1024) {
+        document.querySelector('.app-shell')?.classList.contains('sidebar-mobile-open')
+          ? closeMobileSidebar()
+          : openMobileSidebar();
+      } else {
+        toggleSidebar();
+      }
+    });
+  }
+
+  const overlay = document.getElementById('sidebar-overlay');
+  if (overlay) overlay.addEventListener('click', closeMobileSidebar);
+
+  document.addEventListener('keydown', (e) => {
+    const key = e.key ? e.key.toLowerCase() : '';
+    if ((e.ctrlKey || e.metaKey) && key === 'b') {
+      e.preventDefault();
+      toggleSidebar();
+    } else if (key === 'escape') {
+      closeMobileSidebar();
+    }
+  });
+}
+
+// ==== Menu avatar ở topbar ====
+function closeAvatarMenu() {
+  const menu = document.getElementById('topbar-avatar-menu');
+  const btn = document.getElementById('topbar-avatar-btn');
+  if (menu) menu.hidden = true;
+  if (btn) btn.setAttribute('aria-expanded', 'false');
+}
+
+function initAvatarMenu() {
+  const btn = document.getElementById('topbar-avatar-btn');
+  const menu = document.getElementById('topbar-avatar-menu');
+  const img = document.getElementById('topbar-avatar-img');
+  if (!btn || !menu) return;
+
+  if (img && typeof getEffectiveAvatarUrl === 'function') {
+    img.src = getEffectiveAvatarUrl();
+    img.addEventListener('error', () => {
+      if (typeof getDefaultAvatarDataUri === 'function') img.src = getDefaultAvatarDataUri();
+    });
+  }
+
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const nowOpen = menu.hidden;
+    menu.hidden = !nowOpen;
+    btn.setAttribute('aria-expanded', String(nowOpen));
+    // Đọc lại trạng thái đăng nhập mỗi lần mở (không chỉ lúc init) - để kịp
+    // phản ánh nếu người dùng vừa đăng nhập/đăng xuất ở trang Hồ sơ mà chưa
+    // tải lại trang.
+    const logoutBtn = document.getElementById('topbar-logout-btn');
+    if (nowOpen && logoutBtn) {
+      logoutBtn.hidden = !(typeof isLoggedIn === 'function' ? isLoggedIn() : false);
+    }
+    if (nowOpen && img && typeof getEffectiveAvatarUrl === 'function') {
+      img.src = getEffectiveAvatarUrl();
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!menu.hidden && !menu.contains(e.target) && e.target !== btn) closeAvatarMenu();
+  });
+
+  menu.querySelectorAll('[data-target]').forEach(item => {
+    item.addEventListener('click', () => navigateTo(item.getAttribute('data-target')));
+  });
+
+  const logoutBtn = document.getElementById('topbar-logout-btn');
+  if (logoutBtn) {
+    // Khách (chưa đăng nhập Google) không có phiên để đăng xuất.
+    const loggedIn = typeof isLoggedIn === 'function' ? isLoggedIn() : false;
+    logoutBtn.hidden = !loggedIn;
+    logoutBtn.addEventListener('click', () => {
+      closeAvatarMenu();
+      if (typeof authSignOut === 'function') authSignOut();
+    });
+  }
 }
 
 // Thanh toán tạo giao dịch VietQR thật (mã tham chiếu + QR), sau đó poll

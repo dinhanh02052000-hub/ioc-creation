@@ -51,6 +51,7 @@ from config import (
 from engine_prompts import (
     assemble,
     compact_kb,
+    correction_per_question_task,
     correction_task,
     learning_content_task,
     load_knowledge_base,
@@ -569,9 +570,17 @@ def submit_recognition(req: SubmitRecognitionRequest, user=Depends(get_current_u
     session["user_recognition_answers"] = req.answers
     session["wrong_questions"] = wrong_questions  # Lưu trữ để dùng cho retest
 
-    kb = load_knowledge_base(session["world_id"], session["level"])
-    prompt = assemble(compact_kb(kb), correction_task(wrong_summary))
-    correction_text = ask(prompt)
+    explanations: dict[str, str] = {}
+    correction_text = "Bạn đã trả lời đúng tất cả các câu."
+    if wrong_questions:
+        kb = load_knowledge_base(session["world_id"], session["level"])
+        prompt = assemble(compact_kb(kb), correction_per_question_task(wrong_summary))
+        data = parse_ai_json(ask(prompt))
+        for item in data.get("items") or []:
+            if isinstance(item, dict) and item.get("id") is not None and item.get("explanation"):
+                explanations[str(item["id"])] = str(item["explanation"])
+        # Bản gộp dạng văn bản - dự phòng cho tiến trình đã lưu từ phiên bản cũ.
+        correction_text = chr(10).join(f"**Câu {qid}:** {text}" for qid, text in explanations.items()) or correction_text
 
     session["current_state"] = "WAITING_CONFIDENCE"
 
@@ -583,7 +592,7 @@ def submit_recognition(req: SubmitRecognitionRequest, user=Depends(get_current_u
         for wq in wrong_questions
     ]
 
-    return {"correction_text": correction_text, "wrong_words": wrong_words}
+    return {"correction_text": correction_text, "explanations": explanations, "wrong_words": wrong_words}
 
 
 @app.post("/api/chat/submit-confidence")

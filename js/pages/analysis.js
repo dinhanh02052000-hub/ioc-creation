@@ -63,16 +63,55 @@ function analysisRenderBox1(agg) {
     return `<div class="analysis-empty">Bạn chưa hoàn thành level nào. Hãy làm bài ở World 1 hoặc World 2 để xem điểm tổng hợp tại đây.</div>`;
   }
   const meta = ANALYSIS_ILLUSION_META[agg.illusion_status] || { label: agg.illusion_status, dot: 'red' };
+  const gapSign = agg.gap > 0 ? '+' : '';
   return `
-    ${analysisScoreRowHtml('Recognition', agg.recognition)}
-    ${analysisScoreRowHtml('Distinction', agg.distinction)}
-    ${analysisScoreRowHtml('Application', agg.application)}
-    ${analysisScoreRowHtml('Overall', agg.overall)}
+    <div class="analysis-iocbig-top">
+      ${analysisScoreRowHtml('Ảo tưởng (Confidence)', agg.confidence)}
+      ${analysisScoreRowHtml('Thực tế (Overall)', agg.overall)}
+    </div>
     <div class="analysis-illusion-row">
       <span class="analysis-status-dot analysis-status-dot--${meta.dot}"></span>
-      <span>${meta.label}</span>
-      <span class="analysis-illusion-hint">(trung bình ${agg.levelCount} level đã làm)</span>
+      <span>GAP: ${gapSign}${agg.gap.toFixed(1)}</span>
+      <span class="analysis-illusion-hint">${meta.label} · trung bình ${agg.levelCount} level đã làm</span>
     </div>
+  `;
+}
+
+function analysisRenderScoreBreakdown(agg) {
+  if (!agg) return `<div class="analysis-empty">Chưa có dữ liệu.</div>`;
+  return `
+    ${analysisScoreRowHtml('Nhận diện (Recognition)', agg.recognition)}
+    ${analysisScoreRowHtml('Phân biệt (Distinction)', agg.distinction)}
+    ${analysisScoreRowHtml('Vận dụng (Application)', agg.application)}
+    ${analysisScoreRowHtml('Tổng hợp (Overall)', agg.overall)}
+  `;
+}
+
+function analysisRenderLevelTable() {
+  const flat = typeof getAllLevelResultsFlat === 'function' ? getAllLevelResultsFlat() : [];
+  const sorted = flat.slice().sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+  if (!sorted.length) return `<div class="analysis-empty">Chưa có level nào hoàn thành.</div>`;
+
+  const rows = sorted.map(r => {
+    const worldLabel = r.world_id === 'world-1' ? 'World 1' : 'World 2';
+    const meta = ANALYSIS_ILLUSION_META[r.illusion_status] || { label: r.illusion_status || '-', dot: 'red' };
+    const gapSign = r.gap > 0 ? '+' : '';
+    return `
+      <tr>
+        <td>${worldLabel} · Level ${r.level}</td>
+        <td>${(r.overall ?? 0).toFixed(1)}</td>
+        <td>${(r.confidence ?? 0).toFixed(1)}</td>
+        <td>${gapSign}${(r.gap ?? 0).toFixed(1)}</td>
+        <td><span class="analysis-status-dot analysis-status-dot--${meta.dot}"></span> ${meta.label}</td>
+      </tr>
+    `;
+  }).join('');
+
+  return `
+    <table class="analysis-level-table">
+      <thead><tr><th>Level</th><th>Overall</th><th>Tự tin</th><th>Gap</th><th>Trạng thái</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
   `;
 }
 
@@ -119,36 +158,46 @@ function renderAnalysis() {
 
   return `
     <div class="analysis-page">
-      <h1 class="analysis-heading">Your Learning Performance</h1>
+      <h1 class="analysis-heading">Kết quả học tập</h1>
 
       <div class="analysis-grid">
-        <div class="card analysis-card" id="analysis-box-1">
+        <div class="card analysis-card analysis-iocbig" id="analysis-box-1">
           <div class="card-header">
-            <span class="card-title">BẢNG ĐIỂM TỔNG HỢP</span>
+            <span class="card-title">Chỉ số IoC</span>
             <span class="badge">Tất cả level</span>
           </div>
           ${analysisRenderBox1(agg)}
         </div>
 
-        <div class="card analysis-card" id="analysis-box-2">
+        <div class="card analysis-card analysis-span6">
+          <div class="card-header"><span class="card-title">Bảng điểm tổng hợp</span></div>
+          ${analysisRenderScoreBreakdown(agg)}
+        </div>
+
+        <div class="card analysis-card analysis-span6">
+          <div class="card-header"><span class="card-title">Theo từng level</span></div>
+          <div class="analysis-table-wrap">${analysisRenderLevelTable()}</div>
+        </div>
+
+        <div class="card analysis-card analysis-span4" id="analysis-box-2">
           <div class="card-header">
-            <span class="card-title">XU HƯỚNG NHẦM LẪN TỪ VỰNG</span>
+            <span class="card-title">Xu hướng nhầm lẫn</span>
             <span class="badge">AI phân tích</span>
           </div>
           <div class="analysis-box-body" id="analysis-box-2-body"></div>
         </div>
 
-        <div class="card analysis-card" id="analysis-box-3">
+        <div class="card analysis-card analysis-span4" id="analysis-box-3">
           <div class="card-header">
-            <span class="card-title">GỢI Ý CẢI THIỆN</span>
+            <span class="card-title">Gợi ý cải thiện</span>
             <span class="badge">AI phân tích</span>
           </div>
           <div class="analysis-box-body" id="analysis-box-3-body"></div>
         </div>
 
-        <div class="card analysis-card" id="analysis-box-4">
+        <div class="card analysis-card analysis-span4" id="analysis-box-4">
           <div class="card-header">
-            <span class="card-title">LỜI ĐỘNG VIÊN</span>
+            <span class="card-title">Lời động viên</span>
             <span class="badge">AI phân tích</span>
           </div>
           <div class="analysis-box-body" id="analysis-box-4-body"></div>
@@ -158,6 +207,29 @@ function renderAnalysis() {
   `;
 }
 
+// "Xem thêm": hiện 2 mục đầu, phần còn lại ẩn tới khi bấm - thay cho thanh
+// cuộn trong ô (mục 4 của spec redesign: không có thanh cuộn trong thẻ).
+function analysisWrapShowMore(containerId, items, itemsHtml) {
+  if (items.length <= 2) return itemsHtml.join('');
+  const visible = itemsHtml.slice(0, 2).join('');
+  const hidden = itemsHtml.slice(2).join('');
+  return `
+    ${visible}
+    <div class="analysis-showmore-extra" hidden>${hidden}</div>
+    <button type="button" class="home-card-link analysis-showmore-btn" data-container="${containerId}">Xem thêm (${items.length - 2})</button>
+  `;
+}
+
+function analysisInitShowMoreButtons() {
+  document.querySelectorAll('.analysis-showmore-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const extra = btn.previousElementSibling;
+      if (extra) extra.hidden = false;
+      btn.hidden = true;
+    });
+  });
+}
+
 function analysisRenderAIResult(result) {
   const box2 = document.getElementById('analysis-box-2-body');
   const box3 = document.getElementById('analysis-box-3-body');
@@ -165,32 +237,36 @@ function analysisRenderAIResult(result) {
 
   if (box2) {
     const patterns = result.weak_patterns || [];
+    const itemsHtml = patterns.map(p => `
+      <div class="analysis-pattern-item">
+        <div class="analysis-pattern-title">${analysisEscapeHtml(p.group_title)}</div>
+        <p>${analysisEscapeHtml(p.analysis)}</p>
+      </div>
+    `);
     box2.innerHTML = patterns.length
-      ? patterns.map(p => `
-          <div class="analysis-pattern-item">
-            <div class="analysis-pattern-title">${analysisEscapeHtml(p.group_title)}</div>
-            <p>${analysisEscapeHtml(p.analysis)}</p>
-          </div>
-        `).join('')
+      ? analysisWrapShowMore('analysis-box-2-body', patterns, itemsHtml)
       : `<div class="analysis-empty">Chưa có đủ dữ liệu.</div>`;
   }
 
   if (box3) {
     const tips = result.improvement_tips || [];
+    const itemsHtml = tips.map(t => `
+      <div class="analysis-tip-item">
+        <div class="analysis-tip-word">${analysisEscapeHtml(t.word)}</div>
+        <p><strong>Mẹo:</strong> ${analysisEscapeHtml(t.tip)}</p>
+        <p><strong>Lỗi thường gặp:</strong> ${analysisEscapeHtml(t.common_mistake)}</p>
+      </div>
+    `);
     box3.innerHTML = tips.length
-      ? `<div class="analysis-tips-list">${tips.map(t => `
-          <div class="analysis-tip-item">
-            <div class="analysis-tip-word">${analysisEscapeHtml(t.word)}</div>
-            <p><strong>Mẹo:</strong> ${analysisEscapeHtml(t.tip)}</p>
-            <p><strong>Lỗi thường gặp:</strong> ${analysisEscapeHtml(t.common_mistake)}</p>
-          </div>
-        `).join('')}</div>`
+      ? analysisWrapShowMore('analysis-box-3-body', tips, itemsHtml)
       : `<div class="analysis-empty">Chưa có đủ dữ liệu.</div>`;
   }
 
   if (box4) {
     box4.innerHTML = `<p class="analysis-encouragement">${analysisEscapeHtml(result.encouragement || '')}</p>`;
   }
+
+  analysisInitShowMoreButtons();
 }
 
 function analysisRenderAILoading() {

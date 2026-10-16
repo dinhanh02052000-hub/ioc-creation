@@ -308,6 +308,14 @@ function aiRenderLearningContent(groupTitle, content) {
     ${onboardingBlock}
     <div class="ai-msg-system">Chào bạn! Hôm nay chúng ta học nhóm từ: <strong>${aiEscapeHtml(groupTitle)}</strong></div>
     <div class="ai-msg">${aiMarkdownToHtml(content)}</div>
+    <div class="ai-start-notice">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="10" cy="10" r="7.5"/>
+        <line x1="10" y1="6.5" x2="10" y2="10.5"/>
+        <circle cx="10" cy="13.3" r="0.15" fill="currentColor" stroke-width="1.2"/>
+      </svg>
+      <span>Để kết quả được tối ưu, trong quá trình làm bài không dùng công cụ hoặc thiết bị hỗ trợ.</span>
+    </div>
   `);
   aiSetFooter(`<button type="button" class="ai-btn" id="ai-begin-recognition-btn">Bắt đầu làm bài (20 câu)</button>`);
   document.getElementById('ai-begin-recognition-btn').addEventListener('click', aiBeginRecognition);
@@ -337,28 +345,49 @@ async function aiBeginRecognition() {
   }
 }
 
+// "___" trong câu hỏi hiển thị thành ô trống gạch chân, dễ nhìn hơn dấu gạch thô.
+function aiQuestionHtml(text) {
+  return aiEscapeHtml(text).replace(/_{3,}/g, '<span class="ai-q-blank">&nbsp;</span>');
+}
+
 function aiRenderMCQList() {
   aiChat.stage = 'RECOGNITION';
   const optionLabels = ['A', 'B', 'C', 'D'];
+  const total = aiChat.questions.length;
+
   const itemsHtml = aiChat.questions.map((q, qIndex) => `
-    <div class="ai-mcq-item">
-      <div class="ai-mcq-question"><strong>Câu ${qIndex + 1}.</strong>${aiEscapeHtml(q.question)}</div>
-      <div class="ai-mcq-options">
+    <section class="ai-q" id="ai-q-card-${q.id}">
+      <div class="ai-q-head"><span class="ai-q-num">Câu ${qIndex + 1}</span></div>
+      <p class="ai-q-text">${aiQuestionHtml(q.question)}</p>
+      <div class="ai-q-options">
         ${q.options.map((opt, i) => `
-          <label class="ai-mcq-option">
+          <label class="ai-q-option">
             <input type="radio" name="ai-q-${q.id}" value="${i}" ${aiChat.answers[String(q.id)] === i ? 'checked' : ''}>
-            <span>${optionLabels[i]}. ${aiEscapeHtml(opt)}</span>
+            <span class="ai-q-radio"></span>
+            <span class="ai-q-option-text"><b>${optionLabels[i]}.</b> ${aiEscapeHtml(opt)}</span>
           </label>
         `).join('')}
       </div>
-    </div>
+    </section>
   `).join('');
 
+  const navHtml = aiChat.questions.map((q, qIndex) =>
+    `<button type="button" class="ai-quiz-nav-btn" data-qid="${q.id}">${qIndex + 1}</button>`
+  ).join('');
+
   aiSetBody(`
-    <div class="ai-mcq-progress" id="ai-mcq-progress">Đã trả lời: ${Object.keys(aiChat.answers).length} / ${aiChat.questions.length}</div>
-    <div class="ai-mcq-list">${itemsHtml}</div>
+    <div class="ai-quiz">
+      <div class="ai-quiz-main">${itemsHtml}</div>
+      <aside class="ai-quiz-nav">
+        <div class="ai-quiz-nav-head">
+          <span>Đã làm</span><strong id="ai-mcq-progress">0/${total}</strong>
+        </div>
+        <div class="ai-quiz-nav-bar"><div class="ai-quiz-nav-bar-fill" id="ai-mcq-bar"></div></div>
+        <div class="ai-quiz-nav-grid">${navHtml}</div>
+      </aside>
+    </div>
   `);
-  aiSetFooter(`<button type="button" class="ai-btn" id="ai-submit-mcq-btn" ${Object.keys(aiChat.answers).length < aiChat.questions.length ? 'disabled' : ''}>Nộp bài</button>`);
+  aiSetFooter(`<button type="button" class="ai-btn" id="ai-submit-mcq-btn" disabled>Nộp bài</button>`);
 
   aiChatEls.body.querySelectorAll('input[type="radio"]').forEach(input => {
     input.addEventListener('change', (e) => {
@@ -369,7 +398,15 @@ function aiRenderMCQList() {
     });
   });
 
+  aiChatEls.body.querySelectorAll('.ai-quiz-nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const card = document.getElementById(`ai-q-card-${btn.getAttribute('data-qid')}`);
+      if (card) card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
   document.getElementById('ai-submit-mcq-btn').addEventListener('click', aiSubmitRecognition);
+  aiUpdateMCQProgress();
   aiPersistProgress();
 }
 
@@ -377,7 +414,12 @@ function aiUpdateMCQProgress() {
   const total = aiChat.questions.length;
   const answered = Object.keys(aiChat.answers).length;
   const progressEl = document.getElementById('ai-mcq-progress');
-  if (progressEl) progressEl.textContent = `Đã trả lời: ${answered} / ${total}`;
+  if (progressEl) progressEl.textContent = `${answered}/${total}`;
+  const barEl = document.getElementById('ai-mcq-bar');
+  if (barEl) barEl.style.width = `${(answered / total) * 100}%`;
+  aiChatEls.body.querySelectorAll('.ai-quiz-nav-btn').forEach(btn => {
+    btn.classList.toggle('answered', aiChat.answers[btn.getAttribute('data-qid')] !== undefined);
+  });
   const submitBtn = document.getElementById('ai-submit-mcq-btn');
   if (submitBtn) submitBtn.disabled = answered < total;
 }
@@ -390,16 +432,75 @@ async function aiSubmitRecognition() {
     const res = await gestureSubmitRecognition(aiChat.sessionId, aiChat.answers);
     // Giữ lại để saveThisAttemptResult đưa vào kết quả cho trang Analysis.
     aiChat.wrongWords = res.wrong_words || [];
+    aiChat.explanations = res.explanations || {};
     aiRenderCorrection(res.correction_text);
   } catch (e) {
     aiRenderSessionAwareError(e, aiSubmitRecognition);
   }
 }
 
+// Trang kết quả phần trắc nghiệm: lời giải CHỈ hiện ở đây (sau khi nộp). Câu
+// đúng chỉ báo ngắn gọn; câu sai hiện đáp án đúng, còn phần giải thích AI viết
+// 1 khối chung cho mọi câu sai (backend không tách theo từng câu).
 function aiRenderCorrection(correctionText) {
   aiChat.stage = 'CORRECTION';
   aiChat.correctionText = correctionText;
-  aiSetBody(`<div class="ai-msg">${aiMarkdownToHtml(correctionText)}</div>`);
+
+  const labels = ['A', 'B', 'C', 'D'];
+  const wrongByQuestion = new Map((aiChat.wrongWords || []).map(w => [w.question, w]));
+  const questions = aiChat.questions || [];
+  let wrongCount = 0;
+
+  const reviewHtml = questions.map((q, qIndex) => {
+    const selected = aiChat.answers[String(q.id)];
+    const wrong = wrongByQuestion.get(q.question);
+    const correctIndex = wrong ? q.options.indexOf(wrong.correct) : selected;
+    const isCorrect = !wrong;
+    if (!isCorrect) wrongCount += 1;
+    const explanation = (aiChat.explanations || {})[String(q.id)];
+
+    const optionsHtml = q.options.map((opt, i) => {
+      let cls = '';
+      let tag = '';
+      if (i === correctIndex) { cls = 'is-correct'; tag = '<span class="ai-q-tag ok">Đáp án đúng</span>'; }
+      else if (i === selected) { cls = 'is-wrong'; tag = '<span class="ai-q-tag bad">Bạn chọn</span>'; }
+      return `<div class="ai-q-option ai-q-option--review ${cls}">
+        <span class="ai-q-radio"></span>
+        <span class="ai-q-option-text"><b>${labels[i]}.</b> ${aiEscapeHtml(opt)}</span>${tag}
+      </div>`;
+    }).join('');
+
+    return `
+      <section class="ai-q ${isCorrect ? 'ai-q--ok' : 'ai-q--bad'}">
+        <div class="ai-q-head">
+          <span class="ai-q-num">Câu ${qIndex + 1}</span>
+          <span class="ai-q-status ${isCorrect ? 'ok' : 'bad'}">${isCorrect ? 'Đúng' : 'Sai'}</span>
+        </div>
+        <p class="ai-q-text">${aiQuestionHtml(q.question)}</p>
+        <div class="ai-q-options">${optionsHtml}</div>
+        ${isCorrect
+          ? '<div class="ai-q-feedback ok">Bạn đã trả lời chính xác!</div>'
+          : (explanation ? `<div class="ai-q-feedback bad">${aiMarkdownToHtml(explanation)}</div>` : '')}
+      </section>
+    `;
+  }).join('');
+
+  const correctCount = questions.length - wrongCount;
+  const hasPerQuestion = aiChat.explanations && Object.keys(aiChat.explanations).length > 0;
+  const explainHtml = (wrongCount && !hasPerQuestion)
+    ? `<section class="ai-q ai-q-explain">
+         <div class="ai-q-head"><span class="ai-q-num">Giải thích các câu sai</span></div>
+         <div class="ai-msg">${aiMarkdownToHtml(correctionText)}</div>
+       </section>`
+    : '';
+
+  aiSetBody(`
+    <div class="ai-review-summary">
+      Bạn trả lời đúng <strong>${correctCount}/${questions.length}</strong> câu.
+    </div>
+    <div class="ai-review-list">${reviewHtml}</div>
+    ${explainHtml}
+  `);
   aiSetFooter(`<button type="button" class="ai-btn" id="ai-to-confidence-btn">Tiếp tục</button>`);
   document.getElementById('ai-to-confidence-btn').addEventListener('click', aiRenderConfidenceQuestion);
   aiPersistProgress();
