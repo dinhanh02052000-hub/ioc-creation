@@ -66,16 +66,21 @@ function openInCambridgeTab(e) {
 }
 
 let dictPopupEl = null;
+let dictPopupQuery = '';
+let dictPopupOpenedAt = 0;
 let dictSelTimer = 0;
 
 function closeDictPopup() {
   if (dictPopupEl) { dictPopupEl.remove(); dictPopupEl = null; }
+  dictPopupQuery = '';
 }
 
 function showDictPopup(raw, rect) {
   const query = raw ? lookupQuery(raw) : null;
   if (!query) return false;
   closeDictPopup();
+  dictPopupQuery = query;
+  dictPopupOpenedAt = Date.now();
 
   const x = Math.min(Math.max(rect.left + rect.width / 2, 150), window.innerWidth - 150);
   const y = rect.bottom + 8 > window.innerHeight - 120 ? rect.bottom - 130 : rect.bottom + 8;
@@ -112,6 +117,8 @@ function showDictFromSelection() {
   if (!sel || sel.isCollapsed || sel.rangeCount === 0) return false;
   const range = sel.getRangeAt(0);
   if (!dictInZone(range.commonAncestorContainer)) return false;
+  const query = lookupQuery(sel.toString());
+  if (query && dictPopupEl && dictPopupQuery === query) return true;
   return showDictPopup(sel.toString(), range.getBoundingClientRect());
 }
 
@@ -135,5 +142,7 @@ document.addEventListener('selectionchange', () => {
   dictSelTimer = setTimeout(showDictFromSelection, 450);
 });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDictPopup(); });
-window.addEventListener('scroll', closeDictPopup, true);
+window.addEventListener('scroll', () => {
+  if (Date.now() - dictPopupOpenedAt > 400) closeDictPopup();
+}, true);
 window.addEventListener('resize', closeDictPopup);
