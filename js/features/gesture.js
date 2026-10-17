@@ -97,11 +97,13 @@ function gestureSubmitConfidence(sessionId, confidence, distinctionHistory = [],
   });
 }
 
-function gestureSubmitOpenEnded(sessionId, distinctionAnswer, applicationAnswer) {
+function gestureSubmitOpenEnded(sessionId, distinctionAnswer, applicationAnswer, distinctionHistory = [], applicationHistory = []) {
   return aiRequest('/api/chat/submit-open-ended', {
     session_id: sessionId,
     distinction_answer: distinctionAnswer,
-    application_answer: applicationAnswer
+    application_answer: applicationAnswer,
+    distinction_history: distinctionHistory,
+    application_history: applicationHistory
   });
 }
 

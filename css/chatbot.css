@@ -591,3 +591,40 @@ a.ai-btn-secondary {
 .ai-report-result.warn { color: #b45309; background: rgba(245, 158, 11, 0.16); }
 
 .ai-model-answer { margin-top: 10px; padding: 10px 14px; border-left: 3px solid #6366f1; background: rgba(99, 102, 241, 0.08); border-radius: 0 8px 8px 0; font-size: 0.9rem; }
+
+/* ---- cỡ chữ + bố cục: bớt trống, dễ đọc hơn ---- */
+.ai-chat-body > .ai-msg, .ai-rem-recap, .ai-open-ended-block .ai-msg { font-size: 1.05rem; line-height: 1.75; }
+.ai-md-p { margin-bottom: 14px; }
+.ai-md-list { margin: 6px 0 14px 22px; gap: 8px; }
+.ai-msg-system { font-size: 0.95rem; line-height: 1.6; padding: 14px 16px; }
+.ai-dict-hint { font-size: 0.88rem; }
+.ai-review-summary { font-size: 1.2rem; padding: 6px 2px 2px; }
+.ai-q-feedback.bad, .ai-q-feedback.ok { font-size: 0.98rem; line-height: 1.65; }
+.ai-feedback-block { font-size: 0.98rem; line-height: 1.7; }
+.ai-rubric-table { font-size: 0.92rem; }
+.ai-rubric-table td { padding: 7px 8px; }
+.ai-open-ended-label { font-size: 0.88rem; }
+
+/* Ôn tập: phần tóm tắt */
+.ai-rem-intro { padding: 4px 2px 0; }
+.ai-rem-title { font-size: 1.6rem; font-weight: 800; color: var(--text); }
+.ai-rem-sub { margin-top: 6px; font-size: 1rem; color: var(--text-dim); line-height: 1.6; }
+.ai-rem-recap { padding: 18px 22px; border: 1px solid var(--border); border-radius: 12px; background: rgba(255, 255, 255, 0.03); }
+.ai-rem-recap .ai-md-list { margin-left: 20px; }
+.ai-rem-recap .ai-md-list li { padding-left: 4px; }
+.ai-rem-recap strong { color: var(--accent); }
+
+/* Tự tin: căn giữa, số lớn */
+.ai-confidence-wrap { margin: auto; width: 100%; max-width: 760px; display: flex; flex-direction: column; gap: 28px; }
+.ai-confidence-question { font-size: 1.25rem; line-height: 1.7; text-align: center; }
+.ai-confidence-block { gap: 16px; padding: 28px 28px 22px; border: 1px solid var(--border); border-radius: 14px; background: rgba(255, 255, 255, 0.03); }
+.ai-confidence-value { font-size: 4rem; line-height: 1; }
+.ai-confidence-slider { height: 28px; cursor: pointer; }
+.ai-confidence-scale { display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text-dim); }
+
+/* 2 câu mở: khung lớn, ô trả lời giãn theo chiều cao */
+.ai-open-ended-block {
+  flex: 1 1 0; min-height: 230px; gap: 10px; padding: 18px 20px;
+  border: 1px solid var(--border); border-radius: 12px; background: rgba(255, 255, 255, 0.03);
+}
+.ai-textarea { flex: 1; min-height: 130px; font-size: 1.02rem; line-height: 1.6; padding: 14px 16px; border-radius: 10px; }

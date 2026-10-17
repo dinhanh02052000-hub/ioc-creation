@@ -356,17 +356,31 @@ function aiQuestionHtml(text) {
 
 function aiRenderMCQList() {
   aiChat.stage = 'RECOGNITION';
-  const optionLabels = ['A', 'B', 'C', 'D'];
-  const total = aiChat.questions.length;
+  aiRenderQuizView({
+    questions: aiChat.questions,
+    answers: aiChat.answers,
+    onSubmit: aiSubmitRecognition,
+    submitLabel: 'Nộp bài'
+  });
+}
 
-  const itemsHtml = aiChat.questions.map((q, qIndex) => `
+// Giao diện làm bài trắc nghiệm dùng chung cho 20 câu chính thức và 10 câu ôn tập.
+// ctx.answers là object được giữ nguyên tham chiếu để các thay đổi lưu lại vào aiChat.
+let aiQuizCtx = null;
+
+function aiRenderQuizView(ctx) {
+  aiQuizCtx = ctx;
+  const optionLabels = ['A', 'B', 'C', 'D'];
+  const total = ctx.questions.length;
+
+  const itemsHtml = ctx.questions.map((q, qIndex) => `
     <section class="ai-q" id="ai-q-card-${q.id}">
       <div class="ai-q-head"><span class="ai-q-num">Câu ${qIndex + 1}</span></div>
       <p class="ai-q-text">${aiQuestionHtml(q.question)}</p>
       <div class="ai-q-options">
         ${q.options.map((opt, i) => `
           <label class="ai-q-option">
-            <input type="radio" name="ai-q-${q.id}" value="${i}" ${aiChat.answers[String(q.id)] === i ? 'checked' : ''}>
+            <input type="radio" name="ai-q-${q.id}" value="${i}" ${ctx.answers[String(q.id)] === i ? 'checked' : ''}>
             <span class="ai-q-radio"></span>
             <span class="ai-q-option-text"><b>${optionLabels[i]}.</b> ${aiEscapeHtml(opt)}</span>
           </label>
@@ -375,7 +389,7 @@ function aiRenderMCQList() {
     </section>
   `).join('');
 
-  const navHtml = aiChat.questions.map((q, qIndex) =>
+  const navHtml = ctx.questions.map((q, qIndex) =>
     `<button type="button" class="ai-quiz-nav-btn" data-qid="${q.id}">${qIndex + 1}</button>`
   ).join('');
 
@@ -391,12 +405,12 @@ function aiRenderMCQList() {
       </aside>
     </div>
   `);
-  aiSetFooter(`<button type="button" class="ai-btn" id="ai-submit-mcq-btn" disabled>Nộp bài</button>`);
+  aiSetFooter(`<button type="button" class="ai-btn" id="ai-submit-mcq-btn" disabled>${ctx.submitLabel}</button>`);
 
   aiChatEls.body.querySelectorAll('input[type="radio"]').forEach(input => {
     input.addEventListener('change', (e) => {
       const qid = e.target.name.replace('ai-q-', '');
-      aiChat.answers[qid] = parseInt(e.target.value, 10);
+      ctx.answers[qid] = parseInt(e.target.value, 10);
       aiUpdateMCQProgress();
       aiPersistProgress();
     });
@@ -409,20 +423,22 @@ function aiRenderMCQList() {
     });
   });
 
-  document.getElementById('ai-submit-mcq-btn').addEventListener('click', aiSubmitRecognition);
+  document.getElementById('ai-submit-mcq-btn').addEventListener('click', ctx.onSubmit);
   aiUpdateMCQProgress();
   aiPersistProgress();
 }
 
 function aiUpdateMCQProgress() {
-  const total = aiChat.questions.length;
-  const answered = Object.keys(aiChat.answers).length;
+  const ctx = aiQuizCtx;
+  if (!ctx) return;
+  const total = ctx.questions.length;
+  const answered = Object.keys(ctx.answers).length;
   const progressEl = document.getElementById('ai-mcq-progress');
   if (progressEl) progressEl.textContent = `${answered}/${total}`;
   const barEl = document.getElementById('ai-mcq-bar');
   if (barEl) barEl.style.width = `${(answered / total) * 100}%`;
   aiChatEls.body.querySelectorAll('.ai-quiz-nav-btn').forEach(btn => {
-    btn.classList.toggle('answered', aiChat.answers[btn.getAttribute('data-qid')] !== undefined);
+    btn.classList.toggle('answered', ctx.answers[btn.getAttribute('data-qid')] !== undefined);
   });
   const submitBtn = document.getElementById('ai-submit-mcq-btn');
   if (submitBtn) submitBtn.disabled = answered < total;
@@ -454,20 +470,34 @@ async function aiSubmitRecognition() {
 function aiRenderCorrection(correctionText) {
   aiChat.stage = 'CORRECTION';
   aiChat.correctionText = correctionText;
+  aiRenderReviewView({
+    questions: aiChat.questions || [],
+    answers: aiChat.answers,
+    wrongWords: aiChat.wrongWords || [],
+    explanations: aiChat.explanations || {},
+    quality: aiChat.quality || {},
+    correctionText,
+    reportable: true,
+    continueLabel: 'Tiếp tục',
+    onContinue: aiRenderConfidenceQuestion
+  });
+}
 
+// Trang xem lại bài trắc nghiệm, dùng chung cho 20 câu chính thức và 10 câu ôn tập.
+function aiRenderReviewView(opts) {
   const labels = ['A', 'B', 'C', 'D'];
-  const wrongByQuestion = new Map((aiChat.wrongWords || []).map(w => [w.question, w]));
-  const questions = aiChat.questions || [];
+  const wrongByQuestion = new Map(opts.wrongWords.map(w => [w.question, w]));
+  const questions = opts.questions;
   let wrongCount = 0;
 
   const reviewHtml = questions.map((q, qIndex) => {
-    const selected = aiChat.answers[String(q.id)];
+    const selected = opts.answers[String(q.id)];
     const wrong = wrongByQuestion.get(q.question);
     const correctIndex = wrong ? q.options.indexOf(wrong.correct) : selected;
     const isCorrect = !wrong;
     if (!isCorrect) wrongCount += 1;
-    const explanation = (aiChat.explanations || {})[String(q.id)];
-    const quality = (aiChat.quality || {})[String(q.id)];
+    const explanation = opts.explanations[String(q.id)];
+    const quality = opts.quality[String(q.id)];
 
     const optionsHtml = q.options.map((opt, i) => {
       let cls = '';
@@ -491,19 +521,19 @@ function aiRenderCorrection(correctionText) {
         <div class="ai-q-options">${optionsHtml}</div>
         ${isCorrect
           ? '<div class="ai-q-feedback ok">Bạn đã trả lời chính xác!</div>'
-            : (explanation ? `<div class="ai-q-feedback bad">${aiMarkdownToHtml(explanation)}</div>` : '')}
-        <button type="button" class="ai-report-btn" data-report="recognition" data-qid="${q.id}">Báo cáo đáp án</button>
-        <div class="ai-report-slot"></div>
+          : (explanation ? `<div class="ai-q-feedback bad">${aiMarkdownToHtml(aiBoldExplanationLabels(explanation))}</div>` : '')}
+        ${opts.reportable ? `<button type="button" class="ai-report-btn" data-report="recognition" data-qid="${q.id}">Báo cáo đáp án</button>
+        <div class="ai-report-slot"></div>` : ''}
       </section>
     `;
   }).join('');
 
   const correctCount = questions.length - wrongCount;
-  const hasPerQuestion = aiChat.explanations && Object.keys(aiChat.explanations).length > 0;
-  const explainHtml = (wrongCount && !hasPerQuestion)
+  const hasPerQuestion = Object.keys(opts.explanations).length > 0;
+  const explainHtml = (wrongCount && !hasPerQuestion && opts.correctionText)
     ? `<section class="ai-q ai-q-explain">
          <div class="ai-q-head"><span class="ai-q-num">Giải thích các câu sai</span></div>
-         <div class="ai-msg">${aiMarkdownToHtml(correctionText)}</div>
+         <div class="ai-msg">${aiMarkdownToHtml(opts.correctionText)}</div>
        </section>`
     : '';
 
@@ -514,13 +544,18 @@ function aiRenderCorrection(correctionText) {
     <div class="ai-review-list">${reviewHtml}</div>
     ${explainHtml}
   `);
-  aiBindReportButtons();
-  aiSetFooter(`<button type="button" class="ai-btn" id="ai-to-confidence-btn">Tiếp tục</button>`);
-  document.getElementById('ai-to-confidence-btn').addEventListener('click', aiRenderConfidenceQuestion);
+  if (opts.reportable) aiBindReportButtons();
+  aiSetFooter(`<button type="button" class="ai-btn" id="ai-review-continue-btn">${opts.continueLabel}</button>`);
+  document.getElementById('ai-review-continue-btn').addEventListener('click', opts.onContinue);
   aiPersistProgress();
 }
 
 // ---- Chỉ số tin cậy + báo cáo của người dùng ----
+
+// Làm đậm 3 nhãn cố định của lời giải trắc nghiệm nếu AI chưa tự in đậm.
+function aiBoldExplanationLabels(text) {
+  return String(text).replace(/(^|\n)(\s*-\s*)(?!\*\*)(Dấu hiệu ngữ pháp|Từ khóa manh mối|So sánh & dịch nghĩa)\s*:/g, '$1$2**$3:**');
+}
 
 function aiQualityBadgeHtml(q) {
   if (!q) return '';
@@ -607,10 +642,13 @@ function aiRenderConfidenceQuestion() {
   if (aiChat.confidence == null) aiChat.confidence = 5;
 
   aiSetBody(`
-    <div class="ai-msg">${aiEscapeHtml(AI_CONFIDENCE_QUESTION)}</div>
+    <div class="ai-confidence-wrap">
+    <div class="ai-msg ai-confidence-question">${aiEscapeHtml(AI_CONFIDENCE_QUESTION)}</div>
     <div class="ai-confidence-block">
       <div class="ai-confidence-value" id="ai-confidence-value">${aiChat.confidence.toFixed(1)}</div>
       <input type="range" min="0" max="10" step="0.5" value="${aiChat.confidence}" class="ai-confidence-slider" id="ai-confidence-slider">
+      <div class="ai-confidence-scale"><span>0 · Chưa tự tin</span><span>5</span><span>10 · Rất tự tin</span></div>
+    </div>
     </div>
   `);
   aiSetFooter(`<button type="button" class="ai-btn" id="ai-submit-confidence-btn">Xác nhận</button>`);
@@ -694,7 +732,11 @@ function aiRenderOpenEnded(distinctionPrompt, applicationPrompt) {
 async function aiSubmitOpenEnded(distinctionAnswer, applicationAnswer) {
   aiRenderLoading('AI đang chấm câu trả lời...');
   try {
-    const report = await gestureSubmitOpenEnded(aiChat.sessionId, distinctionAnswer, applicationAnswer);
+    const dHistory = typeof loadDistinctionHistory === 'function'
+      ? loadDistinctionHistory(aiChat.worldId, aiChat.level) : [];
+    const aHistory = typeof loadApplicationHistory === 'function'
+      ? loadApplicationHistory(aiChat.worldId, aiChat.level) : [];
+    const report = await gestureSubmitOpenEnded(aiChat.sessionId, distinctionAnswer, applicationAnswer, dHistory, aHistory);
     aiChat.report = report;
     aiRenderFinalReport(report);
   } catch (e) {
@@ -894,60 +936,37 @@ async function aiBeginRemediation() {
 
 function aiRenderRemediationRecap() {
   aiChat.stage = 'REMEDIATION_RECAP';
+  const n = aiChat.practiceQuestions.length;
   aiSetBody(`
-    <div class="ai-msg-system">Ôn tập trọng tâm dựa trên lỗi sai của bạn ở lượt vừa rồi:</div>
-    <div class="ai-msg">${aiMarkdownToHtml(aiChat.remediationRecap || '')}</div>
+    <div class="ai-rem-intro">
+      <div class="ai-rem-title">Ôn tập trọng tâm</div>
+      <div class="ai-rem-sub">Dựa trên những chỗ bạn nhầm ở lượt vừa rồi. Đọc kỹ rồi làm ${n} câu luyện tập và 2 câu viết.</div>
+    </div>
+    <div class="ai-rem-recap">${aiMarkdownToHtml(aiChat.remediationRecap || '')}</div>
+    <div class="ai-dict-hint">Bấm vào một từ hoặc bôi đen cụm từ để tra từ điển Cambridge.</div>
   `);
-  aiSetFooter(`<button type="button" class="ai-btn" id="ai-begin-remediation-mcq-btn">Bắt đầu luyện tập (${aiChat.practiceQuestions.length} câu)</button>`);
+  aiSetFooter(`<button type="button" class="ai-btn" id="ai-begin-remediation-mcq-btn">Bắt đầu luyện tập (${n} câu)</button>`);
   document.getElementById('ai-begin-remediation-mcq-btn').addEventListener('click', aiRenderRemediationMCQList);
   aiPersistProgress();
 }
 
 function aiRenderRemediationMCQList() {
   aiChat.stage = 'REMEDIATION_MCQ';
-  const optionLabels = ['A', 'B', 'C', 'D'];
-  const itemsHtml = aiChat.practiceQuestions.map((q, qIndex) => `
-    <div class="ai-mcq-item">
-      <div class="ai-mcq-question"><strong>Câu ${qIndex + 1}.</strong>${aiEscapeHtml(q.question)}</div>
-      <div class="ai-mcq-options">
-        ${q.options.map((opt, i) => `
-          <label class="ai-mcq-option">
-            <input type="radio" name="ai-pq-${q.id}" value="${i}" ${aiChat.practiceAnswers[String(q.id)] === i ? 'checked' : ''}>
-            <span>${optionLabels[i]}. ${aiEscapeHtml(opt)}</span>
-          </label>
-        `).join('')}
-      </div>
-    </div>
-  `).join('');
-
-  aiSetBody(`
-    <div class="ai-mcq-progress" id="ai-mcq-progress">Đã trả lời: ${Object.keys(aiChat.practiceAnswers).length} / ${aiChat.practiceQuestions.length}</div>
-    <div class="ai-mcq-list">${itemsHtml}</div>
-  `);
-  aiSetFooter(`<button type="button" class="ai-btn" id="ai-submit-remediation-mcq-btn" ${Object.keys(aiChat.practiceAnswers).length < aiChat.practiceQuestions.length ? 'disabled' : ''}>Nộp bài luyện tập</button>`);
-
-  aiChatEls.body.querySelectorAll('input[type="radio"]').forEach(input => {
-    input.addEventListener('change', (e) => {
-      const qid = e.target.name.replace('ai-pq-', '');
-      aiChat.practiceAnswers[qid] = parseInt(e.target.value, 10);
-      const total = aiChat.practiceQuestions.length;
-      const answered = Object.keys(aiChat.practiceAnswers).length;
-      const progressEl = document.getElementById('ai-mcq-progress');
-      if (progressEl) progressEl.textContent = `Đã trả lời: ${answered} / ${total}`;
-      const submitBtn = document.getElementById('ai-submit-remediation-mcq-btn');
-      if (submitBtn) submitBtn.disabled = answered < total;
-      aiPersistProgress();
-    });
+  aiRenderQuizView({
+    questions: aiChat.practiceQuestions,
+    answers: aiChat.practiceAnswers,
+    onSubmit: aiSubmitRemediationMCQ,
+    submitLabel: 'Nộp bài luyện tập'
   });
-
-  document.getElementById('ai-submit-remediation-mcq-btn').addEventListener('click', aiSubmitRemediationMCQ);
-  aiPersistProgress();
 }
 
 async function aiSubmitRemediationMCQ() {
   aiRenderLoading('Đang chấm bài luyện tập...');
   try {
     const res = await gestureSubmitRemediationMCQ(aiChat.sessionId, aiChat.practiceAnswers);
+    aiChat.practiceWrongWords = res.wrong_words || [];
+    aiChat.practiceExplanations = res.explanations || {};
+    aiChat.practiceQuality = res.quality || {};
     aiChat.remediationCorrectionText = res.correction_text;
     aiChat.practiceDistinctionPrompt = res.distinction_prompt;
     aiChat.practiceApplicationPrompt = res.application_prompt;
@@ -965,22 +984,29 @@ async function aiSubmitRemediationMCQ() {
 
 function aiRenderRemediationCorrection() {
   aiChat.stage = 'REMEDIATION_CORRECTION';
-  aiSetBody(`<div class="ai-msg">${aiMarkdownToHtml(aiChat.remediationCorrectionText || '')}</div>`);
-  aiSetFooter(`<button type="button" class="ai-btn" id="ai-to-remediation-open-ended-btn">Tiếp tục</button>`);
-  document.getElementById('ai-to-remediation-open-ended-btn').addEventListener('click', aiRenderRemediationOpenEnded);
-  aiPersistProgress();
+  aiRenderReviewView({
+    questions: aiChat.practiceQuestions,
+    answers: aiChat.practiceAnswers,
+    wrongWords: aiChat.practiceWrongWords || [],
+    explanations: aiChat.practiceExplanations || {},
+    quality: aiChat.practiceQuality || {},
+    correctionText: aiChat.remediationCorrectionText || '',
+    reportable: false,
+    continueLabel: 'Tiếp tục',
+    onContinue: aiRenderRemediationOpenEnded
+  });
 }
 
 function aiRenderRemediationOpenEnded() {
   aiChat.stage = 'REMEDIATION_OPEN_ENDED';
   aiSetBody(`
     <div class="ai-open-ended-block">
-      <div class="ai-open-ended-label">PHÂN BIỆT (luyện tập)</div>
+      <div class="ai-open-ended-label">PHÂN BIỆT · luyện tập</div>
       <div class="ai-msg">${aiMarkdownToHtml(aiChat.practiceDistinctionPrompt || '')}</div>
       <textarea class="ai-textarea" id="ai-p-distinction-answer" placeholder="Trả lời của bạn...">${aiEscapeHtml(aiChat.practiceDistinctionDraft || '')}</textarea>
     </div>
     <div class="ai-open-ended-block">
-      <div class="ai-open-ended-label">VẬN DỤNG (luyện tập)</div>
+      <div class="ai-open-ended-label">VẬN DỤNG · luyện tập</div>
       <div class="ai-msg">${aiMarkdownToHtml(aiChat.practiceApplicationPrompt || '')}</div>
       <textarea class="ai-textarea" id="ai-p-application-answer" placeholder="Trả lời của bạn...">${aiEscapeHtml(aiChat.practiceApplicationDraft || '')}</textarea>
     </div>
@@ -1024,19 +1050,32 @@ async function aiSubmitRemediationOpenEnded(distinctionAnswer, applicationAnswer
 function aiRenderRemediationDone() {
   aiChat.stage = 'REMEDIATION_DONE';
   const r = aiChat.remediationResult || {};
+  const total = (aiChat.practiceQuestions || []).length;
+  const correct = total - (aiChat.practiceWrongWords || []).length;
   aiSetBody(`
-    <div class="ai-msg-system">Đã ôn tập xong! Nhận xét dưới đây chỉ mang tính tham khảo, KHÔNG tính vào kết quả chính thức:</div>
-    <div class="ai-feedback-block">
-      <div class="ai-open-ended-label">Phân biệt (luyện tập) - ${(r.distinction_score || 0).toFixed(1)}/10</div>
-      ${aiRubricTableHtml(r.distinction_rubric)}
-      ${aiMarkdownToHtml(r.distinction_feedback || '')}
+    <div class="ai-report">
+      <div class="ai-msg-system">Bạn đã ôn tập xong. Kết quả dưới đây chỉ để tham khảo, KHÔNG tính vào kết quả chính thức.</div>
+      <div class="ai-score-grid ai-score-grid--3">
+        <div class="ai-score-item"><div class="ai-score-value">${correct}/${total}</div><div class="ai-score-label">TRẮC NGHIỆM</div></div>
+        <div class="ai-score-item"><div class="ai-score-value">${(r.distinction_score || 0).toFixed(1)}</div><div class="ai-score-label">PHÂN BIỆT</div></div>
+        <div class="ai-score-item"><div class="ai-score-value">${(r.application_score || 0).toFixed(1)}</div><div class="ai-score-label">VẬN DỤNG</div></div>
+      </div>
+      <div class="ai-feedback-block">
+        <div class="ai-open-ended-label">Rubric Phân biệt (${(r.distinction_score || 0).toFixed(1)}/10)</div>
+        ${aiSpreadHtml(r.grading_spread, 'distinction')}
+        ${aiRubricTableHtml(r.distinction_rubric)}
+        ${aiMarkdownToHtml(r.distinction_feedback || '')}
+        ${aiModelAnswerHtml(r.distinction_model)}
+      </div>
+      <div class="ai-feedback-block">
+        <div class="ai-open-ended-label">Rubric Vận dụng (${(r.application_score || 0).toFixed(1)}/10)</div>
+        ${aiSpreadHtml(r.grading_spread, 'application')}
+        ${aiRubricTableHtml(r.application_rubric)}
+        ${aiMarkdownToHtml(r.application_feedback || '')}
+        ${aiModelAnswerHtml(r.application_model)}
+      </div>
+      <div class="ai-msg-system">Sẵn sàng làm lại bài kiểm tra đầy đủ (20 câu trắc nghiệm + 2 câu Phân biệt/Vận dụng) chưa?</div>
     </div>
-    <div class="ai-feedback-block">
-      <div class="ai-open-ended-label">Vận dụng (luyện tập) - ${(r.application_score || 0).toFixed(1)}/10</div>
-      ${aiRubricTableHtml(r.application_rubric)}
-      ${aiMarkdownToHtml(r.application_feedback || '')}
-    </div>
-    <div class="ai-msg-system">Sẵn sàng làm lại bài kiểm tra đầy đủ (20 câu trắc nghiệm + 2 câu Phân biệt/Vận dụng) chưa?</div>
   `);
   aiSetFooter(`<button type="button" class="ai-btn" id="ai-retest-btn">Kiểm tra lại</button>`);
   document.getElementById('ai-retest-btn').addEventListener('click', () => {

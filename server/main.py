@@ -434,6 +434,67 @@ def _start_open_ended_prep(session: dict, distinction_history: list[str], applic
 
 
 
+_REMEDIATION_PRACTICE_N = 10
+
+
+def _generate_remediation_pack(session: dict, full_history: list[str], d_history: list[str], a_history: list[str]) -> dict:
+    """Sinh bộ ôn tập (recap + 10 câu MCQ đã qua kiểm tra đáp án + 2 câu mở) và thử lại nếu hỏng/trùng."""
+    kb = load_knowledge_base(session["world_id"], session["level"])
+    lessons = _safe_lessons(session["world_id"], session["level"], "recognition")
+    last_error: Exception | None = None
+    for _ in range(_PREP_MAX_ATTEMPTS):
+        try:
+            prompt = assemble(
+                compact_kb(kb),
+                remediation_task(
+                    _missed_words_text(session.get("wrong_questions")),
+                    session.get("weak_area") or "",
+                    session.get("distinction_feedback") or "",
+                    session.get("application_feedback") or "",
+                    _REMEDIATION_PRACTICE_N,
+                    _bound_history(full_history, 60),
+                    _bound_history(d_history, 30),
+                    _bound_history(a_history, 30),
+                ),
+                lessons_block(lessons),
+            )
+            data = parse_ai_json(ask(prompt))
+            questions = _parse_mcq_rows(data["q"], _REMEDIATION_PRACTICE_N)
+            violation = (
+                _find_duplicate([q["question"] for q in questions], full_history)
+                or _find_duplicate([data["d"]], d_history)
+                or _find_duplicate([data["a"]], a_history)
+            )
+            if violation:
+                raise HTTPException(status_code=502, detail=violation)
+            _determine_and_verify_answers(kb, questions, lessons)
+            return {"recap": data.get("recap", ""), "questions": questions, "d": data["d"], "a": data["a"]}
+        except AIRateLimitError:
+            raise
+        except (HTTPException, AIProviderError, KeyError, ValueError, TypeError) as e:
+            last_error = e
+    raise last_error  # type: ignore[misc]
+
+
+def _start_remediation_prep(session: dict, d_history: list[str], a_history: list[str]) -> None:
+    """Sinh sẵn bộ ôn tập ở nền ngay khi học sinh nhận kết quả RETRY (lúc đang đọc báo cáo)."""
+    prep = {"status": "pending", "pack": None, "event": threading.Event()}
+    session["rem_prep"] = prep
+    full_history = list(session.get("recognition_history") or [])
+
+    def work():
+        try:
+            prep["pack"] = _generate_remediation_pack(session, full_history, d_history, a_history)
+            prep["status"] = "ready"
+        except Exception:  # noqa: BLE001
+            logger.exception("Sinh sẵn bộ ôn tập thất bại (sẽ sinh lại khi học sinh bấm ôn tập)")
+            prep["status"] = "failed"
+        finally:
+            prep["event"].set()
+
+    threading.Thread(target=work, daemon=True).start()
+
+
 def _grade_mcq_answers(answer_key: dict, questions_by_id: dict, answers: dict) -> tuple[int, list[dict], str]:
     """Chấm 1 bộ MCQ (dùng chung cho recognition chính thức và remediation
     practice). Trả về (số câu đúng, list câu sai chi tiết, summary text cho
@@ -530,6 +591,8 @@ class SubmitOpenEndedRequest(BaseModel):
     session_id: str
     distinction_answer: str
     application_answer: str
+    distinction_history: list[str] = []  # để sinh sẵn bộ ôn tập không trùng câu cũ
+    application_history: list[str] = []
 
 
 class ReportRequest(BaseModel):
@@ -913,8 +976,9 @@ def submit_open_ended(req: SubmitOpenEndedRequest, user=Depends(get_current_user
     })
     session["current_state"] = "LEVEL_COMPLETED" if final_result == "PASS" else "RETRY"
     if final_result != "PASS":
-        # Sinh sẵn bộ 20 câu cho lần kiểm tra lại, trong lúc học sinh đọc báo cáo/ôn tập.
-        _start_recognition_prep(session, user["id"], True, session.get("recognition_history") or [])
+        # Sinh sẵn bộ ôn tập trong lúc học sinh đọc báo cáo. Bộ 20 câu kiểm tra lại chỉ sinh khi
+        # học sinh thật sự bắt đầu ôn tập (xem begin_remediation) để khỏi tốn token nếu họ bỏ giữa chừng.
+        _start_remediation_prep(session, req.distinction_history, req.application_history)
 
     return {
         "recognition": session["recognition"],
@@ -1012,46 +1076,34 @@ def begin_remediation(req: SessionIdRequest, user=Depends(get_current_user)):
         raise HTTPException(status_code=409, detail=f"Sai trạng thái hiện tại: {session['current_state']}")
     _require_keys(user, 1)
 
-    kb = load_knowledge_base(session["world_id"], session["level"])
-    missed_words = _missed_words_text(session.get("wrong_questions"))
-    n_practice = 10
-    bounded_recognition_history = _bound_history(req.recognition_history, 60)
+    full_history = list(dict.fromkeys((session.get("recognition_history") or []) + list(req.recognition_history)))
 
-    prompt = assemble(
-        compact_kb(kb),
-        remediation_task(
-            missed_words,
-            session.get("weak_area") or "",
-            session.get("distinction_feedback") or "",
-            session.get("application_feedback") or "",
-            n_practice,
-            bounded_recognition_history,
-            _bound_history(req.distinction_history, 30),
-            _bound_history(req.application_history, 30),
-        ),
-    )
-    raw = ask(prompt)
-    data = parse_ai_json(raw)
-    questions = _parse_mcq_rows(data["q"], n_practice)
+    pack = None
+    prep = session.get("rem_prep")
+    if prep is not None:
+        prep["event"].wait(timeout=_PREP_WAIT_SECONDS)
+        if prep["status"] == "ready":
+            pack = prep["pack"]
+    session["rem_prep"] = None
+    if pack is None:
+        # Chưa có bộ sinh sẵn (hoặc thất bại): sinh ngay, vẫn qua đủ bước kiểm tra.
+        pack = _generate_remediation_pack(session, full_history, req.distinction_history, req.application_history)
 
-    duplicate_violation = (
-        _find_duplicate([q["question"] for q in questions], req.recognition_history)
-        or _find_duplicate([data["d"]], req.distinction_history)
-        or _find_duplicate([data["a"]], req.application_history)
-    )
-    if duplicate_violation:
-        raise HTTPException(status_code=502, detail=f"{duplicate_violation}, thử lại.")
-    _determine_and_verify_answers(kb, questions)
+    questions = pack["questions"]
     _charge_keys(user["id"], 1)
 
     session["practice_questions"] = questions
     session["practice_secure_answer_key"] = {str(q["id"]): q["correct_index"] for q in questions}
-    session["practice_distinction_prompt"] = data["d"]
-    session["practice_application_prompt"] = data["a"]
+    session["practice_distinction_prompt"] = pack["d"]
+    session["practice_application_prompt"] = pack["a"]
+    session["recognition_history"] = full_history + [q["question"] for q in questions]
     session["current_state"] = "REMEDIATION_MCQ"
 
+    # Học sinh đã cam kết ôn tập -> sinh sẵn bộ 20 câu kiểm tra lại trong lúc họ làm bài luyện tập.
+    _start_recognition_prep(session, user["id"], True, session["recognition_history"])
+
     return {
-        "recap": data.get("recap", ""),
+        "recap": pack["recap"],
         "practice_questions": [{"id": q["id"], "question": q["question"], "options": q["options"]} for q in questions],
         "keys_remaining": db.get_keys(user["id"]),
     }
@@ -1067,14 +1119,26 @@ def submit_remediation_mcq(req: RemediationMCQRequest, user=Depends(get_current_
     questions = {str(q["id"]): q for q in session["practice_questions"]}
     _correct_count, _wrong, wrong_summary = _grade_mcq_answers(answer_key, questions, req.answers)
 
-    kb = load_knowledge_base(session["world_id"], session["level"])
-    prompt = assemble(compact_kb(kb), correction_task(wrong_summary))
-    correction_text = ask(prompt)
+    explanations: dict[str, str] = {}
+    if _wrong:
+        kb = load_knowledge_base(session["world_id"], session["level"])
+        prompt = assemble(compact_kb(kb), correction_per_question_task(wrong_summary))
+        data = parse_ai_json(ask(prompt))
+        for item in data.get("items") or []:
+            if isinstance(item, dict) and item.get("id") is not None and item.get("explanation"):
+                explanations[str(item["id"])] = str(item["explanation"])
 
     session["current_state"] = "REMEDIATION_OPEN_ENDED"
 
     return {
-        "correction_text": correction_text,
+        "correction_text": "" if _wrong else "Bạn đã trả lời đúng tất cả các câu.",
+        "explanations": explanations,
+        "wrong_words": [
+            {"selected": (wq["options"][wq["selected_index"]] if wq["selected_index"] is not None else None),
+             "correct": wq["options"][wq["correct_index"]], "question": wq["question"]}
+            for wq in _wrong
+        ],
+        "quality": {str(q["id"]): q["quality"] for q in session["practice_questions"] if q.get("quality")},
         "distinction_prompt": session["practice_distinction_prompt"],
         "application_prompt": session["practice_application_prompt"],
     }
@@ -1093,9 +1157,10 @@ def submit_remediation_open_ended(req: RemediationOpenEndedRequest, user=Depends
         f"Tình huống Application (luyện tập): {session['practice_application_prompt']}\n"
         f"Trả lời học sinh: {req.application_answer}"
     )
-    prompt = assemble(compact_kb(kb), open_ended_grading_task(context))
-    raw = ask(prompt)
-    data = parse_ai_json(raw)
+    prompt = open_ended_grading_prompt(
+        compact_kb(kb), context, _safe_lessons(session["world_id"], session["level"], "open")
+    )
+    data = _grade_open_ended_twice(prompt)
 
     d_scores = _clamp_scores(data.get("d_scores", {}), DISTINCTION_CRITERIA)
     a_scores = _clamp_scores(data.get("a_scores", {}), APPLICATION_CRITERIA)
@@ -1112,6 +1177,12 @@ def submit_remediation_open_ended(req: RemediationOpenEndedRequest, user=Depends
         "application_score": application_score,
         "application_feedback": data.get("a_fb", ""),
         "application_rubric": _rubric_rows(a_scores, APPLICATION_CRITERIA, APPLICATION_LABELS),
+        "distinction_model": data.get("d_model", ""),
+        "application_model": data.get("a_model", ""),
+        "grading_spread": {
+            "distinction": data.get("d_spread"), "application": data.get("a_spread"),
+            "flag_threshold": _SPREAD_FLAG,
+        },
     }
 
 
