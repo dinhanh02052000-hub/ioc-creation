@@ -163,7 +163,7 @@ function renderAnalysis() {
       <div class="analysis-grid">
         <div class="card analysis-card analysis-iocbig" id="analysis-box-1">
           <div class="card-header">
-            <span class="card-title">Chỉ số IoC</span>
+            <span class="card-title">Chỉ số IOC</span>
             <span class="badge">Tất cả level</span>
           </div>
           ${analysisRenderBox1(agg)}

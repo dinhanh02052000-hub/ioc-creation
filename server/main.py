@@ -465,6 +465,7 @@ def _grade_mcq_answers(answer_key: dict, questions_by_id: dict, answers: dict) -
         f"{len(wrong_questions) - unanswered_count} câu sai, {unanswered_count} câu để trống."
     ]
     for wq in wrong_questions:
+        summary_parts.append(f"(Các lựa chọn câu {wq['id']}: " + " | ".join(wq["options"]) + ")")
         if wq["type"] == "unanswered":
             summary_parts.append(f"Câu {wq['id']}: (bỏ trống) \"{wq['question']}\" - Đúng là: {wq['options'][wq['correct_index']]}")
         else:
@@ -832,6 +833,8 @@ def _grade_open_ended_twice(prompt: str) -> dict:
             "a": _clamp_scores(data.get("a_scores", {}), APPLICATION_CRITERIA),
             "d_fb": data.get("d_fb", ""),
             "a_fb": data.get("a_fb", ""),
+            "d_model": data.get("d_model", ""),
+            "a_model": data.get("a_model", ""),
         }
 
     results, errors = [], []
@@ -859,6 +862,8 @@ def _grade_open_ended_twice(prompt: str) -> dict:
         a_spread = round(abs(sum(results[0]["a"].values()) - sum(results[1]["a"].values())), 1)
     return {
         "d_scores": d_avg, "a_scores": a_avg, "d_fb": d_pick["d_fb"], "a_fb": a_pick["a_fb"],
+        "d_model": next((r["d_model"] for r in results if r["d_model"]), ""),
+        "a_model": next((r["a_model"] for r in results if r["a_model"]), ""),
         "d_spread": d_spread, "a_spread": a_spread,
     }
 
@@ -920,6 +925,8 @@ def submit_open_ended(req: SubmitOpenEndedRequest, user=Depends(get_current_user
         "application_score": application_score,
         "application_feedback": data.get("a_fb", ""),
         "application_rubric": _rubric_rows(a_scores, APPLICATION_CRITERIA, APPLICATION_LABELS),
+        "distinction_model": data.get("d_model", ""),
+        "application_model": data.get("a_model", ""),
         "grading_spread": {
             "distinction": data.get("d_spread"), "application": data.get("a_spread"),
             "flag_threshold": _SPREAD_FLAG,

@@ -2073,3 +2073,32 @@ body {
   margin-bottom: var(--sp-4);
 }
 .delete-confirm-actions { display: flex; gap: var(--sp-3); justify-content: flex-end; }
+
+/* ---- tra từ điển Cambridge ---- */
+.ai-dict-hint { font-size: 0.8rem; color: var(--text-dim, #8b949e); margin: 4px 0 10px; }
+.dict-popup {
+  position: fixed; z-index: 9999; width: 280px; transform: translateX(-50%);
+  padding: 12px; border-radius: 10px; border: 1px solid var(--border, #e5e0d6);
+  background: var(--bg-card, #fff); color: var(--text, #1f2937);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); font-size: 14px;
+}
+.dict-popup__head { display: flex; align-items: flex-start; gap: 8px; }
+.dict-popup__word { flex: 1; min-width: 0; overflow-wrap: anywhere; font-size: 15px; }
+.dict-popup__close { border: 0; background: none; font-size: 18px; line-height: 1; cursor: pointer; color: var(--text-dim, #6b7280); }
+.dict-popup__actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+.dict-popup__btn {
+  display: inline-flex; align-items: center; justify-content: center; height: 34px; border-radius: 8px;
+  border: 1px solid var(--border, #d1d5db); text-decoration: none; font-weight: 600; color: inherit;
+}
+.dict-popup__btn--primary { background: #1e3a5f; border-color: #1e3a5f; color: #fff; }
+.dict-popup__note { margin: 8px 0 0; font-size: 11px; color: var(--text-dim, #6b7280); }
+
+/* D. Quote hôm nay: 1 bong bóng chat */
+.home-chat-bubble--quote {
+  position: relative; max-width: 92%; padding: 14px 16px; border-radius: 16px 16px 16px 4px;
+  background: var(--bg-raised, rgba(255,255,255,0.06)); border: 1px solid var(--border);
+  color: var(--text-1); line-height: 1.5; overflow-wrap: anywhere;
+}
+.home-quote-en { margin: 0 0 6px; font-size: 0.95rem; font-weight: 600; }
+.home-quote-vi { margin: 0 0 8px; font-size: 0.82rem; color: var(--text-2, var(--text-3)); }
+.home-quote-author { font-size: 0.78rem; color: var(--text-3); }

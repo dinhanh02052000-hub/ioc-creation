@@ -68,7 +68,7 @@ function renderSidebar() {
       <div class="sidebar-top">
         <div class="sidebar-logo">
           <img src="assets/images/ioc-logo.jpg" alt="IOC Logo" class="sidebar-logo-img">
-          <span class="sidebar-logo-text">IOC</span>
+          <span class="sidebar-logo-text">Iocdetector</span>
         </div>
         <button type="button" class="sidebar-toggle-btn" id="sidebar-toggle-btn"
           aria-label="Thu gọn thanh bên" aria-expanded="true" title="Thu gọn thanh bên (Ctrl/Cmd+B)">
@@ -127,7 +127,7 @@ function App() {
       ${renderSidebar()}
       <div class="app-main">
         ${renderTopbar()}
-        <main id="main-content" class="content-area"></main>
+        <main id="main-content" class="content-area" data-dict></main>
         <footer class="app-footer">
           <span>Illusion of Competence Detector là AI và có thể mắc sai lầm. Hãy kiểm tra kĩ lại thông tin nếu phát hiện bất thường.</span>
         </footer>

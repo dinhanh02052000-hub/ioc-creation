@@ -181,44 +181,24 @@ function homeRenderRecentResultsCard() {
   `;
 }
 
-// ---- D. Từ cần ôn ----
-// LƯU Ý: dữ liệu hiện tại không lưu độ tự tin riêng theo TỪNG từ/câu (chỉ có
-// 1 điểm tự tin tổng cho cả level - xem results.confidence), nên không lọc
-// được đúng "ưu tiên câu tự chấm tự tin cao" như yêu cầu. Thay vào đó lấy
-// các từ sai GẦN NHẤT (ưu tiên level mới làm trước) - đã báo lại trong tóm
-// tắt gửi người dùng.
-function homeRenderReviewWordsCard() {
-  const flat = typeof getAllLevelResultsFlat === 'function' ? getAllLevelResultsFlat() : [];
-  const sorted = flat.slice().sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+// ---- D. Quote hôm nay (1 bong bóng chat, quote có sẵn đổi theo ngày) ----
 
-  const seen = new Set();
-  const words = [];
-  for (const r of sorted) {
-    for (const w of (r.wrong_words || [])) {
-      const key = (w.correct || '').toLowerCase();
-      if (!key || seen.has(key)) continue;
-      seen.add(key);
-      words.push(w);
-      if (words.length >= 5) break;
-    }
-    if (words.length >= 5) break;
-  }
+function homeQuoteBubbleInner(dayOfYear) {
+  const q = QUOTES_LIST[(dayOfYear - 1) % QUOTES_LIST.length];
+  return `
+    <p class="home-quote-en">“${homeEscapeHtml(q.en)}”</p>
+    <p class="home-quote-vi">${homeEscapeHtml(q.vi)}</p>
+    <span class="home-quote-author">— ${homeEscapeHtml(q.author)}</span>
+  `;
+}
 
-  const bodyHtml = words.length
-    ? words.map(w => `
-        <div class="home-review-word">
-          <strong>${homeEscapeHtml(w.correct)}</strong>
-          ${w.selected ? `<span class="home-review-word-wrong">đã chọn nhầm: ${homeEscapeHtml(w.selected)}</span>` : ''}
-        </div>
-      `).join('')
-    : `<div class="analysis-empty">Chưa có từ nào cần ôn - cứ tiếp tục học nhé!</div>`;
-
+function homeRenderReviewWordsCard(dayOfYear) {
   return `
     <div class="card home-review-card">
       <div class="card-header">
-        <span class="card-title">Từ cần ôn</span>
+        <span class="card-title">Quote hôm nay</span>
       </div>
-      <div class="home-review-list">${bodyHtml}</div>
+      <div class="home-chat-bubble home-chat-bubble--quote" id="home-quote-bubble">${homeQuoteBubbleInner(dayOfYear)}</div>
     </div>
   `;
 }
@@ -249,14 +229,14 @@ function renderHome() {
       <div class="home-cell home-cell-b">
         <div class="card ioc-index-card">
           <div class="card-header">
-            <span class="card-title">Chỉ số IoC</span>
+            <span class="card-title">Chỉ số IOC</span>
             <span class="badge">Tổng hợp</span>
           </div>
           ${homeRenderIocIndexBody()}
         </div>
       </div>
       <div class="home-cell home-cell-c">${homeRenderRecentResultsCard()}</div>
-      <div class="home-cell home-cell-d">${homeRenderReviewWordsCard()}</div>
+      <div class="home-cell home-cell-d">${homeRenderReviewWordsCard(dayOfYear)}</div>
       <div class="home-cell home-cell-e">${homeRenderDailyTipStrip(dayOfYear)}</div>
     </div>
   `;
@@ -307,6 +287,9 @@ function refreshDailyContentIfDateChanged() {
   const dayOfYear = getDayOfYear();
   const tipIndex = (dayOfYear - 1) % TIPS_LIST.length;
   const todayTip = TIPS_LIST[tipIndex];
+
+  const quoteEl = document.getElementById('home-quote-bubble');
+  if (quoteEl) quoteEl.innerHTML = homeQuoteBubbleInner(dayOfYear);
 
   const tipTextEl = document.getElementById('home-tip-text');
   const tipCategoryEl = document.getElementById('home-tip-category');

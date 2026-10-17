@@ -625,3 +625,14 @@
   border-radius: 8px;
   padding: 8px 12px;
 }
+
+/* Cảnh bản đồ luôn tối (rừng đêm / băng) và các nút nổi có nền tối cố định,
+   nên giữ màu chữ của chế độ tối kể cả khi người dùng bật chế độ sáng. */
+:root[data-theme="light"] .world-map-page,
+:root[data-theme="light"] .world-map-guide-btn,
+:root[data-theme="light"] .world-map-vocab-btn {
+  --text: #e6edf3;
+  --text-dim: #b4bdc8;
+  --text-faint: #8b949e;
+  color: var(--text);
+}

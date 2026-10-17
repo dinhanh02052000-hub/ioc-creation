@@ -141,7 +141,7 @@ function openAIChat(worldId, level, onComplete, isRetry = false) {
         </div>
         <button type="button" class="ai-chat-close" id="ai-chat-close" title="Đóng">✕</button>
       </div>
-      <div class="ai-chat-body" id="ai-chat-body"></div>
+      <div class="ai-chat-body" id="ai-chat-body" data-dict></div>
       <div class="ai-chat-footer" id="ai-chat-footer"></div>
     </div>
   `;
@@ -310,6 +310,7 @@ function aiRenderLearningContent(groupTitle, content) {
   aiSetBody(`
     ${onboardingBlock}
     <div class="ai-msg-system">Chào bạn! Hôm nay chúng ta học nhóm từ: <strong>${aiEscapeHtml(groupTitle)}</strong></div>
+    <div class="ai-dict-hint">Bấm vào một từ hoặc bôi đen cụm từ để tra từ điển Cambridge (Anh–Anh / Anh–Việt).</div>
     <div class="ai-msg">${aiMarkdownToHtml(content)}</div>
     <div class="ai-start-notice">
       <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -527,6 +528,11 @@ function aiQualityBadgeHtml(q) {
   if (q.question_ok != null) parts.push(`Câu hỏi đạt ${q.question_ok}%`);
   return `<span class="ai-q-quality ${q.needs_check ? 'warn' : 'good'}" title="Do AI kiểm tra độc lập tính toán">
     ${q.needs_check ? 'Nên kiểm tra · ' : ''}${parts.join(' · ')}</span>`;
+}
+
+function aiModelAnswerHtml(text) {
+  if (!text) return '';
+  return `<div class="ai-model-answer"><div class="ai-report-label">Đáp án tham khảo</div>${aiMarkdownToHtml(text)}</div>`;
 }
 
 function aiSpreadHtml(spread, kind) {
@@ -820,6 +826,7 @@ function aiRenderFinalReport(report) {
         ${aiSpreadHtml(report.grading_spread, 'distinction')}
         ${aiRubricTableHtml(report.distinction_rubric)}
         ${aiMarkdownToHtml(report.distinction_feedback)}
+        ${aiModelAnswerHtml(report.distinction_model)}
         <button type="button" class="ai-report-btn" data-report="distinction">Báo cáo điểm / nhận xét</button>
         <div class="ai-report-slot"></div>
       </div>
@@ -828,6 +835,7 @@ function aiRenderFinalReport(report) {
         ${aiSpreadHtml(report.grading_spread, 'application')}
         ${aiRubricTableHtml(report.application_rubric)}
         ${aiMarkdownToHtml(report.application_feedback)}
+        ${aiModelAnswerHtml(report.application_model)}
         <button type="button" class="ai-report-btn" data-report="application">Báo cáo điểm / nhận xét</button>
         <div class="ai-report-slot"></div>
       </div>

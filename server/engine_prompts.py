@@ -290,15 +290,41 @@ def correction_task(wrong_summary: str) -> str:
     )
 
 
+RECOGNITION_EXPLANATION_FORMAT = (
+    "- **Dấu hiệu ngữ pháp:** xác định chỗ trống cần từ loại gì (động từ nguyên thể, danh từ, tính từ, ...) dựa vào "
+    "cấu trúc câu (ví dụ: sau can/could cần V; sau have a/an + tính từ cần danh từ)." + chr(10)
+    + "- **Từ khóa manh mối:** chỉ ra các từ khóa quan trọng trong câu dẫn tới đáp án đúng "
+    "(ví dụ: mentors, approach -> influence; severe, profound -> impact; immediate, main effect -> effect)." + chr(10)
+    + "- **So sánh & dịch nghĩa:** giải thích ngắn vì sao từ đúng hợp nghĩa hơn các từ còn lại (nêu rõ từ nào bị "
+    "loại và vì sao), kèm bản dịch tiếng Việt hoàn chỉnh của câu."
+)
+
+DISTINCTION_MODEL_FORMAT = (
+    "MỘT đoạn văn liền mạch duy nhất (không gạch đầu dòng) gồm 2 ý liên kết với nhau: (1) Phân tích các từ thay "
+    "thế còn lại: giải thích sắc thái của từng từ (ví dụ: influence mang nghĩa tác động từ từ qua thời gian; impact "
+    "mang nghĩa tác động mạnh/đột ngột) và chỉ ra lý do chúng không phù hợp hoặc sai ngữ pháp trong ngữ cảnh câu "
+    "hỏi; (2) Khẳng định từ gốc: giải thích vì sao từ gốc (đáp án đúng) khớp hoàn hảo với bản chất và kết quả của "
+    "ngữ cảnh câu."
+)
+
+APPLICATION_MODEL_FORMAT = (
+    "Gồm 2 phần, mỗi phần 1 dòng riêng, có nhãn in đậm: dòng 1 '**Câu tiếng Anh:**' - 1 câu tiếng Anh hoàn chỉnh "
+    "(BẮT BUỘC tiếng Anh) ứng dụng từ được chọn vào tình huống, tận dụng collocation tự nhiên (ví dụ: have a "
+    "severe impact on, have a profound effect on); dòng 2 '**Giải thích:**' - trích các dữ kiện/từ khóa của tình "
+    "huống (ví dụ: sharp increase, bankruptcy, sudden), rồi so sánh nhanh vì sao từ đã chọn vượt trội hơn trong "
+    "khi các từ còn lại quá chung chung hoặc quá nhẹ/gián tiếp."
+)
+
+
 def correction_per_question_task(wrong_summary: str) -> str:
     """Giải thích RIÊNG từng câu sai (JSON) để frontend gắn ngay dưới đúng câu đó."""
     nl = chr(10)
     return (
         "KẾT QUẢ CỦA HỌC SINH:" + nl + wrong_summary + nl + nl +
-        "Với MỖI câu sai/bỏ trống ở trên, viết 1 giải thích bằng tiếng Việt, 1-3 câu: vì sao đáp án học sinh chọn "
-        "KHÔNG phù hợp trong ngữ cảnh câu này, và vì sao đáp án đúng phù hợp hơn (dựa vào phân biệt nghĩa trong "
-        "KB). Không nhắc điểm số/tỷ lệ %. Có thể dùng **in đậm** cho từ mục tiêu. Dùng đúng số thứ tự câu đã cho "
-        "làm id. CHỈ trả JSON, không chữ thừa: "
+        "Với MỖI câu sai/bỏ trống ở trên, viết 1 giải thích bằng tiếng Việt gồm ĐÚNG 3 ý, mỗi ý 1 dòng (ngăn cách "
+        "bằng ký tự xuống dòng, mỗi dòng bắt đầu bằng '- '), ngắn gọn:" + nl
+        + RECOGNITION_EXPLANATION_FORMAT + nl +
+        "Không nhắc điểm số/tỷ lệ %. Dùng đúng số thứ tự câu đã cho làm id. CHỈ trả JSON, không chữ thừa: "
         '{"items": [{"id": <số câu>, "explanation": "..."}, ...]}'
     )
 
@@ -508,7 +534,11 @@ def _open_ended_rubric_text() -> str:
         "CHỈ trả JSON, không chữ thừa, đúng schema (điểm là số, tổng 5 số distinction phải <=10, tổng 4 số "
         "application phải <=10):\n"
         '{"d_scores": {"hieu_goc":0,"doi_nghia":0,"phan_biet":0,"ngu_canh":0,"so_sanh":0}, "d_fb": "...", '
-        '"a_scores": {"chon_tu":0,"dung_dung":0,"giai_thich":0,"tinh_huong":0}, "a_fb": "..."}'
+        '"a_scores": {"chon_tu":0,"dung_dung":0,"giai_thich":0,"tinh_huong":0}, "a_fb": "...", '
+        '"d_model": "...", "a_model": "..."}'
+        + chr(10) + "d_model = ĐÁP ÁN THAM KHẢO cho câu Distinction (độc lập với bài học sinh), cấu trúc: "
+        + DISTINCTION_MODEL_FORMAT + chr(10) + "a_model = ĐÁP ÁN THAM KHẢO cho tình huống Application, cấu trúc: "
+        + APPLICATION_MODEL_FORMAT + " Cả hai viết tiếng Việt (trừ câu tiếng Anh), ngắn gọn, chỉ dùng kiến thức trong KB."
         + _grading_examples_block()
     )
 

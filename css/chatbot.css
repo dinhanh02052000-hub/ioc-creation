@@ -589,3 +589,5 @@ a.ai-btn-secondary {
 .ai-report-result { margin-top: 8px; font-size: 0.85rem; padding: 8px 12px; border-radius: 8px; }
 .ai-report-result.good { color: #16a34a; background: rgba(34, 197, 94, 0.12); }
 .ai-report-result.warn { color: #b45309; background: rgba(245, 158, 11, 0.16); }
+
+.ai-model-answer { margin-top: 10px; padding: 10px 14px; border-left: 3px solid #6366f1; background: rgba(99, 102, 241, 0.08); border-radius: 0 8px 8px 0; font-size: 0.9rem; }
