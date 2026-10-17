@@ -624,7 +624,7 @@ a.ai-btn-secondary {
 
 /* 2 câu mở: khung lớn, ô trả lời giãn theo chiều cao */
 .ai-open-ended-block {
-  flex: 1 1 0; min-height: 230px; gap: 10px; padding: 18px 20px;
+  flex: 1 0 auto; gap: 10px; padding: 18px 20px;
   border: 1px solid var(--border); border-radius: 12px; background: rgba(255, 255, 255, 0.03);
 }
-.ai-textarea { flex: 1; min-height: 130px; font-size: 1.02rem; line-height: 1.6; padding: 14px 16px; border-radius: 10px; }
+.ai-textarea { flex: 1 0 auto; min-height: 130px; box-sizing: border-box; font-size: 1.02rem; line-height: 1.6; padding: 14px 16px; border-radius: 10px; }
