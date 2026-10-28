@@ -67,7 +67,7 @@ function renderSidebar() {
     <aside class="sidebar" id="app-sidebar">
       <div class="sidebar-top">
         <div class="sidebar-logo">
-          <img src="assets/images/ioc-logo.jpg" alt="IOC Logo" class="sidebar-logo-img">
+          <img src="assets/images/logoioc.png?v=1" alt="IOC Logo" class="sidebar-logo-img">
           <span class="sidebar-logo-text">Iocdetector</span>
         </div>
         <button type="button" class="sidebar-toggle-btn" id="sidebar-toggle-btn"

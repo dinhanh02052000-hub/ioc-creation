@@ -193,12 +193,10 @@ body {
 }
 
 .sidebar-logo-img {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  object-fit: cover;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
   flex: none;
-  border: 2px solid var(--accent);
 }
 
 .sidebar-logo-text {
