@@ -87,14 +87,34 @@ function setLevelResults(worldId, level, results) {
     overall: Number.isFinite(results.overall) ? results.overall : null,
     confidence: Number.isFinite(results.confidence) ? results.confidence : null,
     gap: Number.isFinite(results.gap) ? results.gap : null,
+    // 1 = Confidence chung cũ, 2 = hai dự đoán. Hai cách đo không được nối thành một chuỗi khi phân tích.
+    confidence_version: results.confidence_version === 2 ? 2 : 1,
+    attempt_id: results.attempt_id || null,
+    confidence_comparison: results.confidence_comparison || null,
     group_title: results.group_title || null,
     wrong_words: Array.isArray(results.wrong_words) ? results.wrong_words : [],
     distinction_feedback: results.distinction_feedback || null,
     application_feedback: results.application_feedback || null,
+    distinction_rubric: Array.isArray(results.distinction_rubric) ? results.distinction_rubric : null,
+    application_rubric: Array.isArray(results.application_rubric) ? results.application_rubric : null,
     timestamp: Date.now()
   };
 
   saveLevelResults(allResults);
+}
+
+// Cập nhật CHỌN LỌC điểm hiệu lực sau khi máy chủ sửa điểm hồi tố (tính lại từ lựa chọn gốc). Chỉ đổi các trường điểm;
+// KHÔNG đụng tới mức tự tin/dự đoán đã khai, lịch sử, level đã mở khóa hay trạng thái hoàn thành.
+function patchLevelScores(worldId, level, attemptId, fields) {
+  const all = loadLevelResults();
+  const cur = all[worldId] && all[worldId][String(level)];
+  if (!cur || (cur.attempt_id && cur.attempt_id !== attemptId)) return false;
+  ['recognition', 'overall', 'gap'].forEach(k => {
+    if (fields[k] === null || Number.isFinite(fields[k])) cur[k] = fields[k];
+  });
+  cur.score_revised = true;
+  saveLevelResults(all);
+  return true;
 }
 
 // Gom kết quả level của 1 hoặc cả 2 world thành 1 mảng phẳng cho trang

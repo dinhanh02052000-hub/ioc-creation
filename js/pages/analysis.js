@@ -6,7 +6,11 @@ const ANALYSIS_CACHE_KEY = 'ioc_analysis_cache'; // { signature, result: {weak_p
 const ANALYSIS_ILLUSION_META = {
   DETECTED: { label: 'IOC Detected', dot: 'red' },
   UNDERCONFIDENT: { label: 'Underconfidence Detected', dot: 'red' },
-  CALIBRATED: { label: 'Good', dot: 'green' }
+  CALIBRATED: { label: 'Good', dot: 'green' },
+  MIXED_DEVIATION: { label: 'Lệch ở từng kỹ năng (bù trừ nhau)', dot: 'red' },
+  PARTIAL_DATA: { label: 'Chỉ đối chiếu được một kỹ năng', dot: 'gray' },
+  NO_PREDICTION: { label: 'Chưa có dự đoán để đối chiếu', dot: 'gray' },
+  AWAITING_RESULT: { label: 'Chờ kết quả (tạm tính)', dot: 'gray' }
 };
 
 function analysisEscapeHtml(str) {
@@ -25,26 +29,62 @@ function analysisComputeAggregate() {
   const flat = typeof getAllLevelResultsFlat === 'function' ? getAllLevelResultsFlat() : [];
   if (!flat.length) return null;
 
-  const sums = { recognition: 0, distinction: 0, application: 0, overall: 0, confidence: 0 };
+  const sums = { recognition: 0, distinction: 0, application: 0, overall: 0 };
   flat.forEach(r => {
     sums.recognition += r.recognition;
     sums.distinction += r.distinction;
     sums.application += r.application;
     sums.overall += r.overall;
-    sums.confidence += r.confidence;
   });
-
   const n = flat.length;
   const avg = {
     recognition: sums.recognition / n,
     distinction: sums.distinction / n,
     application: sums.application / n,
-    overall: sums.overall / n,
-    confidence: sums.confidence / n
+    overall: sums.overall / n
   };
-  const gap = avg.confidence - avg.overall;
 
-  return { ...avg, gap, illusion_status: analysisClassifyIllusion(gap), levelCount: n };
+  // Hai cách đo Confidence KHÔNG được nối thành một chuỗi: bản ghi cũ (1 điểm tự tin, so với Overall) và bản ghi
+  // mới (hai dự đoán, mỗi dự đoán so với đúng kỹ năng của nó) tính riêng, hiển thị riêng.
+  const legacy = flat.filter(r => (r.confidence_version || 1) !== 2 && Number.isFinite(r.confidence));
+  let legacyAgg = null;
+  if (legacy.length) {
+    const conf = legacy.reduce((t, r) => t + r.confidence, 0) / legacy.length;
+    const overall = legacy.reduce((t, r) => t + r.overall, 0) / legacy.length;
+    legacyAgg = { confidence: conf, overall, gap: conf - overall, count: legacy.length };
+  }
+
+  const twoSkill = { count: 0, distinction: null, application: null };
+  const v2 = flat.filter(r => r.confidence_version === 2 && r.confidence_comparison && r.confidence_comparison.skills);
+  twoSkill.count = v2.length;
+  ['distinction', 'application'].forEach(k => {
+    const compared = v2.map(r => r.confidence_comparison.skills[k]).filter(s => s && s.state === 'compared');
+    if (compared.length) {
+      const mean = (f) => compared.reduce((t, s) => t + f(s), 0) / compared.length;
+      twoSkill[k] = { predicted: mean(s => s.predicted), actual: mean(s => s.actual), gap: mean(s => s.gap), count: compared.length };
+    }
+  });
+
+  return {
+    ...avg,
+    confidence: legacyAgg ? legacyAgg.confidence : null,
+    gap: legacyAgg ? legacyAgg.gap : null,
+    illusion_status: legacyAgg ? analysisClassifyIllusion(legacyAgg.gap) : null,
+    legacy: legacyAgg,
+    twoSkill,
+    levelCount: n
+  };
+}
+
+function analysisFmt(n) {
+  return Number(n).toFixed(2).replace('.', ',');
+}
+
+// Gap hiển thị bằng lời để không phải tự giải nghĩa dấu.
+function analysisGapText(gap) {
+  if (gap == null) return '—';
+  if (Math.abs(gap) < 0.005) return 'khớp kết quả';
+  return `${gap > 0 ? 'cao hơn' : 'thấp hơn'} ${analysisFmt(Math.abs(gap))} điểm`;
 }
 
 function analysisScoreRowHtml(label, value) {
@@ -53,7 +93,7 @@ function analysisScoreRowHtml(label, value) {
     <div class="analysis-score-row">
       <div class="analysis-score-label">${label}</div>
       <div class="analysis-score-bar"><div class="analysis-score-bar-fill" style="width:${pct}%;"></div></div>
-      <div class="analysis-score-value">${value.toFixed(1)}</div>
+      <div class="analysis-score-value">${value.toFixed(2)}</div>
     </div>
   `;
 }
@@ -62,19 +102,38 @@ function analysisRenderBox1(agg) {
   if (!agg) {
     return `<div class="analysis-empty">Bạn chưa hoàn thành level nào. Hãy làm bài ở World 1 hoặc World 2 để xem điểm tổng hợp tại đây.</div>`;
   }
-  const meta = ANALYSIS_ILLUSION_META[agg.illusion_status] || { label: agg.illusion_status, dot: 'red' };
-  const gapSign = agg.gap > 0 ? '+' : '';
-  return `
-    <div class="analysis-iocbig-top">
-      ${analysisScoreRowHtml('Ảo tưởng (Confidence)', agg.confidence)}
-      ${analysisScoreRowHtml('Thực tế (Overall)', agg.overall)}
-    </div>
-    <div class="analysis-illusion-row">
-      <span class="analysis-status-dot analysis-status-dot--${meta.dot}"></span>
-      <span>GAP: ${gapSign}${agg.gap.toFixed(1)}</span>
-      <span class="analysis-illusion-hint">${meta.label} · trung bình ${agg.levelCount} level đã làm</span>
-    </div>
-  `;
+  let html = '';
+  if (agg.twoSkill && agg.twoSkill.count) {
+    const rows = [['distinction', 'Phân biệt'], ['application', 'Vận dụng']].map(([k, label]) => {
+      const s = agg.twoSkill[k];
+      if (!s) return `<tr><td>${label}</td><td colspan="3">Chưa có dự đoán để đối chiếu</td></tr>`;
+      return `<tr><td>${label}</td><td>${analysisFmt(s.predicted)}</td><td>${analysisFmt(s.actual)}</td><td>${analysisGapText(s.gap)}</td></tr>`;
+    }).join('');
+    html += `
+      <div class="analysis-illusion-hint">Cách đo mới: hai dự đoán (trung bình ${agg.twoSkill.count} lượt)</div>
+      <table class="analysis-table">
+        <thead><tr><th>Kỹ năng</th><th>Em dự đoán</th><th>Kết quả</th><th>Chênh lệch</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+  }
+  if (agg.legacy) {
+    const meta = ANALYSIS_ILLUSION_META[agg.illusion_status] || { label: agg.illusion_status, dot: 'red' };
+    const gapSign = agg.gap > 0 ? '+' : '';
+    html += `
+      <div class="analysis-iocbig-top">
+        ${analysisScoreRowHtml('Ảo tưởng (Confidence - cách đo cũ)', agg.confidence)}
+        ${analysisScoreRowHtml('Thực tế (Overall)', agg.legacy.overall)}
+      </div>
+      <div class="analysis-illusion-row">
+        <span class="analysis-status-dot analysis-status-dot--${meta.dot}"></span>
+        <span>GAP: ${gapSign}${agg.gap.toFixed(2)}</span>
+        <span class="analysis-illusion-hint">${meta.label} · cách đo cũ (một điểm tự tin), trung bình ${agg.legacy.count} level. Không so sánh trực tiếp với cách đo mới.</span>
+      </div>`;
+  }
+  if (!html) {
+    html = `<div class="analysis-empty">Chưa có dự đoán Confidence để đối chiếu.</div>`;
+  }
+  return html;
 }
 
 function analysisRenderScoreBreakdown(agg) {
@@ -96,12 +155,19 @@ function analysisRenderLevelTable() {
     const worldLabel = r.world_id === 'world-1' ? 'World 1' : 'World 2';
     const meta = ANALYSIS_ILLUSION_META[r.illusion_status] || { label: r.illusion_status || '-', dot: 'red' };
     const gapSign = r.gap > 0 ? '+' : '';
+    const isTwo = r.confidence_version === 2 && r.confidence_comparison && r.confidence_comparison.skills;
+    const sk = isTwo ? r.confidence_comparison.skills : null;
+    const predText = (s) => (s.status === 'scored' ? analysisFmt(s.predicted) : 'chưa ước lượng');
+    const confCell = isTwo
+      ? `Phân biệt ${predText(sk.distinction)} · Vận dụng ${predText(sk.application)}`
+      : (Number.isFinite(r.confidence) ? r.confidence.toFixed(2) : '—');
+    const gapCell = r.gap == null ? '—' : `${gapSign}${r.gap.toFixed(2)}`;
     return `
       <tr>
         <td>${worldLabel} · Level ${r.level}</td>
-        <td>${(r.overall ?? 0).toFixed(1)}</td>
-        <td>${(r.confidence ?? 0).toFixed(1)}</td>
-        <td>${gapSign}${(r.gap ?? 0).toFixed(1)}</td>
+        <td>${(r.overall ?? 0).toFixed(2)}</td>
+        <td>${confCell}</td>
+        <td>${gapCell}</td>
         <td><span class="analysis-status-dot analysis-status-dot--${meta.dot}"></span> ${meta.label}</td>
       </tr>
     `;

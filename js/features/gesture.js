@@ -88,13 +88,30 @@ function gestureSubmitRecognition(sessionId, answers, distinctionHistory = [], a
   });
 }
 
-function gestureSubmitConfidence(sessionId, confidence, distinctionHistory = [], applicationHistory = []) {
+// prediction: { distinction: {status, score}, application: {status, score}, reasons: [], note: '' }.
+// Điểm null chỉ đi kèm status 'unsure'; không bao giờ gửi giá trị mặc định thay cho "chưa chọn".
+function gestureSubmitConfidence(sessionId, prediction, distinctionHistory = [], applicationHistory = []) {
+  const pick = (p) => ({ status: p.status, score: p.status === 'scored' ? p.score : null });
   return aiRequest('/api/chat/submit-confidence', {
     session_id: sessionId,
-    confidence,
+    predictions: { distinction: pick(prediction.distinction), application: pick(prediction.application) },
+    reasons: prediction.reasons || [],
+    note: (prediction.note || '').trim() || null,
     distinction_history: distinctionHistory,
     application_history: applicationHistory
   });
+}
+
+// GET thuần: rubric đang dùng để chấm (một nguồn với bộ chấm ở máy chủ).
+async function gestureGetConfidenceRubric() {
+  let res;
+  try {
+    res = await fetch(`${AI_BACKEND_URL}/api/confidence/rubric`);
+  } catch (e) {
+    throw new Error('Không kết nối được tới AI backend. Kiểm tra server đã chạy ở ' + AI_BACKEND_URL + ' chưa.');
+  }
+  if (!res.ok) throw new Error('Không tải được tiêu chí chấm.');
+  return res.json();
 }
 
 function gestureSubmitOpenEnded(sessionId, distinctionAnswer, applicationAnswer, distinctionHistory = [], applicationHistory = []) {
@@ -104,6 +121,18 @@ function gestureSubmitOpenEnded(sessionId, distinctionAnswer, applicationAnswer,
     application_answer: applicationAnswer,
     distinction_history: distinctionHistory,
     application_history: applicationHistory
+  });
+}
+
+// Soạn lời giải của MỘT câu (câu đúng: 'Xem giải thích'; hoặc tạo lại riêng một câu sai). Không nộp lại bài, không đổi điểm.
+function gestureExplainQuestion(sessionId, questionId, practice = false) {
+  return aiRequest('/api/chat/explain-question', { session_id: sessionId, question_id: questionId, practice });
+}
+
+// Chấm nốt RIÊNG phần còn chờ (lượt đối chiếu hoặc lượt ba); không nộp lại bài.
+function gestureRetryOpenGrading(sessionId, distinctionHistory = [], applicationHistory = []) {
+  return aiRequest('/api/chat/retry-open-grading', {
+    session_id: sessionId, distinction_history: distinctionHistory, application_history: applicationHistory
   });
 }
 
@@ -135,4 +164,47 @@ function gestureGenerateAnalysis(groups) {
 
 function gestureSubmitReport(payload) {
   return aiRequest('/api/report', payload);
+}
+
+// Báo cáo tự luận theo loại/tiêu chí; gửi lại (mất mạng) không tạo thêm báo cáo, máy chủ trả bản đang có.
+function gestureSubmitOpenReport(payload) {
+  return aiRequest('/api/report/open', payload);
+}
+
+
+async function aiGetAuth(path) {
+  const session = typeof getAuthSession === 'function' ? getAuthSession() : null;
+  const headers = {};
+  if (session) headers['Authorization'] = `Bearer ${session.token}`;
+  let res;
+  try {
+    res = await fetch(`${AI_BACKEND_URL}${path}`, { headers });
+  } catch (e) {
+    throw new Error('Không kết nối được tới AI backend.');
+  }
+  if (!res.ok) throw new Error(res.statusText);
+  return res.json();
+}
+
+// Trạng thái hiện hành của lượt làm (điểm hiệu lực, cờ, quyết định, báo cáo của riêng em).
+function gestureGetAttempt(attemptId) {
+  return aiGetAuth(`/api/attempts/${encodeURIComponent(attemptId)}`);
+}
+
+function gestureSendRecognitionReport(payload) {
+  return aiRequest('/api/report/recognition', payload);
+}
+
+// Tạo lại RIÊNG lời giải còn thiếu: không nộp lại bài, không tính lại lượt dùng.
+function gestureRegenerateExplanations(sessionId, practice = false) {
+  return aiRequest('/api/chat/regenerate-explanations', { session_id: sessionId, practice });
+}
+
+
+// ---- Thẻ ôn + tự thử (máy chủ giữ trạng thái: gợi ý đã mở, câu trả lời đầu, lời giải đã xem) ----
+function gestureCardsState(sessionId) { return aiRequest('/api/chat/remediation/cards-state', { session_id: sessionId }); }
+function gestureCardHint(sessionId, cardId, level) { return aiRequest('/api/chat/remediation/card-hint', { session_id: sessionId, card_id: cardId, level }); }
+function gestureCardSolution(sessionId, cardId) { return aiRequest('/api/chat/remediation/card-solution', { session_id: sessionId, card_id: cardId }); }
+function gestureCardAnswer(sessionId, cardId, phase, choice, text) {
+  return aiRequest('/api/chat/remediation/card-answer', { session_id: sessionId, card_id: cardId, phase, choice, text: text || null });
 }

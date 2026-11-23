@@ -116,6 +116,115 @@ def init_db() -> None:
         )
         """
     )
+    # Lịch sử câu đã PHÁT cho từng tài khoản (nguồn chống lặp phía máy chủ, không phụ thuộc localStorage).
+    # Khoá (user_id, set_id, idx) làm việc ghi lại cùng một lần phát là idempotent.
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS issued_questions (
+            user_id INTEGER NOT NULL,
+            world_id TEXT NOT NULL,
+            level INTEGER NOT NULL,
+            set_id TEXT NOT NULL,
+            idx INTEGER NOT NULL,
+            kind TEXT NOT NULL,
+            question TEXT NOT NULL,
+            issued_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (user_id, set_id, idx)
+        )
+        """
+    )
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS issued_questions_lookup ON issued_questions (user_id, world_id, level)"
+    )
+    # Dự đoán Confidence đã KHÓA, mỗi lượt làm một bản (attempt_key = session_id:lần nộp Recognition thứ n), không
+    # ghi đè lần trước. Có measure để phân biệt với Confidence chung cũ (bản cũ không có dòng ở bảng này).
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS confidence_predictions (
+            user_id INTEGER NOT NULL,
+            world_id TEXT NOT NULL,
+            level INTEGER NOT NULL,
+            attempt_key TEXT NOT NULL,
+            measure TEXT NOT NULL,
+            payload TEXT NOT NULL,
+            locked_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (user_id, attempt_key)
+        )
+        """
+    )
+    # ---- Chấm lại / gắn cờ / báo cáo Recognition (xem review.py) ----
+    for ddl in (
+        """CREATE TABLE IF NOT EXISTS recognition_attempts (
+               attempt_id TEXT PRIMARY KEY, user_id INTEGER NOT NULL, world_id TEXT NOT NULL, level INTEGER NOT NULL,
+               set_id TEXT, snapshot TEXT NOT NULL, answers TEXT NOT NULL,
+               original_correct INTEGER, original_total INTEGER, original_score DOUBLE PRECISION,
+               correct INTEGER, valid_total INTEGER, score DOUBLE PRECISION,
+               applied_decisions TEXT NOT NULL DEFAULT '[]', explanations TEXT NOT NULL DEFAULT '{}',
+               submitted_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP)""",
+        "CREATE TABLE IF NOT EXISTS attempt_questions (attempt_id TEXT NOT NULL, qv TEXT NOT NULL, PRIMARY KEY (attempt_id, qv))",
+        "CREATE INDEX IF NOT EXISTS attempt_questions_qv ON attempt_questions (qv)",
+        """CREATE TABLE IF NOT EXISTS question_versions (
+               qv TEXT PRIMARY KEY, world_id TEXT NOT NULL, level INTEGER NOT NULL, text TEXT NOT NULL,
+               options TEXT NOT NULL, key_oid TEXT NOT NULL, audit_status TEXT NOT NULL,
+               status TEXT NOT NULL DEFAULT 'active', created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP)""",
+        """CREATE TABLE IF NOT EXISTS question_flags (
+               id SERIAL PRIMARY KEY, qv TEXT NOT NULL, flag_type TEXT NOT NULL, reason TEXT, source TEXT,
+               status TEXT NOT NULL DEFAULT 'open', created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP, closed_at TIMESTAMPTZ)""",
+        "CREATE UNIQUE INDEX IF NOT EXISTS question_flags_open ON question_flags (qv, flag_type) WHERE status = 'open'",
+        """CREATE TABLE IF NOT EXISTS question_decisions (
+               id SERIAL PRIMARY KEY, qv TEXT NOT NULL, decision_type TEXT NOT NULL, key_oids TEXT, explanation_fix TEXT,
+               reason TEXT, source_report_id INTEGER, status TEXT NOT NULL DEFAULT 'proposed',
+               proposed_by TEXT, applied_by TEXT, created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP, applied_at TIMESTAMPTZ)""",
+        """CREATE TABLE IF NOT EXISTS question_reports (
+               id SERIAL PRIMARY KEY, user_id INTEGER NOT NULL, attempt_id TEXT NOT NULL, qv TEXT NOT NULL,
+               report_type TEXT NOT NULL, option_oids TEXT NOT NULL DEFAULT '[]', note TEXT, case_id TEXT NOT NULL,
+               status TEXT NOT NULL DEFAULT 'received', triage TEXT, decision_id INTEGER,
+               created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+               UNIQUE (user_id, attempt_id, qv, report_type))""",
+        """CREATE TABLE IF NOT EXISTS learning_rules (
+               id SERIAL PRIMARY KEY, source_report_id INTEGER, scope TEXT NOT NULL, world_id TEXT, level INTEGER,
+               condition_text TEXT NOT NULL, guidance TEXT NOT NULL, block_example TEXT, keep_example TEXT,
+               version INTEGER NOT NULL DEFAULT 1, status TEXT NOT NULL DEFAULT 'proposed',
+               created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP, approved_at TIMESTAMPTZ)""",
+        """CREATE TABLE IF NOT EXISTS attempt_results (
+               attempt_id TEXT PRIMARY KEY, user_id INTEGER NOT NULL, distinction DOUBLE PRECISION,
+               application DOUBLE PRECISION, original TEXT NOT NULL, current TEXT NOT NULL,
+               revisions TEXT NOT NULL DEFAULT '[]', updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP)""",
+    ):
+        conn.execute(ddl)
+    # Lời giải đã soạn, tái dùng theo (phiên bản câu, khóa hiệu lực, lựa chọn dùng để đối chiếu, chế độ). Khóa đổi -> khóa cache đổi.
+    conn.execute(
+        """CREATE TABLE IF NOT EXISTS explanation_cache (
+               qv TEXT NOT NULL, key_sig TEXT NOT NULL, chosen TEXT NOT NULL, mode TEXT NOT NULL, text TEXT NOT NULL,
+               created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (qv, key_sig, chosen, mode))""")
+    # Trạng thái chấm tự luận của một lượt làm (rubric version, các lượt chấm hợp lệ, độ lệch, lượt ba, kết quả cuối).
+    conn.execute(
+        """CREATE TABLE IF NOT EXISTS open_grading_runs (
+               attempt_id TEXT PRIMARY KEY, user_id INTEGER NOT NULL, state TEXT NOT NULL,
+               updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP)""")
+    # ---- Báo cáo tự luận (Distinction/Application): xem open_review.py ----
+    for ddl in (
+        """CREATE TABLE IF NOT EXISTS open_reports (
+               id SERIAL PRIMARY KEY, user_id INTEGER NOT NULL, attempt_id TEXT NOT NULL, skill TEXT NOT NULL,
+               category TEXT NOT NULL, criterion TEXT NOT NULL DEFAULT '', target TEXT NOT NULL DEFAULT '',
+               quote TEXT, note TEXT, suggested_score DOUBLE PRECISION, rubric_version TEXT,
+               status TEXT NOT NULL DEFAULT 'received', outcome TEXT, decision_id INTEGER,
+               created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+               UNIQUE (user_id, attempt_id, skill, category, criterion, target))""",
+        """CREATE TABLE IF NOT EXISTS open_decisions (
+               id SERIAL PRIMARY KEY, attempt_id TEXT NOT NULL, skill TEXT NOT NULL, decision_type TEXT NOT NULL,
+               payload TEXT NOT NULL, reason TEXT, source_report_id INTEGER, status TEXT NOT NULL DEFAULT 'proposed',
+               proposed_by TEXT, applied_by TEXT, created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP, applied_at TIMESTAMPTZ)""",
+    ):
+        conn.execute(ddl)
+    for ddl in (
+        "ALTER TABLE learning_rules ADD COLUMN IF NOT EXISTS domain TEXT NOT NULL DEFAULT 'any'",
+        "ALTER TABLE learning_rules ADD COLUMN IF NOT EXISTS source_kind TEXT NOT NULL DEFAULT 'question'",
+        "ALTER TABLE learning_rules ADD COLUMN IF NOT EXISTS confirmed_error TEXT",
+        "ALTER TABLE learning_rules ADD COLUMN IF NOT EXISTS check_status TEXT NOT NULL DEFAULT 'unchecked'",
+        "ALTER TABLE learning_rules ADD COLUMN IF NOT EXISTS check_note TEXT",
+    ):
+        conn.execute(ddl)
     conn.execute("ALTER TABLE pending_payments ADD COLUMN IF NOT EXISTS verified BOOLEAN NOT NULL DEFAULT FALSE")
     conn.commit()
     conn.close()
@@ -486,3 +595,369 @@ def load_accepted_lessons(world_id: str, level: int, kind_group: str, limit: int
     ).fetchall()
     conn.close()
     return [r["lesson"] for r in rows]
+
+
+def record_issued_set(user_id: int, world_id: str, level: int, set_id: str, kind: str, questions: list[str]) -> None:
+    """Ghi các câu đã phát (kind: 'recognition' | 'practice'). Idempotent theo (user_id, set_id, idx):
+    gọi lại cho cùng một lần phát (bấm lại, mở lại bộ cũ, hai tab) không tạo thêm dòng."""
+    rows = [(user_id, world_id, level, set_id, i, kind, q) for i, q in enumerate(questions) if isinstance(q, str) and q.strip()]
+    if not rows:
+        return
+    conn = get_conn()
+    with conn.cursor() as cur:
+        cur.executemany(
+            """INSERT INTO issued_questions (user_id, world_id, level, set_id, idx, kind, question)
+               VALUES (%s, %s, %s, %s, %s, %s, %s) ON CONFLICT (user_id, set_id, idx) DO NOTHING""",
+            rows,
+        )
+    conn.commit()
+    conn.close()
+
+
+def load_issued_questions(user_id: int, world_id: str, level: int, max_sets: int = 3) -> list[str]:
+    """Câu của `max_sets` bộ ĐÃ PHÁT gần nhất (đúng người dùng, world, level), cũ trước mới sau. Chỉ bộ thật sự hiển thị
+    cho học sinh mới nằm trong bảng này; bản nháp bị loại thì không. Chống lặp chỉ cần trong phạm vi vài lượt gần nhất."""
+    conn = get_conn()
+    rows = conn.execute(
+        """SELECT q.question FROM issued_questions q
+           JOIN (SELECT set_id, MAX(issued_at) AS t FROM issued_questions
+                 WHERE user_id = %s AND world_id = %s AND level = %s
+                 GROUP BY set_id ORDER BY t DESC LIMIT %s) recent ON recent.set_id = q.set_id
+           WHERE q.user_id = %s
+           ORDER BY recent.t ASC, q.set_id ASC, q.idx ASC""",
+        (user_id, world_id, level, max_sets, user_id),
+    ).fetchall()
+    conn.close()
+    return [r["question"] for r in rows]
+
+
+
+def lock_confidence_prediction(user_id: int, world_id: str, level: int, attempt_key: str, measure: str,
+                               payload: dict) -> tuple[dict, bool]:
+    """Khóa dự đoán của 1 lượt làm. Trả (bản đang có hiệu lực, vừa tạo mới?). Gửi lại / hai tab cùng lượt không
+    tạo bản thứ hai: bản đã khóa được trả về nguyên trạng (người gọi tự so sánh với dữ liệu vừa gửi)."""
+    conn = get_conn()
+    cur = conn.execute(
+        """INSERT INTO confidence_predictions (user_id, world_id, level, attempt_key, measure, payload)
+           VALUES (%s, %s, %s, %s, %s, %s) ON CONFLICT (user_id, attempt_key) DO NOTHING""",
+        (user_id, world_id, level, attempt_key, measure, json.dumps(payload, ensure_ascii=False)),
+    )
+    created = cur.rowcount == 1
+    row = conn.execute(
+        "SELECT payload FROM confidence_predictions WHERE user_id = %s AND attempt_key = %s", (user_id, attempt_key)
+    ).fetchone()
+    conn.commit()
+    conn.close()
+    return json.loads(row["payload"]), created
+
+
+# ==================== Chấm lại / gắn cờ / báo cáo Recognition ====================
+# Mọi hàm ở đây tính lại từ dữ liệu gốc (lựa chọn đã lưu + quyết định đang có hiệu lực), không cộng/trừ gia tăng.
+
+def _q(sql: str, params: tuple = (), one: bool = False, fetch: bool = True):
+    conn = get_conn()
+    cur = conn.execute(sql, params)
+    out = None
+    if fetch:
+        out = cur.fetchone() if one else cur.fetchall()
+    rowcount = cur.rowcount
+    conn.commit()
+    conn.close()
+    return out if fetch else rowcount
+
+
+def save_attempt(attempt_id: str, user_id: int, world_id: str, level: int, set_id: str | None, snapshot: list,
+                 answers: dict, correct: int, total: int, score: float | None) -> dict:
+    """Lưu lượt làm (ảnh chụp câu + lựa chọn thực tế + điểm gốc). Gửi lại cùng attempt_id không ghi đè (giữ bản đầu)."""
+    conn = get_conn()
+    conn.execute(
+        """INSERT INTO recognition_attempts (attempt_id, user_id, world_id, level, set_id, snapshot, answers,
+               original_correct, original_total, original_score, correct, valid_total, score)
+           VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ON CONFLICT (attempt_id) DO NOTHING""",
+        (attempt_id, user_id, world_id, level, set_id, json.dumps(snapshot, ensure_ascii=False),
+         json.dumps(answers, ensure_ascii=False), correct, total, score, correct, total, score),
+    )
+    for q in snapshot:
+        conn.execute("INSERT INTO attempt_questions (attempt_id, qv) VALUES (%s,%s) ON CONFLICT DO NOTHING",
+                     (attempt_id, q["qv"]))
+        conn.execute(
+            """INSERT INTO question_versions (qv, world_id, level, text, options, key_oid, audit_status)
+               VALUES (%s,%s,%s,%s,%s,%s,%s) ON CONFLICT (qv) DO NOTHING""",
+            (q["qv"], world_id, level, q["text"], json.dumps([o["text"] for o in q["options"]], ensure_ascii=False),
+             q["key_oid"], q["audit_status"]),
+        )
+    conn.commit()
+    conn.close()
+    return load_attempt(attempt_id)
+
+
+def load_attempt(attempt_id: str) -> dict | None:
+    row = _q("SELECT * FROM recognition_attempts WHERE attempt_id = %s", (attempt_id,), one=True)
+    if not row:
+        return None
+    for f in ("snapshot", "answers", "applied_decisions", "explanations"):
+        row[f] = json.loads(row[f])
+    return row
+
+
+def update_attempt_grade(attempt_id: str, correct: int, valid_total: int, score: float | None, applied: list[int]) -> None:
+    _q("""UPDATE recognition_attempts SET correct=%s, valid_total=%s, score=%s, applied_decisions=%s,
+          updated_at=CURRENT_TIMESTAMP WHERE attempt_id=%s""",
+       (correct, valid_total, score, json.dumps(applied), attempt_id), fetch=False)
+
+
+def save_attempt_explanations(attempt_id: str, explanations: dict) -> None:
+    _q("UPDATE recognition_attempts SET explanations=%s WHERE attempt_id=%s",
+       (json.dumps(explanations, ensure_ascii=False), attempt_id), fetch=False)
+
+
+def attempts_for_versions(qvs: list[str]) -> list[str]:
+    rows = _q("SELECT DISTINCT attempt_id FROM attempt_questions WHERE qv = ANY(%s)", (list(qvs),))
+    return [r["attempt_id"] for r in rows]
+
+
+def get_question_version(qv: str) -> dict | None:
+    row = _q("SELECT * FROM question_versions WHERE qv = %s", (qv,), one=True)
+    if row:
+        row["options"] = json.loads(row["options"])
+    return row
+
+
+def set_version_status(qv: str, status: str) -> None:
+    _q("UPDATE question_versions SET status=%s WHERE qv=%s", (status, qv), fetch=False)
+
+
+def blocked_version_ids(world_id: str, level: int) -> set[str]:
+    rows = _q("SELECT qv FROM question_versions WHERE world_id=%s AND level=%s AND status <> 'active'", (world_id, level))
+    return {r["qv"] for r in rows}
+
+
+def open_flag(qv: str, flag_type: str, reason: str, source: str) -> bool:
+    n = _q("""INSERT INTO question_flags (qv, flag_type, reason, source) VALUES (%s,%s,%s,%s)
+              ON CONFLICT DO NOTHING""", (qv, flag_type, reason, source), fetch=False)
+    return n > 0
+
+
+def close_flags(qv: str, flag_types: list[str]) -> None:
+    _q("""UPDATE question_flags SET status='closed', closed_at=CURRENT_TIMESTAMP
+          WHERE qv=%s AND flag_type = ANY(%s) AND status='open'""", (qv, flag_types), fetch=False)
+
+
+def flags_for(qvs: list[str]) -> list[dict]:
+    return _q("SELECT qv, flag_type, reason, status FROM question_flags WHERE qv = ANY(%s)", (list(qvs),))
+
+
+def create_report(user_id: int, attempt_id: str, qv: str, report_type: str, option_oids: list, note: str,
+                  case_id: str) -> tuple[dict, bool]:
+    """Idempotent theo (user, lượt, câu, loại): gửi lại do lỗi mạng trả về bản đang có, không tạo thêm."""
+    conn = get_conn()
+    cur = conn.execute(
+        """INSERT INTO question_reports (user_id, attempt_id, qv, report_type, option_oids, note, case_id)
+           VALUES (%s,%s,%s,%s,%s,%s,%s) ON CONFLICT (user_id, attempt_id, qv, report_type) DO NOTHING""",
+        (user_id, attempt_id, qv, report_type, json.dumps(option_oids), note, case_id),
+    )
+    created = cur.rowcount == 1
+    row = conn.execute(
+        "SELECT * FROM question_reports WHERE user_id=%s AND attempt_id=%s AND qv=%s AND report_type=%s",
+        (user_id, attempt_id, qv, report_type)).fetchone()
+    conn.commit()
+    conn.close()
+    row["option_oids"] = json.loads(row["option_oids"])
+    return row, created
+
+
+def update_report(report_id: int, status: str, triage: dict | None = None, decision_id: int | None = None) -> None:
+    _q("""UPDATE question_reports SET status=%s, triage=COALESCE(%s, triage), decision_id=COALESCE(%s, decision_id),
+          updated_at=CURRENT_TIMESTAMP WHERE id=%s""",
+       (status, json.dumps(triage, ensure_ascii=False) if triage is not None else None, decision_id, report_id), fetch=False)
+
+
+def reports_for_attempt(user_id: int, attempt_id: str) -> list[dict]:
+    rows = _q("SELECT * FROM question_reports WHERE user_id=%s AND attempt_id=%s ORDER BY id", (user_id, attempt_id))
+    for r in rows:
+        r["option_oids"] = json.loads(r["option_oids"])
+    return rows
+
+
+def create_decision(qv: str, decision_type: str, key_oids: list[str] | None, explanation_fix: str | None, reason: str,
+                    source_report_id: int | None, proposed_by: str) -> int:
+    row = _q("""INSERT INTO question_decisions (qv, decision_type, key_oids, explanation_fix, reason, source_report_id,
+                proposed_by) VALUES (%s,%s,%s,%s,%s,%s,%s) RETURNING id""",
+             (qv, decision_type, json.dumps(key_oids) if key_oids is not None else None, explanation_fix, reason,
+              source_report_id, proposed_by), one=True)
+    return row["id"]
+
+
+def list_decisions(qvs: list[str] | None = None, status: str | None = None) -> list[dict]:
+    sql, params = "SELECT * FROM question_decisions WHERE TRUE", []
+    if qvs is not None:
+        sql += " AND qv = ANY(%s)"
+        params.append(list(qvs))
+    if status:
+        sql += " AND status = %s"
+        params.append(status)
+    rows = _q(sql + " ORDER BY id", tuple(params))
+    for r in rows:
+        r["key_oids"] = json.loads(r["key_oids"]) if r["key_oids"] else None
+        r["decision_type"] = r["decision_type"]
+    return rows
+
+
+def set_decision_status(decision_id: int, status: str, by: str) -> bool:
+    """Chỉ chuyển trạng thái hợp lệ (proposed->applied, applied->revoked...). Trả False nếu đã ở trạng thái đó (idempotent)."""
+    n = _q("""UPDATE question_decisions SET status=%s, applied_by=%s, applied_at=CASE WHEN %s='applied' THEN CURRENT_TIMESTAMP
+              ELSE applied_at END WHERE id=%s AND status <> %s""", (status, by, status, decision_id, status), fetch=False)
+    return n > 0
+
+
+def propose_rule(source_report_id: int | None, rule: dict, world_id: str | None, level: int | None,
+                 domain: str = "recognition", source_kind: str = "question", confirmed_error: str | None = None) -> int:
+    row = _q("""INSERT INTO learning_rules (source_report_id, scope, world_id, level, condition_text, guidance,
+                block_example, keep_example, domain, source_kind, confirmed_error) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                RETURNING id""",
+             (source_report_id, rule["scope"], world_id, level, rule["condition"], rule["guidance"],
+              rule["block_example"], rule["keep_example"], domain, source_kind, confirmed_error), one=True)
+    return row["id"]
+
+
+def approved_rules(world_id: str, level: int, limit: int = 8, domain: str | None = None) -> list[dict]:
+    """Chỉ quy tắc ĐÃ DUYỆT (status='approved') đúng phạm vi: 'general', hoặc đúng world/level. domain: quy tắc 'any' (cũ) luôn
+    áp dụng; quy tắc rút từ báo cáo tự luận (domain='open') chỉ vào bộ chấm tự luận, không lẫn sang sinh/chấm trắc nghiệm."""
+    rows = _q(
+        """SELECT scope, condition_text AS condition, guidance, block_example, keep_example FROM learning_rules
+           WHERE status='approved' AND (scope='general' OR (world_id=%s AND (level IS NULL OR level=%s)))
+             AND (domain='any' OR domain=%s)
+           ORDER BY id DESC LIMIT %s""", (world_id, level, domain or "recognition", limit))
+    return rows
+
+
+def set_rule_status(rule_id: int, status: str) -> bool:
+    n = _q("""UPDATE learning_rules SET status=%s, approved_at=CASE WHEN %s='approved' THEN CURRENT_TIMESTAMP
+              ELSE approved_at END WHERE id=%s AND status <> %s""", (status, status, rule_id, status), fetch=False)
+    return n > 0
+
+
+def save_attempt_result(attempt_id: str, user_id: int, distinction: float, application: float, original: dict) -> None:
+    _q("""INSERT INTO attempt_results (attempt_id, user_id, distinction, application, original, current)
+          VALUES (%s,%s,%s,%s,%s,%s) ON CONFLICT (attempt_id) DO NOTHING""",
+       (attempt_id, user_id, distinction, application, json.dumps(original, ensure_ascii=False),
+        json.dumps(original, ensure_ascii=False)), fetch=False)
+
+
+def load_attempt_result(attempt_id: str) -> dict | None:
+    row = _q("SELECT * FROM attempt_results WHERE attempt_id=%s", (attempt_id,), one=True)
+    if row:
+        for f in ("original", "current", "revisions"):
+            row[f] = json.loads(row[f])
+    return row
+
+
+def update_attempt_result(attempt_id: str, current: dict, revisions: list) -> None:
+    _q("UPDATE attempt_results SET current=%s, revisions=%s, updated_at=CURRENT_TIMESTAMP WHERE attempt_id=%s",
+       (json.dumps(current, ensure_ascii=False), json.dumps(revisions, ensure_ascii=False), attempt_id), fetch=False)
+
+
+def count_question_reports_today(user_id: int) -> int:
+    row = _q("SELECT COUNT(*) AS n FROM question_reports WHERE user_id=%s AND created_at > NOW() - INTERVAL '1 day'",
+             (user_id,), one=True)
+    return int(row["n"])
+
+
+def save_open_grading(attempt_id: str, user_id: int, state: dict) -> None:
+    """Lưu (ghi đè bản mới nhất) trạng thái chấm tự luận: dùng để kiểm tra/tiếp tục, không cộng điểm."""
+    _q("""INSERT INTO open_grading_runs (attempt_id, user_id, state) VALUES (%s,%s,%s)
+          ON CONFLICT (attempt_id) DO UPDATE SET state = EXCLUDED.state, updated_at = CURRENT_TIMESTAMP""",
+       (attempt_id, user_id, json.dumps(state, ensure_ascii=False)), fetch=False)
+
+
+def get_explanation(key: tuple) -> str | None:
+    row = _q("SELECT text FROM explanation_cache WHERE qv=%s AND key_sig=%s AND chosen=%s AND mode=%s", key, one=True)
+    return row["text"] if row else None
+
+
+def put_explanation(key: tuple, text: str) -> None:
+    _q("""INSERT INTO explanation_cache (qv, key_sig, chosen, mode, text) VALUES (%s,%s,%s,%s,%s)
+          ON CONFLICT (qv, key_sig, chosen, mode) DO NOTHING""", (*key, text), fetch=False)
+
+
+# ---------------------------------------------------------------- báo cáo tự luận
+
+def load_open_grading(attempt_id: str) -> dict | None:
+    row = _q("SELECT state FROM open_grading_runs WHERE attempt_id=%s", (attempt_id,), one=True)
+    return json.loads(row["state"]) if row else None
+
+
+def get_confidence_prediction(user_id: int, attempt_key: str) -> dict | None:
+    row = _q("SELECT payload FROM confidence_predictions WHERE user_id=%s AND attempt_key=%s", (user_id, attempt_key), one=True)
+    return json.loads(row["payload"]) if row else None
+
+
+def create_open_report(user_id: int, attempt_id: str, skill: str, category: str, criterion: str, target: str,
+                       quote: str | None, note: str | None, suggested_score: float | None, rubric_version: str) -> tuple[dict, bool]:
+    """Idempotent theo (người, lượt, bài, loại, tiêu chí, đối tượng): gửi lại do mất mạng trả bản đang có, không tạo thêm."""
+    conn = get_conn()
+    cur = conn.execute(
+        """INSERT INTO open_reports (user_id, attempt_id, skill, category, criterion, target, quote, note, suggested_score, rubric_version)
+           VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+           ON CONFLICT (user_id, attempt_id, skill, category, criterion, target) DO NOTHING""",
+        (user_id, attempt_id, skill, category, criterion, target, quote, note, suggested_score, rubric_version))
+    created = cur.rowcount == 1
+    row = conn.execute(
+        """SELECT * FROM open_reports WHERE user_id=%s AND attempt_id=%s AND skill=%s AND category=%s AND criterion=%s AND target=%s""",
+        (user_id, attempt_id, skill, category, criterion, target)).fetchone()
+    conn.commit()
+    conn.close()
+    return _open_report_row(row), created
+
+
+def _open_report_row(row: dict) -> dict:
+    row["outcome"] = json.loads(row["outcome"]) if row.get("outcome") else None
+    return row
+
+
+def update_open_report(report_id: int, status: str, outcome: dict | None = None, decision_id: int | None = None) -> None:
+    _q("""UPDATE open_reports SET status=%s, outcome=COALESCE(%s, outcome), decision_id=COALESCE(%s, decision_id),
+          updated_at=CURRENT_TIMESTAMP WHERE id=%s""",
+       (status, json.dumps(outcome, ensure_ascii=False) if outcome is not None else None, decision_id, report_id), fetch=False)
+
+
+def open_reports_for_attempt(user_id: int, attempt_id: str) -> list[dict]:
+    return [_open_report_row(r) for r in _q("SELECT * FROM open_reports WHERE user_id=%s AND attempt_id=%s ORDER BY id", (user_id, attempt_id))]
+
+
+def count_open_reports_today(user_id: int) -> int:
+    row = _q("SELECT COUNT(*) AS n FROM open_reports WHERE user_id=%s AND created_at > NOW() - INTERVAL '1 day'", (user_id,), one=True)
+    return int(row["n"])
+
+
+def create_open_decision(attempt_id: str, skill: str, decision_type: str, payload: dict, reason: str,
+                         source_report_id: int | None, proposed_by: str, status: str = "proposed") -> int:
+    row = _q("""INSERT INTO open_decisions (attempt_id, skill, decision_type, payload, reason, source_report_id, status, proposed_by)
+                VALUES (%s,%s,%s,%s,%s,%s,%s,%s) RETURNING id""",
+             (attempt_id, skill, decision_type, json.dumps(payload, ensure_ascii=False), reason, source_report_id, status, proposed_by),
+             one=True)
+    return row["id"]
+
+
+def list_open_decisions(attempt_id: str | None = None, status: str | None = None) -> list[dict]:
+    sql, params = "SELECT * FROM open_decisions WHERE TRUE", []
+    if attempt_id:
+        sql += " AND attempt_id=%s"
+        params.append(attempt_id)
+    if status:
+        sql += " AND status=%s"
+        params.append(status)
+    rows = _q(sql + " ORDER BY id", tuple(params))
+    for r in rows:
+        r["payload"] = json.loads(r["payload"])
+    return rows
+
+
+def set_open_decision_status(decision_id: int, status: str, by: str) -> bool:
+    n = _q("""UPDATE open_decisions SET status=%s, applied_by=%s, applied_at=CASE WHEN %s='applied' THEN CURRENT_TIMESTAMP
+              ELSE applied_at END WHERE id=%s AND status <> %s""", (status, by, status, decision_id, status), fetch=False)
+    return n > 0
+
+
+def set_rule_check(rule_id: int, status: str, note: str) -> None:
+    _q("UPDATE learning_rules SET check_status=%s, check_note=%s WHERE id=%s", (status, note, rule_id), fetch=False)

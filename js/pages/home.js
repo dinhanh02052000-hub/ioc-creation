@@ -129,17 +129,25 @@ function homeRenderIocIndexBody() {
       </div>
     `;
   }
-  const meta = ANALYSIS_ILLUSION_META[agg.illusion_status] || { label: agg.illusion_status, dot: 'red' };
-  const gapSign = agg.gap > 0 ? '+' : '';
-  return `
-    ${analysisScoreRowHtml('Ảo tưởng', agg.confidence)}
-    ${analysisScoreRowHtml('Thực tế', agg.overall)}
-    <div class="analysis-illusion-row">
-      <span class="analysis-status-dot analysis-status-dot--${meta.dot}"></span>
-      <span>GAP: ${gapSign}${agg.gap.toFixed(1)}</span>
-      <span class="analysis-illusion-hint">${meta.label}</span>
-    </div>
-  `;
+  if (agg.legacy) {
+    const meta = ANALYSIS_ILLUSION_META[agg.illusion_status] || { label: agg.illusion_status, dot: 'red' };
+    const gapSign = agg.gap > 0 ? '+' : '';
+    return `
+      ${analysisScoreRowHtml('Ảo tưởng', agg.confidence)}
+      ${analysisScoreRowHtml('Thực tế', agg.legacy.overall)}
+      <div class="analysis-illusion-row">
+        <span class="analysis-status-dot analysis-status-dot--${meta.dot}"></span>
+        <span>GAP: ${gapSign}${agg.gap.toFixed(2)}</span>
+        <span class="analysis-illusion-hint">${meta.label}</span>
+      </div>
+    `;
+  }
+  const tw = agg.twoSkill || {};
+  const line = (label, s) => s
+    ? `<div class="analysis-illusion-row"><span>${label}: dự đoán ${analysisFmt(s.predicted)} · kết quả ${analysisFmt(s.actual)} · ${analysisGapText(s.gap)}</span></div>`
+    : '';
+  const body = line('Phân biệt', tw.distinction) + line('Vận dụng', tw.application);
+  return body || `<div class="analysis-empty">Chưa có dự đoán Confidence để đối chiếu.</div>`;
 }
 
 // ---- C. Kết quả gần đây ----
@@ -148,6 +156,9 @@ const HOME_ILLUSION_LABELS = {
   DETECTED: { text: 'Ảo tưởng', cls: 'illusion' },
   UNDERCONFIDENT: { text: 'Tự ti', cls: 'under' },
   CALIBRATED: { text: 'Cân bằng', cls: 'balanced' },
+  MIXED_DEVIATION: { text: 'Lệch từng kỹ năng', cls: 'illusion' },
+  PARTIAL_DATA: { text: 'Thiếu dự đoán', cls: 'balanced' },
+  NO_PREDICTION: { text: 'Chưa dự đoán', cls: 'balanced' },
 };
 
 function homeRenderRecentResultsCard() {
@@ -162,8 +173,8 @@ function homeRenderRecentResultsCard() {
         return `
           <div class="home-recent-row">
             <span class="home-recent-level">${worldLabel} · Level ${r.level}</span>
-            <span class="home-recent-overall">${(r.overall ?? 0).toFixed(1)}</span>
-            <span class="home-recent-gap">Gap ${gapSign}${(r.gap ?? 0).toFixed(1)}</span>
+            <span class="home-recent-overall">${(r.overall ?? 0).toFixed(2)}</span>
+            <span class="home-recent-gap">${r.gap == null ? 'Gap —' : `Gap ${gapSign}${r.gap.toFixed(2)}`}</span>
             <span class="home-recent-status home-recent-status--${status.cls}">${status.text}</span>
           </div>
         `;

@@ -97,7 +97,11 @@ function worldMapNodeIcon(state) {
 const WORLD_MAP_ILLUSION_LABELS = {
   DETECTED: 'IOC Detected',
   UNDERCONFIDENT: 'Underconfidence Detected',
-  CALIBRATED: 'Good'
+  CALIBRATED: 'Good',
+  MIXED_DEVIATION: 'Lệch từng kỹ năng',
+  PARTIAL_DATA: 'Thiếu dự đoán',
+  NO_PREDICTION: 'Chưa có dự đoán',
+  AWAITING_RESULT: 'Chờ kết quả'
 };
 
 function worldMapBuildNodes(totalLevels, completed, worldId) {
@@ -123,7 +127,7 @@ function worldMapBuildNodes(totalLevels, completed, worldId) {
       const statusLabel = WORLD_MAP_ILLUSION_LABELS[levelResults.illusion_status] || '';
       badgeHtml = `
         <div class="world-map-node-badge">
-          <span class="world-map-node-badge-score">Overall: ${levelResults.accuracy.toFixed(1)}</span>
+          <span class="world-map-node-badge-score">Overall: ${levelResults.accuracy.toFixed(2)}</span>
           ${statusLabel ? `<span class="world-map-node-badge-status world-map-node-badge-status--${dotColor}">${statusLabel}</span>` : ''}
         </div>
       `;

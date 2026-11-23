@@ -43,7 +43,11 @@ function _appendHistoryList(storageKey, worldId, level, newTexts) {
   if (!texts.length) return;
   const all = _loadHistoryStore(storageKey);
   const key = questionHistoryKey(worldId, level);
-  all[key] = [...(Array.isArray(all[key]) ? all[key] : []), ...texts];
+  // Bỏ câu đã có trong lịch sử: mở lại bộ cũ hoặc gửi lại yêu cầu không được ghi lặp.
+  const existing = Array.isArray(all[key]) ? all[key] : [];
+  const fresh = texts.filter(t => !existing.includes(t));
+  if (!fresh.length) return;
+  all[key] = [...existing, ...fresh];
   _saveHistoryStore(storageKey, all);
 }
 
