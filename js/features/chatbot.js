@@ -289,7 +289,7 @@ function aiRenderSessionAwareError(e, onRetry) {
 function aiResumeFromStage() {
   switch (aiChat.stage) {
     case 'LEARNING': aiRenderLearningContent(aiChat.groupTitle, aiChat.learningContent); break;
-    case 'RECOGNITION': aiRenderMCQList(); break;
+    case 'RECOGNITION': aiRecoverRecognition(); break;
     case 'CORRECTION': aiRenderCorrection(aiChat.correctionText); break;
     case 'CONFIDENCE': aiRenderConfidenceQuestion(); break;
     case 'OPEN_ENDED': aiRenderOpenEnded(aiChat.distinctionPrompt, aiChat.applicationPrompt); break;
@@ -408,7 +408,8 @@ async function aiBeginRecognition() {
       : [];
     const res = await gestureBeginRecognition(aiChat.sessionId, history);
     aiChat.questions = res.questions;
-    aiChat.answers = {};
+    aiChat.answers = res.resumed ? aiKeepSavedAnswers(res.questions) : {};
+    aiChat.recoveredOnce = false;
     // Bộ mở lại (đã phát trước đó) không ghi lịch sử lần nữa.
     if (!res.resumed && typeof appendRecognitionHistory === 'function') {
       appendRecognitionHistory(aiChat.worldId, aiChat.level, res.questions.map(q => q.question));
@@ -418,7 +419,46 @@ async function aiBeginRecognition() {
     }
     aiRenderMCQList();
   } catch (e) {
+    if (aiIsSessionLost(e) && !aiChat.recoveredOnce) {
+      aiChat.recoveredOnce = true;
+      await aiRecoverRecognition();
+      return;
+    }
     aiRenderSessionAwareError(e, aiBeginRecognition);
+  }
+}
+
+function aiIsSessionLost(e) {
+  return !!e && (e.status === 404 || /không tồn tại hoặc đã hết hạn/i.test(e.message || '')) && !/đăng nhập/i.test(e.message || '');
+}
+
+// Giữ lại các lựa chọn đã chọn trước khi thoát nếu bộ câu mở lại là đúng bộ đó (cùng id câu).
+function aiKeepSavedAnswers(questions) {
+  const ids = new Set((questions || []).map(q => String(q.id)));
+  const kept = {};
+  Object.keys(aiChat.answers || {}).forEach(k => { if (ids.has(String(k))) kept[k] = aiChat.answers[k]; });
+  return kept;
+}
+
+// Vào lại giữa lúc làm trắc nghiệm (hoặc phiên máy chủ đã mất): lấy lại đúng bộ câu đã phát, không quay về trang bài học và không sinh lại.
+async function aiRecoverRecognition() {
+  aiRenderLoading('Đang mở lại bài làm của bạn...');
+  try {
+    const history = typeof loadRecognitionHistory === 'function' ? loadRecognitionHistory(aiChat.worldId, aiChat.level) : [];
+    const res = await gestureResumeSession(aiChat.sessionId, aiChat.worldId, aiChat.level, aiChat.isRetry, history);
+    aiChat.sessionId = res.session_id;
+    if (res.questions) {
+      aiChat.questions = res.questions;
+      aiChat.answers = aiKeepSavedAnswers(res.questions);
+      if (typeof setHeaderKeyDisplay === 'function' && res.keys_remaining != null) setHeaderKeyDisplay(res.keys_remaining);
+      aiRenderMCQList();
+    } else if (aiChat.learningContent) {
+      aiRenderLearningContent(aiChat.groupTitle, aiChat.learningContent);   // chưa phát đề: về đúng bài học đã lưu (không tải lại)
+    } else {
+      aiStartFlow();
+    }
+  } catch (e) {
+    aiRenderSessionAwareError(e, aiRecoverRecognition);
   }
 }
 
@@ -544,8 +584,19 @@ async function aiSubmitRecognition() {
     aiChat.recognitionSummary = {
       correct: res.correct_count, total: res.valid_total, score: res.recognition, tentative: !!res.tentative
     };
+    aiChat.recoveredOnce = false;
     aiRenderCorrection(res.correction_text);
   } catch (e) {
+    if (aiIsSessionLost(e) && !aiChat.recoveredOnce) {
+      // Phiên mất giữa chừng: mở lại đúng bộ câu đã phát với phiên mới rồi nộp lại đúng các lựa chọn em đã chọn.
+      aiChat.recoveredOnce = true;
+      try {
+        const history = typeof loadRecognitionHistory === 'function' ? loadRecognitionHistory(aiChat.worldId, aiChat.level) : [];
+        const r = await gestureResumeSession(aiChat.sessionId, aiChat.worldId, aiChat.level, aiChat.isRetry, history);
+        aiChat.sessionId = r.session_id;
+        if (r.questions) { aiChat.questions = r.questions; aiChat.answers = aiKeepSavedAnswers(r.questions); await aiSubmitRecognition(); return; }
+      } catch (e2) { aiRenderSessionAwareError(e2, aiSubmitRecognition); return; }
+    }
     aiRenderSessionAwareError(e, aiSubmitRecognition);
   }
 }
@@ -1553,7 +1604,7 @@ function aiConfidenceComparisonHtml(report) {
     headline = `
       <div class="ai-conf-main">
         <div class="ai-conf-metric"><div class="ai-score-value">${aiFmt2(cs.confidence)}</div><div class="ai-score-label">CONFIDENCE (em dự đoán)</div></div>
-        <div class="ai-conf-metric"><div class="ai-score-value">${aiFmt2(cs.actual_average)}</div><div class="ai-score-label">ĐIỂM ĐỐI CHIẾU (trung bình hai bài)</div></div>
+        <div class="ai-conf-metric"><div class="ai-score-value">${aiFmt2(cs.reference_score != null ? cs.reference_score : cs.actual_average)}</div><div class="ai-score-label">${cs.reference_kind === 'overall' ? 'OVERALL (đối chiếu, cả ba kỹ năng)' : 'ĐIỂM ĐỐI CHIẾU (trung bình hai bài)'}</div></div>
         <div class="ai-conf-metric"><div class="ai-score-value">${aiFmtSigned2(cs.gap)}</div><div class="ai-score-label">GAP</div></div>
       </div>
       <p class="ai-pred-note-line"><strong>${aiEscapeHtml(cs.gap_text)}</strong> ${aiEscapeHtml(sourceNote)}</p>`;

@@ -6,7 +6,7 @@ tự quyết."""
 from decimal import ROUND_HALF_UP, Decimal
 
 # ---------------------------------------------------------------- công thức v3 (lượt mới): số gốc, hiển thị 2 chữ số
-FORMULA_VERSION = 3
+FORMULA_VERSION = 4
 
 # Cấu hình khởi đầu của quyết định qua màn (một nơi duy nhất; mở level, lưu tiến độ, nút bấm và đề xuất ôn đều dùng decide_progress).
 PASS_OVERALL = Decimal("7")
@@ -95,12 +95,13 @@ def decide_progress(recognition, distinction, application) -> dict:
     }
 
 
-def describe_total_gap(gap: float | None) -> str:
+def describe_total_gap(gap: float | None, kind: str = "overall") -> str:
+    target = "Overall (cả ba kỹ năng)" if kind == "overall" else "kết quả hai phần tự luận"
     if gap is None:
         return ""
     if gap == 0:
-        return "Dự đoán của em trùng khít với kết quả hai phần tự luận."
-    return f"Em dự đoán {'cao' if gap > 0 else 'thấp'} hơn kết quả hai phần tự luận {_n(abs(_d(gap)))} điểm."
+        return f"Dự đoán của em trùng khít với {target}."
+    return f"Em dự đoán {'cao' if gap > 0 else 'thấp'} hơn {target} {_n(abs(_d(gap)))} điểm."
 
 
 def calibration_v3(gap: float | None, skill_gaps: dict | None = None) -> dict:

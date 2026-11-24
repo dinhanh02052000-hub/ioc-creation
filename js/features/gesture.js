@@ -208,3 +208,10 @@ function gestureCardSolution(sessionId, cardId) { return aiRequest('/api/chat/re
 function gestureCardAnswer(sessionId, cardId, phase, choice, text) {
   return aiRequest('/api/chat/remediation/card-answer', { session_id: sessionId, card_id: cardId, phase, choice, text: text || null });
 }
+
+// Vào lại khi phiên trên máy chủ đã mất: dựng phiên mới, mở lại đúng bộ câu đã phát (nếu có), không sinh lại bài học/câu hỏi.
+function gestureResumeSession(sessionId, worldId, level, isRetry, recognitionHistory = []) {
+  return aiRequest('/api/chat/resume-session', {
+    session_id: sessionId || null, world_id: worldId, level, is_retry: !!isRetry, recognition_history: recognitionHistory
+  });
+}

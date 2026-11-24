@@ -152,8 +152,11 @@ def recheck_calculation(states: dict, result: dict) -> list[dict]:
             bad.append({"field": "overall", "shown": result["overall"], "recomputed": want})
     cs = result.get("confidence_summary") or {}
     if cs.get("available") and cs.get("confidence") is not None:
-        avg = (exact["distinction"] + exact["application"]) / 2
-        want = confidence.round2(Decimal(str(cs["confidence"])) - avg)
+        if result.get("formula_version", 3) >= 4:
+            ref = (Decimal(str(rec)) + exact["distinction"] + exact["application"]) / 3        # Gap v4 so với Overall
+        else:
+            ref = (exact["distinction"] + exact["application"]) / 2
+        want = confidence.round2(Decimal(str(cs["confidence"])) - ref)
         if Decimal(str(result.get("gap"))) != Decimal(str(want)):
             bad.append({"field": "gap", "shown": result.get("gap"), "recomputed": want})
     return bad
@@ -419,7 +422,7 @@ def recompute_attempt(attempt_id: str) -> dict | None:
     gap = cur.get("gap")
     pred = db.get_confidence_prediction(res["user_id"], attempt_id)
     if pred and pred.get("inputs"):
-        gap = confidence.compare(pred["inputs"], confidence.round2(d_exact), confidence.round2(a_exact))["gap_total"]
+        gap = confidence.compare(pred["inputs"], confidence.round2(d_exact), confidence.round2(a_exact), recognition)["gap_total"]
     new = {**cur, "distinction": confidence.round2(d_exact), "application": confidence.round2(a_exact), "overall": overall, "gap": gap,
            "final_result": dec["final_result"], "decision": dec["decision"], "open_overrides": [
                {"skill": s, "criterion": c, "to": v} for (s, c), v in sorted(over.items())]}

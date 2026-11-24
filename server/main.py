@@ -793,6 +793,61 @@ def start_session(req: StartRequest, user=Depends(get_current_user)):
     }
 
 
+def SESSIONS_LOOKUP(session_id: str | None):
+    import session_store
+    return session_store.SESSIONS.get(session_id) if session_id else None
+
+
+class ResumeRequest(BaseModel):
+    session_id: str | None = None
+    world_id: str
+    level: int
+    is_retry: bool = False
+    recognition_history: list[str] = []
+
+
+@app.post("/api/chat/resume-session")
+def resume_session(req: ResumeRequest, user=Depends(get_current_user)):
+    """Vào lại giữa chừng khi phiên trong RAM đã mất (máy chủ khởi động lại/deploy): dựng phiên mới KHÔNG sinh lại bài học và KHÔNG sinh/trừ key lại.
+    - Có bộ câu ĐÃ phát (chưa nộp) trong DB: mở lại đúng bộ đó, đúng thứ tự lựa chọn (state WAITING_RECOGNITION_SUBMISSION).
+    - Chưa phát: phiên sẵn sàng phát đề (READY_FOR_RECOGNITION), dùng bộ sinh sẵn nếu có. Phiên còn sống thì trả lại nguyên.
+    Chỉ dùng cho giai đoạn học/làm trắc nghiệm; sau khi nộp, tiến trình nằm trong phiên đã chấm."""
+    existing = SESSIONS_LOOKUP(req.session_id) if req.session_id else None
+    if existing and existing.get("world_id") == req.world_id and existing.get("level") == req.level:
+        resp = {"session_id": existing["session_id"], "state": existing["current_state"], "recovered": False}
+        if existing["current_state"] == "WAITING_RECOGNITION_SUBMISSION" and existing.get("generated_questions"):
+            resp.update(_recognition_response(user["id"], existing["generated_questions"], bool(existing.get("is_retry")), True))
+        return resp
+
+    try:
+        load_knowledge_base(req.world_id, req.level)
+    except (ValueError, FileNotFoundError) as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    session = create_session(req.world_id, req.level, req.is_retry)
+    session["recognition_history"] = list(req.recognition_history)
+    session["lesson_event"] = threading.Event()
+    session["lesson_event"].set()
+    session["lesson_sentences"] = []
+    stored = db.load_question_set(user["id"], req.world_id, req.level)
+    if stored and stored.get("charged") and stored.get("questions"):
+        questions = stored["questions"]
+        session["set_id"] = stored.get("set_id")
+        session["generated_questions"] = questions
+        session["secure_answer_key"] = {str(q["id"]): q["correct_index"] for q in questions}
+        session["recognition_history"] = list(dict.fromkeys(session["recognition_history"] + [q["question"] for q in questions]))
+        session["current_state"] = "WAITING_RECOGNITION_SUBMISSION"
+        return {"session_id": session["session_id"], "state": session["current_state"], "recovered": True,
+                **_recognition_response(user["id"], questions, req.is_retry, True)}
+    if stored and stored.get("questions"):
+        done = threading.Event()
+        done.set()
+        session["prep"] = {"status": "ready", "payload": stored, "questions": stored["questions"], "event": done}
+    else:
+        _start_recognition_prep(session, user["id"], req.is_retry)
+    session["current_state"] = "READY_FOR_RECOGNITION"
+    return {"session_id": session["session_id"], "state": session["current_state"], "recovered": True}
+
+
 def _recognition_response(user_id: int, questions: list[dict], is_retest: bool, resumed: bool) -> dict:
     # Chỉ gửi dữ liệu học sinh cần để làm bài; đáp án và ghi chú thẩm định ở lại máy chủ.
     return {
@@ -1479,7 +1534,7 @@ def _confidence_comparison(session: dict, d_score: float, a_score: float, d_scor
             "version": 1, "measure": confidence.MEASURE_LEGACY, "confidence": conf, "gap": gap,
             "illusion_status": scoring.classify_illusion(gap) if gap is not None else "NO_PREDICTION",
         }
-    cmp = confidence.compare(locked["inputs"], d_score, a_score)
+    cmp = confidence.compare(locked["inputs"], d_score, a_score, session.get("recognition"))
     skills = cmp["skills"]
     for skill, scores, crit, labels in (
         ("distinction", d_scores, DISTINCTION_CRITERIA, DISTINCTION_LABELS),
@@ -1493,6 +1548,7 @@ def _confidence_comparison(session: dict, d_score: float, a_score: float, d_scor
     return {
         "version": 2, "measure": confidence.MEASURE_TWO_SKILL, "confidence": cmp["confidence"],
         "confidence_source": cmp["confidence_source"], "actual_average": cmp["actual_average"],
+        "reference_score": cmp["reference_score"], "reference_kind": cmp["reference_kind"],
         "formula_version": locked["inputs"].get("formula", 2),
         "gap": cmp["gap_total"], "typical_deviation": cmp["typical_deviation"], "state": cmp["state"],
         "offsetting": cmp["offsetting"], "skills": skills,
@@ -1525,7 +1581,8 @@ def _confidence_summary(comparison: dict) -> dict:
     return {
         "available": gap is not None, "confidence": comparison["confidence"], "gap": gap,
         "actual_average": comparison.get("actual_average"), "source": comparison.get("confidence_source"),
-        "gap_text": scoring.describe_total_gap(gap),
+        "reference_score": comparison.get("reference_score"), "reference_kind": comparison.get("reference_kind"),
+        "gap_text": scoring.describe_total_gap(gap, comparison.get("reference_kind") or "overall"),
         "typical_deviation": comparison.get("typical_deviation"),
         "details": {k: {"predicted": sk[k]["predicted"], "actual": sk[k]["actual"], "gap": sk[k]["gap"], "state": sk[k]["state"]}
                     for k in ("distinction", "application")},

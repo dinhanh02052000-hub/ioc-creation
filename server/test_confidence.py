@@ -22,7 +22,9 @@ import scoring  # noqa: E402
 
 def LEG(p, r, n):
     """Đọc/dựng bản ghi dự đoán KIỂU CŨ (có 'chưa ước lượng được' hoặc dự đoán chung) để kiểm tra việc đọc lại lịch sử."""
-    return cf.normalize_input(p, r, n, allow_legacy=True)
+    out = cf.normalize_input(p, r, n, allow_legacy=True)
+    out["formula"] = 3
+    return out
 
 
 def pred(d, a, reasons=None, note=None):
@@ -33,9 +35,12 @@ def pred(d, a, reasons=None, note=None):
     return {"predictions": {"distinction": one(d), "application": one(a)}, "reasons": reasons or [], "note": note}
 
 
-def norm(d, a, reasons=None, note=None):
+def norm(d, a, reasons=None, note=None, formula=3):
+    """Bản ghi dự đoán dùng cho các kiểm thử compare(): mặc định công thức v3 (Gap so với trung bình hai bài tự luận); v4 chạy qua formula=4."""
     p = pred(d, a, reasons, note)
-    return LEG(p["predictions"], p["reasons"], p["note"])
+    out = LEG(p["predictions"], p["reasons"], p["note"])
+    out["formula"] = formula
+    return out
 
 
 class ValidationTests(unittest.TestCase):
@@ -105,10 +110,10 @@ class FormulaTests(unittest.TestCase):
         self.assertEqual(c["skills"]["distinction"]["text"], "Dự đoán cao hơn 3,00 điểm")
         self.assertEqual(c["skills"]["application"]["text"], "Dự đoán thấp hơn 1,00 điểm")
 
-    def test_recognition_does_not_enter_the_comparison(self):
-        # compare() không nhận Recognition/Overall; hai phép gọi cho cùng điểm D/A cho cùng kết quả
-        self.assertEqual(cf.compare(norm(8, 5), 5, 6), cf.compare(norm(8, 5), 5, 6))
-        self.assertEqual(cf.compare.__code__.co_argcount, 3)
+    def test_recognition_enters_the_gap_only_for_v4_records(self):
+        # v3 (đã lưu): Gap so với trung bình hai bài nên Recognition không đổi gì; v4: Gap so với Overall nên Recognition tham gia
+        self.assertEqual(cf.compare(norm(8, 5), 5, 6, 2.0)["gap_total"], cf.compare(norm(8, 5), 5, 6, 9.0)["gap_total"])
+        self.assertNotEqual(cf.compare(norm(8, 5, formula=4), 5, 6, 2.0)["gap_total"], cf.compare(norm(8, 5, formula=4), 5, 6, 9.0)["gap_total"])
 
     def test_offsetting_gaps_are_flagged_not_called_calibrated(self):
         c = cf.compare(norm(8, 2), 5, 5)
@@ -335,15 +340,18 @@ class FlowTests(unittest.TestCase):
         self.assertEqual(c["reasons"], ["familiar"])
         self.assertEqual(c["note"], "em thấy quen")
 
-    def test_recognition_score_does_not_change_the_gaps(self):
-        gaps = []
+    def test_recognition_changes_only_the_total_gap_not_the_per_skill_gaps(self):
+        gaps, totals = [], []
         for recog in (0.0, 5.0, 10.0):
             s = self.session(recognition=recog)
             self.submit(s, 8, 5)
             r = self.finish(s)
             c = r["confidence_comparison"]
-            gaps.append((c["skills"]["distinction"]["gap"], c["skills"]["application"]["gap"], c["gap"]))
-        self.assertEqual(len(set(gaps)), 1)
+            gaps.append((c["skills"]["distinction"]["gap"], c["skills"]["application"]["gap"]))
+            totals.append(c["gap"])
+        self.assertEqual(len(set(gaps)), 1)                 # độ lệch TỪNG kỹ năng không phụ thuộc Recognition
+        self.assertEqual(len(set(totals)), 3)               # Gap tổng (v4) có Recognition qua Overall nên đổi theo
+        self.assertGreater(totals[0], totals[2])            # Recognition cao -> Overall cao -> Gap thấp hơn
 
     def test_pass_retry_uses_combined_gap_when_both_predicted(self):
         self.scores["d"] = {"hieu_goc": 2, "ngu_canh": 2, "doi_nghia": 2, "phan_biet": 1, "so_sanh": 1}   # D=8
@@ -351,11 +359,11 @@ class FlowTests(unittest.TestCase):
         s = self.session(recognition=9.0)                  # Overall 8.3
         self.submit(s, 8, 8)
         r = self.finish(s)
-        self.assertEqual((r["gap"], r["final_result"]), (0.0, "PASS"))
+        self.assertEqual((r["gap"], r["final_result"]), (-0.33, "PASS"))       # Confidence 8,00 - Overall 8,33
         s = self.session(recognition=9.0)
         self.submit(s, 10, 10)                             # Gap tổng +2: chỉ ảnh hưởng phản hồi tự đánh giá, KHÔNG chặn qua màn (Overall 8,33)
         r = self.finish(s)
-        self.assertEqual((r["gap"], r["final_result"], r["decision"]), (2.0, "PASS", "PASS"))
+        self.assertEqual((r["gap"], r["final_result"], r["decision"]), (1.67, "PASS", "PASS"))   # 10,00 - 8,33
         self.assertEqual(r["illusion_status"], "DETECTED")
         self.assertEqual(r["calibration"]["code"], "HIGHER")
         self.assertNotIn("|Gap|", r["decision_info"]["note"])
@@ -422,16 +430,16 @@ class FlowTests(unittest.TestCase):
         self.submit(s, 8, 8.5)
         r = self.finish(s)
         cs = r["confidence_summary"]
-        self.assertEqual((r["confidence"], cs["gap"], r["overall"]), (8.25, 3.75, 5.83))
-        self.assertEqual(cs["actual_average"], 4.5)
+        self.assertEqual((r["confidence"], cs["gap"], r["overall"]), (8.25, 2.42, 5.83))         # Gap = 8,25 - Overall 5,83 (Recognition tham gia)
+        self.assertEqual((cs["reference_score"], cs["reference_kind"]), (5.83, "overall"))
         self.assertEqual((cs["details"]["distinction"]["gap"], cs["details"]["application"]["gap"]), (8.0, -0.5))
-        self.assertEqual(cs["gap_text"], "Em dự đoán cao hơn kết quả hai phần tự luận 3,75 điểm.")
+        self.assertEqual(cs["gap_text"], "Em dự đoán cao hơn Overall (cả ba kỹ năng) 2,42 điểm.")
         self.assertEqual((r["decision"], r["final_result"]), ("RETRY", "RETRY"))
         self.assertEqual(r["decision_info"]["review_target_key"], "distinction")
         self.assertIn("Phân biệt 0,00 dưới 5,00", r["retry_note"])
         self.assertEqual(r["understanding"]["code"], "PARTIAL")
         self.assertEqual(r["calibration"]["code"], "MUCH_HIGHER")
-        self.assertEqual(r["formula_version"], 3)
+        self.assertEqual(r["formula_version"], 4)
 
     def test_decision_uses_exact_scores_and_gap_never_blocks(self):
         self.scores["d"] = {"hieu_goc": 2, "ngu_canh": 2, "doi_nghia": 1.5, "phan_biet": 1.5, "so_sanh": 1.5}   # D = 8,5
@@ -469,7 +477,7 @@ class FormulaV3Tests(unittest.TestCase):
         self.assertEqual((c["skills"]["distinction"]["gap"], c["skills"]["application"]["gap"]), (8.0, -0.5))
         self.assertEqual(sc.calc_overall_v3(8.5, 0.0, 9.0), 5.83)
         self.assertFalse(c["offsetting"])
-        self.assertEqual(sc.describe_total_gap(c["gap_total"]), "Em dự đoán cao hơn kết quả hai phần tự luận 3,75 điểm.")
+        self.assertEqual(sc.describe_total_gap(c["gap_total"], "essay_average"), "Em dự đoán cao hơn kết quả hai phần tự luận 3,75 điểm.")
 
     def test_offsetting_plus_minus_three_gives_zero_gap_but_is_flagged(self):
         c = cf.compare(norm(8, 5), 5.0, 8.0)
@@ -570,6 +578,47 @@ class ProgressDecisionTests(unittest.TestCase):
         u = lambda o: sc.understanding_v3(o, o, o)["code"]
         self.assertEqual([u(3.99), u(4), u(5.99), u(6), u(6.99), u(7), u(8.49), u(8.5)],
                          ["NOT_ENOUGH_BASE", "PARTIAL", "PARTIAL", "BASIC", "BASIC", "FAIRLY_SOLID", "FAIRLY_SOLID", "SOLID"])
+
+
+
+class GapOverallTests(unittest.TestCase):
+    """Công thức v4: Gap = Confidence - Overall (Recognition + Distinction + Application)/3."""
+    def test_screenshot_values_of_the_live_site(self):
+        n = norm(8, 8, formula=4)
+        c = cf.compare(n, 10.0, 4.0, 9.0)                        # ảnh trang thật: R 9,00; D 10,00; A 4,00; dự đoán 8 và 8
+        self.assertEqual((c["confidence"], c["reference_kind"], c["reference_score"]), (8.0, "overall", 7.67))
+        self.assertEqual(c["gap_total"], 0.33)
+        self.assertEqual((c["skills"]["distinction"]["gap"], c["skills"]["application"]["gap"]), (-2.0, 4.0))
+        self.assertTrue(c["offsetting"] is False or c["offsetting"] is True)
+
+    def test_recognition_is_required_and_missing_recognition_means_no_gap_yet(self):
+        n = norm(8, 8, formula=4)
+        c = cf.compare(n, 10.0, 4.0)
+        self.assertIsNone(c["gap_total"])
+        self.assertEqual(c["state"], "AWAITING_RESULT")
+
+    def test_v3_records_keep_the_old_baseline_when_recomputed(self):
+        n = norm(8, 8, formula=3)
+        c = cf.compare(n, 10.0, 4.0, 9.0)
+        self.assertEqual((c["gap_total"], c["reference_kind"]), (1.0, "essay_average"))
+
+    def test_new_inputs_are_written_with_formula_4(self):
+        out = cf.normalize_input({"distinction": {"status": "scored", "score": 5.0}, "application": {"status": "scored", "score": 5.0}}, [], None)
+        self.assertEqual(out["formula"], 4)
+
+    def test_gap_text_names_overall(self):
+        self.assertEqual(scoring.describe_total_gap(0.33), "Em dự đoán cao hơn Overall (cả ba kỹ năng) 0,33 điểm.")
+        self.assertEqual(scoring.describe_total_gap(-1.5), "Em dự đoán thấp hơn Overall (cả ba kỹ năng) 1,50 điểm.")
+        self.assertEqual(scoring.describe_total_gap(0.0), "Dự đoán của em trùng khít với Overall (cả ba kỹ năng).")
+
+    def test_recognition_correction_recomputes_gap_from_the_locked_confidence(self):
+        import review
+        orig = {"formula_version": 4, "confidence": 8.0, "gap": 0.33}
+        new = review.recompute_results(orig, 5.0, 10.0, 4.0, 0.33, None)
+        self.assertEqual(new["overall"], 6.33)
+        self.assertEqual(new["gap"], 1.67)                       # 8,00 - 6,33
+        old = review.recompute_results({"formula_version": 3, "confidence": 8.0}, 5.0, 10.0, 4.0, 1.0, None)
+        self.assertEqual(old["gap"], 1.0)                        # v3 giữ nguyên Gap khi sửa Recognition
 
 
 if __name__ == "__main__":

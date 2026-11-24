@@ -40,7 +40,8 @@ def round2(x: float) -> float:
     return float(Decimal(str(x)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
 
 
-FORMULA_V3 = 3
+FORMULA_V3 = 3      # Gap = Confidence - điểm trung bình hai bài tự luận (lượt đã lưu trước đây, giữ nguyên để đọc lại)
+FORMULA_V4 = 4      # Gap = Confidence - OVERALL (Recognition + Distinction + Application)/3: Recognition tham gia vào Gap
 SOURCE_TWO_SKILL = "two_skill_average"
 SOURCE_JOINT = "joint_direct"
 
@@ -125,7 +126,7 @@ def normalize_input(predictions, reasons, note, allow_legacy: bool = False) -> d
 
     return {
         "version": 2,
-        "formula": FORMULA_V3,             # lượt mới: Gap tổng trên số gốc, hiển thị 2 chữ số
+        "formula": FORMULA_V4,             # lượt mới: Gap = Confidence - Overall, trên số gốc, hiển thị 2 chữ số
         "predictions": out,
         "joint": joint,                    # None khi đã đủ hai dự đoán riêng
         "joint_source": "direct" if joint else None,
@@ -157,10 +158,12 @@ def effective_confidence(inputs: dict) -> tuple[float | None, str | None]:
     return None, None
 
 
-def compare(inputs: dict, d_actual: float | None, a_actual: float | None) -> dict:
+def compare(inputs: dict, d_actual: float | None, a_actual: float | None, recognition: float | None = None) -> dict:
     """Đối chiếu từng dự đoán với điểm thực tế của ĐÚNG kỹ năng đó. Điểm Recognition/Overall không tham gia.
     Dự đoán gốc đã khóa; điểm thực tế sửa sau (rà soát) thì gọi lại hàm này, Gap được tính lại từ dự đoán gốc."""
-    v3 = inputs.get("formula") == FORMULA_V3
+    formula = inputs.get("formula") or 2
+    v3 = formula >= FORMULA_V3
+    v4 = formula >= FORMULA_V4
     rnd = round2 if v3 else round1
     actuals = {"distinction": d_actual, "application": a_actual}
     skills: dict[str, dict] = {}
@@ -185,14 +188,19 @@ def compare(inputs: dict, d_actual: float | None, a_actual: float | None) -> dic
     conf, source = effective_confidence(inputs)
     have_actuals = d_actual is not None and a_actual is not None
     actual_avg = (Decimal(str(d_actual)) + Decimal(str(a_actual))) / 2 if have_actuals else None
+    # v4: điểm đối chiếu của Gap là OVERALL (cần cả Recognition); thiếu Recognition thì chưa tính được Gap.
+    reference = actual_avg
+    if v4:
+        reference = ((Decimal(str(recognition)) + Decimal(str(d_actual)) + Decimal(str(a_actual))) / 3
+                     if have_actuals and recognition is not None else None)
     gap_total = typical = None
-    if conf is not None and have_actuals:
-        gap_total = rnd(Decimal(str(conf)) - actual_avg)
+    if conf is not None and reference is not None:
+        gap_total = rnd(Decimal(str(conf)) - reference)
     if both:
         typical = rnd((abs(Decimal(str(gd))) + abs(Decimal(str(ga)))) / 2)
     compared = sum(1 for s in skills.values() if s["state"] == "compared")
     if conf is not None:
-        state = "COMPLETE" if have_actuals else "AWAITING_RESULT"
+        state = "COMPLETE" if reference is not None else "AWAITING_RESULT"
     elif any(s["state"] == "awaiting_result" for s in skills.values()):
         state = "AWAITING_RESULT"
     elif compared == 1:
@@ -204,6 +212,8 @@ def compare(inputs: dict, d_actual: float | None, a_actual: float | None) -> dic
         "confidence": None if conf is None else (rnd(Decimal(str(conf))) if v3 else conf),
         "confidence_source": source,
         "actual_average": None if actual_avg is None else rnd(actual_avg),
+        "reference_score": None if reference is None else rnd(reference),
+        "reference_kind": "overall" if v4 else "essay_average",
         "joint": inputs.get("joint"),
         # hai độ lệch trái dấu, mỗi bên vượt ngưỡng, có thể triệt tiêu nhau trong Gap tổng nhưng từng kỹ năng vẫn lệch
         "offsetting": bool(both and gd * ga < 0 and abs(gd) > GAP_TOLERANCE and abs(ga) > GAP_TOLERANCE

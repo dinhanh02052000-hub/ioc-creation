@@ -11,6 +11,7 @@ from __future__ import annotations
 import hashlib
 import json
 
+import confidence
 import scoring
 from confidence import round1
 from recognition_set import _contains_quote, norm_text
@@ -392,10 +393,17 @@ def recompute_results(original: dict | None, new_recognition: float | None, d_sc
     Recognition hoặc thiếu D/A: không suy diễn (trả None)."""
     if new_recognition is None or d_score is None or a_score is None:
         return {"overall": None, "gap": None, "final_result": None, "state": "cannot_compute"}
-    if original and original.get("formula_version") == scoring.FORMULA_VERSION:
-        # Lượt công thức v3: tính trên số gốc, qua màn theo điểm kiến thức; Gap (từ dự đoán gốc và điểm tự luận) không đổi khi sửa Recognition.
+    fv = (original or {}).get("formula_version")
+    if fv in (3, 4):
+        # Lượt công thức v3/v4: tính trên số gốc, qua màn theo điểm kiến thức. v3: Gap không đổi khi sửa Recognition.
+        # v4: Gap = Confidence - Overall nên sửa Recognition đổi cả Gap (tính lại từ dự đoán gốc đã khóa).
         dec = scoring.decide_progress(new_recognition, d_score, a_score)
-        return {"overall": scoring.calc_overall_v3(new_recognition, d_score, a_score), "gap": comparison_gap,
+        gap = comparison_gap
+        conf = (original or {}).get("confidence")
+        if fv == 4 and conf is not None:
+            from decimal import Decimal
+            gap = confidence.round2(Decimal(str(conf)) - scoring.overall_exact(new_recognition, d_score, a_score))
+        return {"overall": scoring.calc_overall_v3(new_recognition, d_score, a_score), "gap": gap,
                 "final_result": dec["final_result"], "decision": dec["decision"], "state": "ok"}
     overall = scoring.calc_overall(new_recognition, d_score, a_score)
     gap = comparison_gap
