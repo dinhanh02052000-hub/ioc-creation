@@ -2,6 +2,7 @@ fastapi
 uvicorn[standard]
 python-dotenv
 openai
+anthropic
 python-multipart
 google-auth
 requests

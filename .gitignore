@@ -18,3 +18,11 @@ Thumbs.db
 
 # Công cụ admin/test riêng - không public lên GitHub
 server/hacker prompt/
+
+# Demo Lab: chỉ dùng trên máy cục bộ, không đưa lên bản chính
+lab.html
+server/lab.py
+server/lab_*.py
+server/test_lab.py
+server/requirements-lab.txt
+server/lab_runs/

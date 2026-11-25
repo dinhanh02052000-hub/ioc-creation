@@ -52,6 +52,7 @@ import review
 import review_service
 import scoring
 from ai_json import parse_ai_json
+import ai_router
 from ai_client import AIProviderError, AIRateLimitError, ask
 from analysis_prompts import analysis_task
 from lesson_content import validate_lesson
@@ -97,6 +98,11 @@ async def handle_rate_limit(request: Request, exc: AIRateLimitError):
 @app.exception_handler(AIProviderError)
 async def handle_provider_error(request: Request, exc: AIProviderError):
     return JSONResponse(status_code=502, content={"detail": str(exc)})
+
+
+def _ask_for(role: str):
+    """Hàm ask đã gắn model/effort của KHÂU `role` (xem ai_router). Tra `ask` lúc gọi nên kiểm thử thay main.ask vẫn có tác dụng."""
+    return ai_router.routed(lambda prompt, **kw: ask(prompt, **kw), role)
 
 
 @app.exception_handler(KeyError)
@@ -374,7 +380,7 @@ def _start_open_ended_prep(session: dict, distinction_history: list[str], applic
                         _bound_history(application_history, 30),
                     ),
                 )
-                data = parse_ai_json(ask(prompt))
+                data = parse_ai_json(_ask_for("open_gen")(prompt))
                 if (
                     isinstance(data.get("d"), str) and isinstance(data.get("a"), str)
                     and not _find_duplicate([data["d"]], distinction_history)
@@ -427,7 +433,7 @@ def _generate_remediation_text(session: dict, kb: dict, d_history: list[str], a_
                 ),
                 lessons_block(lessons),
             )
-            data = parse_ai_json(ask(prompt))
+            data = parse_ai_json(_ask_for("open_gen")(prompt))
             if not all(isinstance(data.get(k), str) and data[k].strip() for k in ("recap", "d", "a")):
                 raise HTTPException(status_code=502, detail="Gói ôn tập thiếu recap/câu Distinction/tình huống Application, thử lại.")
             violation = _find_duplicate([data["d"]], d_history) or _find_duplicate([data["a"]], a_history)
@@ -471,7 +477,7 @@ def _generate_remediation_pack(session: dict, user_id: int, d_history: list[str]
     def make_cards() -> list[dict]:
         kb_text = compact_kb(kb)
         words = list(kb["target_words"])
-        cards = [remediation_plan.build_card(ask, parse_ai_json, t, words, kb_text) for t in targets]
+        cards = [remediation_plan.build_card(_ask_for("cards"), parse_ai_json, t, words, kb_text) for t in targets]
         return [c for c in cards if c]
 
     with ThreadPoolExecutor(max_workers=3) as ex:
@@ -739,7 +745,7 @@ def _generate_lesson(kb: dict) -> dict:
     kb_text = lesson_kb_text(kb)
     errors: list[str] = []
     for _ in range(_LESSON_MAX_ATTEMPTS):
-        raw = ask(assemble(kb_text, learning_content_task(words, errors)))
+        raw = _ask_for("lesson")(assemble(kb_text, learning_content_task(words, errors)))
         try:
             data = parse_ai_json(raw)
         except ValueError:  # JSONDecodeError là con của ValueError
@@ -982,7 +988,7 @@ def _build_explanations(world_id: str, level: int, snapshot: list[dict], questio
         return {"texts": {}, "partial": {}, "status": {str(t["id"]): explanations.STATUS_UNAVAILABLE for t in targets},
                 "doubts": {}, "flagged": []}
     return explanations.build(
-        ask, kb_text, targets, lambda kb, chunk, errors: assemble(kb, ep.explanation_task(chunk, errors)),
+        _ask_for("explanation"), kb_text, targets, lambda kb, chunk, errors: assemble(kb, ep.explanation_task(chunk, errors)),
         flagged, cache_get, cache_put)
 
 
@@ -1264,14 +1270,14 @@ def _run_report_triage(row: dict, att: dict, snap_q: dict, user_id: int) -> dict
         db.update_report(fresh["id"], "reviewing")
         kb = load_knowledge_base(att["world_id"], att["level"])
         try:
-            outcome = review_service.triage_report(ask, fresh, att, snap_q, kb)
+            outcome = review_service.triage_report(_ask_for("report"), fresh, att, snap_q, kb)
             effects = review_service.apply_triage_effects(fresh, outcome)
             db.update_report(fresh["id"], outcome["status"], outcome, effects.get("decision_id"))
             result = outcome.get("result")
             if outcome["status"] == "accepted" and result and result["decision"] != "keep":
                 # Quyết định riêng: rút quy tắc chung. Lỗi ở đây KHÔNG ảnh hưởng việc báo cáo đã được công nhận.
                 review_service.propose_rule_from_report(
-                    ask, fresh, snap_q, result, kb, att["world_id"], att["level"])
+                    _ask_for("rules"), fresh, snap_q, result, kb, att["world_id"], att["level"])
         except AIRateLimitError:
             db.update_report(fresh["id"], "pending_error", {"error": "rate_limit"})
         except Exception as e:  # noqa: BLE001 - lỗi API/JSON hỏng/schema sai: chờ, KHÔNG phải 'báo cáo sai'
@@ -1390,7 +1396,7 @@ def submit_confidence(req: SubmitConfidenceRequest, user=Depends(get_current_use
                 _bound_history(req.application_history, 30),
             ),
         )
-        data = parse_ai_json(ask(prompt))
+        data = parse_ai_json(_ask_for("open_gen")(prompt))
 
         duplicate_violation = (
             _find_duplicate([data["d"]], req.distinction_history)
@@ -1422,7 +1428,10 @@ def _run_open_grading(world_id: str, level: int, states: dict) -> None:
     """Làm tiếp các lượt chấm còn thiếu (idempotent). Đầu vào chấm CHỈ gồm đề, bài làm, KB level và quy tắc đã duyệt:
     không có Confidence, điểm trắc nghiệm, Gap hay kết quả lượt khác."""
     kb = load_knowledge_base(world_id, level)
-    open_grading.advance(states, ask, compact_kb(kb), _safe_lessons(world_id, level, "open"), _THIRD_GRADER_MODEL)
+    open_grading.advance(
+        states, ask, compact_kb(kb), _safe_lessons(world_id, level, "open"), _THIRD_GRADER_MODEL,
+        pass_models={r: ai_router.model_for(r) for r in ("grade_1", "grade_2", "grade_3")},
+        efforts={r: ai_router.effort_for(r) for r in ("grade_1", "grade_2", "grade_3")})
     if all(states[sk]["status"] in ("final", "empty") for sk in open_grading.SKILLS):
         _ensure_references(states, compact_kb(kb))
 
@@ -1442,7 +1451,7 @@ def _ensure_references(states: dict, kb_text: str) -> None:
             break
         parts = [{"skill": sk, "question": states[sk]["question"]} for sk in bad]
         try:
-            data = parse_ai_json(ask(engine_prompts.reference_only_prompt(kb_text, parts)))
+            data = parse_ai_json(_ask_for("grade_1")(engine_prompts.reference_only_prompt(kb_text, parts)))
         except AIRateLimitError:
             raise
         except Exception:  # noqa: BLE001
@@ -1771,8 +1780,9 @@ def _run_open_report(row: dict, user_id: int) -> dict:
         try:
             world, level = (att["world_id"], att["level"]) if att else ("", 0)
             kb_text = compact_kb(load_knowledge_base(world, level)) if att else ""
-            outcome = open_review.process_report(ask, fresh, states, (res or {}).get("current"), kb_text,
-                                                 _safe_lessons(world, level, "open") if att else [], world, level)
+            outcome = open_review.process_report(_ask_for("report"), fresh, states, (res or {}).get("current"), kb_text,
+                                                 _safe_lessons(world, level, "open") if att else [], world, level,
+                                                 rule_ask_fn=_ask_for("rules"))
             did = (outcome.get("decision") or {}).get("id")
             db.update_open_report(fresh["id"], outcome["status"], outcome, did)
         except AIRateLimitError:
@@ -1847,7 +1857,7 @@ def submit_report(req: ReportRequest, user=Depends(get_current_user)):
 
     prompt = assemble(compact_kb(kb), report_judge_task(req.kind, question, current, suggested, explanation, extra))
     try:
-        data = parse_ai_json(ask(prompt))
+        data = parse_ai_json(_ask_for("report")(prompt))
     except AIRateLimitError:
         raise
     accepted = str(data.get("verdict", "")).upper() == "ACCEPT" and bool(data.get("lesson"))
@@ -2064,7 +2074,7 @@ def remediation_card_answer(req: CardRequest, user=Depends(get_current_user)):
         if phase == "first":
             if log["first"] is not None:
                 return {**remediation_plan.public_card(card, log), "feedback": log["first"]["comment"]}
-            res = remediation_plan.assess_answer(ask, parse_ai_json, card, answer)
+            res = remediation_plan.assess_answer(_ask_for("try_assess"), parse_ai_json, card, answer)
             log["first"] = {**res, "answer": answer}
             if log["solution_before_first"]:
                 log["first"]["after_solution"] = True
@@ -2077,7 +2087,7 @@ def remediation_card_answer(req: CardRequest, user=Depends(get_current_user)):
             return {**remediation_plan.public_card(card, log), "feedback": log["after"]["comment"]}
         if not log["hints"]:
             raise HTTPException(status_code=409, detail="Em xem ít nhất một gợi ý trước khi sửa lại.")
-        res = remediation_plan.assess_answer(ask, parse_ai_json, card, answer)
+        res = remediation_plan.assess_answer(_ask_for("try_assess"), parse_ai_json, card, answer)
         log["after"] = {**res, "answer": answer}
         return {**remediation_plan.public_card(card, log), "feedback": res["comment"]}
 
@@ -2432,3 +2442,17 @@ def serve_world1():
 @app.get("/world2.html")
 def serve_world2():
     return FileResponse(str(BASE_DIR / "world2.html"))
+
+
+# ---------- Demo Lab (chỉ localhost; xem server/lab.py). Không đặt LAB_ENABLED thì không nạp gì, không có route nào. ----------
+if os.environ.get("LAB_ENABLED") == "1":
+    try:
+        import lab
+
+        app.include_router(lab.router)
+
+        @app.get("/lab.html")
+        def serve_lab():
+            return FileResponse(str(BASE_DIR / "lab.html"))
+    except ImportError:
+        logger.warning("LAB_ENABLED=1 nhưng thiếu module lab (hoặc thư viện python-docx): bỏ qua Demo Lab.")

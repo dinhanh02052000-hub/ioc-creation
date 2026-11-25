@@ -306,16 +306,18 @@ def validate_card(card, target: dict, words: list[str]) -> tuple[dict | None, li
                     "hint1": t["hint1"].strip(), "hint2": t["hint2"].strip(), "reference": t["reference"].strip()}}, []
 
 
-def build_card(ask_fn, parse_fn, target: dict, words: list[str], kb_text: str, attempts: int = 4) -> dict | None:
+def build_card(ask_fn, parse_fn, target: dict, words: list[str], kb_text: str, attempts: int = 4, trace: list | None = None) -> dict | None:
     """Hữu hạn lần thử, mỗi lần sửa đúng mục lỗi. Không soạn được -> None (người gọi dùng đoạn recap cũ, không dựng thẻ giả)."""
     errors: list[str] | None = None
-    for _ in range(attempts):
+    for n in range(1, attempts + 1):
         try:
             card, errs = validate_card(parse_fn(ask_fn(card_prompt(target, words, kb_text, errors))), target, words)
         except Exception as e:  # noqa: BLE001 - lỗi dịch vụ/JSON hỏng
             if e.__class__.__name__ == "AIRateLimitError":
                 raise
             card, errs = None, [f"đầu ra không hợp lệ: {str(e)[:80]}"]
+        if trace is not None:
+            trace.append({"attempt": n, "ok": bool(card), "errors": list(errs or []), "retry_hint_given": bool(errors)})
         if card:
             return {"target": target, **card}
         errors = errs

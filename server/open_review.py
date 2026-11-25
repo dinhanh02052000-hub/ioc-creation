@@ -301,7 +301,7 @@ def _reply(ask_fn, category, criterion, skill, verdict, note, judge, final, quot
 
 
 def process_report(ask_fn, row: dict, states: dict | None, result: dict | None, kb_text: str, lessons: list[str] | None,
-                   world_id: str, level: int) -> dict:
+                   world_id: str, level: int, rule_ask_fn=None) -> dict:
     """Xét một báo cáo ĐÃ qua validate_report. Mọi lỗi kỹ thuật (API, JSON hỏng, schema sai) -> ném ngoại lệ để người gọi đặt 'pending_error' (chờ),
     KHÔNG bao giờ coi là 'báo cáo sai'. Trả outcome; hiệu ứng DB: quyết định + quy tắc đề xuất."""
     cat, skill, crit = row["category"], row["skill"], row["criterion"]
@@ -351,7 +351,7 @@ def process_report(ask_fn, row: dict, states: dict | None, result: dict | None, 
                                       "fixed_text": chk["fixed_text"]}, chk["problem"], row["id"], "ai_triage", status="applied")
         outcome.update({"status": "accepted", "reply": chk["reply"], "fixed_text": chk["fixed_text"],
                         "decision": {"id": did, "type": dtype, "state": "applied"}, "score_changed": False})
-        _maybe_propose_rule(ask_fn, row, st, chk["problem"], world_id, level, outcome)
+        _maybe_propose_rule(rule_ask_fn or ask_fn, row, st, chk["problem"], world_id, level, outcome)
         return outcome
 
     # --- báo cáo về MỘT tiêu chí: rà mù độc lập, sau đó mới đối chiếu ---
@@ -372,7 +372,7 @@ def process_report(ask_fn, row: dict, states: dict | None, result: dict | None, 
                                       {"criterion": crit, "from": final, "to": to, "evidence": judge["evidence"]},
                                       judge["reason"], row["id"], "ai_blind_rejudge")
         outcome["decision"] = {"id": did, "type": "score_change", "state": "proposed"}
-        _maybe_propose_rule(ask_fn, row, st, f"Tiêu chí {crit} bị chấm thấp hơn bằng chứng: {judge['reason']}", world_id, level, outcome)
+        _maybe_propose_rule(rule_ask_fn or ask_fn, row, st, f"Tiêu chí {crit} bị chấm thấp hơn bằng chứng: {judge['reason']}", world_id, level, outcome)
     outcome["reply"] = _reply(ask_fn, cat, crit, skill, verdict, row.get("note"), judge, final, row.get("quote"))
     return outcome
 

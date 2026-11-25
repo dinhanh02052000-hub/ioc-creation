@@ -80,7 +80,7 @@ HISTORY_COMPARE_LIMIT = 800
 DIVERSITY_MAX_REMOVALS = 6        # mỗi lần rà đa dạng chỉ loại tối đa ngần này câu
 SET_FORMAT = 2                    # bộ do pipeline này tạo (bộ cũ không có trường format)
 
-REASONING = {"generate": "low", "judge": "low", "diversity": "low"}
+REASONING = {"generate": "low", "judge": "low", "judge2": "low", "diversity": "low"}
 
 # Số lượt thẩm định mù cho mỗi câu. 1 = một lượt quyết định (rẻ, nhanh); 2 = thêm lượt đảo thứ tự phương án, CẢ HAI
 # phải đạt (nghiêm nhưng gấp đôi token và hay không hội tụ với nhóm từ gần nghĩa).
@@ -715,11 +715,22 @@ def recheck_questions(questions: list[dict], kb: dict, history: list[str],
 
 # ---------------------------------------------------------------- gọi AI
 
+_ROUTER_ROLE = {"generate": "recognition_gen", "judge": "recognition_judge", "judge2": "recognition_judge_2", "diversity": "recognition_diversity"}
+
+
 def _call(ask_fn, prompt: str, role: str, model: str | None = None) -> dict:
+    import ai_router
+
     last: Exception | None = None
+    # model chỉ định rõ (OPENAI_ANSWER_MODEL cho thẩm định) thắng; không có thì lấy model của khâu (nếu đã cấu hình), cuối cùng mới là mặc định.
+    ai_router.set_role(_ROUTER_ROLE[role])
+    # judge2 (lượt thẩm định thứ hai, AI 2): model của riêng khâu thắng model chung (OPENAI_ANSWER_MODEL); chưa cấu hình thì dùng như AI 1
+    model = (ai_router.model_for("recognition_judge_2") or model or ai_router.model_for("recognition_judge")) if role == "judge2" \
+        else (model or ai_router.model_for(_ROUTER_ROLE[role]))
+    effort = ai_router.effort_for(_ROUTER_ROLE[role]) or (ai_router.effort_for("recognition_judge") if role == "judge2" else None) or REASONING[role]
     for _ in range(1 + AI_CALL_RETRIES):
         try:
-            return parse_ai_json(ask_fn(prompt, reasoning_effort=REASONING[role], model=model))
+            return parse_ai_json(ask_fn(prompt, reasoning_effort=effort, model=model))
         except AIRateLimitError:
             raise
         except (AIProviderError, ValueError) as e:  # ValueError gồm JSONDecodeError
@@ -881,7 +892,7 @@ def _run_blind_judge_chunk(ask_fn, kb: dict, items: list[dict], model: str | Non
         if not pending:
             break
         payload = [{"id": i + 1, "sentence": items[i]["sentence"], "options": shown_by_i[i]} for i in pending]
-        data = _call(ask_fn, ep.assemble(kb_text, ep.recognition_blind_judge_task(payload)), "judge", model)
+        data = _call(ask_fn, ep.assemble(kb_text, ep.recognition_blind_judge_task(payload)), "judge2" if reverse else "judge", model)
         rows = {r.get("id"): r for r in (data.get("results") or []) if isinstance(r, dict)}
         still: list[int] = []
         for i in pending:

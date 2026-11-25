@@ -403,7 +403,7 @@ def _parse_json(text: str) -> dict:
 
 
 def run_one_pass(ask_fn, kb_text: str, lessons: list[str] | None, skills: list[str], states: dict, include_model: bool,
-                 model: str | None = None) -> dict[str, tuple[dict | None, list[str]]]:
+                 model: str | None = None, effort: str | None = None, role: str | None = None) -> dict[str, tuple[dict | None, list[str]]]:
     """MỘT lượt chấm độc lập cho các bài trong `skills`. Prompt chỉ chứa đề, bài làm, KB, rubric (không điểm/nhận xét của
     lượt khác, không Confidence). Đầu ra sai định dạng/miền điểm/trích dẫn là LỖI LƯỢT CHẤM: thử lại hữu hạn kèm lý do cần sửa.
     Trả {skill: (kết quả hợp lệ | None, lỗi cuối cùng)}; kèm kết quả 'model_answer' nếu có."""
@@ -421,7 +421,9 @@ def run_one_pass(ask_fn, kb_text: str, lessons: list[str] | None, skills: list[s
         prompt = ep.open_grading_prompt(kb_text, parts, lessons, include_model and attempt == 0 or (include_model and not models),
                                         errors)
         try:
-            data = _parse_json(ask_fn(prompt, reasoning_effort="low", model=model))
+            import ai_router
+            ai_router.set_role(role or "grade")
+            data = _parse_json(ask_fn(prompt, reasoning_effort=effort or "low", model=model))
         except AIRateLimitError:
             raise
         except (AIProviderError, ValueError) as e:
@@ -435,6 +437,8 @@ def run_one_pass(ask_fn, kb_text: str, lessons: list[str] | None, skills: list[s
         for s in pending:
             ok, errs = validate_skill_output(data.get(s), s, states[s]["answer"])
             if ok:
+                if role:
+                    ok["role"] = role                      # khâu đã chấm lượt này (grade_1/grade_2/grade_3), để biết lượt nào do model nào
                 result[s] = (ok, [])
             else:
                 result[s] = (None, errs)
@@ -448,10 +452,20 @@ def run_one_pass(ask_fn, kb_text: str, lessons: list[str] | None, skills: list[s
     return result
 
 
-def advance(states: dict, ask_fn, kb_text: str, lessons: list[str] | None, third_model: str | None = None) -> None:
+def advance(states: dict, ask_fn, kb_text: str, lessons: list[str] | None, third_model: str | None = None,
+            pass_models: dict | None = None, efforts: dict | None = None) -> None:
     """Làm tiếp phần còn thiếu (idempotent; gọi lại để thử lại riêng lượt lỗi): đủ hai lượt hợp lệ -> so độ lệch -> lượt ba CHỈ
     cho bài lệch > 0,75 -> chốt. Lượt lỗi không được tính vào so độ lệch; hai kết quả hợp lệ luôn được giữ."""
     from concurrent.futures import ThreadPoolExecutor
+
+    pass_models, efforts = pass_models or {}, efforts or {}
+    third_model = pass_models.get("grade_3") or third_model
+
+    def slot_role(need_skills: list[str]) -> str:
+        """Lượt thiếu: khâu CHƯA dùng ở bài có ít lượt nhất (lượt lỗi được chấm bù đúng model còn thiếu, không đổi vai)."""
+        weakest = min(need_skills, key=lambda k: len(states[k]["passes"]))
+        used = {p.get("role") for p in states[weakest]["passes"]}
+        return next((r for r in ("grade_1", "grade_2") if r not in used), "grade_2")
 
     active = [s for s in SKILLS if states[s]["status"] != "empty"]
     # Giai đoạn 1: đủ hai lượt hợp lệ cho từng bài.
@@ -462,10 +476,13 @@ def advance(states: dict, ask_fn, kb_text: str, lessons: list[str] | None, third
         first_model = not any(states[s].get("model_answer") for s in SKILLS)
         if attempt == 0 and all(len(states[s]["passes"]) == 0 for s in need):
             with ThreadPoolExecutor(max_workers=2) as ex:
-                futs = [ex.submit(run_one_pass, ask_fn, kb_text, lessons, need, states, first_model and i == 0) for i in range(2)]
+                roles = ("grade_1", "grade_2")
+                futs = [ex.submit(run_one_pass, ask_fn, kb_text, lessons, need, states, first_model and i == 0,
+                                  pass_models.get(roles[i]), efforts.get(roles[i]), roles[i]) for i in range(2)]
                 outs = [f.result() for f in futs]
         else:
-            outs = [run_one_pass(ask_fn, kb_text, lessons, need, states, first_model)]
+            role = slot_role(need)
+            outs = [run_one_pass(ask_fn, kb_text, lessons, need, states, first_model, pass_models.get(role), efforts.get(role), role)]
         for out in outs:
             for s in need:
                 rec, _errs = out[s]
@@ -480,7 +497,8 @@ def advance(states: dict, ask_fn, kb_text: str, lessons: list[str] | None, third
     for _ in range(1 + MAX_EXTRA_PASS_ATTEMPTS):
         if not need3:
             break
-        out = run_one_pass(ask_fn, kb_text, lessons, need3, states, include_model=False, model=third_model)
+        out = run_one_pass(ask_fn, kb_text, lessons, need3, states, include_model=False, model=third_model,
+                           effort=efforts.get("grade_3"), role="grade_3")
         for s in need3:
             rec, _errs = out[s]
             if rec is not None and len(states[s]["passes"]) < 3:
