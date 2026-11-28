@@ -31,15 +31,22 @@ const AI_CONFIDENCE_REASONS = {
   other: 'Lý do khác.'
 };
 
-// Phải khớp với config.title/subtitle trong js/pages/world1.js và world2.js.
+// Phải khớp với config.title trong js/pages/world1.js và world2.js.
 const AI_WORLD_META = {
-  'world-1': { title: 'Sylvan Nightwood Realm', subtitle: 'Rừng Huyền Diệu' },
-  'world-2': { title: 'Frost Glaciers Realm', subtitle: 'Tuyết Sơn Cực Quang' }
+  'world-1': { title: 'Evergrove Realm' },
+  'world-2': { title: 'Frostveil Caverns' }
+};
+
+// Lời chào riêng cho ải đầu (Level 1) của từng thế giới; các level khác dùng lời chào chung bên dưới.
+const AI_FIRST_LEVEL_GREETING = {
+  'world-1': '🌲 Chào mừng bạn đến <strong>Evergrove Realm</strong>! Level 1 là bước đầu của hành trình: đọc bài học, làm trắc nghiệm, tự dự đoán điểm rồi trả lời hai câu hỏi mở. Mỗi bước giúp bạn biết rõ mình đang ở đâu và nên ôn gì tiếp.',
+  'world-2': '❄️ Chào mừng bạn đến <strong>Frostveil Caverns</strong>! Level 1 mở ra hành trình trong hang băng: đọc bài học, làm trắc nghiệm, tự dự đoán điểm rồi trả lời hai câu hỏi mở. Cứ đi từng bước, kết quả sẽ cho bạn thấy mình đã tiến bộ đến đâu.'
 };
 
 function aiWelcomeMessage(worldId, level) {
+  if (level === 1 && AI_FIRST_LEVEL_GREETING[worldId]) return AI_FIRST_LEVEL_GREETING[worldId];
   const meta = AI_WORLD_META[worldId];
-  const worldLabel = meta ? `${meta.title} - ${meta.subtitle}` : worldId;
+  const worldLabel = meta ? meta.title : worldId;
   return `🗺️ Chào mừng bạn đến <strong>Level ${level}</strong> tại <strong>${worldLabel}</strong>! Cùng khám phá nhóm từ mới và chinh phục thử thách phía trước nhé.`;
 }
 
@@ -371,7 +378,8 @@ function aiRenderLearningContent(groupTitle, content) {
   // chỉ cần lời chào ngắn.
   const onboardingBlock = aiChat.showOnboarding
     ? `<div class="ai-msg-system ai-msg-onboarding">
-        👋 Chào bạn! Đây là trợ lý AI giúp bạn học và tự kiểm tra từ vựng.
+        ${aiWelcomeMessage(aiChat.worldId, aiChat.level)}<br>
+        👋 Đây là trợ lý AI giúp bạn học và tự kiểm tra từ vựng.
         Cách dùng: đọc phần giải thích bên dưới, sau đó làm các câu trắc nghiệm,
         xem giải thích các câu sai, tự chấm mức độ tự tin, rồi trả lời 2 câu hỏi
         mở để AI đánh giá khả năng vận dụng thực tế của bạn. Cuối cùng bạn sẽ

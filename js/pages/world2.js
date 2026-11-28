@@ -1,13 +1,12 @@
-// Cấu hình riêng cho World 2 - Frost Glaciers Realm. Toàn bộ logic sinh bản
+// Cấu hình riêng cho World 2 - Frostveil Caverns. Toàn bộ logic sinh bản
 // đồ/level nằm ở js/features/world-map.js, file này chỉ khai báo tham số.
 
 document.addEventListener('DOMContentLoaded', () => {
   const config = {
     worldId: 'world-2',
     totalLevels: 121,
-    title: 'Frost Glaciers Realm',
-    subtitle: 'TUYẾT SƠN CỰC QUANG',
-    backgroundImage: 'assets/images/world2background.jpg',
+    title: 'Frostveil Caverns',
+    backgroundImage: 'assets/images/world2background.jpg?v=2',
     theme: 'ice'
   };
 

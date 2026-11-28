@@ -1646,8 +1646,9 @@ body {
 
 .world-badge-pill,
 .world-levels-pill {
-  background: rgba(13, 17, 23, 0.65);
-  border: 1px solid var(--border-soft);
+  /* Nằm trên ảnh nên luôn nền tối + chữ sáng, không theo chế độ sáng/tối của trang */
+  background: rgba(13, 17, 23, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   padding: 4px 12px;
   border-radius: 999px;
   font-size: 0.68rem;
@@ -1657,11 +1658,14 @@ body {
 .world-badge-pill {
   font-weight: 700;
   letter-spacing: 1px;
-  color: var(--world-accent, var(--text));
+  color: #e6edf3;
 }
 
+.world-card[data-accent="green"] .world-badge-pill { color: #4ade80; }
+.world-card[data-accent="blue"] .world-badge-pill { color: #60a5fa; }
+
 .world-levels-pill {
-  color: var(--text-dim);
+  color: rgba(255, 255, 255, 0.92);
 }
 
 .world-menu-wrap { position: relative; z-index: 2; }
@@ -1673,9 +1677,9 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  border: 1px solid var(--border-soft);
-  background: rgba(13, 17, 23, 0.65);
-  color: var(--text-1);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(13, 17, 23, 0.68);
+  color: #fff;
   cursor: pointer;
   backdrop-filter: blur(4px);
 }

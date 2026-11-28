@@ -178,7 +178,6 @@ function renderWorldMap(config) {
         </a>
         <div class="world-map-heading">
           <h1>${config.title}</h1>
-          <p>${config.subtitle}</p>
         </div>
         <div class="world-map-progress-pill">Level ${completed} / ${config.totalLevels}</div>
       </header>

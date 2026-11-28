@@ -5,9 +5,8 @@ const COURSE_WORLDS = [
   {
     id: 'world-1',
     label: 'WORLD 1',
-    name: 'Sylvan Nightwood Realm',
-    subtitle: 'RỪNG HUYỀN DIỆU',
-    image: 'assets/images/world1icon.jpg',
+    name: 'Evergrove Realm',
+    image: 'assets/images/world1-card.jpg?v=2',
     totalLevels: 97,
     accent: 'green',
     page: 'world1.html'
@@ -15,9 +14,8 @@ const COURSE_WORLDS = [
   {
     id: 'world-2',
     label: 'WORLD 2',
-    name: 'Frost Glaciers Realm',
-    subtitle: 'TUYẾT SƠN CỰC QUANG',
-    image: 'assets/images/world-2.jpg',
+    name: 'Frostveil Caverns',
+    image: 'assets/images/world2-card.jpg?v=2',
     totalLevels: 121,
     accent: 'blue',
     page: 'world2.html'
@@ -63,7 +61,6 @@ function renderWorldCard(world) {
 
       <div class="world-panel">
         <h2 class="world-name">${world.name}</h2>
-        <p class="world-subtitle-text">${world.subtitle}</p>
 
         <div class="world-progress-bar">
           <div class="world-progress-fill" id="world-fill-${world.id}" style="width: ${percent}%;"></div>
