@@ -731,8 +731,7 @@ function aiRenderReviewView(opts) {
 function aiParseExplanation(text) {
   const out = { main: [], others: [], stem: [] };
   let cur = out.main;
-  String(text || '').split('
-').forEach(raw => {
+  String(text || '').split('\n').forEach(raw => {
     const line = raw.trim();
     if (line === '::others::') cur = out.others;
     else if (line === '::stem::') cur = out.stem;
@@ -746,11 +745,9 @@ function aiExplanationStem(text) { return aiParseExplanation(text).stem; }
 function aiExplanationHtml(text) {
   const p = aiParseExplanation(text);
   const others = p.others.length
-    ? `<details class="ai-expl-others"><summary>Xem các phương án còn lại</summary>${aiMarkdownToHtml(p.others.join('
-'))}</details>`
+    ? `<details class="ai-expl-others"><summary>Xem các phương án còn lại</summary>${aiMarkdownToHtml(p.others.join('\n'))}</details>`
     : '';
-  return aiMarkdownToHtml(aiBoldExplanationLabels(p.main.join('
-'))) + others;
+  return aiMarkdownToHtml(aiBoldExplanationLabels(p.main.join('\n'))) + others;
 }
 
 function aiBoldExplanationLabels(text) {
