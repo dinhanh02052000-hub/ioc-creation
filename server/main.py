@@ -989,7 +989,9 @@ def _build_explanations(world_id: str, level: int, snapshot: list[dict], questio
                 "doubts": {}, "flagged": []}
     return explanations.build(
         _ask_for("explanation"), kb_text, targets, lambda kb, chunk, errors: assemble(kb, ep.explanation_task(chunk, errors)),
-        flagged, cache_get, cache_put)
+        flagged, cache_get, cache_put,
+        review_prompt_fn=lambda kb, pairs: assemble(kb, ep.explanation_review_task(pairs)),
+        review_ask_fn=_ask_for("explanation_review"))
 
 
 def _apply_explanation_flags(expl: dict) -> None:
@@ -1576,7 +1578,7 @@ def _decision_note(decision: dict) -> str:
         tail = f" Mục tiêu ôn trước tiên: {decision['review_target']}."
     if decision["decision"] == "PASS_WITH_REVIEW":
         return decision["reasons"][0] + tail
-    return "Chưa đạt để qua màn: " + " ".join(decision["reasons"]) + tail + " Hãy ôn tập trọng tâm rồi kiểm tra lại."
+    return "Em chưa qua màn lần này: " + " ".join(decision["reasons"]) + tail + " Mình ôn phần trọng tâm rồi thử lại nhé."
 
 
 def _confidence_summary(comparison: dict) -> dict:

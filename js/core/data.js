@@ -4,7 +4,7 @@ const QUOTES_LIST = [
   { en: "Once you stop learning, you start dying.", vi: "Khi bạn ngừng học, bạn bắt đầu chết dần đi.", author: "Albert Einstein" },
   { en: "The important thing is not to stop questioning. Curiosity has its own reason for existing.", vi: "Điều quan trọng là không ngừng đặt câu hỏi. Sự tò mò có lý do riêng để tồn tại.", author: "Albert Einstein" },
   { en: "An investment in knowledge pays the best interest.", vi: "Đầu tư vào kiến thức mang lại lợi nhuận cao nhất.", author: "Benjamin Franklin" },
-  { en: "The greatest enemy of knowledge is not ignorance, it is the illusion of knowledge.", vi: "Kẻ thù lớn nhất của kiến thức không phải là sự ngu ngốc, mà là ảo tưởng về sự hiểu biết.", author: "Stephen Hawking" },
+  { en: "The greatest enemy of knowledge is not ignorance, it is the illusion of knowledge.", vi: "Kẻ thù lớn nhất của kiến thức không phải là sự thiếu hiểu biết, mà là ảo tưởng về sự hiểu biết.", author: "Stephen Hawking" },
   { en: "Real knowledge is to know the extent of one's ignorance.", vi: "Tri thức thực sự là biết rõ giới hạn sự thiếu hiểu biết của bản thân.", author: "Confucius" },
   { en: "Knowledge is power.", vi: "Kiến thức là sức mạnh.", author: "Francis Bacon" },
   { en: "Learning is not attained by chance, it must be sought for with ardor and attended to with diligence.", vi: "Sự học không đến ngẫu nhiên, nó phải được tìm kiếm bằng sự nhiệt huyết và chăm chỉ.", author: "Abigail Adams" },

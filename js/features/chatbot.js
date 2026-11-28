@@ -469,8 +469,27 @@ function aiDifficultyChipHtml(level) {
 }
 
 // "___" trong câu hỏi hiển thị thành ô trống gạch chân, dễ nhìn hơn dấu gạch thô.
-function aiQuestionHtml(text) {
-  return aiEscapeHtml(text).replace(/_{3,}/g, '<span class="ai-q-blank">&nbsp;</span>');
+// spans (tùy chọn): đoạn cần tô đậm, đã được máy chủ kiểm là có nguyên văn trong thân câu. Chỉ tô lần xuất hiện đầu tiên.
+function aiQuestionHtml(text, spans) {
+  let html = aiEscapeHtml(text);
+  (spans || []).forEach(span => {
+    const e = aiEscapeHtml(span);
+    const at = e ? html.indexOf(e) : -1;
+    if (at >= 0) html = html.slice(0, at) + '<strong class="ai-q-hl">' + e + '</strong>' + html.slice(at + e.length);
+  });
+  return html.replace(/_{3,}/g, '<span class="ai-q-blank">&nbsp;</span>');
+}
+
+// Mô tả mức khó trước bài. Số câu dễ/vừa/khó lấy từ mức đã thẩm định của CHÍNH bộ câu đang phát; câu chưa có mức thì nêu số đó,
+// không có câu nào có mức thì không hiện thống kê.
+function aiQuizNoticeHtml(questions) {
+  const c = { easy: 0, medium: 0, hard: 0, unknown: 0 };
+  (questions || []).forEach(q => { if (c[q.difficulty] !== undefined && q.difficulty !== 'unknown') c[q.difficulty] += 1; else c.unknown += 1; });
+  const known = c.easy + c.medium + c.hard;
+  const stats = known
+    ? `<div class="ai-quiz-notice__stats">Mức khó dự kiến: ${c.easy} câu dễ · ${c.medium} câu vừa · ${c.hard} câu khó${c.unknown ? ` · ${c.unknown} câu chưa xác định mức` : ''}</div>`
+    : '';
+  return `<div class="ai-quiz-notice"><div>Bài có các câu nhận biết cách dùng và phân biệt sắc thái trong ngữ cảnh mới. Một số câu cần đọc cả tình huống để lựa chọn.</div>${stats}</div>`;
 }
 
 function aiRenderMCQList() {
@@ -514,7 +533,7 @@ function aiRenderQuizView(ctx) {
 
   aiSetBody(`
     <div class="ai-quiz">
-      <div class="ai-quiz-main">${itemsHtml}</div>
+      <div class="ai-quiz-main">${aiQuizNoticeHtml(ctx.questions)}${itemsHtml}</div>
       <aside class="ai-quiz-nav">
         <div class="ai-quiz-nav-head">
           <span>Đã làm</span><strong id="ai-mcq-progress">0/${total}</strong>
@@ -661,13 +680,13 @@ function aiRenderReviewView(opts) {
           <span class="ai-q-status ${isCorrect ? 'ok' : 'bad'}">${isCorrect ? 'Đúng' : 'Sai'}</span>
         </div>
         ${aiQuestionStateHtml(qState, explStatus)}
-        <p class="ai-q-text">${aiQuestionHtml(q.question)}</p>
+        <p class="ai-q-text">${aiQuestionHtml(q.question, aiExplanationStem(explanation))}</p>
         <div class="ai-q-options">${optionsHtml}</div>
         ${(opts.reportable || opts.practice)
           ? aiExplanationBlockHtml({ q, isCorrect, explanation, explStatus, partial, busy, qState })
           : (isCorrect
               ? '<div class="ai-q-feedback ok">Bạn đã trả lời chính xác!</div>'
-              : (explanation ? `<div class="ai-q-feedback bad">${aiMarkdownToHtml(aiBoldExplanationLabels(explanation))}</div>` : ''))}
+              : (explanation ? `<div class="ai-q-feedback bad">${aiExplanationHtml(explanation)}</div>` : ''))}
         ${opts.reportable ? `<button type="button" class="ai-report-btn" data-report="recognition" data-qid="${q.id}">Báo lỗi câu hỏi hoặc lời giải</button>
         <div class="ai-report-slot"></div>` : ''}
       </section>
@@ -707,6 +726,33 @@ function aiRenderReviewView(opts) {
 // ---- Chỉ số tin cậy + báo cáo của người dùng ----
 
 // Làm đậm 3 nhãn cố định của lời giải trắc nghiệm nếu AI chưa tự in đậm.
+// Lời giải v2 là một chuỗi: ba phần chính, rồi khối '::others::' (các phương án còn lại), rồi '::stem::' (đoạn tô đậm trong thân câu).
+// Bản cũ không có hai dấu này: hiện như trước.
+function aiParseExplanation(text) {
+  const out = { main: [], others: [], stem: [] };
+  let cur = out.main;
+  String(text || '').split('
+').forEach(raw => {
+    const line = raw.trim();
+    if (line === '::others::') cur = out.others;
+    else if (line === '::stem::') cur = out.stem;
+    else if (line) cur.push(line);
+  });
+  return out;
+}
+
+function aiExplanationStem(text) { return aiParseExplanation(text).stem; }
+
+function aiExplanationHtml(text) {
+  const p = aiParseExplanation(text);
+  const others = p.others.length
+    ? `<details class="ai-expl-others"><summary>Xem các phương án còn lại</summary>${aiMarkdownToHtml(p.others.join('
+'))}</details>`
+    : '';
+  return aiMarkdownToHtml(aiBoldExplanationLabels(p.main.join('
+'))) + others;
+}
+
 function aiBoldExplanationLabels(text) {
   return String(text).replace(/(^|\n)(\s*-\s*)(?!\*\*)(Dấu hiệu ngữ pháp|Từ khóa manh mối|So sánh & dịch nghĩa)\s*:/g, '$1$2**$3:**');
 }
@@ -1122,7 +1168,7 @@ function aiExplanationBlockHtml({ q, isCorrect, explanation, explStatus, partial
       + (partial ? `<div class="ai-q-feedback bad">${aiMarkdownToHtml(aiBoldExplanationLabels(partial))}</div>` : '');
   }
   if (explanation) {
-    const body = `<div class="ai-q-feedback ${isCorrect ? 'ok' : 'bad'}">${aiMarkdownToHtml(aiBoldExplanationLabels(explanation))}</div>`;
+    const body = `<div class="ai-q-feedback ${isCorrect ? 'ok' : 'bad'}">${aiExplanationHtml(explanation)}</div>`;
     return isCorrect
       ? `<details class="ai-expl-details" open><summary>Bạn đã trả lời chính xác! Giải thích</summary>${body}</details>` : body;
   }
@@ -1492,15 +1538,15 @@ function aiRubricTableHtml(rows) {
 // (tự đánh giá đúng) mới chấm tròn XANH.
 function aiIllusionMeta(status) {
   const map = {
-    DETECTED: { label: 'Ảo tưởng năng lực (Illusion of Competence)', dot: 'red' },
-    UNDERCONFIDENT: { label: 'Tự tin thấp hơn thực lực (Underconfidence)', dot: 'red' },
-    CALIBRATED: { label: 'Tự đánh giá chính xác (Good)', dot: 'green' },
-    MIXED_DEVIATION: { label: 'Dự đoán lệch ở từng kỹ năng (bù trừ nhau)', dot: 'red' },
+    DETECTED: { label: 'Dự đoán cao hơn kết quả', dot: 'amber' },
+    UNDERCONFIDENT: { label: 'Em làm tốt hơn em nghĩ', dot: 'amber' },
+    CALIBRATED: { label: 'Dự đoán sát kết quả', dot: 'green' },
+    MIXED_DEVIATION: { label: 'Tổng thể sát, từng phần còn chênh', dot: 'amber' },
     PARTIAL_DATA: { label: 'Chỉ đối chiếu được một kỹ năng', dot: 'gray' },
     NO_PREDICTION: { label: 'Chưa có dự đoán để đối chiếu', dot: 'gray' },
     AWAITING_RESULT: { label: 'Chờ kết quả (tạm tính)', dot: 'gray' }
   };
-  return map[status] || { label: status, dot: 'red' };
+  return map[status] || { label: status, dot: 'amber' };
 }
 
 // Gọi ngay khi báo cáo hiện ra (không đợi người dùng bấm gì), để không phụ
@@ -1568,13 +1614,13 @@ function aiFmtSigned2(n) {
 
 const AI_DECISION_META = {
   PASS: { cls: 'pass', badge: 'QUA MÀN' },
-  PASS_WITH_REVIEW: { cls: 'pass', badge: 'QUA MÀN · NÊN ÔN THÊM' },
-  RETRY: { cls: 'retry', badge: 'CẦN ÔN VÀ KIỂM TRA LẠI' }
+  PASS_WITH_REVIEW: { cls: 'pass', badge: 'QUA MÀN · CÓ GỢI Ý ÔN TẬP' },
+  RETRY: { cls: 'retry', badge: 'ÔN THÊM RỒI THỬ LẠI' }
 };
 
 const AI_UNDERSTANDING_FALLBACK = {
   WELL_UNDERSTOOD: 'Hiểu tốt', PARTIALLY_UNDERSTOOD: 'Hiểu một phần',
-  LIMITED_UNDERSTANDING: 'Hiểu hạn chế', NOT_YET_UNDERSTOOD: 'Chưa hiểu rõ'
+  LIMITED_UNDERSTANDING: 'Đang hiểu một phần', NOT_YET_UNDERSTOOD: 'Đang làm quen'
 };
 
 // Hai câu hỏi đầu: "Em dự đoán bao nhiêu?" và "Em thực sự làm được đến đâu?" - Confidence và Gap là MỘT chỉ số chính thức mỗi loại,
@@ -1661,7 +1707,7 @@ function aiDecisionPanelHtml(report) {
   }
   const meta = AI_DECISION_META[decision] || AI_DECISION_META.RETRY;
   const note = info ? info.note : (report.retry_note || '');
-  const dot = report.calibration ? (report.calibration.code === 'CLOSE' ? 'green' : report.calibration.code === 'UNKNOWN' ? 'gray' : 'red')
+  const dot = report.calibration ? (report.calibration.code === 'CLOSE' ? 'green' : report.calibration.code === 'UNKNOWN' ? 'gray' : 'amber')
     : aiIllusionMeta(report.illusion_status).dot;
   return `
     <div class="ai-decision">
@@ -1744,7 +1790,7 @@ function aiScoreGridHtml(report) {
         <div class="ai-score-item"><div class="ai-score-value">${cs.available || cs.confidence != null ? aiFmt2(cs.confidence) : '—'}</div><div class="ai-score-label">CONFIDENCE</div></div>
         <div class="ai-score-item">
           <div class="ai-score-value">${cs.available ? aiFmtSigned2(cs.gap) : '—'}</div>
-          <div class="ai-score-label"><span class="ai-status-dot ai-status-dot--${report.calibration && report.calibration.code === 'CLOSE' ? 'green' : (cs.available ? 'red' : 'gray')}"></span>GAP</div>
+          <div class="ai-score-label"><span class="ai-status-dot ai-status-dot--${report.calibration && report.calibration.code === 'CLOSE' ? 'green' : (cs.available ? 'amber' : 'gray')}"></span>GAP</div>
         </div>`;
   }
   return `

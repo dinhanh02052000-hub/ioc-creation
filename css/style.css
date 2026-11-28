@@ -1351,6 +1351,11 @@ body {
   box-shadow: 0 0 8px rgba(52, 211, 153, 0.6);
 }
 
+.analysis-status-dot--amber {
+  background: #fbbf24;
+  box-shadow: 0 0 8px rgba(251, 191, 36, 0.55);
+}
+
 .analysis-illusion-hint {
   color: var(--text-faint);
   font-size: 0.75rem;

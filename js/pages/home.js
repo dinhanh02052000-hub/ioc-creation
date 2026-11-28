@@ -119,7 +119,7 @@ function homeRenderIocIndexBody() {
     return `
       <div class="home-iocindex-example">
         <span class="badge">Ví dụ</span>
-        ${analysisScoreRowHtml('Ảo tưởng', 7.5)}
+        ${analysisScoreRowHtml('Mức tự tin', 7.5)}
         ${analysisScoreRowHtml('Thực tế', 5.8)}
         <div class="analysis-illusion-row">
           <span class="analysis-status-dot analysis-status-dot--red"></span>
@@ -133,7 +133,7 @@ function homeRenderIocIndexBody() {
     const meta = ANALYSIS_ILLUSION_META[agg.illusion_status] || { label: agg.illusion_status, dot: 'red' };
     const gapSign = agg.gap > 0 ? '+' : '';
     return `
-      ${analysisScoreRowHtml('Ảo tưởng', agg.confidence)}
+      ${analysisScoreRowHtml('Mức tự tin', agg.confidence)}
       ${analysisScoreRowHtml('Thực tế', agg.legacy.overall)}
       <div class="analysis-illusion-row">
         <span class="analysis-status-dot analysis-status-dot--${meta.dot}"></span>
@@ -153,10 +153,10 @@ function homeRenderIocIndexBody() {
 // ---- C. Kết quả gần đây ----
 
 const HOME_ILLUSION_LABELS = {
-  DETECTED: { text: 'Ảo tưởng', cls: 'illusion' },
-  UNDERCONFIDENT: { text: 'Tự ti', cls: 'under' },
-  CALIBRATED: { text: 'Cân bằng', cls: 'balanced' },
-  MIXED_DEVIATION: { text: 'Lệch từng kỹ năng', cls: 'illusion' },
+  DETECTED: { text: 'Dự đoán cao', cls: 'illusion' },
+  UNDERCONFIDENT: { text: 'Làm tốt hơn dự đoán', cls: 'under' },
+  CALIBRATED: { text: 'Dự đoán sát', cls: 'balanced' },
+  MIXED_DEVIATION: { text: 'Lệch theo phần', cls: 'illusion' },
   PARTIAL_DATA: { text: 'Thiếu dự đoán', cls: 'balanced' },
   NO_PREDICTION: { text: 'Chưa dự đoán', cls: 'balanced' },
 };

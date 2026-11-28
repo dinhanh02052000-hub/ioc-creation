@@ -265,12 +265,14 @@ class Base(unittest.TestCase):
                 mode = "wrong" if who.startswith("SAI") else ("correct" if who.startswith("ĐÚNG") else "unanswered")
                 other = next(o for o in options if o != key)
                 words = sent.replace("___", " ").split()
+                contrast = chosen if mode == "wrong" else other
                 it = {"id": qid, "status": status, "evidence": [" ".join(words[:2]), " ".join(words[-2:])],
-                      "evidence_meaning": "chi tiết này cho biết ai làm gì", "why_key": f"{key} khớp nghĩa của chi tiết trong câu này",
-                      "translation_vi": "bản dịch", "contrast_option": chosen if mode == "wrong" else other,
-                      "shared_point": "hai từ cùng chỉ một ý gần nhau", "contrast_vi": "trong câu này chi tiết đó chỉ ra khóa",
-                      "example_en": None, "example_vi": None, "grammar_vi": None, "grammar_excludes": [],
-                      "start_hint": "Đọc cả câu rồi tìm chi tiết quyết định." if mode == "unanswered" else None,
+                      "key_clue_vi": f"Chi tiết này cho biết ai làm gì, nên {key} khớp nghĩa trong câu này",
+                      "translation_vi": "bản dịch", "contrast_option": contrast,
+                      "contrast_vi": "trong câu này chi tiết đó chỉ ra khóa",
+                      "example_en": None, "example_vi": None, "translation_over_cap": False,
+                      "others": [{"option": o, "note": f"{o} không khớp chi tiết trong câu"} for o in options if o not in (key, contrast)],
+                      "emphasis": [],
                       "doubt_reason": "thiếu dữ kiện" if status == "review_key" else None, "also_defensible": []}
                 if hook:
                     hook(it, {"mode": mode, "key": key, "options": options, "chosen": chosen})
@@ -517,16 +519,15 @@ class SubmitFlowTests(Base):
         self.assertEqual(res["explanation_status"], {})
         self.assertEqual(len([p for p in self.ask_log[n:] if self.MARK in p]), 0)  # câu đúng không tốn token lúc nộp bài
 
-    def test_unanswered_gets_start_hint_and_is_never_attributed_a_choice(self):
+    def test_unanswered_is_never_attributed_a_choice(self):
         s = self.session()
         answers = {str(i): 0 for i in range(1, 20)}                                # bỏ trống câu 20
         self.ai_script[self.MARK] = self.good_explanations()
         res = self.submit(s, answers)
         self.assertEqual(res["explanation_status"], {"20": "ready"})
         text = res["explanations"]["20"]
-        self.assertIn("Cách bắt đầu", text)
-        self.assertNotIn("em đã chọn", text)
-        self.assertIn("dễ nhầm", text)
+        self.assertNotIn("Em đã chọn", text)
+        self.assertIn("Dễ nhầm với", text)
         self.assertEqual(res["wrong_words"][0]["selected"], None)
         self.assertIn("BỎ TRỐNG", self.ask_log[-1])
         self.assertNotIn("SAI: học sinh chọn", [l for l in self.ask_log[-1].splitlines() if l.startswith("20.")][0])
@@ -541,7 +542,7 @@ class SubmitFlowTests(Base):
             self.ai_script[self.MARK] = self.good_explanations()
             res = self.submit(s, answers)
             chosen = qs[2]["options"][pick]
-            self.assertIn(f"So với «{chosen}» (em đã chọn)", res["explanations"]["3"])
+            self.assertIn(f"Em đã chọn «{chosen}»", res["explanations"]["3"])
         # AI so nhầm lựa chọn (không phải lựa chọn của em) -> mục bị chặn, không hiển thị
         self.fake.expl_cache = {}
         s = self.session(make_questions())
@@ -585,21 +586,20 @@ class SubmitFlowTests(Base):
                 it["status"] = "review_key"
                 it["doubt_reason"] = "chi tiết chỉ so được effect với influence, chưa loại được impact"
                 it["also_defensible"] = ["impact"]
-                it["why_key"] = None
 
         self.ai_script[self.MARK] = self.good_explanations(hook=doubt)
         answers = {str(i): 0 for i in range(1, 21)}                                 # câu 1: em chọn influence; khóa là effect
         res = self.submit(s, answers)
         self.assertEqual(res["explanation_status"]["1"], "under_review")
         self.assertNotIn("1", res["explanations"])                                  # không xuất lời giải khẳng định
-        self.assertIn("Dấu hiệu trong đề", res["explanation_partial"]["1"])           # chỉ phần nghĩa xác nhận được
-        self.assertNotIn("Vì sao chọn", res["explanation_partial"]["1"])
+        self.assertIn("Chìa khóa nhận biết", res["explanation_partial"]["1"])           # chỉ phần nghĩa xác nhận được
+        self.assertNotIn("Dịch nghĩa", res["explanation_partial"]["1"])
         qv = review.question_version_id("world-1", 1, SENT, ["influence", "effect", "impact", "melody"])
         self.assertTrue(any(f["qv"] == qv and f["flag_type"] == "answer_under_review" for f in self.fake.flags))
         self.assertEqual(self.fake.versions[qv]["status"], "paused")
         self.assertEqual(res["question_states"]["1"]["question"]["code"], "answer_under_review")
         p = self.ask_log[0]
-        self.assertIn("cả bốn từ cùng loại từ", p)                                  # luật ngữ pháp chung nằm trong prompt
+        self.assertIn("đúng với cả bốn lựa chọn", p)                                  # luật ngữ pháp chung nằm trong prompt
         self.assertIn("Mức khó: khó", p)
         self.assertIn('dấu hiệu đã xác minh: "richer atmosphere"', p)                # căn cứ đã xác minh được đưa vào
 
@@ -621,12 +621,12 @@ class SubmitFlowTests(Base):
         calls = len(self.ask_log)
         r = m.explain_question(m.ExplainQuestionRequest(session_id=s["session_id"], question_id=4), user=self.user)
         self.assertEqual(r["status"], "ready")
-        self.assertIn("Dấu hiệu trong đề", r["text"])
+        self.assertIn("Chìa khóa nhận biết", r["text"])
         self.assertNotIn("nắm vững", r["text"])                                      # một lần đúng chưa đủ để nói em đã nắm vững
-        self.assertEqual(len(self.ask_log), calls + 1)
+        self.assertEqual(len(self.ask_log), calls + 2)
         r2 = m.explain_question(m.ExplainQuestionRequest(session_id=s["session_id"], question_id=4), user=self.user)
         self.assertEqual(r2["text"], r["text"])
-        self.assertEqual(len(self.ask_log), calls + 1)                              # lần hai dùng lại, không gọi AI
+        self.assertEqual(len(self.ask_log), calls + 2)                              # (1 lượt soạn + 1 lượt rà nội dung) lần hai dùng lại, không gọi AI
         self.assertTrue(self.fake.expl_cache)
         with self.assertRaises(HTTPException) as cm:
             m.explain_question(m.ExplainQuestionRequest(session_id=s["session_id"], question_id=99), user=self.user)
@@ -1143,8 +1143,8 @@ class RemediationFlowTests(Base):
         self.assertEqual((res["correct_count"], res["valid_total"]), (6, 10))
         self.assertEqual(set(res["explanation_status"]), {"7", "8", "9", "10"})
         self.assertEqual(set(res["explanation_status"].values()), {"ready"})
-        self.assertIn("So với", res["explanations"]["7"])
-        self.assertIn("Dấu hiệu trong đề", res["explanations"]["7"])
+        self.assertIn("Phân biệt từ gây nhiễu", res["explanations"]["7"])
+        self.assertIn("Chìa khóa nhận biết", res["explanations"]["7"])
         self.assertEqual(len(res["wrong_words"]), 4)
         self.assertNotIn("quality", res)
         self.assertEqual(self.fake.flags, [])

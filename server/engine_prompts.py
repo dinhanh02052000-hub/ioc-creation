@@ -738,8 +738,9 @@ def rule_proposal_task(report_type: str, sentence: str, options: list[str], reas
 
 def explanation_task(targets: list[dict], errors: dict[int, list[str]] | None = None) -> str:
     """Lời giải sau khi nộp Recognition. targets: dict từ explanations.make_target (câu, 4 phương án, khóa, lựa chọn, chế độ,
-    mức khó, hồ sơ xác minh nếu có). AI chỉ diễn giải; máy chủ quyết định đúng/sai, lựa chọn và chế độ; code kiểm tra đầu ra.
-    errors: lỗi của lần trả lời trước theo từng id (chỉ khi viết lại đúng mục lỗi)."""
+    mức khó, hồ sơ xác minh nếu có). AI chỉ diễn giải; máy chủ quyết định đúng/sai, lựa chọn và chế độ; code kiểm tra đầu ra
+    (độ dài, trích nguyên văn, phương án, tô đậm). errors: lỗi của lần trả lời trước theo từng id (chỉ khi viết lại đúng mục lỗi);
+    t["_prev"]: bản trước của câu đó để giữ các phần đã đạt."""
     nl = chr(10)
     lines = []
     for t in targets:
@@ -764,42 +765,106 @@ def explanation_task(targets: list[dict], errors: dict[int, list[str]] | None = 
         lines.append(f'{t["id"]}. "{t["sentence"]}" -> {opts} | Khóa: "{key_text}" | {who} | Mức khó: {diff} | Căn cứ sẵn có: {known}')
         if errors and errors.get(t["id"]):
             lines.append("   [LỖI LẦN TRƯỚC, sửa đúng mục này: " + " | ".join(errors[t["id"]]) + "]")
+            if t.get("_prev"):
+                import json as _json
+                lines.append("   [BẢN TRƯỚC, giữ nguyên phần không lỗi, chỉ viết lại phần bị nêu: " + _json.dumps(t["_prev"], ensure_ascii=False) + "]")
     return (
-        "NHIỆM VỤ: viết lời giải bằng TIẾNG VIỆT (phù hợp học sinh THPT) cho từng câu dưới đây, giúp học sinh trả lời hai câu hỏi: "
-        "(1) Chi tiết nào trong đề dẫn tới đáp án? (2) Vì sao từ mình chọn / từ dễ nhầm có vẻ hợp lý nhưng kém phù hợp trong CHÍNH câu này? "
-        "Chỉ dùng nghĩa, cách dùng và điểm phân biệt trong KB của đúng level. Bạn KHÔNG có quyền đổi khóa, đổi điểm hay hủy câu.\n"
-        "KHUNG 3 BƯỚC cho mỗi câu:\n"
-        "1) DẤU HIỆU TRONG ĐỀ: 'evidence' = 1 cụm hoặc 2 chi tiết có quan hệ với nhau, trích NGUYÊN VĂN từ thân câu (mỗi đoạn là một "
-        "phần tử của danh sách). 'evidence_meaning' nói CỤ THỂ chúng cho biết điều gì: ai thực hiện hành động, sự việc nào là kết quả, "
-        "thông tin nào mới chỉ là khả năng, hay cụm cố định nào đang được dùng.\n"
-        "2) VÌ SAO CHỌN KHÓA: 'why_key' nối dấu hiệu với nghĩa/cách dùng của từ khóa trong CHÍNH câu này (không viết kiểu 'phù hợp "
-        "nhất vì hợp ngữ cảnh'; phải khác evidence_meaning). 'translation_vi' dịch tự nhiên cả câu với khóa đã điền, giữ đúng chủ thể, "
-        "phủ định, thời gian, mức độ chắc chắn.\n"
-        "3) ĐỐI CHIẾU VỚI TỪ DỄ NHẦM: 'contrast_option' chép NGUYÊN VĂN một phương án (câu SAI: bắt buộc đúng lựa chọn của học sinh; "
-        "câu ĐÚNG hoặc BỎ TRỐNG: phương án dễ nhầm nhất). 'shared_point' nêu điểm giống khiến hai từ dễ nhầm; 'contrast_vi' nêu khác "
-        "biệt QUYẾT ĐỊNH trong câu này, thay các câu chung chung như 'khác sắc thái' bằng điều người đọc hiểu khác đi. Có ích thì cho "
-        "MỘT ví dụ ngắn cho thấy khi nào từ kia tự nhiên: đặt ở 'example_en' và 'example_vi' (là ví dụ MỚI do bạn đặt, không phải trích "
-        "dẫn từ đề); không có ích thì null.\n"
-        "THEO CHẾ ĐỘ: SAI = giải thích căn cứ chọn khóa và đối chiếu đúng lựa chọn của em; không khẳng định 'em chọn từ này vì ...' (em chưa nói lý do), "
-        "chỉ nói hai từ dễ nhầm vì đâu. ĐÚNG = lời giải NGẮN (dấu hiệu + vì sao chọn), đừng nói 'em đã nắm vững'; contrast_option có thể null. "
-        "BỎ TRỐNG = thêm 'start_hint' (gợi cách bắt đầu đọc câu), rồi đáp án và phương án gần nhất; tuyệt đối không nói em đã chọn gì.\n"
-        "ĐỘ SÂU THEO MỨC KHÓ: dễ = dựa vào một cụm quen thuộc, hai câu rõ ràng là đủ; vừa = chỉ ra chi tiết giúp loại nhiễu gần nhất; "
-        "khó = trình bày cách hiểu cạnh tranh mạnh nhất và căn cứ để ưu tiên một cách hiểu. KHÔNG ép mọi câu có mục ngữ pháp, từ khóa hay dịch dài.\n"
-        "NGỮ PHÁP: chỉ viết 'grammar_vi' khi dấu hiệu ngữ pháp loại được ÍT NHẤT MỘT phương án cụ thể, và khi đó liệt kê phương án bị "
-        "loại trong 'grammar_excludes'. Nếu cả bốn từ cùng loại từ (VD cùng là danh từ hoặc cùng là động từ) thì KHÔNG viết nhận xét ngữ pháp "
-        "chung kiểu 'chỗ này cần danh từ/động từ'; để null và grammar_excludes rỗng.\n"
-        "KHÔNG BỊA DỮ KIỆN: không thêm chủ ý, mức độ, thời gian, nguyên nhân, kết quả mà đề chưa nêu (VD đề chỉ nói cảnh báo gợi khả năng thì "
-        "không viết 'đã có người xâm nhập'). Tránh khẳng định tuyệt đối về một từ ('không bao giờ', 'luôn', 'chỉ dùng được') - kết luận chỉ đúng "
-        "trong câu đang xét.\n"
+        "NHIỆM VỤ: viết lời giải bằng TIẾNG VIỆT (học sinh THPT) cho từng câu dưới đây. Mỗi lời giải gồm BA PHẦN theo đúng thứ tự: "
+        "(1) Chìa khóa nhận biết, (2) Phân biệt từ gây nhiễu, (3) Dịch nghĩa; cộng với nhận định ngắn cho từng phương án còn lại. "
+        "Chỉ dùng nghĩa, cách dùng và điểm phân biệt trong KB của đúng level. Bạn KHÔNG có quyền đổi khóa, đổi điểm hay hủy câu.\n\n"
+        "GIỚI HẠN ĐỘ DÀI (là TRẦN, không phải mức phải viết cho đủ; câu dễ cứ viết ngắn nếu đã đủ căn cứ). Đếm từ tách theo khoảng trắng. "
+        "Quá giới hạn thì lời giải bị trả lại để viết lại, nên hãy viết gọn ngay từ đầu:\n"
+        "- key_clue_vi cùng đoạn trích trong evidence: tối đa 50 từ, thường 1-2 câu.\n"
+        "- contrast_vi (cùng ví dụ nếu có): tối đa 55 từ, thường 1-2 câu.\n"
+        "- translation_vi: tối đa 70 từ. Nếu câu gốc rất dài và bản dịch đủ ý buộc phải dài hơn, đặt translation_over_cap=true "
+        "(tối đa 100 từ); không được lược phủ định, điều kiện hay mức độ chắc chắn để cho ngắn.\n"
+        "- Tổng ba phần: tối đa 135 từ. Mỗi nhận định trong others: tối đa 30 từ.\n"
+        "ĐẾM ĐÚNG: đoạn trích evidence TÍNH vào key_clue_vi; ví dụ example_en + example_vi TÍNH vào contrast_vi. Hãy NHẮM khoảng 38 từ cho phần 1, 42 từ cho "
+        "phần 2 và 22 từ cho mỗi nhận định trong others để chắc chắn dưới trần (vượt dù một từ là bị trả lại): trích evidence ngắn (tối đa 6 từ, chỉ cụm quyết định, không chép cả vế câu), key_clue_vi 1-2 câu ngắn, và mặc định "
+        "KHÔNG đưa ví dụ (example_en=null) trừ khi nó giúp phân biệt hơn cả một câu giải thích.\n\n"
+        "PHẦN 1 - CHÌA KHÓA NHẬN BIẾT: 'evidence' = 1 hoặc 2 đoạn trích NGUYÊN VĂN từ thân câu (mỗi đoạn là một phần tử). 'key_clue_vi' "
+        "nói dấu hiệu quyết định đó thể hiện kết quả, mức độ, vai trò chủ thể, quan hệ suy luận hay cụm cố định nào, và vì sao điều đó dẫn "
+        "tới nghĩa của khóa trong CHÍNH câu này. Dấu hiệu phải giúp chọn giữa các phương án; nếu điều bạn nêu đúng với cả bốn lựa chọn "
+        "(vd 'sau to cần động từ', 'chỗ trống cần danh từ') thì CHƯA đạt. Không mở đầu bằng 'Đáp án đúng là...' (giao diện đã hiện đáp án) "
+        "và không viết 'phù hợp nhất vì hợp ngữ cảnh'.\n"
+        "PHẦN 2 - PHÂN BIỆT TỪ GÂY NHIỄU: 'contrast_option' chép NGUYÊN VĂN một phương án: câu SAI bắt buộc là đúng lựa chọn của học sinh; "
+        "câu ĐÚNG hoặc BỎ TRỐNG là phương án dễ nhầm nhất so với khóa (có thể null khi câu ĐÚNG và không có phương án nào đáng so). "
+        "'contrast_vi' nêu điều người đọc sẽ hiểu KHÁC đi nếu điền từ đó vào CHÍNH câu này. Nếu từ đó gần nghĩa với khóa, nêu sự khác "
+        "biệt áp dụng trong câu; nếu từ đó sai cấu trúc, nói đúng cấu trúc nào không hợp, không dựng thêm khác biệt ngữ nghĩa cho dài. "
+        "Không dùng 'khác sắc thái', 'phù hợp trọng tâm', 'mang tính ngữ nghĩa' làm lý do duy nhất. Có ích mới cho TỐI ĐA MỘT ví dụ ngắn "
+        "ở 'example_en' + 'example_vi' (ví dụ MỚI do bạn đặt, hệ thống sẽ ghi rõ 'Ví dụ'); không có ích thì null. Không khẳng định 'em chọn "
+        "từ này vì ...' (em chưa nói lý do). Nếu một phương án khác ngang mức với khóa trong chính ngữ cảnh này, đừng cố phân biệt: "
+        "dùng status='review_key'.\n"
+        "PHẦN 3 - DỊCH NGHĨA: 'translation_vi' dịch tự nhiên, đúng trật tự câu tiếng Việt, cả câu hoàn chỉnh sau khi điền khóa; giữ đúng "
+        "chủ thể, hành động, phủ định, điều kiện, thời gian và mức độ chắc chắn ('may', 'might', 'seems' không được thành sự thật đã "
+        "xác nhận). Không thêm lời giảng hay giải thích loại phương án vào bản dịch. Nếu phép thay từ cần đổi hình thái cho đúng ngữ "
+        "pháp, làm theo quy tắc của câu; không tự sửa thân câu rồi dịch phiên bản khác.\n"
+        "CÁC PHƯƠNG ÁN CÒN LẠI: 'others' = danh sách {\"option\": chép nguyên văn, \"note\": nhận định} cho MỌI phương án ngoài khóa và "
+        "ngoài contrast_option (phương án này đã giải thích ở phần 2, đừng lặp). Mỗi nhận định nêu điều người đọc hiểu hoặc vấn đề thực "
+        "tế khi điền từ đó vào câu, rồi lý do loại hoặc kém phù hợp; không viết chung chung kiểu 'không hợp ngữ cảnh'.\n"
+        "TÔ ĐẬM: 'emphasis' = danh sách {\"in\": \"stem\"|\"clue\"|\"contrast\"|\"translation\", \"text\": đoạn chép NGUYÊN VĂN từ nguồn "
+        "đó}. stem = thân câu (tối đa 2 đoạn, mỗi đoạn tối đa 8 từ, là bằng chứng hoặc cụm cố định cần học); mỗi phần lời giải tối đa MỘT đoạn "
+        "quan trọng, không tô cả đoạn, không tô mọi lần xuất hiện của tên từ. Đoạn không khớp nguyên văn sẽ bị bỏ. KHÔNG tự viết ký "
+        "hiệu ** hay HTML trong bất kỳ trường nào.\n\n"
+        "CHỐNG LẶP: mỗi phần chỉ chứa thông tin của riêng nó (phần 1: bằng chứng dẫn tới khóa; phần 2: lựa chọn cạnh tranh; phần 3: nghĩa cả "
+        "câu). Được nhắc lại tên từ để rõ đối tượng, nhưng không lặp CÙNG MỘT lập luận ở hai phần (vd cả hai đều viết 'effect nhấn mạnh kết "
+        "quả nên hợp với kết quả'). Bỏ câu dẫn kiểu 'Chúng ta hãy cùng phân tích', 'Như đã biết', 'Có thể thấy rằng'. Không nhắc điểm số hay "
+        "đúng/sai, không nói 'em đã nắm vững'. Xóa một câu mà nội dung vẫn đủ thì câu đó thừa, bỏ đi.\n"
+        "VĂN PHONG: tiếng Việt tự nhiên, câu ngắn, không dịch từng chữ từ tiếng Anh; chỉ dùng thuật ngữ ('cụm cố định', 'chủ ngữ', 'suy luận') "
+        "khi nó giúp giải câu và có diễn giải cụ thể. Phân biệt rõ: sai ngữ pháp / không đúng nghĩa trong câu / kém tự nhiên / kém phù hợp "
+        "ngữ cảnh / cũng chấp nhận được. Tránh tuyệt đối hóa ('luôn', 'không bao giờ', 'chỉ dùng được') khi chỉ có căn cứ cho câu này.\n"
+        "THEO CHẾ ĐỘ: SAI = đối chiếu đúng lựa chọn của em. ĐÚNG = ngắn nhất có thể (dấu hiệu + dịch); phần 2 dùng nhãn 'dễ nhầm với', không gán lỗi. "
+        "BỎ TRỐNG = tuyệt đối không nói em đã chọn gì; phần 2 đối chiếu phương án gần nhất.\n"
+        "KHÔNG BỊA DỮ KIỆN: không thêm chủ ý, mức độ, thời gian, nguyên nhân, kết quả mà đề chưa nêu (vd đề chỉ nói cảnh báo gợi khả năng thì không "
+        "viết 'đã có người xâm nhập').\n"
         "TỰ KIỂM TRA ĐÁP ÁN: nếu chi tiết trong đề chỉ chứng minh khóa 'dùng được' mà KHÔNG chứng minh 'phù hợp hơn' MỌI phương án còn lại "
-        "(thiếu dữ kiện, hoặc có phương án khác ngang mức), đặt status='review_key', ghi 'doubt_reason' cụ thể và liệt kê trong "
-        "'also_defensible' các phương án cũng bảo vệ được; khi đó chỉ cần evidence và evidence_meaning phần nghĩa bạn xác nhận được, KHÔNG "
-        "viết lời giải khẳng định. Không cố bênh vực khóa. Ngược lại status='ready'.\n\n"
+        "(thiếu dữ kiện, hoặc có phương án khác ngang mức, hoặc mâu thuẫn với căn cứ sẵn có), đặt status='review_key', ghi 'doubt_reason' cụ "
+        "thể và liệt kê trong 'also_defensible' các phương án cũng bảo vệ được; khi đó chỉ cần evidence và key_clue_vi phần nghĩa bạn xác "
+        "nhận được, KHÔNG viết lời giải khẳng định. Không cố bênh vực khóa. Ngược lại status='ready'.\n\n"
         + nl.join(lines) +
         '\n\nCHỈ trả JSON, không chữ thừa, đúng schema: {"items": [{"id": <id>, "status": "ready"|"review_key", "evidence": ["trích nguyên '
-        'văn", ...], "evidence_meaning": "...", "why_key": "...", "translation_vi": "...", "contrast_option": "..."|null, "shared_point": '
-        '"...", "contrast_vi": "...", "example_en": "..."|null, "example_vi": "..."|null, "grammar_vi": "..."|null, "grammar_excludes": '
-        '[...], "start_hint": "..."|null, "doubt_reason": "..."|null, "also_defensible": [...]}, ... đủ mọi id]}'
+        'văn", ...], "key_clue_vi": "...", "contrast_option": "..."|null, "contrast_vi": "...", "example_en": "..."|null, "example_vi": '
+        '"..."|null, "translation_vi": "...", "translation_over_cap": false, "others": [{"option": "...", "note": "..."}], "emphasis": '
+        '[{"in": "stem", "text": "..."}], "doubt_reason": "..."|null, "also_defensible": [...]}, ... đủ mọi id]}'
+    )
+
+
+def explanation_review_task(pairs: list[dict]) -> str:
+    """Lượt rà nội dung lời giải đã qua kiểm của code (độ dài, trích, phương án đã đúng). AI chỉ đánh giá chất lượng diễn giải;
+    không đổi khóa, không viết lại. pairs: [{target, text, clean}]."""
+    nl = chr(10)
+    lines = []
+    for p in pairs:
+        t = p["target"]
+        opts = "; ".join(f'{l}) "{o}"' for l, o in zip("ABCD", t["options"]))
+        d = t.get("dossier") or {}
+        known = []
+        if d.get("cue"):
+            known.append(f'dấu hiệu đã xác minh: "{d["cue"]}"')
+        if d.get("rival"):
+            known.append(f'phương án cạnh tranh: "{d["rival"]}"')
+        mode = {"wrong": f'SAI (em chọn "{t["options"][t["selected_index"]]}")' if t.get("selected_index") is not None else "SAI",
+                "correct": "ĐÚNG", "unanswered": "BỎ TRỐNG"}[t["mode"]]
+        lines.append(f'{t["id"]}. "{t["sentence"]}" -> {opts} | Khóa: "{t["options"][t["key_index"]]}" | {mode} | '
+                     f'Căn cứ sẵn có: {"; ".join(known) or "(không có)"}{nl}LỜI GIẢI:{nl}{p["text"]}')
+    return (
+        "NHIỆM VỤ: rà NỘI DUNG từng lời giải tiếng Việt dưới đây (độ dài, trích dẫn, danh sách phương án đã được máy kiểm; đừng kiểm lại). "
+        "Với mỗi câu, trả ok=true nếu ĐẠT cả sáu tiêu chí, ngược lại ok=false và liệt kê issues cụ thể (nêu sửa gì ở phần nào):\n"
+        "1) Chìa khóa nhận biết có thật sự phân biệt được khóa với các phương án khác không (không phải điều đúng với cả bốn lựa chọn, "
+        "vd chỉ nói chỗ trống cần động từ/danh từ/từ loại chung)? code: weak_clue.\n"
+        "2) Phần đối chiếu có nói đúng điều khác biệt về nghĩa hoặc cấu trúc khi điền từ đó vào CHÍNH câu này, và lý do loại từng phương án "
+        "trong 'các phương án còn lại' có đúng ngữ pháp, nghĩa, ngữ cảnh không (không bịa khác biệt, không tuyệt đối hóa)? code: wrong_distractor.\n"
+        "3) Bản dịch có giữ đúng chủ thể, phủ định, điều kiện, thời gian và mức độ chắc chắn ('seems', 'may' không thành sự thật đã xác nhận) không? "
+        "code: translation_drift.\n"
+        "4) Ba phần có bổ sung thông tin cho nhau, hay hai phần diễn đạt lại cùng một lý do? Chỉ báo redundant khi CÙNG MỘT lập luận được viết lại gần như nguyên ý ở hai phần và bỏ một phần thì không mất thông tin. KHÔNG báo khi phần 2 chỉ nhắc lại tên từ hoặc dùng vài chữ của phần 1 để so sánh, vì đối chiếu vốn cần nhắc tới khóa. Nếu báo, nêu đúng câu nào cần bỏ hoặc đổi. code: redundant.\n"
+        "5) Văn Việt có cụ thể, tự nhiên, phù hợp học sinh THPT, không dịch cứng từng chữ, không lý do rỗng kiểu 'khác sắc thái'? code: unnatural.\n"
+        "6) Có mâu thuẫn với căn cứ sẵn có hoặc đặt ra điều đề không nêu không? code: contradiction.\n"
+        "Nếu bạn thấy căn cứ không đủ để ưu tiên khóa so với một phương án khác (hoặc đáp án mâu thuẫn với căn cứ sẵn có), đặt key_doubt=true và "
+        "ghi doubt_reason cụ thể; KHÔNG tự đổi khóa. Chấm vừa phải, ưu tiên cho qua: chỉ trả ok=false khi có lỗi RÕ RÀNG làm học sinh hiểu sai hoặc hai phần thật sự lặp; góp ý văn phong nhẹ thì vẫn ok=true. Chỉ nêu tối đa 2 issues.\n\n"
+        + (nl + nl).join(lines) +
+        '\n\nCHỈ trả JSON: {"items": [{"id": <id>, "ok": true|false, "issues": [{"part": "clue|contrast|translation|others", '
+        '"code": "weak_clue|wrong_distractor|translation_drift|redundant|unnatural|contradiction", "note": "..."}], '
+        '"key_doubt": false, "doubt_reason": null}, ... đủ mọi id]}'
     )
 
 

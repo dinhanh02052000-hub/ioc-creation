@@ -391,6 +391,11 @@ a.ai-btn-secondary {
   box-shadow: 0 0 5px var(--accent-green);
 }
 
+.ai-status-dot--amber {
+  background: var(--accent-amber, #e3b341);
+  box-shadow: 0 0 5px var(--accent-amber, #e3b341);
+}
+
 .ai-feedback-block {
   font-size: 0.82rem;
   color: var(--text-dim);
@@ -781,3 +786,14 @@ a.ai-btn-secondary {
   .ai-card-examples { grid-template-columns: 1fr; }
   .ai-sum-row { grid-template-columns: 1fr; gap: 2px; }
 }
+
+/* Lời giải v2: ba phần, nút xem các phương án còn lại, tô đậm thân câu, mô tả mức khó trước bài */
+.ai-expl-others { margin-top: 10px; font-weight: 400; }
+.ai-expl-others summary { cursor: pointer; font-weight: 700; color: var(--accent); padding: 6px 0; }
+.ai-expl-others summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.ai-expl-others .ai-md-list { margin: 4px 0 0; padding-left: 18px; }
+.ai-expl-others li { margin: 4px 0; overflow-wrap: anywhere; }
+.ai-q-hl { font-weight: 800; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; text-decoration-color: var(--accent); }
+.ai-quiz-notice { margin: 0 0 14px; padding: 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-soft, transparent); font-size: 0.9rem; line-height: 1.55; color: var(--text-dim); }
+.ai-quiz-notice__stats { margin-top: 4px; font-weight: 700; color: var(--text); }
+.ai-q-feedback .ai-md-p, .ai-q-feedback .ai-md-list li { overflow-wrap: anywhere; }

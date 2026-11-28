@@ -10,7 +10,8 @@ Các khâu (tên viết hoa khi đặt biến môi trường):
   grade_1 / grade_2      hai lượt chấm tự luận (lượt 1 kèm đáp án mẫu)    grade_3              lượt chấm thứ ba (khi lệch > 0,75)
   lesson                 present knowledge (bài học)                     cards                thẻ ôn trọng tâm
   try_assess             chấm câu tự thử trong thẻ                       explanation          lời giải sau khi nộp trắc nghiệm
-  report                 xét báo cáo (trắc nghiệm + tự luận)             rules                đề xuất quy tắc học"""
+  report                 xét báo cáo (trắc nghiệm + tự luận)             rules                đề xuất quy tắc học
+  explanation_review     rà nội dung lời giải (lặp ý, dấu hiệu, bản dịch); mặc định claude-sonnet-5-5, effort low"""
 
 from __future__ import annotations
 
@@ -30,18 +31,21 @@ def current_role() -> str | None:
 
 ROLES = (
     "recognition_gen", "recognition_judge", "recognition_judge_2", "recognition_diversity", "open_gen", "grade_1", "grade_2", "grade_3",
-    "lesson", "cards", "try_assess", "explanation", "report", "rules",
+    "lesson", "cards", "try_assess", "explanation", "explanation_review", "report", "rules",
 )
+
+# Mặc định riêng của một số khâu khi biến môi trường không đặt (đặt AI_MODEL_/AI_EFFORT_ vẫn ghi đè).
+DEFAULTS = {"explanation_review": ("claude-sonnet-5-5", "low")}
 
 
 def model_for(role: str) -> str | None:
     if role not in ROLES:
         raise KeyError(f"Khâu AI không có trong cấu hình: {role}")
-    return os.environ.get(f"AI_MODEL_{role.upper()}") or None
+    return os.environ.get(f"AI_MODEL_{role.upper()}") or (DEFAULTS.get(role) or (None, None))[0]
 
 
 def effort_for(role: str) -> str | None:
-    return os.environ.get(f"AI_EFFORT_{role.upper()}") or os.environ.get("AI_EFFORT_DEFAULT") or None
+    return os.environ.get(f"AI_EFFORT_{role.upper()}") or (DEFAULTS.get(role) or (None, None))[1] or os.environ.get("AI_EFFORT_DEFAULT") or None
 
 
 def routed(ask_fn, role: str):

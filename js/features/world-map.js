@@ -95,10 +95,10 @@ function worldMapNodeIcon(state) {
 }
 
 const WORLD_MAP_ILLUSION_LABELS = {
-  DETECTED: 'IOC Detected',
-  UNDERCONFIDENT: 'Underconfidence Detected',
-  CALIBRATED: 'Good',
-  MIXED_DEVIATION: 'Lệch từng kỹ năng',
+  DETECTED: 'Dự đoán cao hơn kết quả',
+  UNDERCONFIDENT: 'Làm tốt hơn dự đoán',
+  CALIBRATED: 'Dự đoán sát kết quả',
+  MIXED_DEVIATION: 'Lệch theo phần',
   PARTIAL_DATA: 'Thiếu dự đoán',
   NO_PREDICTION: 'Chưa có dự đoán',
   AWAITING_RESULT: 'Chờ kết quả'

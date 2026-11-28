@@ -37,8 +37,8 @@ def calc_overall_v3(recognition, distinction, application) -> float:
 
 
 UNDERSTANDING_V3 = (
-    (Decimal("4"), "NOT_ENOUGH_BASE", "Chưa thể hiện đủ kiến thức nền"),
-    (Decimal("6"), "PARTIAL", "Hiểu một phần; cần củng cố"),
+    (Decimal("4"), "NOT_ENOUGH_BASE", "Đang xây nền kiến thức"),
+    (Decimal("6"), "PARTIAL", "Đã hiểu một phần, cùng củng cố thêm"),
     (Decimal("7"), "BASIC", "Hiểu cơ bản"),
     (Decimal("8.5"), "FAIRLY_SOLID", "Hiểu khá vững"),
 )
@@ -114,10 +114,11 @@ def calibration_v3(gap: float | None, skill_gaps: dict | None = None) -> dict:
         code, text = "CLOSE", "Dự đoán tổng tương đối sát kết quả ở lượt này."
     elif a <= GAP_CLEAR:
         code = "HIGHER" if g > 0 else "LOWER"
-        text = f"Ở lượt này, em dự đoán {'cao' if g > 0 else 'thấp'} hơn kết quả."
+        text = ("Ở lượt này, em dự đoán cao hơn kết quả một chút." if g > 0 else "Ở lượt này, em làm tốt hơn mức em dự đoán.")
     else:
         code = "MUCH_HIGHER" if g > 0 else "MUCH_LOWER"
-        text = f"Ở lượt này, em dự đoán {'cao' if g > 0 else 'thấp'} hơn kết quả rõ rệt."
+        text = ("Lượt này em dự đoán cao hơn kết quả khá nhiều. Đây là thông tin để em điều chỉnh cách tự đánh giá." if g > 0
+                else "Em làm tốt hơn mức em dự đoán khá nhiều. Em có thể tin tưởng bản thân hơn.")
     offsetting = False
     if skill_gaps and all(skill_gaps.get(k) is not None for k in ("distinction", "application")):
         gd, ga = _d(skill_gaps["distinction"]), _d(skill_gaps["application"])

@@ -4,10 +4,10 @@
 
 const ANALYSIS_CACHE_KEY = 'ioc_analysis_cache'; // { signature, result: {weak_patterns, improvement_tips, encouragement} }
 const ANALYSIS_ILLUSION_META = {
-  DETECTED: { label: 'IOC Detected', dot: 'red' },
-  UNDERCONFIDENT: { label: 'Underconfidence Detected', dot: 'red' },
-  CALIBRATED: { label: 'Good', dot: 'green' },
-  MIXED_DEVIATION: { label: 'Lệch ở từng kỹ năng (bù trừ nhau)', dot: 'red' },
+  DETECTED: { label: 'Dự đoán cao hơn kết quả', dot: 'amber' },
+  UNDERCONFIDENT: { label: 'Làm tốt hơn dự đoán', dot: 'amber' },
+  CALIBRATED: { label: 'Dự đoán sát kết quả', dot: 'green' },
+  MIXED_DEVIATION: { label: 'Tổng thể sát, từng phần còn chênh', dot: 'amber' },
   PARTIAL_DATA: { label: 'Chỉ đối chiếu được một kỹ năng', dot: 'gray' },
   NO_PREDICTION: { label: 'Chưa có dự đoán để đối chiếu', dot: 'gray' },
   AWAITING_RESULT: { label: 'Chờ kết quả (tạm tính)', dot: 'gray' }
@@ -117,11 +117,11 @@ function analysisRenderBox1(agg) {
       </table>`;
   }
   if (agg.legacy) {
-    const meta = ANALYSIS_ILLUSION_META[agg.illusion_status] || { label: agg.illusion_status, dot: 'red' };
+    const meta = ANALYSIS_ILLUSION_META[agg.illusion_status] || { label: agg.illusion_status, dot: 'amber' };
     const gapSign = agg.gap > 0 ? '+' : '';
     html += `
       <div class="analysis-iocbig-top">
-        ${analysisScoreRowHtml('Ảo tưởng (Confidence - cách đo cũ)', agg.confidence)}
+        ${analysisScoreRowHtml('Mức tự tin (cách đo cũ)', agg.confidence)}
         ${analysisScoreRowHtml('Thực tế (Overall)', agg.legacy.overall)}
       </div>
       <div class="analysis-illusion-row">
@@ -247,7 +247,7 @@ function renderAnalysis() {
 
         <div class="card analysis-card analysis-span4" id="analysis-box-2">
           <div class="card-header">
-            <span class="card-title">Xu hướng nhầm lẫn</span>
+            <span class="card-title">Cặp từ cần phân biệt kỹ hơn</span>
             <span class="badge">AI phân tích</span>
           </div>
           <div class="analysis-box-body" id="analysis-box-2-body"></div>
